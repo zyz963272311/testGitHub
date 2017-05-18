@@ -1,0 +1,206 @@
+http://www.cnblogs.com/maowang1991/archive/2013/04/15/3023236.html
+这个包里面主要用来学习java的设计模式
+java主要有23种设计模式，总体来说，可以分为三类
+创建型模式，共五种：工厂方法模式(factory)、抽象工厂模式(abstractfactory)、单例模式(singleton)、建造者模式(builder)、原型模式(prototype)。
+结构型模式，共七种：适配器模式(adapter)、装饰器模式(decorator)、代理模式(proxy)、外观模式(faced)、桥接模式(bridge)、组合模式(combination)、亨元模式(flyweight)。
+行为型模式，共十一种：策略模式(strategy)、模板方法模式(templete)、观察者模式(oberver)、迭代子模式(iterator)、责任链模式(responsibility)、命令模式(command)、
+			         备忘录模式(memento)、状态模式(state)、访问者模式(visitor)、中介者模式(mediator)、解释器模式(interpreter)。
+1、工厂方法模式：	需要一个生产功能的接口------------------------功能接口
+			需要至少一个类实现这个接口(还可以实现其他接口)-------功能类
+			需要一个工厂类可以提供这写类的对象----------------工厂方法
+			将工厂类中的提供对象的方法变成静态方法-------------静态工厂
+			
+2、抽象工厂模式：	需要一个生产功能的接口------------------------功能接口
+			需要至少一个类实现这个接口(还可以实现其他接口)-------功能类
+			需要一个提供这个功能的工厂接口-------------------工厂接口
+			需要至少一个类实现这个接口(还可以实现其他接口)-------工厂类
+
+3、单例模式：	1、不考虑多线程的情况下
+				类内部有一个私有，静态的本身
+				类的构造方法为私有方法
+				类对外提供一个静态的获取对象的方法，如果对象为空，则初始化。并返回对象
+			2、考虑多线程
+				类提供一个私有的构造方法
+				类内创建一个静态内部类
+				内部类创建类的实例
+				类对外提供一个静态的获取对象方法，返回【内部类.对象】
+
+4、建造者模式：	建造者模式与工厂模式类似，整体需要【导演类】、【建造者接口】、【建造者类】、【产品类】
+			建造者类实现建造者接口，并在类内提供建造产品的方法【为属性赋值，调用产品类的set方法】
+			导演类中有多个方法，每个方法，调用一个建造者类，用来建造产品，导演与产品没有直接交互
+			客户端，调用导演的方法，来获取建造者
+			
+5、原型模式：	将类实现Cloneable接口，并重写Object类的clone方法(实际上是调用Object的clone()方法)
+			原型模式的克隆分为浅拷贝和深拷贝
+			浅拷贝：将获得返回值，值类型的数据将被复制，引用类型的数据将会将地址复制给新的对象(调用new Object.clone方法)
+			深拷贝：需要实现Serializable接口，并在类中将类对象进行序列化与反序列化
+			//写入对象的二进制流
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			ObjectOutputStream oos = new ObjectOutputStream(bos);
+			oos.writeObject(this);
+			//读取对象的二进制流
+			ByteArrayInputStream bis = new ByteArrayInputStream();
+			ObjectInputStream ois = new ObjectInputStream(bis);
+			return ois.readObject();
+			
+6、适配器模式：	1、方法适配器
+			一个待适配的方法Target.method1()，其中Target是接口
+			一个将要转换成的方法，Adaptee.method1()，Adaptee是普通的类
+			中间的适配器需要继承Adaptee并实现Target，因为在Adaptee中有method1，所以，仅仅需要实现Target中其他的方法即可。
+			在Target中可以使用Adaptee的方法
+			2、对象适配器
+			一个待适配的方法，Target.method1()，其中Target是接口
+			一个将要转换成的方法，Source.method1()，Source是普通类
+			中间的适配器需要实现Target接口并实现内部方法，声明Source对象，并在构造方法中初始化Source对象
+			在适配器的method1()，中调用source.method1()即可
+			3、接口适配器模式
+			接口中有多个待实现的方法
+			编写一个类或抽象类，实现接口的所有方法，单每一个方法体均可以为空
+			其他的类，不直接实现接口，而是继承中间类，从而需要哪个方法，重写哪个方法即可。
+			
+7、装饰模式：	被装饰类与装饰类实现同一个接口
+			装饰类中持有被装饰类对象
+			装饰类中的待装饰方法调用被装饰类的待装饰方法
+			
+8、代理模式：	1、静态代理模式
+			与装饰模式类似，被代理类与代理类需要实现向相同的接口
+			2、动态代理模式
+			被代理类必须有接口可以实现。
+			代理类无视被代理类类型，所以，一般将被代理对象在代理类中声明为Object obj类型
+			代理类中定义获取对象的方法，在方法内返回值为java.lang.refract.Proxy.getProxyInstance(ClassLoader loader,Class<?>[] interfaces,InvocationHandler handler)
+			参数:loader		被代理类的加载器，obj.getClass().getClassLoader();
+				interfaces	被代理类的接口数组，obj.getClasses().getInterfaces();
+				handler		为接口，需要重写这个类，并重写类的invoke(Object proxy,Method method,Object[] args)方法
+				参数：	proxy	不知道作用
+						method	在客户端调用的方法
+						args	method需要的参数
+				返回值为method.invoke(obj,args);若method方法没有返回值，则返回null
+			3、cglib方式代理
+			对被代理类没有任何要求。
+			代理类中需要出游被代理的对象Object target
+			代理类中需要获取自己实例的方法getInstance
+			//1.工具类
+			Enhancer en = new Enhancer();
+			//2.设置父类
+			en.setSuperclass(target.getClass());
+			//3.设置回调函数
+			en.setCallback(this);
+			//4.创建子类
+			return en.create();
+			代理类需要实现MethodInterceptor接口，并实现invoke(Object obj,Method method,Object[] args,MethodProxy proxy)方法
+			参数说明：	obj		代理类实例
+					method	被代理类方法
+					args	被代理类方法所需参数
+					proxy	不知道具体作用
+			返回值:	method.invoke(target,args);
+			
+9、外观模式：	将某一个系统分为一个一个小模块
+			小模块之间互相不持有实例
+			系统持有每一个小模块的实例
+			
+10、桥接模式：	系统中调用模块的各个功能。实现低耦合
+			类似与java的JDBCManager功能，
+			有SQL接口，作为所有数据库的接口类
+			MySql实现MySql的所有操作方法、SqlServer实现所有SqlServer的所有操作方法
+			JDBCManager中持有SQL对象，在构造方法中对SQl实例化
+			JDBC通过操作SQL调用SQL的方法，对数据库进行操作。
+
+11、组合模式：	组合模式一般用在树状结构上，即自己内部包含自己
+			即节点之间的关系
+			需要一个Tree类和一个TreeNode类，Tree类中包含TreeNode root对象，表示根节点，并可以对其进行初始化。
+			TreeNode类中，包含TreeNode对象，表示儿子节点，并有get与set方法，有对子节点的添加节点
+
+12、亨元模式：	亨元模式一般情况一工厂模式联合使用
+			亨元模式为尽量小的使用初始化内存，与单例模式比较类似，亨元模式不是单例模式，是单例模式的升级版本，表示共享池
+			共享亨元模式：
+				需要一个接口，规定所有可用的方法
+				实现这个接口的类，内部保存的变量全部都是可以共享的，即无论如何都不会发生改变的属性
+				一个工厂类，用来管理类的共享池,一般来说需要控制共享池的最大数目
+				
+13、策略模式：	需要一个接口，来定义需要实现的方法
+			需要1...n个类来实现这个接口，并根据不同规则策略来实现这个接口
+			需要一个策略类，在类中持有接口对象，并调用接口中的策略方法
+		
+14、模版方法模式：需要一个抽象类，类中需要定义一个不可改变的流程方法(final)，作为模版方法
+			需要1...n个类继承这个抽象类，并实现其中的未实现的方法，也可以实现其中部分已经实现的方法
+			客户端通过实例化类，并调用其流程方法，来完成流程操作，其中流程就是模版方法
+			
+15、观察者模式：	需要两个接口，一个是订阅者(文章,被观察者)接口，一个是被订阅(观察者)接口，当被订阅的状态发生改变的时候，可以通知订阅者
+			文章接口需要有添加、删除、通知观察者，这三个基础方法，还可以有操作(option方法)
+			订阅者接口需要有更新方法，供文章接口调用，当发布新文章时，可以更新给观察者
+			由于订阅的可能是多种不同的订阅号，所以，可以将文章接口下设计一个抽象类，用来记录文章
+			注意事项：不可将观察者模式与装饰模式混为一谈，装饰着强调功能，观察者强调底耦合
+			
+16、迭代子模式：	需要两个接口，一个用来存储集合信息，另一个存储迭代器信息
+			集合接口中有获取迭代器的方法，迭代器中保存集合对象
+			集合接口中有size()方法和get(int intex)方法
+			迭代器主要用来进行迭代循环，int类型的pos变量，
+			在next方法中，pos++，并返回集合的后一个数据、previous方法中pos--并返回集合的前一个数据、
+			hasNext方法中，比较pos与collection.size()-1的大小，返回true与false
+			
+17、责任链模式：	整体仅仅需要一个接口Handler，本身具有持有一个本类的对象handler，单对象不是本身，其为下一个应该执行的对象
+			内部有get与set方法，set方法将下一个需要执行的对象塞入到对象中，get方法获取下一个需要执行的对象实例，先set，后get
+			在operate方法中，执行本身。
+			顺序：测试类中代码
+				Handler handler{i} = new 实例;n次
+				handler{i}.setHandler(handler{i+1});
+				handler0.operator();
+				handler中代码
+				Handler{
+					Handler handler;
+					getter/setter;
+					operate()
+					{
+						//逻辑处理执行
+						if(getHandler()!=null)
+						{
+							getHandler().operate();//完成整条链的执行
+						}
+					}
+				}
+
+18、命令模式：	命令模式的目的是为了实现命令大发出者、传递者、执行者的解耦
+			整体需要三个类Invoke(命令发出者)、Command(命令传递者)、Receive(命令的执行者)
+			前者的构造方法中对后者进行初始化
+			Invode在command方法中调用Command的action方法
+			Command在action方法中调用Receive的exec方法
+		
+19、备忘录模式：	备忘录模式需要三个类数据类(Origin)、备忘录类(Memento)、存储备忘录类(Storage)
+			数据类存储数据，并负责创建一个备忘录和将数据恢复到备忘状态，数据类中需要备忘的类，需要在备忘录类中都存在
+			备忘录类中仅有数据类中需要存储需要备忘的数据，以及get与set方法
+			存储备忘录类，仅仅有存储备忘录对象，用来恢复到某一个状态。
+			Origin origin = new;
+			Memento memento = origin.createMemento();//创建备忘录
+			Storage storage = new Storage(menento);//保存备忘录
+			origin.getter/setter;//修改数据
+			origin.restoreMemento(storage.getMemento);//将数据恢复到某一个备忘状态。
+
+20、状态模式：	需要两个类状态类(State)与内容类(Context)
+			状态类中保存状态状态、getter与setter方法【和其他可执行方法，这些方法也可能是其他类的交互】
+			内容类中持有状态类的对象、getter与setter方法，内部的方法通过判断状态类的状态，分别调用状态类的不同方法。
+			
+21、访问者模式：	访问者模式将数据结构与结构上的操作进行解耦
+			需要两个接口，数据结构接口(Subject)与数据操作接口(Visitor)
+			数据结构接口的visit方法传入数据操作对象
+			数据操作接口中的方法完全为逻辑操作
+			访问者模式适用于逻辑处理已经确定基本不变的情况下，但可能出现多个Subject，且可能在以后持续增加Subject的，
+			但不能改变Subject的数据结构，修改数据结构将会造成整体的修改变得麻烦。
+			测试类中
+			Visitor visitor = new;
+			Subject subject = new Subject();
+			subject.accept(visitor);//将visitor对象传递给Subject对象，相当于setter方法，可以存在多个类似的方法，表示不同的逻辑操作
+			Subject类中
+			getter/setter;get与set方法
+			public void accept(Visitor visitor)
+			{
+				visitor.accept(this);
+			}
+			Visitor类中
+			public void accept(Subject subject)
+			{
+				//逻辑操作
+			}
+			
+22、中介者模式：	没看明白
+
+23、解释器模式：	待看

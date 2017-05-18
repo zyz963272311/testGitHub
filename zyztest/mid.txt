@@ -1,0 +1,1365 @@
+<?encoding="UTF-8"?>
+//# 公共组件-数据交互中心
+#include java:snsoft.util.ResUtil.textFromResource("res:sndata/CreateDatabaseCommDefs.txt")
+#define MQSYSCODE		32
+#define MQCONNCODE		16  
+#define MQPROJTYPE		64
+#define MQEXCCODE		16
+#define MQPROJCODE		32
+#define MQSTCODE		32
+#define MQTASKCODE		32
+#define MQSERVID		32
+#define MQFILEPATH		256 	//报文的存储路径
+#
+tbldef(+tblid,tblname,tblexpl,storegrp,localcache,datasrcid,rdatasrcid)
+
+//完成工作1 ： 数据传输交互
+//完成工作2 ： 基础数据同步
+//字典使用   3507XX  3508XX
+//表号范围   350700 - 350799  350800 - 350899 数据交互中心
+    350700	mq_sys_conf  				接入系统定义			SNSYSDATA_TBS	1	CONFIG	CONFIG
+    350701	mq_conn_conf  				交互执行方式			SNSYSDATA_TBS	1	CONFIG	CONFIG
+	350703	mq_proj_type				工程类型定义	       	SNSYSDATA_TBS	1	CONFIG	CONFIG//某种工作的定义
+    350705	mq_serv_exc					异常编码定义	       	SNSYSDATA_TBS	1	CONFIG	CONFIG	
+    350706	mq_sys_conn 				系统交互定义			SNSYSDATA_TBS	1	CONFIG	CONFIG
+    350707	mq_ftpadr_conf 				FTP地址定义			SNSYSDATA_TBS	1	CONFIG	CONFIG
+    350708	mq_stress_conf 				压力测试定义			SNSYSDATA_TBS	1	CONFIG	CONFIG
+    350709	mq_pack_conf 				报文打包定义			SNSYSDATA_TBS	1	CONFIG	CONFIG
+          
+    350710	mq_proj_temp  				工程模板定义			SNSYSDATA_TBS	1	CONFIG	CONFIG//对于某种工作生成工程的依据
+    350711	mq_proj_temp_param  		工程模板参数			SNSYSDATA_TBS	1	CONFIG	CONFIG//字段与参数的对应表    
+    350712	mq_task_temp  				任务模板定义			SNSYSDATA_TBS	1	CONFIG	CONFIG//用于生成工程下任务的依据
+    350713	mq_task_temp_param  		任务模板参数			SNSYSDATA_TBS	1	CONFIG	CONFIG//字段与参数的对应表
+
+//服务执行引擎相关 - 起始
+    350720	mq_serv_type  				服务类型定义			SNSYSDATA_TBS	1	CONFIG	CONFIG
+
+    350721	mq_serv_model  				服务模型定义			SNSYSDATA_TBS	1	CONFIG	CONFIG
+    350722	mq_serv_model_impl  		服务模型实现定义			SNSYSDATA_TBS	1	CONFIG	CONFIG    
+    350723	mq_serv_model_param  		服务模型参数定义			SNSYSDATA_TBS	1	CONFIG	CONFIG  
+
+    350726	mq_serv_engine  			服务引擎定义			SNSYSDATA_TBS	1	CONFIG	CONFIG
+    350727	mq_serv_engine_node  		服务引擎节点			SNSYSDATA_TBS	1	CONFIG	CONFIG
+    350728	mq_serv_engine_node_impl  	服务引擎节点实现			SNSYSDATA_TBS	1	CONFIG	CONFIG
+    350729	mq_serv_engine_line  		服务引擎线路			SNSYSDATA_TBS	1	CONFIG	CONFIG
+
+    350731	mq_serv  					服务执行表				SNMQDATA_TBS	0	MQDATA	MQDATA
+    350732	mq_serv_node  				服务执行节点			SNMQDATA_TBS	0	MQDATA	MQDATA
+    350733	mq_serv_node_impl  			服务执行节点实现			SNMQDATA_TBS	0	MQDATA	MQDATA
+    350734	mq_serv_node_param  		服务执行节点参数			SNMQDATA_TBS	0	MQDATA	MQDATA
+    350735	mq_serv_node_log   			服务执行节点日志			SNMQDATA_TBS	0	MQDATA	MQDATA
+ 
+    350740	mq_serv_group  				服务引擎组				SNSYSDATA_TBS	1	CONFIG	CONFIG
+    350741	mq_serv_group_engine  		服务引擎组明细			SNSYSDATA_TBS	1	CONFIG	CONFIG 
+    
+//服务执行引擎相关 - 结束
+    //定义MQ使用几个队列，未开始使用 
+    350745	mq_queue_conf  				 队列定义				SNSYSDATA_TBS	1	CONFIG	CONFIG
+
+    350750	mq_proj  					工程表				SNMQDATA_TBS	0	MQDATA	MQDATA
+    350752	mq_task  					任务表				SNMQDATA_TBS	0	MQDATA	MQDATA 
+    350753	mq_task_log  				任务日志表				SNMQDATA_TBS	0	MQDATA	MQDATA//记录任务执行的日志
+
+    350755	mq_pack 					报文打包记录			SNMQDATA_TBS	0	MQDATA	MQDATA
+    350756	mq_pack_file 				报文打包文件			SNMQDATA_TBS	0	MQDATA	MQDATA 
+    
+    350801	mq_serv_conf  				系统服务配置定义			SNSYSDATA_TBS	1	CONFIG	CONFIG
+    350802	mq_serv_conf_param  		系统服务参数配置定义		SNSYSDATA_TBS	1	CONFIG	CONFIG
+
+    350805	mq_scan_conf  				报文扫描配置定义			SNSYSDATA_TBS	1	CONFIG	CONFIG
+    350806	mq_scan_conf_match  		报文扫描工程匹配定义		SNSYSDATA_TBS	1	CONFIG	CONFIG
+    
+    350809	mq_console_param  			控制台参数表			SNSYSDATA_TBS	1	CONFIG	CONFIG
+               
+    350810	mq_serv_datadef  			系统服务取数定义			SNSYSDATA_TBS	1	CONFIG	CONFIG
+    350811	mq_serv_datatable  			系统服务取数表定义		SNSYSDATA_TBS	1	CONFIG	CONFIG
+    350812	mq_serv_datacell  			系统服务取数列定义		SNSYSDATA_TBS	1	CONFIG	CONFIG
+    350813	mq_serv_datatime			系统服务最近取数时间		SNMQDATA_TBS	0	MQDATA	MQDATA
+
+	350820	mq_proj_create				消息通知定义			SNSYSDATA_TBS	1	CONFIG	CONFIG
+    350821	mq_proj_create_param		消息通知参数			SNSYSDATA_TBS	1	CONFIG	CONFIG
+	//用于多条业务数据提交后,创建单一消息处理。业务数据提交时不直接创建消息，先记录到缓冲队列中，再由定时任务扫描数据创建消息   王江平
+	350825	mq_msg_buff_queue			消息缓冲队列			SNMQDATA_TBS	0	MQDATA	MQDATA
+	//用于记录消息通知定义对应的消息通知最后执行时的一下参数   现在只记录了  查询时间的范围     宋建中
+	350830	mq_proj_wait_lately			消息通知最新执行参数表	    SNMQDATA_TBS	0	MQDATA	MQDATA    	
+	350835	mq_proj_wait				消息通知表	       		SNMQDATA_TBS	0	MQDATA	MQDATA
+    350836	mq_proj_wait_log  			消息通知日志表			SNMQDATA_TBS	0	MQDATA	MQDATA
+	//记录企业端上传的报文
+	350838	mq_message_upload			报文上传记录	       	SNMQDATA_TBS	0	MQDATA	MQDATA
+
+
+//*********************************  数据中心备份已完结的数据    ***********************************************************
+
+	350860	mq_proj_comp			工程表(完结)			SNMQDATA_TBS	0	MQBF	MQBF
+	350861	mq_task_comp			任务表(完结)	       	SNMQDATA_TBS	0	MQBF	MQBF 
+	350862	mq_task_log_comp  		任务日志表(完结)			SNMQDATA_TBS	0	MQBF	MQBF//记录任务执行的日志
+	350863	mq_proj_wait_comp  		消息通知表(完结)			SNMQDATA_TBS	0	MQBF	MQBF
+	350864	mq_proj_wait_log_comp  	消息通知日志表(完结)		SNMQDATA_TBS	0	MQBF	MQBF
+	350865	mq_msg_buff_queue_comp	消息缓冲队列备份			SNMQDATA_TBS	0	MQBF	MQBF
+	
+//*********************************  数据中心备份已完结的数据    ***********************************************************
+		      
+flddef(tblname,fldid,fldname,flddisplayname,fldtype,fldsize,flddecimal,fldflags,flddefault,fldreftbl,fldexpl)
+// ************** 表号范围   350700 - 350799  消息中心    **************
+//mbcode
+	//用于  组织 与 MQ系统的对应
+	mbcode	35710		mq_syscode			接入系统编号	VARCHAR		MQSYSCODE			0		0b00000	null
+
+//ccode
+	//企业 与MQ系统的对应
+	ccode	35710		mq_syscode			接入系统编号	VARCHAR		MQSYSCODE			0		0b00000	null
+
+//加入MQ相关字段  00315	xmlportdef			XML格式导入导出配置		
+	xmlportdef		35710   	syscode_request  	请求方  			VARCHAR			MQSYSCODE		0		0b00000 null
+	xmlportdef		35720   	syscode_response  	响应方  			VARCHAR			MQSYSCODE		0		0b00000 null
+//加入服务引擎相关字段
+	xmlportdef		35730   	engine_tablename  	服务引擎表名  		VARCHAR			64				0		0b00000 null
+	xmlportdef		35740   	router_field  		路由字段  			VARCHAR			512				0		0b00000 null
+	xmlportdef		35750   	msmcode  			服务模型编号  		VARCHAR			SZNBILL			0		0b00000 null
+	xmlportdef		35760   	stcode  			引擎类型编号   		VARCHAR			MQSTCODE		0		0b00000 null	
+
+//	00316	xmlportdefg			XML格式导出元素定义		SNSYSDATA_TBS	1		CONFIG		CONFIG
+	// 1:标识检查企业的对应接入系统;
+	xmlportdefg	    3501		maxlength 		           导出最大长度			            INTEGER		    8			0	0b00000
+	xmlportdefg	    3505		issubstrflags  	           导出是否截取				        SMALLINT		2			0	0b00000
+	xmlportdefg	    3510		maxlength2 		           导入最大长度			            INTEGER		    8			0	0b00000
+	xmlportdefg	    3515		issubstrflags2  	导入是否截取				        SMALLINT		2			0	0b00000
+	xmlportdefg		9000		mqcheckflags		消息中心数据检查					SMALLINT		2			0	0b00000
+//	00317	xmlportdefgatt		XML格式导入元素属性		SNSYSDATA_TBS	1		CONFIG		CONFIG
+	xmlportdefgatt	9000		mqcheckflags		消息中心数据检查					SMALLINT		2			0	0b00000
+
+//350700	mq_sys_conf  		接入系统定义				SNSYSDATA_TBS	1	CONFIG	CONFIG
+//说明 ：定义所有相关交互的系统
+//syscode 编码规则  系统名称.项目名称.编号    CBE.CENTER.0001   
+//CONFIG 配置   
+//1 消息中心系统编号   MQCENTERSYSCODE = CBE.CENTER.0001
+//2 当前系统编号   
+// MQCURSYSCODE = CBE.CBBPPS.0001	跨境电商公共服务平台
+// MQCURSYSCODE = CBE.CENTER.0002	跨境电商数据交互中心
+// MQCURSYSCODE = CBE.PEQSIQ.000001	国检行邮快件-广州白云机场
+	mq_sys_conf		10   	syscode  			接入系统编号  		VARCHAR			MQSYSCODE		0		0b00011 null
+	mq_sys_conf		20   	sysname  			接入系统名称   		VARCHAR			128				0		0b00010 null	
+//配置字典   10 MQCENTER 消息中心    20 	MQPLATFORM  用户平台  30 MQMANAGE  管理平台
+	mq_sys_conf		30   	systype  			系统类型  			VARCHAR			4				0		0b00000 null	
+	mq_sys_conf		40   	conncode  			默认交互执行方式   	VARCHAR			MQCONNCODE		0		0b00000 null
+	//TODO WEBSERVICE 相关参数
+	mq_sys_conf		50   	httpurl  			默认HTTP地址   		VARCHAR			1024			0		0b00000 null
+	mq_sys_conf		60   	filepath  			默认文件保存路径   	VARCHAR			1024			0		0b00000 null	
+	mq_sys_conf		65   	fsmacro  			默认文件服务器地址宏   	VARCHAR			64				0		0b00000 null
+	// 1 为启用
+	mq_sys_conf		70		startflags			启用				SMALLINT		2				0		0b00000	0
+	mq_sys_conf		75		unsysflags			系统外			SMALLINT		2				0		0b00000	0
+	mq_sys_conf		80		flags				flags			SMALLINT		2				0		0b00000	0
+	mq_sys_conf		95		runnum_max			允许执行次数		SMALLINT		2				0		0b00000	0
+	//间隔时间:当某次执行失败后,并还有剩余次数,会将当前时间+间隔时间更新到可执行时间
+	mq_sys_conf		100		intvalseconds		间隔X秒			INTEGER			10				0		0b00000	null
+	mq_sys_conf		110   	prefix  			内码前缀   			VARCHAR			32				0		0b00000 null	
+	mq_sys_conf		120		ccode				对应企业	  		VARCHAR     	SZCCODE			0		0b00000 null
+	mq_sys_conf		130		busiarea			业务区域	  		VARCHAR     	SZCCODE			0		0b00000 null
+	//AES
+	mq_sys_conf		200   	secretkeyspec  		加密方式 			VARCHAR			32				0		0b00000 null	
+	mq_sys_conf		202   	secretkey  			秘钥 				VARCHAR			256				0		0b00000 null
+	mq_sys_conf		203   	secretiv  			位移码			VARCHAR			256				0		0b00000 null
+	mq_sys_conf		204   	secretmsgformat 	加密报文格式		VARCHAR			256				0		0b00000 null
+	mq_sys_conf		205   	secretcharset 		报文编码格式		VARCHAR			32				0		0b00000 null
+	//令牌相关
+	mq_sys_conf		210		tokenserv  			令牌回调方法	   	VARCHAR			512				0		0b00000 null	
+
+	//TODO 秘钥文件路径，用于交互的认证
+	mq_sys_conf		230		remark  			说明描述	   		VARCHAR			512				0		0b00000 null	
+	mq_sys_conf		240		vprepare			制单人			VARCHAR			SZWCODE			0		0b00000	null
+	mq_sys_conf		250		vpreparename		制单人名称			VARCHAR			256				0		0b00000	null
+	mq_sys_conf		260		predate         	制单日期        		DATE        	8   			0   	0b00000 null
+	mq_sys_conf		270		modifier        	修改人          			VARCHAR     	SZWCODE     	0     	0b00000 null
+	mq_sys_conf		280		modifydate  		最近修改日期  		DATE        	8   			0   	0b00000 null
+	
+	mq_sys_conf		290		ftpaddr  			FTP地址	   		VARCHAR			512				0		0b00000 null
+	mq_sys_conf		300		dirpath  			FTP目录	   		VARCHAR			256				0		0b00000 null
+
+
+//350701	mq_conn_conf  		交互执行方式				SNSYSDATA_TBS	1	CONFIG	CONFIG 
+//说明 ： 程序的执行方式  
+//1010 执行本地的JAVA代码    2010 HTTP POST 2020 HTTP GET  3010  WEBSERVICE调用   
+	mq_conn_conf		10   	conncode  			交互执行方式   		VARCHAR			MQCONNCODE		0		0b00011 null
+	mq_conn_conf		20   	connname  			交互执行名称   		VARCHAR			64				0		0b00010 null
+	// 1 为启用
+	mq_conn_conf		70		startflags			启用				SMALLINT		2				0		0b00000	0
+	mq_conn_conf		80		flags				flags			SMALLINT		2				0		0b00000	0
+	mq_conn_conf		230		remark  			说明描述	   		VARCHAR			512				0		0b00000 null	
+	mq_conn_conf		240		vprepare			制单人			VARCHAR			SZWCODE			0		0b00000	null
+	mq_conn_conf		250		vpreparename		制单人名称			VARCHAR			256				0		0b00000	null
+	mq_conn_conf		260		predate         	制单日期        		DATE        	8   			0   	0b00000 null
+	mq_conn_conf		270		modifier        	修改人          			VARCHAR     	SZWCODE     	0     	0b00000 null
+	mq_conn_conf		280		modifydate  		最近修改日期  		DATE        	8   			0   	0b00000 null
+
+//350703	mq_proj_type		工程类型定义	       		SNSYSDATA_TBS	1	CONFIG	CONFIG 
+//通过  . 组织成树形
+//说明  ： 定义为某种工作，系统名称.模块.操作  如     ICIP.清单.传输
+	mq_proj_type		10   	projtype  			工程类型编号   		VARCHAR			MQPROJTYPE		0		0b00011 null
+	mq_proj_type		20   	projname  			工程类型名称   		VARCHAR			64				0		0b00010 null
+	mq_proj_type		30		ord  				序号	   			VARCHAR			64				0		0b00000	null
+	//1 为启用
+	mq_proj_type		70		startflags			启用				SMALLINT		2				0		0b00000	0
+	mq_proj_type		80		flags				flags			SMALLINT		2				0		0b00000	0
+	mq_proj_type		110		startsys  			发起方	   		VARCHAR			8				0		0b00000 null	
+	mq_proj_type		120		endsys  			接收方	   		VARCHAR			8				0		0b00000 null	
+	mq_proj_type		230		remark  			说明描述	   		VARCHAR			1024			0		0b00000 null	
+	mq_proj_type		235		infostr  			功能描述	   		VARCHAR			1024			0		0b00000 null	
+	mq_proj_type		240		vprepare			制单人			VARCHAR			SZWCODE			0		0b00000	null
+	mq_proj_type		250		vpreparename		制单人名称			VARCHAR			256				0		0b00000	null
+	mq_proj_type		260		predate         	制单日期        		DATE        	8   			0   	0b00000 null
+	mq_proj_type		270		modifier        	修改人          			VARCHAR     	SZWCODE     	0     	0b00000 null
+	mq_proj_type		280		modifydate  		最近修改日期  		DATE        	8   			0   	0b00000 null
+	mq_proj_type		290		busitype			业务类型			VARCHAR			SZDICTCODE		0		0b00000	null
+	
+//350705	mq_serv_exc			异常编码定义	       		SNSYSDATA_TBS	1	CONFIG	CONFIG
+	//现有分类:"网络异常","数据库异常","程序运行异常","其他异常","执行条件异常"
+	mq_serv_exc		10   	exccode  			异常编号   			VARCHAR			MQEXCCODE		0		0b00011 null
+	mq_serv_exc		30		javaclass			JAVA类型			VARCHAR			128				0		0b00010 null
+	mq_serv_exc		40		exctype				异常类型			VARCHAR			MQEXCCODE		0		0b00000 null
+	mq_serv_exc		50		intvalseconds		推迟时间(秒)		INTEGER			10				0		0b00000	null
+	// 1 为启用
+	mq_serv_exc		70		startflags			启用				SMALLINT		2				0		0b00000	0
+	mq_serv_exc		80		flags				flags			SMALLINT		2				0		0b00000	0
+	mq_serv_exc		230		remark  			说明描述	   		VARCHAR			2048			0		0b00000 null	
+	mq_serv_exc		240		vprepare			制单人			VARCHAR			SZWCODE			0		0b00000	null
+	mq_serv_exc		250		vpreparename		制单人名称			VARCHAR			256				0		0b00000	null
+	mq_serv_exc		260		predate         	制单日期        		DATE        	8   			0   	0b00000 null
+	mq_serv_exc		270		modifier        	修改人          			VARCHAR     	SZWCODE     	0     	0b00000 null
+	mq_serv_exc		280		modifydate  		最近修改日期  		DATE        	8   			0   	0b00000 null
+
+//350706	mq_sys_conn 			系统间交互定义			SNSYSDATA_TBS	1	CONFIG	CONFIG
+//说明 ： 功能 1 用于定时服务扫描FTP文件目录，获取文件报文，生成工程
+//{服务器路径宏1}/业务编号/in/文件     服务器路径宏1  ftp://192.168.1.1:78/{数据中心编号}/{交互系统}
+//{服务器路径宏1}/业务编号/out/文件
+//服务路径宏 config中变量格式 MQSERVICE_ + 服务路径宏字典编号 = ftp://192.168.1.1:78/{数据中心编号}/{交互系统}
+	mq_sys_conn		10   	id  				ID   			VARCHAR			SZIBILL			0		0b00011 null
+	mq_sys_conn		20   	syscode  			当前系统  			VARCHAR			MQSYSCODE		0		0b00010 null
+	mq_sys_conn		30   	syscode_mutual  	交互系统  			VARCHAR			MQSYSCODE		0		0b00010 null
+	mq_sys_conn		35   	conntype  			交互方式   			VARCHAR			MQCONNCODE		0		0b00000 null
+	mq_sys_conn		40   	projtype  			工程类型编号   		VARCHAR			MQPROJTYPE		0		0b00010 null
+	//增加字典      request  	请求方   response  	响应方
+	mq_sys_conn		50   	inouttype  			请求/响应   			VARCHAR			2				0		0b00000 null		
+	//为空时取当前系统上的定义 
+	mq_sys_conn		60   	fsmacro  			文件服务器地址宏   	VARCHAR			64				0		0b00000 null	
+	//为空时取文件服务器地址
+	mq_sys_conn		65   	bfsmacro  			备份文件服务器地址宏   	VARCHAR			64				0		0b00000 null
+	// 1 为启用
+	mq_sys_conn		70		startflags			启用				SMALLINT		2				0		0b00000	0
+	// 1 为需要扫描
+	mq_sys_conn		75		scanflags			需扫描			SMALLINT		2				0		0b00000	0
+	mq_sys_conn		80   	projcode  			工程模板编号   		VARCHAR			MQPROJCODE		0		0b00000 null	
+	mq_sys_conn		90		ord  				序号	   			VARCHAR			64				0		0b00000	null
+	//1 是否需要创建文件夹  2 是否为密文   4 是否为压缩    8 是否需要备份报文   16 永久降级
+	mq_sys_conn		220		flags				flags			SMALLINT		2				0		0b00000	0
+	mq_sys_conn		230		remark  			说明描述	   		VARCHAR			512				0		0b00000 null	
+	mq_sys_conn		240		vprepare			制单人			VARCHAR			SZWCODE			0		0b00000	null
+	mq_sys_conn		250		vpreparename		制单人名称			VARCHAR			256				0		0b00000	null
+	mq_sys_conn		260		predate         	制单日期        		DATE        	8   			0   	0b00000 null
+	mq_sys_conn		270		modifier        	修改人          			VARCHAR     	SZWCODE     	0     	0b00000 null
+	mq_sys_conn		280		modifydate  		最近修改日期  		DATE        	8   			0   	0b00000 null
+	mq_sys_conn		290		fileprefix			文件名称前缀		VARCHAR			256				0		0b00000	null
+	mq_sys_conn		300		custfilepath		自定义文件夹		VARCHAR			256				0		0b00000	null
+	mq_sys_conn		310   	dsid  				DSID   			VARCHAR			16				0		0b00000 null
+//2014-12-10   余皝增加   文件校验方式  暂支持MD5校验  10:MD5
+	mq_sys_conn		320   	filecheckmode  		文件校验方式 		VARCHAR			SZDICTCODE		0		0b00000 null
+//2015-05-25   宋建中增加   0  时间升序  1  时间降序
+	mq_sys_conn		330   	sortmode  			报文排序方式 		SMALLINT		2				0		0b00000 0
+//2015-11-3   宋建中增加    报文扫描的分线程数  
+	mq_sys_conn		340   	threadcount  		线程数			SMALLINT		2				0		0b00000 0
+	mq_sys_conn		345   	threadfilecount  	单线程报文数		SMALLINT		2				0		0b00000 0
+//2016-2-2   宋建中增加    文件夹路径定义
+	mq_sys_conn		350		dirpath				文件夹路径定义		VARCHAR			256				0		0b00000	null
+	mq_sys_conn		360		xsdpath				XSD路径定义		VARCHAR			256				0		0b00000	null
+
+	
+//350707	mq_ftpadr_conf 				FTP地址定义			SNSYSDATA_TBS	1	CONFIG	CONFIG
+	mq_ftpadr_conf		10   	fsmacro  			FTP地址宏   	VARCHAR			16				0		0b00011 null	
+	mq_ftpadr_conf		20   	ftpadrdesc  		FTP地址描述  	VARCHAR			512				0		0b00010 null
+	mq_ftpadr_conf		30   	ftpadrname  		FTP地址说明   	VARCHAR			64				0		0b00010 null
+	mq_ftpadr_conf		240		vprepare			制单人		VARCHAR			SZWCODE			0		0b00000	null
+	mq_ftpadr_conf		250		vpreparename		制单人名称		VARCHAR			256				0		0b00000	null
+	mq_ftpadr_conf		260		predate         	制单日期        	DATE        	8   			0   	0b00000 null
+	mq_ftpadr_conf		270		modifier        	修改人          		VARCHAR     	SZWCODE     	0     	0b00000 null
+	mq_ftpadr_conf		280		modifydate  		最近修改日期  	DATE        	8   			0   	0b00000 null
+
+
+//    350708	mq_stress_conf 				压力测试定义			SNSYSDATA_TBS	1	MQDATA	MQDATA
+	mq_stress_conf		10   	id  				ID   		VARCHAR			SZIBILL			0		0b00011 null
+	mq_stress_conf		20   	name  				名称 			VARCHAR			512				0		0b00000 null
+	mq_stress_conf		30		minthread			最小线程数		SMALLINT		2				0		0b00000	0	
+	mq_stress_conf		40		maxthread			最大线程数		SMALLINT		2				0		0b00000	0
+	mq_stress_conf		50   	runclass  			运行程序   		VARCHAR			1024			0		0b00000 null
+	mq_stress_conf		60		runtime				执行次数		SMALLINT		2				0		0b00000	0
+	mq_stress_conf		220		flags				flags		SMALLINT		2				0		0b00000	0
+	mq_stress_conf		230		remark  			说明描述	   	VARCHAR			1024			0		0b00000 null	
+	mq_stress_conf		240		vprepare			制单人		VARCHAR			SZWCODE			0		0b00000	null
+	mq_stress_conf		250		vpreparename		制单人名称		VARCHAR			256				0		0b00000	null
+	mq_stress_conf		260		predate         	制单日期        	DATE        	8   			0   	0b00000 null
+	mq_stress_conf		270		modifier        	修改人          		VARCHAR     	SZWCODE     	0     	0b00000 null
+	mq_stress_conf		280		modifydate  		最近修改日期  	DATE        	8   			0   	0b00000 null
+
+//    350709	mq_pack_conf 				报文打包定义			SNSYSDATA_TBS	1	CONFIG	CONFIG
+	mq_pack_conf		10   	packid  			PACKID   		VARCHAR			SZIBILL			0		0b00011 null
+	mq_pack_conf		15   	syscode  			当前系统  			VARCHAR			MQSYSCODE		0		0b00000 null
+	//为空时取当前系统上的定义 
+	mq_pack_conf		20   	fsmacro_src  		源文件服务器地址宏   	VARCHAR			64				0		0b00000 null	
+	mq_pack_conf		25		filepath_src		源文件夹路径定义		VARCHAR			256				0		0b00000	null
+	mq_pack_conf		30   	fsmacro  			目标文件服务器地址宏   	VARCHAR			64				0		0b00000 null	
+	mq_pack_conf		35		filepath			目标文件夹路径定义	VARCHAR			256				0		0b00000	null
+	mq_pack_conf		38		temppath			中转文件夹路径定义	VARCHAR			256				0		0b00000	null
+	// 1 为启用
+	mq_pack_conf		40		startflags			启用				SMALLINT		2				0		0b00000	0
+	//10 压缩打包 20 解压缩包
+	mq_pack_conf		50		packtype			打包方式			VARCHAR			2				0		0b00000	null
+	//mq_pack_conf		60   	sortmode  			报文排序方式 		SMALLINT		2				0		0b00000 0
+	//mq_pack_conf		70		ord  				序号	   			VARCHAR			64				0		0b00000	null
+	mq_pack_conf		235		remark  			说明描述	   		VARCHAR			512				0		0b00000 null	
+	mq_pack_conf		240		vprepare			制单人			VARCHAR			SZWCODE			0		0b00000	null
+	mq_pack_conf		250		vpreparename		制单人名称			VARCHAR			256				0		0b00000	null
+	mq_pack_conf		260		predate         	制单日期        		DATE        	8   			0   	0b00000 null
+	mq_pack_conf		270		modifier        	修改人          			VARCHAR     	SZWCODE     	0     	0b00000 null
+	mq_pack_conf		280		modifydate  		最近修改日期  		DATE        	8   			0   	0b00000 null
+
+
+//350710	mq_proj_temp  		工程模板定义				SNSYSDATA_TBS	1	CONFIG	CONFIG
+//说明  ：projcode  定义为某种工作，系统名称.模块.操作.序号  如     ICIP.清单.传输.XX  即  projtype.XX
+//id内码仅用于关联数据，代码中并不使用
+	mq_proj_temp		10   	pid  				PID   			VARCHAR			SZIBILL			0		0b00011 null
+	mq_proj_temp		20   	projcode  			工程编号   			VARCHAR			MQPROJCODE		0		0b00010 null
+	mq_proj_temp		30   	projname  			工程名称   			VARCHAR			64				0		0b00010 null
+	mq_proj_temp		40   	projtype  			工程类型编号   		VARCHAR			MQPROJTYPE		0		0b00000 null
+//1 开启工程类型日志   2 
+	mq_proj_temp		50		logflag				开启工程日志		SMALLINT		2				0		0b00000	0
+	mq_proj_temp		60   	conntype  			交互方式   			VARCHAR			MQCONNCODE		0		0b00000 null
+	mq_proj_temp		65   	inouttype  			请求/响应   			VARCHAR			2				0		0b00000 null		
+	mq_proj_temp		70		stepnum_max			总步骤			SMALLINT		2				0		0b00000	0
+	// 1 为启用
+	mq_proj_temp		75		startflags			启用				SMALLINT		2				0		0b00000	0
+	mq_proj_temp		80		flags				flags			SMALLINT		2				0		0b00000	0
+	//间隔时间:当某次执行失败后,并还有剩余次数,会将当前时间+间隔时间更新到可执行时间
+	mq_proj_temp		140		intvalseconds		间隔时间(秒)		INTEGER			10				0		0b00000	null
+	mq_proj_temp		230		remark  			说明描述	   		VARCHAR			512				0		0b00000 null	
+	mq_proj_temp		240		vprepare			制单人			VARCHAR			SZWCODE			0		0b00000	null
+	mq_proj_temp		250		vpreparename		制单人名称			VARCHAR			256				0		0b00000	null
+	mq_proj_temp		260		predate         	制单日期        		DATE        	8   			0   	0b00000 null
+	mq_proj_temp		270		modifier        	修改人          			VARCHAR     	SZWCODE     	0     	0b00000 null
+	mq_proj_temp		280		modifydate  		最近修改日期  		DATE        	8   			0   	0b00000 null
+	mq_proj_temp		290		belongsys			归属接入系统		VARCHAR			64				0		0b00000	null
+	
+//350711	mq_proj_temp_param  工程模板参数				SNSYSDATA_TBS	1	CONFIG	CONFIG 
+	mq_proj_temp_param	10   	pid  				PID    			VARCHAR			SZIBILL			0		0b00011 null
+	mq_proj_temp_param	20   	paramname  			参数名   			VARCHAR			64				0		0b00011 null
+//增加字典选择
+	mq_proj_temp_param	30   	paramfield			存储字段名  			VARCHAR			32				0		0b00010 null
+	mq_proj_temp_param	40   	projcode  			工程编号   			VARCHAR			MQPROJCODE		0		0b00010 null
+	mq_proj_temp_param	50   	paramvalue  		参数值   			VARCHAR			512				0		0b00000 null
+	mq_proj_temp_param	60		flags				flags			SMALLINT		2				0		0b00000	0
+	mq_proj_temp_param	80		idx					序号				SMALLINT		2				0		0b00000	null
+	mq_proj_temp_param	230		remark  			说明描述	   		VARCHAR			512				0		0b00000 null	
+
+//350712	mq_task_temp  		任务模板定义				SNSYSDATA_TBS	1	CONFIG	CONFIG	
+	mq_task_temp		10   	ptid  				PTID   			VARCHAR			SZIBILL			0		0b00011 null
+	mq_task_temp		20   	pid  				PID   			VARCHAR			SZIBILL			0		0b00010 null
+	mq_task_temp		30   	projcode  			工程编号   			VARCHAR			MQPROJCODE		0		0b00010 null
+	mq_task_temp		40   	taskcode			任务编号  			VARCHAR			MQTASKCODE		0		0b00010 null
+	mq_task_temp		50   	taskname  			任务名称   			VARCHAR			64				0		0b00000 null
+	//增加字典      request  	请求方   response  	响应方
+	mq_task_temp		60   	inputname  			输入方   			VARCHAR			2				0		0b00000 null
+	mq_task_temp		65   	inputservid  		输入服务配置ID   	VARCHAR			MQSERVID		0		0b00000 null	
+	mq_task_temp		70   	outputname  		输出方   			VARCHAR			2				0		0b00000 null			
+	mq_task_temp		75   	outputservid  		输出服务配置ID   	VARCHAR			MQSERVID		0		0b00000 null
+	mq_task_temp		80   	returnname  		回调方    			VARCHAR			2				0		0b00000 null			
+	mq_task_temp		85   	returnservid  		回调服务配置ID   	VARCHAR			MQSERVID		0		0b00000 null			
+	//序号:用于排序,当一个工程下有多个任务的时候,可能需要按先后顺序依次执行
+	mq_task_temp		90		stepnum				步骤				SMALLINT		2				0		0b00010	null
+	mq_task_temp		95		runnum_max			允许执行次数		SMALLINT		2				0		0b00000	0
+	mq_task_temp		130		tac 				TAC				LONGVARCHAR		0	        	0		0b00000 null
+
+//350713	mq_task_temp_param  	任务模板参数				SNSYSDATA_TBS	1	CONFIG	CONFIG 
+	mq_task_temp_param	10   	ptid  				PTID   			VARCHAR			SZIBILL			0		0b00011 null
+	mq_task_temp_param	20   	paramname  			参数名   			VARCHAR			64				0		0b00011 null
+	mq_task_temp_param	30   	paramfield			存储字段名  			VARCHAR			32				0		0b00010 null
+	mq_task_temp_param	35   	pid  				PID   			VARCHAR			SZIBILL			0		0b00010 null
+	mq_task_temp_param	40   	taskcode  			任务编号  			VARCHAR			MQTASKCODE		0		0b00010 null
+	mq_task_temp_param	45   	projcode  			工程编号   			VARCHAR			MQPROJCODE		0		0b00010 null
+	mq_task_temp_param	50   	paramvalue  		参数值   			VARCHAR			512				0		0b00000 null
+	mq_task_temp_param	60		flags				flags			SMALLINT		2				0		0b00000	0
+	mq_task_temp_param	80		idx					序号				SMALLINT		2				0		0b00000	null
+	mq_task_temp_param	230		remark  			说明描述	   		VARCHAR			512				0		0b00000 null
+
+
+//****************服务执行引擎相关 - 起始****************
+//350720	mq_serv_type  				服务类型定义			SNSYSDATA_TBS	1	CONFIG	CONFIG
+	mq_serv_type		10   	stcode  			服务类型编号   		VARCHAR			MQSTCODE	0		0b00011 null
+	mq_serv_type		15		stname  			服务类型名称	   	VARCHAR			128			0		0b00000 null	
+	mq_serv_type		90		startflags			启用				SMALLINT		2			0		0b00000	0
+	mq_serv_type		110		modifier        	修改人          			VARCHAR     	SZWCODE     0     	0b00000 null
+	mq_serv_type		120		modifydate  		最近修改日期  		DATE        	8   		0   	0b00000 null
+	mq_serv_type		230		remark  			说明描述	   		VARCHAR			512			0		0b00000 null	
+
+//350721	mq_serv_model  				服务模型定义			SNSYSDATA_TBS	1	CONFIG	CONFIG
+	mq_serv_model		10   	msmid  				服务模型定义ID   	VARCHAR			SZIBILL			0		0b00011 null
+//msmcode 唯一
+	mq_serv_model		15		msmcode				服务模型编号  		VARCHAR     	SZNBILL 		0		0b00010 null
+	mq_serv_model		20		msmname				服务模型名称  		VARCHAR     	SZNBILL 		0		0b00010 null
+	mq_serv_model		30   	stcode  			服务类型编号    		VARCHAR			MQSTCODE		0		0b00000 null
+
+	mq_serv_model		35		flags				FLAGS			SMALLINT		2				0		0b00000	0
+//10 处理      20 路由
+	mq_serv_model		38		msmtype          	执行方式     			VARCHAR     	2				0   	0b00000 null 
+
+	mq_serv_model		45		sheetcode   		单据类型        		VARCHAR     	SZSHEET 		0   	0b00000 null
+//10 制单   70 生效
+	mq_serv_model		50		status          	状态      			VARCHAR     	SZSTATUS		0   	0b00000 null 
+//组织参数，实现服务调用
+	mq_serv_model		60		runclass       		监听类			VARCHAR     	512 			0   	0b00000 null 	 
+	mq_serv_model		70		dsid       			数据源			VARCHAR     	64 				0   	0b00000 null 	 
+
+	mq_serv_model		205		wcode				人员码            		VARCHAR			SZWCODE   		0     	0b00000 null 	wcode
+	mq_serv_model		210		bcode       		业务组织     			VARCHAR     	SZBCODE 		0   	0b00000 null 	bcode 
+	mq_serv_model		215		bpath       		业务组织路径		VARCHAR     	SZBPATH 		0   	0b00000 null 	 
+
+	mq_serv_model		230		remark  			备注	   			VARCHAR			512				0		0b00000 null	
+	mq_serv_model		240		vprepare			制单人			VARCHAR			SZWCODE			0		0b00000	null
+	mq_serv_model		250		vpreparename		制单人名称			VARCHAR			256				0		0b00000	null
+	mq_serv_model		260		predate         	制单日期        		DATE        	8   			0   	0b00000 null
+	mq_serv_model		270		modifier        	修改人          			VARCHAR     	SZWCODE     	0     	0b00000 null
+	mq_serv_model		280		modifydate  		最近修改日期  		DATE        	8   			0   	0b00000 null
+
+
+//350722	mq_serv_model_impl  		服务模型实现定义			SNSYSDATA_TBS	1	CONFIG	CONFIG    
+	mq_serv_model_impl	10   	msmiid  			服务模型实现ID   	VARCHAR			SZIBILL			0		0b00011 null
+//主表关联ID  msmcode + servid 唯一
+	mq_serv_model_impl	15		msmcode				服务模型编号  		VARCHAR     	SZNBILL 		0		0b00010 null
+	mq_serv_model_impl	40		servid				服务ID  			VARCHAR     	512 			0		0b00010 null
+	mq_serv_model_impl	45		methodname			方法名  			VARCHAR     	128 			0		0b00000 null
+	mq_serv_model_impl	50		ord					序号				VARCHAR			16				0		0b00000	null
+	mq_serv_model_impl	60		flags				FLAGS			SMALLINT		2				0		0b00000	0
+	mq_serv_model_impl	70		startflags			启用				SMALLINT		2				0		0b00000	0
+	mq_serv_model_impl	230		remark  			备注	   			VARCHAR			512				0		0b00000 null	
+
+//350723	mq_serv_model_param  		服务模型参数定义			SNSYSDATA_TBS	1	CONFIG	CONFIG  
+	mq_serv_model_param	10   	msmpid  			服务模型参数ID   	VARCHAR			SZIBILL			0		0b00011 null
+//主表关联ID  msmcode + paramname 唯一
+	mq_serv_model_param	15		msmcode				服务模型编号  		VARCHAR     	SZNBILL 		0		0b00010 null
+	mq_serv_model_param	20   	paramname  			参数名   			VARCHAR			128				0		0b00010 null
+	mq_serv_model_param	50   	paramvalue  		参数值   			VARCHAR			1024			0		0b00000 null
+//1 非空
+	mq_serv_model_param	60		flags				flags			SMALLINT		2				0		0b00000	0
+	mq_serv_model_param	230		remark  			说明描述	   		VARCHAR			512				0		0b00000 null
+
+//350726	mq_serv_engine  			服务引擎定义			SNMQDATA_TBS	1	MQDATA	MQDATA
+	mq_serv_engine		10   	mseid  				服务引擎ID   		VARCHAR			SZIBILL			0		0b00011 null
+	mq_serv_engine		11   	msecode  			服务引擎编号   		VARCHAR			SZNBILL			0		0b00010 null
+	mq_serv_engine		20		msename				服务引擎名称  		VARCHAR     	SZNBILL 		0		0b00010 null
+	mq_serv_engine		30   	stcode  			服务类型编号    		VARCHAR			MQSTCODE		0		0b00000 null
+	mq_serv_engine		40		sheetcode   		单据类型        		VARCHAR     	SZSHEET 		0   	0b00000 null
+	mq_serv_engine		50		status          	状态      			VARCHAR     	SZSTATUS		0   	0b00000 null 
+ 
+	mq_serv_engine		205		wcode				人员码            		VARCHAR			SZWCODE   		0     	0b00000 null 	wcode
+	mq_serv_engine		210		bcode       		业务组织     			VARCHAR     	SZBCODE 		0   	0b00000 null 	bcode 
+	mq_serv_engine		215		bpath       		业务组织路径		VARCHAR     	SZBPATH 		0   	0b00000 null 	 
+
+	mq_serv_engine		230		remark  			备注	   			VARCHAR			512				0		0b00000 null	
+	mq_serv_engine		240		vprepare			制单人			VARCHAR			SZWCODE			0		0b00000	null
+	mq_serv_engine		250		vpreparename		制单人名称			VARCHAR			256				0		0b00000	null
+	mq_serv_engine		260		predate         	制单日期        		DATE        	8   			0   	0b00000 null
+	mq_serv_engine		270		modifier        	修改人          			VARCHAR     	SZWCODE     	0     	0b00000 null
+	mq_serv_engine		280		modifydate  		最近修改日期  		DATE        	8   			0   	0b00000 null
+	//name|left|top|width|height|color;...
+	mq_serv_engine 		290		guiattr				图形化属性			VARCHAR			512				0		0b00000	null
+
+//350727	mq_serv_engine_node  		服务引擎节点			SNMQDATA_TBS	1	MQDATA	MQDATA
+	mq_serv_engine_node		10   	msenid  			服务引擎节点ID   	VARCHAR			SZIBILL			0		0b00011 null
+	mq_serv_engine_node		11   	msecode  			服务引擎编号   		VARCHAR			SZNBILL			0		0b00010 null
+	mq_serv_engine_node		20		msmcode				服务模型编号  		VARCHAR     	SZNBILL 		0		0b00010 null
+//1 起点    2 终点   4  事物  
+	mq_serv_engine_node		35		flags				FLAGS			SMALLINT		2				0		0b00000	0
+	//left|top|width|height|type
+	mq_serv_engine_node 	40		guiattr				图形化属性			VARCHAR			128				0		0b00000	null
+
+//350728	mq_serv_engine_node_impl  	服务引擎节点实现			SNMQDATA_TBS	1	MQDATA	MQDATA
+	mq_serv_engine_node_impl	10   	mseniid  			服务引擎节点实现ID   	VARCHAR			SZIBILL			0		0b00011 null
+	mq_serv_engine_node_impl	11		msmcode				服务模型编号  		VARCHAR     	SZNBILL 		0		0b00010 null
+	mq_serv_engine_node_impl	12   	msecode  			服务引擎编号   		VARCHAR			SZNBILL			0		0b00010 null
+	mq_serv_engine_node_impl	40		servid				服务ID  			VARCHAR     	512 			0		0b00010 null
+	mq_serv_engine_node_impl	45		methodname			方法名  			VARCHAR     	128 			0		0b00000 null
+	mq_serv_engine_node_impl	50		ord					序号				VARCHAR			16				0		0b00000	null
+
+
+//350729	mq_serv_engine_line  		服务引擎线路			SNMQDATA_TBS	1	MQDATA	MQDATA
+	mq_serv_engine_line		10   	mselid  			服务引擎线路ID   	VARCHAR			SZIBILL			0		0b00011 null
+	mq_serv_engine_line		11   	msecode  			服务引擎编号   		VARCHAR     	SZNBILL			0		0b00010 null
+	mq_serv_engine_line		20		msmcode				起始服务模型  		VARCHAR     	SZNBILL 		0		0b00010 null
+	mq_serv_engine_line		30		msmcode_to			终止服务模型 		VARCHAR     	SZNBILL 		0		0b00010 null
+	mq_serv_engine_line		40		groupnum			分组 				VARCHAR     	2 				0		0b00000 null
+
+//1 虚拟线路  非自动执行需客户端或第三方服务调用
+	mq_serv_engine_line		60		flags				flags			SMALLINT		2				0		0b00000	0
+	mq_serv_engine_line		70		ord					序号				VARCHAR			16				0		0b00000	null
+	mq_serv_engine_line		80		guiattr				图形化属性			VARCHAR			128				0		0b00000	null
+
+
+//350731	mq_serv  					服务执行表				SNMQDATA_TBS	0	MQDATA	MQDATA
+	mq_serv		10   	msicode  			服务执行ID   	VARCHAR			SZIBILL			0		0b00011 null
+	mq_serv		11   	msecode  			服务引擎编号   	VARCHAR			SZNBILL			0		0b00010 null
+	mq_serv		30   	stcode  			服务类型编号    	VARCHAR			MQSTCODE		0		0b00000 null
+	mq_serv		50		status          	状态      		VARCHAR     	SZSTATUS		0   	0b00010 null 
+	mq_serv		80		startdate			开始时间		DATE			8	        	0		0b00000	null
+	mq_serv		90		enddate				结束时间		DATE			8	        	0		0b00000	null
+	mq_serv   	95		exctime				运行时长		BIGINT			0				0		0b00000	null
+	mq_serv		100		allowtime			允许启动时间	DATE			8	        	0		0b00000	null
+ 	mq_serv		240   	innercode  			数据主键   		VARCHAR			256				0		0b00000 null
+	mq_serv		250		outercode			单据外码   		VARCHAR			256				0		0b00000 null
+	mq_serv		260		sheetcode   		单据类型        	VARCHAR     	SZSHEET 		0   	0b00000 null
+	mq_serv		270		modifier        	修改人          		VARCHAR     	SZWCODE     	0     	0b00000 null
+	mq_serv		280		modifydate  		最近修改日期  	DATE        	8   			0   	0b00000 null
+	
+
+//350732	mq_serv_node  				服务执行节点			SNMQDATA_TBS	0	MQDATA	MQDATA
+	mq_serv_node		10   	msnicode  		服务执行节点ID  VARCHAR			SZIBILL			0		0b00011 null
+	mq_serv_node		11   	msicode  		服务执行ID   	VARCHAR			SZIBILL			0		0b00010 null
+	mq_serv_node		20   	msecode  		服务引擎编号   	VARCHAR			SZNBILL			0		0b00010 null
+	mq_serv_node		22		msmcode			服务模型编号  	VARCHAR     	SZNBILL 		0		0b00010 null
+	mq_serv_node		50		status          状态      		VARCHAR     	SZSTATUS		0   	0b00010 null 
+	mq_serv_node		80		startdate		开始时间		DATE			8	        	0		0b00000	null
+	mq_serv_node		90		enddate			结束时间		DATE			8	        	0		0b00000	null
+	mq_serv_node		92		executedate		本次开始时间	DATE			8	        	0		0b00000	null
+	mq_serv_node   		95		exctime			运行时长		BIGINT			0				0		0b00000	null
+	mq_serv_node		530		runnum			已执行次数		SMALLINT		2				0		0b00000	0	
+	mq_serv_node		540		snid			执行服务器   		VARCHAR			64				0		0b00000 null
+ 	mq_serv_node		610		endflag			完结标识		SMALLINT		2				0		0b00000	0
+
+
+//350733	mq_serv_node_impl  			服务执行节点实现			SNMQDATA_TBS	0	MQDATA	MQDATA
+	mq_serv_node_impl		10   	msniicode  		服务执行节点实现ID	VARCHAR			SZIBILL			0		0b00011 null
+	mq_serv_node_impl		11   	msnicode  		服务执行节点ID  	VARCHAR			SZIBILL			0		0b00010 null
+	mq_serv_node_impl		12   	msicode  		服务执行ID   		VARCHAR			SZIBILL			0		0b00010 null
+	mq_serv_node_impl		20   	msecode  		服务引擎编号   		VARCHAR			SZNBILL			0		0b00010 null
+	mq_serv_node_impl		22		msmcode			服务模型编号  		VARCHAR     	SZNBILL 		0		0b00010 null
+	mq_serv_node_impl		40		servid			服务ID  			VARCHAR     	512 			0		0b00010 null
+	mq_serv_node_impl		45		methodname		方法名  			VARCHAR     	128 			0		0b00000 null
+	mq_serv_node_impl		50		status          状态      			VARCHAR     	SZSTATUS		0   	0b00010 null 
+	mq_serv_node_impl		80		startdate		开始时间			DATE			8	        	0		0b00000	null
+	mq_serv_node_impl		90		enddate			结束时间			DATE			8	        	0		0b00000	null
+	mq_serv_node_impl   	95		exctime			运行时长			BIGINT			0				0		0b00000	null
+	mq_serv_node_impl		540		ord				序号				VARCHAR			16				0		0b00000	null
+
+//350734	mq_serv_node_param  		服务执行节点参数			SNMQDATA_TBS	0	MQDATA	MQDATA
+	mq_serv_node_param		10   	msnpicode  		服务执行节点参数ID	VARCHAR			SZIBILL			0		0b00011 null
+	mq_serv_node_param		11   	msnicode  		服务执行节点ID  	VARCHAR			SZIBILL			0		0b00010 null
+	mq_serv_node_param		12   	msicode  		服务执行ID   		VARCHAR			SZIBILL			0		0b00010 null
+	mq_serv_node_param		20   	msecode  		服务引擎编号   		VARCHAR			SZNBILL			0		0b00010 null
+	mq_serv_node_param		22		msmcode			服务模型编号  		VARCHAR     	SZNBILL 		0		0b00010 null
+	mq_serv_node_param		40   	paramname  		参数名   			VARCHAR			128				0		0b00010 null
+	mq_serv_node_param		50   	paramvalue  	参数值   			CLOB			0				0		0b00000 null
+	mq_serv_node_param		60		createdate		创建时间			DATE			8	        	0		0b00000	null
+
+//350735	mq_serv_node_log   			服务执行节点日志			SNMQDATA_TBS	0	MQDATA	MQDATA
+	mq_serv_node_log		10   	id  			ID  		VARCHAR			SZIBILL			0		0b00011 null
+	mq_serv_node_log		12   	msnicode  		服务执行节点ID  VARCHAR			SZIBILL			0		0b00000 null
+	mq_serv_node_log		15   	msicode  		服务执行ID   	VARCHAR			SZIBILL			0		0b00000 null
+	mq_serv_node_log		20   	msecode  		服务引擎编号   	VARCHAR			SZNBILL			0		0b00000 null
+	mq_serv_node_log		22		msmcode			服务模型编号  	VARCHAR     	SZNBILL 		0		0b00000 null
+	mq_serv_node_log		40		servid			服务ID  		VARCHAR     	512 			0		0b00000 null
+	mq_serv_node_log		45		methodname		方法名  		VARCHAR     	128 			0		0b00000 null
+	mq_serv_node_log		120		excdesc			异常描述		CLOB			0	        	0		0b00000 null 
+ 	mq_serv_node_log		240   	innercode  		数据主键   		VARCHAR			256				0		0b00000 null
+	mq_serv_node_log		265		outercode		单据外码   		VARCHAR			256				0		0b00000 null
+	mq_serv_node_log		270		createdate		创建时间			DATE			8	        	0		0b00000	null
+
+//350740	mq_serv_group  				服务引擎组				SNSYSDATA_TBS	1	CONFIG	CONFIG
+	mq_serv_group		10   	msgid  				服务引擎组ID   		VARCHAR			SZIBILL			0		0b00011 null
+	mq_serv_group		11   	msgcode  			服务引擎组编号   		VARCHAR			SZNBILL			0		0b00010 null
+	mq_serv_group		20		msgname				服务引擎组名称  		VARCHAR     	SZNBILL 		0		0b00010 null
+	mq_serv_group		70		startflags			启用				SMALLINT		2				0		0b00000	0
+	mq_serv_group		230		remark  			备注	   			VARCHAR			512				0		0b00000 null	
+	mq_serv_group		270		modifier        	修改人          			VARCHAR     	SZWCODE     	0     	0b00000 null
+	mq_serv_group		280		modifydate  		最近修改日期  		DATE        	8   			0   	0b00000 null
+
+//350741	mq_serv_group_engine  		服务引擎组明细			SNSYSDATA_TBS	1	CONFIG	CONFIG 
+	mq_serv_group_engine		10   	msgeid  			服务引擎组明细ID   	VARCHAR			SZIBILL			0		0b00011 null
+	mq_serv_group_engine		11   	msgcode  			服务引擎组编号   		VARCHAR			SZNBILL			0		0b00010 null
+	mq_serv_group_engine		30   	stcode  			服务类型编号    		VARCHAR			MQSTCODE		0		0b00010 null
+	mq_serv_group_engine		40   	msecode  			服务引擎编号   		VARCHAR			SZNBILL			0		0b00010 null
+	mq_serv_group_engine		50		ord					序号				VARCHAR			16				0		0b00000	null
+
+
+//****************服务执行引擎相关 - 结束****************
+
+//350745	mq_queue_conf  				 队列定义				SNSYSDATA_TBS	1	CONFIG	CONFIG//定义MQ使用几个队列
+	mq_queue_conf		10   	queueid  			队列ID   			VARCHAR			16				0		0b00011 null
+	mq_queue_conf		20   	queuename  			队列名称 			VARCHAR			64				0		0b00000 null
+	mq_queue_conf		30		threadcount			处理线程数			SMALLINT		2				0		0b00000	0
+	// 1 为启用
+	mq_queue_conf		40		startflags			启用				SMALLINT		2				0		0b00000	0
+	mq_queue_conf		235		remark  			说明描述	   		VARCHAR			512				0		0b00000 null	
+	mq_queue_conf		240		vprepare			制单人			VARCHAR			SZWCODE			0		0b00000	null
+	mq_queue_conf		250		vpreparename		制单人名称			VARCHAR			256				0		0b00000	null
+	mq_queue_conf		260		predate         	制单日期        		DATE        	8   			0   	0b00000 null
+	mq_queue_conf		270		modifier        	修改人          			VARCHAR     	SZWCODE     	0     	0b00000 null
+	mq_queue_conf		280		modifydate  		最近修改日期  		DATE        	8   			0   	0b00000 null
+
+
+//350750	mq_proj  			工程表					SNOPDATA_TBS	0	WRITE	READ
+ 	mq_proj		10   	projid  			PID   			VARCHAR			SZIBILL			0		0b00011 null
+	mq_proj		20   	projcode  			工程编号   			VARCHAR			MQPROJCODE		0		0b00010 null
+	mq_proj		25   	projtype  			工程类型编号   		VARCHAR			MQPROJTYPE		0		0b00010 null	
+	mq_proj		30   	syscode_request  	请求方  			VARCHAR			MQSYSCODE		0		0b00010 null
+	mq_proj		40   	syscode_response  	响应方  			VARCHAR			MQSYSCODE		0		0b00010 null	
+	mq_proj		50   	projwaitid  		PWID   			VARCHAR			64			0		0b00000 null
+	mq_proj		55   	inouttype  			请求/响应   			VARCHAR			2				0		0b00000 null		
+	//需判断   projtype +syscode_request + syscode_response + projwaitid/filepath 是否存在，保证工程不会重复添加     
+	mq_proj		60   	filepath  			文件保存路径   		VARCHAR			1024			0		0b00000 null	
+	mq_proj		62   	filename  			保存文件名称   		VARCHAR			128				0		0b00000 null	
+	mq_proj		65   	recfilepath  		回执文件路径   		VARCHAR			1024			0		0b00000 null
+	mq_proj		70		status				状态				VARCHAR			4	        	0		0b00000 null
+	mq_proj		80		startdate			开始时间			DATE			8	        	0		0b00000	null
+	mq_proj		90		enddate				结束时间			DATE			8	        	0		0b00000	null
+	mq_proj		92		executedate			本次开始时间		DATE			8	        	0		0b00000	null
+	mq_proj   	95		exctime				运行时长			BIGINT			0				0		0b00000	null
+	mq_proj		100		stepnum_max			总步骤			SMALLINT		2				0		0b00010	0
+	mq_proj		110		stepnum_cur			当前步骤			SMALLINT		2				0		0b00010	0
+	mq_proj		120		runnum_max			允许执行次数		SMALLINT		2				0		0b00000	0
+	mq_proj		130		runnum				已执行次数			SMALLINT		2				0		0b00000	0	
+	//mq_proj		140		runnum_over			允许次数超期		SMALLINT		2				0		0b00000	0
+	mq_proj		160		odate				业务发生时间		DATE			8	        	0		0b00000	null
+	mq_proj		170		allowtime			允许启动时间		DATE			8	        	0		0b00000	null
+	//间隔时间:当某次执行失败后,并还有剩余次数,会将当前时间+间隔时间更新到可执行时间
+	mq_proj		180		intvalseconds		间隔时间(秒)		INTEGER			10				0		0b00000	null
+
+ 	mq_proj		190		innercode			数据主键 			VARCHAR			2000			0		0b00000 null
+	mq_proj		191		outercode			单据外码 			VARCHAR			2000			0		0b00000 null
+ 	mq_proj   	192     statusfrom          单据起始状态 		VARCHAR			SZSTATUS		0	   	0b00000 null                  
+ 	mq_proj   	194     statusto          	单据终止状态 		VARCHAR			SZSTATUS		0	   	0b00000 null 	 		
+	//lockflags			工程锁定   此字段已废弃
+	mq_proj		200		lockflags			工程锁定			SMALLINT		2				0		0b00000	0
+	mq_proj		401		param01  			短参数/01	   		VARCHAR			512				0		0b00000 null
+	mq_proj		402		param02  			短参数/02	   		VARCHAR			512				0		0b00000 null
+	mq_proj		403		param03  			短参数/03	   		VARCHAR			512				0		0b00000 null
+	mq_proj		421		param21  			中参数/01	   		VARCHAR			512				0		0b00000 null
+	mq_proj		422		param22  			中参数/02	   		VARCHAR			512				0		0b00000 null			
+	mq_proj		441		param41  			长参数/01	   		VARCHAR			512				0		0b00000 null
+	mq_proj		451		param51  			超长参数/01	   	VARCHAR			4000			0		0b00000 null
+	mq_proj		460		param60         	日期参数01       	DATE        	8   			0   	0b00000 null
+	mq_proj		461		param61         	日期参数02       	DATE        	8   			0   	0b00000 null
+	mq_proj		465		queryfromtime       查询起始时间       		DATE        	8   			0   	0b00000 null
+	mq_proj		466		querytotime         查询终止时间       		DATE        	8   			0   	0b00000 null
+	mq_proj		470		queryaddfilter      查询增加过滤条件       	VARCHAR			1024   			0   	0b00000 null
+	mq_proj		500		servip      		创建服务器IP       	VARCHAR			64   			0   	0b00000 null
+
+	mq_proj		510		flags				flags			SMALLINT		2				0		0b00000	0
+	mq_proj		530		remark  			说明描述	   		VARCHAR			512				0		0b00000 null	
+	mq_proj		540		vprepare			制单人			VARCHAR			SZWCODE			0		0b00000	null
+	mq_proj		550		vpreparename		制单人名称			VARCHAR			256				0		0b00000	null
+	mq_proj		560		predate         	制单日期        		DATE        	8   			0   	0b00000 null
+	mq_proj		570		modifier        	修改人          			VARCHAR     	SZWCODE     	0     	0b00000 null
+	mq_proj		580		modifydate  		最近修改日期  		DATE        	8   			0   	0b00000 null
+	mq_proj		590		busitype			业务类型			VARCHAR			SZDICTCODE		0		0b00000	null
+	//处理标志   3507 工程任务列表移除失败报文   add by wxh
+	mq_proj		600		dealflag			处理标志			VARCHAR			8				0		0b00000	null
+  	mq_proj		615		discardflag			废弃标识			SMALLINT		2				0		0b00000	0
+	//拷贝自子表
+	mq_proj		620		excresult			执行结果			VARCHAR			16	        	0		0b00000 null
+	mq_proj		621		excresultdesc		执行结果描述		VARCHAR			4000        	0		0b00000 null
+	
+
+//350752	mq_task  			任务表					SNOPDATA_TBS	0	WRITE	READ 
+ 	mq_task		10   	taskid  			TID   			VARCHAR			SZIBILL			0		0b00011 null
+ 	mq_task		20   	projid  			PID   			VARCHAR			SZIBILL			0		0b00010 null
+	mq_task		30   	projcode  			工程编号   			VARCHAR			MQPROJCODE		0		0b00010 null
+	mq_task		40   	taskcode			任务编号  			VARCHAR			MQTASKCODE		0		0b00010 null
+	mq_task		60   	syscode_input  		输入方 			VARCHAR			MQSYSCODE		0		0b00000 null
+	mq_task		65   	inputservid  		输入服务配置ID   	VARCHAR			MQSERVID		0		0b00000 null	
+	mq_task		70   	syscode_output  	输出方    			VARCHAR			MQSYSCODE		0		0b00000 null			
+	mq_task		75   	outputservid  		输出服务配置ID   	VARCHAR			MQSERVID		0		0b00000 null	
+	mq_task		80   	syscode_return  	回调方    			VARCHAR			MQSYSCODE		0		0b00000 null			
+	mq_task		85   	returnservid  		回调服务配置ID   	VARCHAR			MQSERVID		0		0b00000 null		
+	//序号:用于排序,当一个工程下有多个任务的时候,可能需要按先后顺序依次执行
+	mq_task		90		stepnum				步骤				SMALLINT		2				0		0b00010	null
+	mq_task		95		runnum_max			允许执行次数		SMALLINT		2				0		0b00000	0
+	mq_task		100		runnum				已执行次数			SMALLINT		2				0		0b00000	0	
+	//mq_task		110		runnum_over			允许次数超期		SMALLINT		2				0		0b00000	0	
+	//状态:当前任务的状态,现有状态:"未激活","执行中","执行成功","执行失败"
+	mq_task		120		status				状态				VARCHAR			4	        	0		0b00000 null
+	mq_task		130		startdate			开始时间			DATE			8	        	0		0b00000	null
+	mq_task		140		enddate				结束时间			DATE			8	        	0		0b00000	null
+	mq_task		145		executedate			本次开始时间		DATE			8	        	0		0b00000	null
+	mq_task   	150		exctime				运行时长			BIGINT			0				0		0b00000	null
+	mq_task   	152		exctime_input		输入运行时长		BIGINT			0				0		0b00000	null
+	mq_task   	154		exctime_output		输出运行时长		BIGINT			0				0		0b00000	null
+	mq_task		170		allowtime			允许启动时间		DATE			8	        	0		0b00000	null
+	mq_task		180		intvalseconds		间隔时间(秒)		INTEGER			10				0		0b00000	null
+	//mq_task		210		excresult			执行结果			VARCHAR			512	        	0		0b00000 null
+	mq_task		210		excresult			执行结果			VARCHAR			16	        	0		0b00000 null
+	mq_task		220		excresultdesc		执行结果描述		VARCHAR			4000        	0		0b00000 null
+	
+	mq_task		401		param01  			短参数/01	   		VARCHAR			512				0		0b00000 null
+	mq_task		402		param02  			短参数/02	   		VARCHAR			512				0		0b00000 null
+	mq_task		403		param03  			短参数/03	   		VARCHAR			512				0		0b00000 null
+	mq_task		421		param21  			中参数/01	   		VARCHAR			512				0		0b00000 null
+	mq_task		422		param22  			中参数/02	   		VARCHAR			512				0		0b00000 null			
+	mq_task		441		param41  			长参数/01	   		VARCHAR			512				0		0b00000 null
+	mq_task		451		param51  			超长参数/01	   	VARCHAR			4000			0		0b00000 null
+	mq_task		460		param60         	日期参数01       	DATE        	8   			0   	0b00000 null
+	mq_task		461		param61         	日期参数02       	DATE        	8   			0   	0b00000 null
+	mq_task		465		queryfromtime       查询起始时间       		DATE        	8   			0   	0b00000 null
+	mq_task		466		querytotime         查询终止时间       		DATE        	8   			0   	0b00000 null
+	mq_task		470		queryaddfilter      查询增加过滤条件       	VARCHAR			1024   			0   	0b00000 null
+  	mq_task		480		discardflag			废弃标识			SMALLINT		2				0		0b00000	0
+	mq_task		500		servip      		创建服务器IP       	VARCHAR			64   			0   	0b00000 null
+	mq_task		510		predate         	制单日期        		DATE        	8   			0   	0b00000 null
+	
+				
+//350753	mq_task_log  		任务日志表					SNOPDATA_TBS	0	WRITE	READ 
+	mq_task_log	10		id					ID				VARCHAR			SZIBILL	    	0		0b00011	null
+ 	mq_task_log	15   	projid  			PID   			VARCHAR			SZIBILL			0		0b00010 null
+	mq_task_log	20   	taskid  			TID   			VARCHAR			SZIBILL			0		0b00010 null
+	mq_task_log	21   	projwaitid  		PWID   			VARCHAR			64			0		0b00000 null
+	mq_task_log	22   	syscode_request  	请求方  			VARCHAR			MQSYSCODE		0		0b00000 null
+	mq_task_log	24   	syscode_response  	响应方  			VARCHAR			MQSYSCODE		0		0b00000 null
+	mq_task_log	30   	projcode  			工程编号   			VARCHAR			MQPROJCODE		0		0b00010 null
+	mq_task_log	35   	projtype  			工程类型编号   		VARCHAR			MQPROJTYPE		0		0b00010 null	
+	mq_task_log	40   	taskcode			任务编号  			VARCHAR			MQTASKCODE		0		0b00010 null
+	mq_task_log	60		stepnum				步骤				SMALLINT		2				0		0b00010	null
+	mq_task_log	70		runnum				执行次数			SMALLINT		2				0		0b00000	0				
+	mq_task_log	80		startdate			开始时间			DATE			8	        	0		0b00000	null
+	mq_task_log	90		enddate				结束时间			DATE			8	        	0		0b00000	null
+	mq_task_log	95		exctime				执行时间			BIGINT			0		        0		0b00000	null
+	mq_task_log	100		status				执行状态			VARCHAR			4	        	0		0b00000 null
+	mq_task_log	110		exctype				异常类型			VARCHAR			16				0		0b00000 null
+	//包括了异常描述和堆栈信息
+	mq_task_log	120		excdesc				异常描述			CLOB			0	        	0		0b00000 null 
+
+//350755	mq_pack 					报文打包记录			SNOPDATA_TBS	0	MQDATA	MQDATA
+	mq_pack		10		id					ID				VARCHAR			SZIBILL	    	0		0b00011	null
+	mq_pack		10   	packid  			PACKID   		VARCHAR			SZIBILL			0		0b00000 null
+	mq_pack		60   	filename  			报文名称   			VARCHAR			256				0		0b00000 null	
+	mq_pack		50		packtype			打包方式			VARCHAR			2				0		0b00000	null
+	//状态:当前任务的状态,现有状态:"10未激活","30执行中","70成功","80失败","81超次","90异常"
+	mq_pack		120		status				状态				VARCHAR			4	        	0		0b00000 null
+	mq_pack		130		startdate			开始时间			DATE			8	        	0		0b00000	null
+	mq_pack		140		enddate				结束时间			DATE			8	        	0		0b00000	null
+	mq_pack   	150		exctime				运行时长			BIGINT			0				0		0b00000	null
+	mq_pack		160		predate         	创建时间        		DATE        	8   			0   	0b00000 null
+	mq_pack		170		runnum				已执行次数			SMALLINT		2				0		0b00000	0	
+	//mq_pack		180		allowtime			允许启动时间		DATE			8	        	0		0b00000	null
+	//1 解压缩    2 删除
+	mq_pack		190		flags				flags			SMALLINT		2				0		0b00000	0
+
+	mq_pack		570		modifier        	修改人          			VARCHAR     	SZWCODE     	0     	0b00000 null
+	mq_pack		580		modifydate  		最近修改日期  		DATE        	8   			0   	0b00000 null
+  
+//350756	mq_pack_file 				报文打包文件			SNOPDATA_TBS	0	MQDATA	MQDATA 
+	mq_pack_file		10		id					ID				VARCHAR			SZIBILL	    	0		0b00011	null
+	mq_pack_file		20   	filename  			报文名称   			VARCHAR			256				0		0b00011 null	
+	//1 报文已删除
+	mq_pack_file		50		flags				flags			SMALLINT		2				0		0b00000	0
+	mq_pack_file		60		predate         	创建时间        		DATE        	8   			0   	0b00000 null
+
+
+			
+// ********************* 表号范围   350800 - 350899  应用系统  ******************     				
+//350801	mq_serv_conf  		系统服务配置定义				SNSYSDATA_TBS	1	CONFIG	CONFIG
+//id 自动生成，仅用于关联子表数据
+//说明  ： 提供某种代码处理
+//servid 手工录入
+	mq_serv_conf		10   	scid  				SCID   			VARCHAR			SZIBILL			0		0b00011 null
+	mq_serv_conf		20   	servid  			服务配置ID   		VARCHAR			MQSERVID		0		0b00010 null	
+	mq_serv_conf		30   	servname  			服务配置名称   		VARCHAR			SZMBILL			0		0b00000 null	
+	mq_serv_conf		60   	conncode  			交互执行方式   		VARCHAR			MQCONNCODE		0		0b00000 null
+	mq_serv_conf		70   	runclass  			运行程序   			VARCHAR			1024			0		0b00000 null
+	// 1 为启用
+	mq_serv_conf		80		startflags			启用				SMALLINT		2				0		0b00000	0
+	mq_serv_conf		200		flags				flags			SMALLINT		2				0		0b00000	0
+	mq_serv_conf		230		remark  			说明描述	   		VARCHAR			512				0		0b00000 null	
+	mq_serv_conf		240		vprepare			制单人			VARCHAR			SZWCODE			0		0b00000	null
+	mq_serv_conf		250		vpreparename		制单人名称			VARCHAR			256				0		0b00000	null
+	mq_serv_conf		260		predate         	制单日期        		DATE        	8   			0   	0b00000 null
+	mq_serv_conf		270		modifier        	修改人          			VARCHAR     	SZWCODE     	0     	0b00000 null
+	mq_serv_conf		280		modifydate  		最近修改日期  		DATE        	8   			0   	0b00000 null
+	
+//350802	mq_serv_conf_param  系统服务参数配置定义			SNSYSDATA_TBS	1	CONFIG	CONFIG
+	mq_serv_conf_param	10   	scid  		SCID   			VARCHAR			SZIBILL			0		0b00011 null
+	mq_serv_conf_param	20		paramname  	参数名	   		VARCHAR			64				0		0b00011 null
+	mq_serv_conf_param	30		paramvalue  参数值	   		VARCHAR			512				0		0b00000 null	
+	mq_serv_conf_param	40		idx			序号				SMALLINT		2				0		0b00000	null
+	mq_serv_conf_param	50		flags		flags			SMALLINT		2				0		0b00000	0
+	mq_serv_conf_param	60		remark  	说明描述	   		VARCHAR			512				0		0b00000 null
+
+//350805	mq_scan_conf  				报文扫描配置定义			SNSYSDATA_TBS	1	CONFIG	CONFIG
+	mq_scan_conf		10   	scid  				SCID   			VARCHAR			SZIBILL			0		0b00011 null
+	mq_scan_conf		15   	syscode  			当前系统  			VARCHAR			MQSYSCODE		0		0b00000 null
+	//为空时取当前系统上的定义 
+	mq_scan_conf		20   	fsmacro  			文件服务器地址宏   	VARCHAR			64				0		0b00000 null	
+	mq_scan_conf		30		filepath			文件夹路径定义		VARCHAR			256				0		0b00000	null
+	// 1 为启用
+	mq_scan_conf		40		startflags			启用				SMALLINT		2				0		0b00000	0
+//2014-12-10   余皝增加   文件校验方式  暂支持MD5校验  10:MD5
+	mq_scan_conf		50   	filecheckmode  		文件校验方式 		VARCHAR			SZDICTCODE		0		0b00000 null
+//2015-05-25   宋建中增加   0  时间升序  1  时间降序
+	mq_scan_conf		60   	sortmode  			报文排序方式 		SMALLINT		2				0		0b00000 0
+	mq_scan_conf		70		ord  				序号	   			VARCHAR			64				0		0b00000	null
+	mq_scan_conf		235		remark  			说明描述	   		VARCHAR			512				0		0b00000 null	
+	mq_scan_conf		240		vprepare			制单人			VARCHAR			SZWCODE			0		0b00000	null
+	mq_scan_conf		250		vpreparename		制单人名称			VARCHAR			256				0		0b00000	null
+	mq_scan_conf		260		predate         	制单日期        		DATE        	8   			0   	0b00000 null
+	mq_scan_conf		270		modifier        	修改人          			VARCHAR     	SZWCODE     	0     	0b00000 null
+	mq_scan_conf		280		modifydate  		最近修改日期  		DATE        	8   			0   	0b00000 null
+	
+//350806	mq_scan_conf_match  		报文扫描工程匹配定义		SNSYSDATA_TBS	1	CONFIG	CONFIG
+	mq_scan_conf_match		10   	scmid  				SCMID   			VARCHAR			SZIBILL			0		0b00011 null
+	mq_scan_conf_match		20   	scid  				SCID   			VARCHAR			SZIBILL			0		0b00010 null
+	mq_scan_conf_match		30   	syscode  			当前系统  			VARCHAR			MQSYSCODE		0		0b00010 null
+	mq_scan_conf_match		40   	syscode_mutual  	交互系统  			VARCHAR			MQSYSCODE		0		0b00010 null
+	mq_scan_conf_match		50   	projtype  			工程类型编号   		VARCHAR			MQPROJTYPE		0		0b00010 null
+	mq_scan_conf_match		60		filematch			文件格式			VARCHAR			256				0		0b00010	null
+	// 1 为启用
+	mq_scan_conf_match		70		startflags			启用				SMALLINT		2				0		0b00000	0
+	mq_scan_conf_match		80		modifier        	修改人          	VARCHAR     	SZWCODE     	0     	0b00000 null
+	mq_scan_conf_match		90		modifydate  		最近修改日期  		DATE        	8   			0   	0b00000 null
+
+//350809	mq_console_param  			控制台参数表			SNSYSDATA_TBS	1	CONFIG	CONFIG
+	mq_console_param		10   	name  				KEY   			VARCHAR			128			0		0b00011 null
+	mq_console_param		20   	value  				VALUE   		VARCHAR			512			0		0b00000 null
+	mq_console_param		230		remark  			说明描述	   		VARCHAR			512			0		0b00000 null	
+	mq_console_param		270		modifier        	修改人          			VARCHAR     	SZWCODE     0     	0b00000 null
+	mq_console_param		280		modifydate  		最近修改日期  		DATE        	8   		0   	0b00000 null
+
+
+//350810	mq_serv_datadef  	系统服务取数定义				SNSYSDATA_TBS	1	CONFIG	CONFIG
+	mq_serv_datadef		10		dataid				取数ID			VARCHAR			SZIBILL	    	0		0b00011	null
+	mq_serv_datadef		20		datacode			取数编号			VARCHAR			SZIBILL	    	0		0b00010	null
+	mq_serv_datadef		30		dataname			取数名称			VARCHAR			128	        	0		0b00000	null
+	//mq_serv_datadef		40		xmlformat			xml编码格式		LONGVARCHAR		0				0		0b00000	null
+	// 1 为启用
+	mq_serv_datadef		80		startflags			启用				SMALLINT		2				0		0b00000	0
+	mq_serv_datadef		200		flags				flags			SMALLINT		2				0		0b00000	0
+	mq_serv_datadef		230		remark  			说明描述	   		VARCHAR			512				0		0b00000 null	
+	mq_serv_datadef		240		vprepare			制单人			VARCHAR			SZWCODE			0		0b00000	null
+	mq_serv_datadef		250		vpreparename		制单人名称			VARCHAR			256				0		0b00000	null
+	mq_serv_datadef		260		predate         	制单日期        		DATE        	8   			0   	0b00000 null
+	mq_serv_datadef		270		modifier        	修改人          			VARCHAR     	SZWCODE     	0     	0b00000 null
+	mq_serv_datadef		280		modifydate  		最近修改日期  		DATE        	8   			0   	0b00000 null
+		
+//350811	mq_serv_datatable  	系统服务取数表定义			SNSYSDATA_TBS	1	CONFIG	CONFIG
+	mq_serv_datatable	10		tableid		表ID					VARCHAR		SZIBILL	    0	0b00011	null
+	mq_serv_datatable	20		dataid		取数ID				VARCHAR		SZIBILL	    0	0b00010	null
+	mq_serv_datatable	30		tablecode	表编号				VARCHAR		SZIBILL	    0	0b00010	null
+	//mq_serv_datatable	40		datacode	取数编号				VARCHAR		SZIBILL	    0	0b00010	null
+	mq_serv_datatable	50		idx			序号					SMALLINT	2			0	0b00000	null
+	mq_serv_datatable	60		fromtable	取数表名				VARCHAR		64	        0	0b00000 null
+	mq_serv_datatable	70		totable		目标表名				VARCHAR		64	        0	0b00000 null
+	mq_serv_datatable	80		qfilter		取数条件				VARCHAR		255	        0	0b00000 null
+	//删除标识:在导入数据之前先根据"删除条件"删除记录
+	mq_serv_datatable	90		delflags	删除标识				SMALLINT	2			0	0b00000	null
+	mq_serv_datatable	100		delfilter	删除条件				VARCHAR		255	        0	0b00000 null
+	// 1 为启用
+	mq_serv_datatable	110		startflags	启用					SMALLINT	2			0	0b00000	0
+	mq_serv_datatable	120		flags		flags				SMALLINT	2			0	0b00000	0
+	//TAC口,传入原始行数据,返回处理后数据
+	mq_serv_datatable	130		tac			数据转换公式			LONGVARCHAR	0			0	0b00000	null
+
+//350812	mq_serv_datacell  	系统服务取数列定义			SNSYSDATA_TBS	1	CONFIG	CONFIG
+	mq_serv_datacell	10		cellid			列ID				VARCHAR		SZIBILL	    0	0b00011	null
+	mq_serv_datacell	20		tableid			表ID				VARCHAR		SZIBILL	    0	0b00010	null
+	mq_serv_datacell	30		dataid			取数ID			VARCHAR		SZIBILL	    0	0b00010	null
+	mq_serv_datacell	40		cellcode		列编号			VARCHAR		SZIBILL	    0	0b00010	null
+	//mq_serv_datacell	20		tablecode		表编号			VARCHAR		SZIBILL	    0	0b00010	null
+	//mq_serv_datacell	30		datacode		取数编号			VARCHAR		SZIBILL	    0	0b00010	null
+	mq_serv_datacell	50		idx				序号				SMALLINT	2			0	0b00000	null
+	mq_serv_datacell	60		fromcell		取数列			VARCHAR		32	        0	0b00000 null
+	mq_serv_datacell	70		tocell			目标列			VARCHAR		32	        0	0b00000 null
+	//1 附件标识,用于处理路径形式存储的附件,先根据路径下载文件,再转换成字节码
+	mq_serv_datacell	80		flags			附件标识			SMALLINT	2			0	0b00000	0
+	// 1 为启用
+	mq_serv_datacell	110		startflags		启用				SMALLINT	2			0	0b00000	0
+	
+	
+//350813	mq_serv_datatime		系统服务最近取数时间		SNOPDATA_TBS	0	WRITE	READ
+//根据 取数ID + 系统编号 找到该系统上次取数的时间
+	mq_serv_datatime	10		dataid			取数ID			VARCHAR		SZIBILL	    0	0b00011	null
+	mq_serv_datatime	20   	syscode  		系统编号 			VARCHAR		MQSYSCODE	0	0b00011 null
+	mq_serv_datatime	30		lastreaddate	最近取数时间		DATE        8   		0	0b00000 null
+	
+	   
+//350820	mq_proj_create  	消息通知定义				SNSYSDATA_TBS	1	CONFIG	CONFIG
+//说明  ： 通过参数  projtype，syscode_response 找到创建定义，生成  待处理工程
+//syscode_response 的值来源于 单据组织上定义的系统编号
+	mq_proj_create		10		id					ID				VARCHAR			SZIBILL	   	 	0		0b00011	null
+	mq_proj_create		20   	projtype  			工程类型编号   		VARCHAR			MQPROJTYPE		0		0b00010 null
+	mq_proj_create		30   	syscode  			当前系统  			VARCHAR			MQSYSCODE		0		0b00010 null
+	mq_proj_create		40   	syscode_response  	响应方  			VARCHAR			MQSYSCODE		0		0b00010 null
+	mq_proj_create		60   	servid  			服务创建ID   		VARCHAR			MQSERVID		0		0b00000 null				
+	mq_proj_create		70   	createclass  		创建程序   			VARCHAR			1024			0		0b00000 null
+	mq_proj_create		90		runnum_max			允许执行次数		SMALLINT		2				0		0b00000	0
+	//间隔时间:当某次执行失败后,并还有剩余次数,会将当前时间+间隔时间更新到可执行时间
+	mq_proj_create		110		intvalseconds		间隔时间(秒)		INTEGER			10				0		0b00000	null
+	// 1 为启用
+	mq_proj_create		120		startflags			启用				SMALLINT		2				0		0b00000	0
+	mq_proj_create		130		ord  				序号	   			VARCHAR			64				0		0b00000	null
+	mq_proj_create		150		logflag				开启日志			SMALLINT		2				0		0b00000	0
+	mq_proj_create		155		nerepflag			需回执标识			SMALLINT		2				0		0b00000	0
+	mq_proj_create		158		pollflag			轮询				SMALLINT		2				0		0b00000	0
+	mq_proj_create		159		buffflag			缓冲				SMALLINT		2				0		0b00000	0
+	mq_proj_create		160		remark  			说明描述	   		VARCHAR			512				0		0b00000 null	
+	mq_proj_create		170		vprepare			制单人			VARCHAR			SZWCODE			0		0b00000	null
+	mq_proj_create		180		vpreparename		制单人名称			VARCHAR			256				0		0b00000	null
+	mq_proj_create		190		predate         	制单日期        		DATE        	8   			0   	0b00000 null
+	mq_proj_create		200		modifier        	修改人          			VARCHAR     	SZWCODE     	0     	0b00000 null
+	mq_proj_create		210		modifydate  		最近修改日期  		DATE        	8   			0   	0b00000 null	
+	mq_proj_create		220		orderflag			顺序执行标识		SMALLINT		2				0		0b00000	0
+	mq_proj_create		230   	dsid  				DSID   			VARCHAR			16				0		0b00000 null
+	mq_proj_create		240		sleepseconds		休眠时间(秒)		INTEGER			10				0		0b00000	null
+
+
+//350821	mq_proj_create_param	消息通知参数				SNSYSDATA_TBS	1	CONFIG	CONFIG
+//说明  ： 生成  待处理工程表 时  paramname -> paramfield 的对应关系
+//     待处理工程表 处理时  paramfield -> paramname
+	mq_proj_create_param		10   	id  				ID   			VARCHAR			SZIBILL			0		0b00011 null
+	mq_proj_create_param		20   	paramname  			参数名   			VARCHAR			64				0		0b00011 null
+//增加字典选择
+	mq_proj_create_param		30   	paramfield			存储字段名  			VARCHAR			32				0		0b00010 null
+	mq_proj_create_param		40   	projtype  			工程类型编号   		VARCHAR			MQPROJTYPE		0		0b00000 null
+	mq_proj_create_param		30		paramvalue  		参数值	   		VARCHAR			512				0		0b00000 null	
+	mq_proj_create_param		80		idx					序号				SMALLINT		2				0		0b00000	null
+	mq_proj_create_param		90		flags				FLAGS			SMALLINT		2				0		0b00000	0
+	mq_proj_create_param		230		remark  			说明描述	   		VARCHAR			512				0		0b00000 null	
+
+
+//350825	mq_msg_buff_queue			消息缓冲队列			SNOPDATA_TBS	0	MQDATA	MQDATA
+	mq_msg_buff_queue			10		id					ID					VARCHAR		SZIBILL		0		0b00011 null
+	mq_msg_buff_queue			20		innercode			数据内码				VARCHAR		SZIBILL		0		0b00010 null
+	mq_msg_buff_queue			30		outercode			数据外码				VARCHAR		SZNBILL		0		0b00000 null
+	mq_msg_buff_queue			35		sheetcode			单据类型				VARCHAR     SZSHEET 	0   	0b00000 null
+	mq_msg_buff_queue			40		projtype			工程类型				VARCHAR		64			0		0b00000 null
+	mq_msg_buff_queue			41   	syscode  			当前系统  				VARCHAR		MQSYSCODE	0		0b00000 null
+	mq_msg_buff_queue			42   	syscode_response  	响应方  				VARCHAR		MQSYSCODE	0		0b00000 null
+	//2:新增,3:删除,5:修改
+	mq_msg_buff_queue			45		opertype			操作类型				VARCHAR		4			0		0b00000 null
+	mq_msg_buff_queue			50		projwaitid			消息ID				VARCHAR		SZIBILL		0		0b00000 null
+	mq_msg_buff_queue			60		predate         	创建日期        			DATE        8   		0   	0b00000 null
+	mq_msg_buff_queue			65		modifier        	修改人          				VARCHAR     SZWCODE     0     	0b00000 null
+	mq_msg_buff_queue			70		modifydate			最近修改日期			DATE		8			0		0b00000	null	
+	//10:未处理
+	mq_msg_buff_queue			80		status				状态					VARCHAR     4		 	0   	0b00000 null	
+	mq_msg_buff_queue			90		flushdate         	处理日期        			DATE        8   		0   	0b00000 null
+	mq_msg_buff_queue			401		param01  			短参数/01	   			VARCHAR		512			0		0b00000 null
+	mq_msg_buff_queue			402		param02  			短参数/02	   			VARCHAR		512			0		0b00000 null
+	mq_msg_buff_queue			403		param03  			短参数/03	   			VARCHAR		512			0		0b00000 null
+	mq_msg_buff_queue			421		param21  			中参数/01	   			VARCHAR		512			0		0b00000 null
+	mq_msg_buff_queue			422		param22  			中参数/02	   			VARCHAR		512			0		0b00000 null			
+	mq_msg_buff_queue			441		param41  			长参数/01	   			VARCHAR		512			0		0b00000 null
+	mq_msg_buff_queue			451		param51  			超长参数/01	   		VARCHAR		4000		0		0b00000 null
+	mq_msg_buff_queue			460		param60         	日期参数01       		DATE        8   		0   	0b00000 null
+	mq_msg_buff_queue			461		param61         	日期参数02       		DATE        8   		0   	0b00000 null
+
+
+//350845	mq_proj_wait_lately			消息通知最新执行参数表	    SNOPDATA_TBS	0	WRITE	READ
+	mq_proj_wait_lately		30   	projtype  			工程类型编号   		VARCHAR			MQPROJTYPE		0		0b00011 null	
+	mq_proj_wait_lately		20   	syscode  			请求方  			VARCHAR			MQSYSCODE		0		0b00011 null
+	mq_proj_wait_lately		40   	syscode_response  	响应方  			VARCHAR			MQSYSCODE		0		0b00011 null
+	//现在只保留了 查询时间范围参数，用于基础数据同步时使用 ，其他的用到时再增加	
+	mq_proj_wait_lately		465		queryfromtime       查询起始时间       		DATE        	8   			0   	0b00000 null
+	mq_proj_wait_lately		466		querytotime         查询终止时间       		DATE        	8   			0   	0b00000 null
+	mq_proj_wait_lately		470		queryaddfilter      查询增加过滤条件       	VARCHAR			1024   			0   	0b00000 null
+
+
+//350850	mq_proj_wait		消息通知表	       		SNOPDATA_TBS	0	WRITE	READ
+ 	mq_proj_wait		10   	projwaitid  		PWID   			VARCHAR			SZIBILL			0		0b00011 null
+	mq_proj_wait		30   	projtype  			工程类型编号   		VARCHAR			MQPROJTYPE		0		0b00000 null	
+	mq_proj_wait		20   	syscode  			请求方  			VARCHAR			MQSYSCODE		0		0b00000 null
+	mq_proj_wait		40   	syscode_response  	响应方  			VARCHAR			MQSYSCODE		0		0b00000 null
+ 	mq_proj_wait		50   	servid  			工程创建服务ID   	VARCHAR			MQSERVID		0		0b00000 null				
+	mq_proj_wait		55   	inouttype  			请求/响应   			VARCHAR			2				0		0b00000 null
+ 	//状态:当前任务的状态,现有状态:"10 未开始","30 已激活","70 执行成功","80 执行失败"
+ 	mq_proj_wait		70		status				状态				VARCHAR			4	        	0		0b00000 null
+	mq_proj_wait		80		startdate			开始时间			DATE			8	        	0		0b00000	null
+	mq_proj_wait		85		executedate			本次开始时间		DATE			8	        	0		0b00000	null
+	mq_proj_wait		90		enddate				结束时间			DATE			8	        	0		0b00000	null
+	mq_proj_wait   		95		exctime				运行时长			BIGINT			0				0		0b00000	null
+	mq_proj_wait		120		runnum_max			允许执行次数		SMALLINT		2				0		0b00000	0
+	mq_proj_wait		130		runnum				已执行次数			SMALLINT		2				0		0b00000	0	
+	//mq_proj_wait		140		runnum_over			允许次数超期		SMALLINT		2				0		0b00000	0
+ 	//记录单据的业务发生日期
+	mq_proj_wait		160		odate				业务发生时间		DATE			8	        	0		0b00000	null
+	mq_proj_wait		170		allowtime			允许启动时间		DATE			8	        	0		0b00000	null
+	//间隔时间:当某次执行失败后,并还有剩余次数,会将当前时间+间隔时间更新到可执行时间
+	mq_proj_wait		180		intvalseconds		间隔时间(秒)		INTEGER			10				0		0b00000	null
+	//消息中心处理完成后回执  projid，并赋值 receipttime receiptflags
+ 	mq_proj_wait		190   	projid  			PID   			VARCHAR			SZIBILL			0		0b00000 null
+	mq_proj_wait		200		receipttime			回执完成时间		DATE			8	        	0		0b00000	null
+	//1 需回执
+	mq_proj_wait		205		nerepflag			需回执标识			SMALLINT		2				0		0b00000	0
+	//1 已回执
+	mq_proj_wait		210		receiptflags		回执标识			SMALLINT		2				0		0b00000	0
+	//mq_proj_wait		220		excresult			执行结果			VARCHAR			512	        	0		0b00000 null
+	mq_proj_wait		220		excresult			执行结果			VARCHAR			16	        	0		0b00000 null
+	mq_proj_wait		230		excresultdesc		执行结果描述		VARCHAR			4000	        0		0b00000 null
+ 	mq_proj_wait		240   	innercode  			数据主键   			VARCHAR			SZIBILL			0		0b00000 null
+ 	mq_proj_wait   		250     statusfrom          单据起始状态 		VARCHAR			SZSTATUS		0	   	0b00000 null                  
+ 	mq_proj_wait   		260     statusto          	单据终止状态 		VARCHAR			SZSTATUS		0	   	0b00000 null 
+	mq_proj_wait		265		outercode			单据外码   			VARCHAR			128				0		0b00000 null
+	mq_proj_wait		270   	filepath			上传报文路径		VARCHAR			MQFILEPATH		0		0b00000	null
+	mq_proj_wait		275   	recfilepath			回执报文路径		VARCHAR			MQFILEPATH		0		0b00000	null
+	mq_proj_wait		401		param01  			短参数/01	   		VARCHAR			512				0		0b00000 null
+	mq_proj_wait		402		param02  			短参数/02	   		VARCHAR			512				0		0b00000 null
+	mq_proj_wait		403		param03  			短参数/03	   		VARCHAR			512				0		0b00000 null
+	mq_proj_wait		421		param21  			中参数/01	   		VARCHAR			512			0		0b00000 null
+	mq_proj_wait		422		param22  			中参数/02	   		VARCHAR			512			0		0b00000 null			
+
+	mq_proj_wait		441		param41  			长参数/01	   		VARCHAR			512			0		0b00000 null
+	mq_proj_wait		451		param51  			超长参数/01		VARCHAR			4000			0		0b00000 null
+	mq_proj_wait		460		param60         	日期参数01       	DATE        	8   			0   	0b00000 null
+	mq_proj_wait		461		param61         	日期参数02       	DATE        	8   			0   	0b00000 null
+	mq_proj_wait		465		queryfromtime       查询起始时间       		DATE        	8   			0   	0b00000 null
+	mq_proj_wait		466		querytotime         查询终止时间       		DATE        	8   			0   	0b00000 null
+	mq_proj_wait		470		queryaddfilter      查询增加过滤条件       	VARCHAR			1024   			0   	0b00000 null
+	mq_proj_wait		500		servip      		创建服务器IP       	VARCHAR			64   			0   	0b00000 null
+
+	mq_proj_wait		510		flags				flags			SMALLINT		2				0		0b00000	0
+	//mq_proj_wait		520		logflag				开启日志			SMALLINT		2				0		0b00000	0	
+	mq_proj_wait		530		remark  			说明描述	   		VARCHAR			512				0		0b00000 null	
+	mq_proj_wait		540		vprepare			制单人			VARCHAR			SZWCODE			0		0b00000	null
+	mq_proj_wait		550		vpreparename		制单人名称			VARCHAR			256				0		0b00000	null
+	mq_proj_wait		560		predate         	制单日期        		DATE        	8   			0   	0b00000 null
+	mq_proj_wait		570		modifier        	修改人          			VARCHAR     	SZWCODE     	0     	0b00000 null
+	mq_proj_wait		580		modifydate  		最近修改日期  		DATE        	8   			0   	0b00000 null
+ 	//测试执行，工程已执行，回执已执行
+ 	mq_proj_wait		590		testflag			测试执行标识		SMALLINT		2				0		0b00000	0
+ 	mq_proj_wait		600		exeftpfileflag		工程已执行标识		SMALLINT		2				0		0b00000	0
+ 	// 消息通知完结标识
+ 	mq_proj_wait		610		endflag				完结标识			SMALLINT		2				0		0b00000	0
+  	// 1 为无数据时废弃
+  	mq_proj_wait		615		discardflag			废弃标识			SMALLINT		2				0		0b00000	0
+ 	mq_proj_wait		620		orderflag			顺序执行标识		SMALLINT		2				0		0b00000	0
+ 	mq_proj_wait		630		busitype			业务类型			VARCHAR			SZDICTCODE		0		0b00000	null
+ 	mq_proj_wait		640		sleepseconds		休眠时间(秒)		INTEGER			10				0		0b00000	null
+	mq_proj_wait		650		opertype			操作类型			VARCHAR			4				0		0b00000 null
+	mq_proj_wait		660		sheetcode			单据类型			VARCHAR     	SZSHEET 	0   		0b00000 null
+ 	
+ 	
+//350853	mq_proj_wait_log  	消息通知日志表				SNOPDATA_TBS	0	WRITE	READ
+	mq_proj_wait_log	10		id					ID				VARCHAR			SZIBILL	    	0		0b00011	null
+ 	mq_proj_wait_log	20   	projwaitid  		PWID   			VARCHAR			SZIBILL			0		0b00010 null
+	mq_proj_wait_log	30   	projtype  			工程类型编号   		VARCHAR			MQPROJTYPE		0		0b00000 null	
+	mq_proj_wait_log	35   	syscode  			当前系统  			VARCHAR			MQSYSCODE		0		0b00000 null
+	mq_proj_wait_log	40   	syscode_response  	响应方  			VARCHAR			MQSYSCODE		0		0b00000 null
+ 	//状态:当前任务的状态,现有状态:"10 未开始","30 已激活","70 执行成功","80 执行失败"
+ 	mq_proj_wait_log	70		status				状态				VARCHAR			4	        	0		0b00000 null
+	mq_proj_wait_log	80		startdate			开始时间			DATE			8	        	0		0b00000	null
+	mq_proj_wait_log	90		enddate				结束时间			DATE			8	        	0		0b00000	null
+	mq_proj_wait_log   	95		exctime				运行时长			BIGINT			0				0		0b00000	null
+	mq_proj_wait_log	130		runnum				已执行次数			SMALLINT		2				0		0b00000	0	
+	mq_proj_wait_log	110		exctype				异常类型			VARCHAR			MQEXCCODE		0		0b00000 null
+	//包括了异常描述和堆栈信息
+	mq_proj_wait_log	120		excdesc				异常描述			CLOB			0	        	0		0b00000 null 
+
+
+//350856	mq_message_upload		报文上传记录	       	SNOPDATA_TBS	0	WRITE	READ
+	mq_message_upload		10		id					主键				VARCHAR     SZIBILL	 	0			0b00011 null	   
+	//定义为默认值
+	mq_message_upload		20   	projtype  			工程类型编号   		VARCHAR		MQPROJTYPE	0			0b00000 null
+	mq_message_upload		25   	syscode  			请求方  			VARCHAR		MQSYSCODE	0			0b00000 null
+	//选择一个交互系统   如果只找到一个则默认 只读 隐藏
+	mq_message_upload		30   	syscode_mutual  	交互系统  			VARCHAR		MQSYSCODE	0			0b00000 null
+	mq_message_upload		40		filepath			上传文件路径		VARCHAR		MQFILEPATH	0			0b00000	null
+
+	//mq_message_upload		40		ccode				企业代码			VARCHAR     128		 	0			0b00000 null
+	//mq_message_upload		50		cname				企业名称			VARCHAR     256		 	0			0b00000 null
+	//mq_message_upload		60		cshortname			企业简称			VARCHAR     256		 	0			0b00000 null
+	
+	//1 已回执
+	mq_message_upload		100		receiptflags		回执标识			SMALLINT	2			0			0b00000	0
+	mq_message_upload		110		excresult			回执结果			VARCHAR		16	       	0			0b00000 null
+	mq_message_upload		120		excresultdesc		结果描述			VARCHAR		2000	    0			0b00000 null
+
+	mq_message_upload		130		vprepare			上传人			VARCHAR		SZWCODE		0			0b00000	null
+	mq_message_upload		140		vpreparename		上传人			VARCHAR		256			0			0b00000	null
+	mq_message_upload		150		predate         	上传日期       		DATE        8   		0   		0b00000 null
+	mq_message_upload		160		modifier        	修改人          			VARCHAR     SZWCODE     0     		0b00000 null
+	mq_message_upload		170		modifydate  		最近修改日期  		DATE        8   		0   		0b00000 null
+	mq_message_upload		180		remark				备注	  			VARCHAR     1000		0			0b00000 null
+	
+	
+//数据中心备份已完结的数据
+//	350860	mq_proj_comp			工程表(完结)			SNOPDATA_TBS	0	WRITE	READ
+ 	mq_proj_comp		10   	projid  			PID   			VARCHAR			SZIBILL			0		0b00011 null
+	mq_proj_comp		20   	projcode  			工程编号   			VARCHAR			MQPROJCODE		0		0b00010 null
+	mq_proj_comp		25   	projtype  			工程类型编号   		VARCHAR			MQPROJTYPE		0		0b00010 null	
+	mq_proj_comp		30   	syscode_request  	请求方  			VARCHAR			MQSYSCODE		0		0b00010 null
+	mq_proj_comp		40   	syscode_response  	响应方  			VARCHAR			MQSYSCODE		0		0b00010 null
+	//需判断  syscode_request + syscode_response + projwaitid 是否存在，保证工程不会重复添加     
+	mq_proj_comp		50   	projwaitid  		PWID   			VARCHAR			64			0		0b00000 null
+	mq_proj_comp		55   	inouttype  			请求/响应   			VARCHAR			2				0		0b00000 null		
+	//FTP 文件报文交互方式下判断工程是否存在   projtype + filepath
+	mq_proj_comp		60   	filepath  			文件保存路径   		VARCHAR			1024			0		0b00000 null	
+ 	mq_proj_comp		62   	filename  			保存文件名称   		VARCHAR			128				0		0b00000 null	
+	mq_proj_comp		65   	recfilepath  		回执文件路径   		VARCHAR			1024			0		0b00000 null
+	mq_proj_comp		70		status				状态				VARCHAR			4	        	0		0b00000 null
+	mq_proj_comp		80		startdate			开始时间			DATE			8	        	0		0b00000	null
+	mq_proj_comp		90		enddate				结束时间			DATE			8	        	0		0b00000	null
+	mq_proj_comp		92		executedate			本次开始时间		DATE			8	        	0		0b00000	null
+	mq_proj_comp   		95		exctime				运行时长			BIGINT			0				0		0b00000	null
+	mq_proj_comp		100		stepnum_max			总步骤			SMALLINT		2				0		0b00010	0
+	mq_proj_comp		110		stepnum_cur			当前步骤			SMALLINT		2				0		0b00010	0
+	mq_proj_comp		120		runnum_max			允许执行次数		SMALLINT		2				0		0b00000	0
+	mq_proj_comp		130		runnum				已执行次数			SMALLINT		2				0		0b00000	0	
+	//mq_proj_comp		140		runnum_over			允许次数超期		SMALLINT		2				0		0b00000	0
+	mq_proj_comp		160		odate				业务发生时间		DATE			8	        	0		0b00000	null
+	mq_proj_comp		170		allowtime			允许启动时间		DATE			8	        	0		0b00000	null
+	//间隔时间:当某次执行失败后,并还有剩余次数,会将当前时间+间隔时间更新到可执行时间
+	mq_proj_comp		180		intvalseconds		间隔时间(秒)		INTEGER			10				0		0b00000	null
+
+ 	mq_proj_comp		190		innercode			数据主键 			VARCHAR			4000			0		0b00000 null
+	mq_proj_comp		191		outercode			单据外码 			VARCHAR			4000			0		0b00000 null
+ 	mq_proj_comp   		192     statusfrom          单据起始状态 		VARCHAR			SZSTATUS		0	   	0b00000 null                  
+ 	mq_proj_comp   		194     statusto          	单据终止状态 		VARCHAR			SZSTATUS		0	   	0b00000 null 	 		
+	//lockflags			工程锁定   此字段已废弃
+	mq_proj_comp		200		lockflags			工程锁定			SMALLINT		2				0		0b00000	0
+	mq_proj_comp		401		param01  			短参数/01	   		VARCHAR			512				0		0b00000 null
+	mq_proj_comp		402		param02  			短参数/02	   		VARCHAR			512				0		0b00000 null
+	mq_proj_comp		403		param03  			短参数/03	   		VARCHAR			512				0		0b00000 null
+	mq_proj_comp		421		param21  			中参数/01	   		VARCHAR			512				0		0b00000 null
+	mq_proj_comp		422		param22  			中参数/02	   		VARCHAR			512				0		0b00000 null			
+	mq_proj_comp		441		param41  			长参数/01	   		VARCHAR			512				0		0b00000 null
+	mq_proj_comp		451		param51  			超长参数/01	   	VARCHAR			4000			0		0b00000 null
+	mq_proj_comp		460		param60         	日期参数01       	DATE        	8   			0   	0b00000 null
+	mq_proj_comp		461		param61         	日期参数02       	DATE        	8   			0   	0b00000 null
+	mq_proj_comp		465		queryfromtime       查询起始时间       		DATE        	8   			0   	0b00000 null
+	mq_proj_comp		466		querytotime         查询终止时间       		DATE        	8   			0   	0b00000 null
+	mq_proj_comp		470		queryaddfilter      查询增加过滤条件       	VARCHAR			1024   			0   	0b00000 null
+	mq_proj_comp		500		servip      		创建服务器IP       	VARCHAR			64   			0   	0b00000 null
+
+	mq_proj_comp		510		flags				flags			SMALLINT		2				0		0b00000	0
+	mq_proj_comp		530		remark  			说明描述	   		VARCHAR			512				0		0b00000 null	
+	mq_proj_comp		540		vprepare			制单人			VARCHAR			SZWCODE			0		0b00000	null
+	mq_proj_comp		550		vpreparename		制单人名称			VARCHAR			256				0		0b00000	null
+	mq_proj_comp		560		predate         	制单日期        		DATE        	8   			0   	0b00000 null
+	mq_proj_comp		570		modifier        	修改人          			VARCHAR     	SZWCODE     	0     	0b00000 null
+	mq_proj_comp		580		modifydate  		最近修改日期  		DATE        	8   			0   	0b00000 null
+	mq_proj_comp		590		busitype			业务类型			VARCHAR			SZDICTCODE		0		0b00000	null
+	//处理标志   3507 工程任务列表移除失败报文   add by wxh
+	mq_proj_comp		600		dealflag			处理标志			VARCHAR			8				0		0b00000	null
+  	mq_proj_comp		615		discardflag			废弃标识			SMALLINT		2				0		0b00000	0
+	//拷贝自子表
+	mq_proj_comp		620		excresult			执行结果			VARCHAR			16	        	0		0b00000 null
+	mq_proj_comp		621		excresultdesc		执行结果描述		VARCHAR			4000        	0		0b00000 null
+
+//	350861	mq_task_comp			任务表(完结)	       	SNOPDATA_TBS	0	WRITE	READ 
+ 	mq_task_comp		10   	taskid  			TID   			VARCHAR			SZIBILL			0		0b00011 null
+ 	mq_task_comp		20   	projid  			PID   			VARCHAR			SZIBILL			0		0b00010 null
+	mq_task_comp		30   	projcode  			工程编号   			VARCHAR			MQPROJCODE		0		0b00010 null
+	mq_task_comp		40   	taskcode			任务编号  			VARCHAR			MQTASKCODE		0		0b00010 null
+	mq_task_comp		60   	syscode_input  		输入方 			VARCHAR			MQSYSCODE		0		0b00000 null
+	mq_task_comp		65   	inputservid  		输入服务配置ID   	VARCHAR			MQSERVID		0		0b00000 null	
+	mq_task_comp		70   	syscode_output  	输出方    			VARCHAR			MQSYSCODE		0		0b00000 null			
+	mq_task_comp		75   	outputservid  		输出服务配置ID   	VARCHAR			MQSERVID		0		0b00000 null	
+	mq_task_comp		80   	syscode_return  	回调方    			VARCHAR			MQSYSCODE		0		0b00000 null			
+	mq_task_comp		85   	returnservid  		回调服务配置ID   	VARCHAR			MQSERVID		0		0b00000 null		
+	//序号:用于排序,当一个工程下有多个任务的时候,可能需要按先后顺序依次执行
+	mq_task_comp		90		stepnum				步骤				SMALLINT		2				0		0b00010	null
+	mq_task_comp		95		runnum_max			允许执行次数		SMALLINT		2				0		0b00000	0
+	mq_task_comp		100		runnum				已执行次数			SMALLINT		2				0		0b00000	0	
+	//mq_task_comp		110		runnum_over			允许次数超期		SMALLINT		2				0		0b00000	0	
+	//状态:当前任务的状态,现有状态:"未激活","执行中","执行成功","执行失败"
+	mq_task_comp		120		status				状态				VARCHAR			4	        	0		0b00000 null
+	mq_task_comp		130		startdate			开始时间			DATE			8	        	0		0b00000	null
+	mq_task_comp		140		enddate				结束时间			DATE			8	        	0		0b00000	null
+	mq_task_comp		145		executedate			本次开始时间		DATE			8	        	0		0b00000	null
+	mq_task_comp	   	150		exctime				运行时长			BIGINT			0				0		0b00000	null
+	mq_task_comp   		152		exctime_input		输入运行时长		BIGINT			0				0		0b00000	null
+	mq_task_comp   		154		exctime_output		输出运行时长		BIGINT			0				0		0b00000	null
+	mq_task_comp		170		allowtime			允许启动时间		DATE			8	        	0		0b00000	null
+	mq_task_comp		180		intvalseconds		间隔时间(秒)		INTEGER			10				0		0b00000	null
+	//mq_task_comp		210		excresult			执行结果			VARCHAR			512	        	0		0b00000 null
+	mq_task_comp		210		excresult			执行结果			VARCHAR			16	        	0		0b00000 null
+	mq_task_comp		220		excresultdesc		执行结果描述		VARCHAR			4000	        0		0b00000 null
+	
+	mq_task_comp		401		param01  			短参数/01	   		VARCHAR			512				0		0b00000 null
+	mq_task_comp		402		param02  			短参数/02	   		VARCHAR			512				0		0b00000 null
+	mq_task_comp		403		param03  			短参数/03	   		VARCHAR			512				0		0b00000 null
+	mq_task_comp		421		param21  			中参数/01	   		VARCHAR			512				0		0b00000 null
+	mq_task_comp		422		param22  			中参数/02	   		VARCHAR			512				0		0b00000 null			
+	mq_task_comp		441		param41  			长参数/01	   		VARCHAR			512				0		0b00000 null
+	mq_task_comp		451		param51  			超长参数512/01	   	VARCHAR			4000			0		0b00000 null
+	mq_task_comp		460		param60         	日期参数01       	DATE        	8   			0   	0b00000 null
+	mq_task_comp		461		param61         	日期参数02       	DATE        	8   			0   	0b00000 null
+	mq_task_comp		465		queryfromtime       查询起始时间       		DATE        	8   			0   	0b00000 null
+	mq_task_comp		466		querytotime         查询终止时间       		DATE        	8   			0   	0b00000 null
+	mq_task_comp		470		queryaddfilter      查询增加过滤条件       	VARCHAR			1024   			0   	0b00000 null
+  	mq_task_comp		480		discardflag			废弃标识			SMALLINT		2				0		0b00000	0
+	mq_task_comp		500		servip      		创建服务器IP       	VARCHAR			64   			0   	0b00000 null
+	mq_task_comp		510		predate         	制单日期        		DATE        	8   			0   	0b00000 null
+	
+	
+
+//	350862	mq_task_log_comp  		任务日志表(完结)			SNOPDATA_TBS	0	WRITE	READ//记录任务执行的日志
+	mq_task_log_comp	10		id					ID				VARCHAR			SZIBILL	    	0		0b00011	null
+ 	mq_task_log_comp	15   	projid  			PID   			VARCHAR			SZIBILL			0		0b00010 null
+	mq_task_log_comp	20   	taskid  			TID   			VARCHAR			SZIBILL			0		0b00010 null
+	mq_task_log_comp	21   	projwaitid  		PWID   			VARCHAR			64			0		0b00000 null
+	mq_task_log_comp	22   	syscode_request  	请求方  			VARCHAR			MQSYSCODE		0		0b00000 null
+	mq_task_log_comp	24   	syscode_response  	响应方  			VARCHAR			MQSYSCODE		0		0b00000 null
+	mq_task_log_comp	30   	projcode  			工程编号   			VARCHAR			MQPROJCODE		0		0b00010 null
+	mq_task_log_comp	35   	projtype  			工程类型编号   		VARCHAR			MQPROJTYPE		0		0b00010 null	
+	mq_task_log_comp	40   	taskcode			任务编号  			VARCHAR			MQTASKCODE		0		0b00010 null
+	mq_task_log_comp	60		stepnum				步骤				SMALLINT		2				0		0b00010	null
+	mq_task_log_comp	70		runnum				执行次数			SMALLINT		2				0		0b00000	0				
+	mq_task_log_comp	80		startdate			开始时间			DATE			8	        	0		0b00000	null
+	mq_task_log_comp	90		enddate				结束时间			DATE			8	        	0		0b00000	null
+	mq_task_log_comp	95		exctime				执行时间			BIGINT			0		        0		0b00000	null
+	mq_task_log_comp	100		status				执行状态			VARCHAR			4	        	0		0b00000 null
+	mq_task_log_comp	110		exctype				异常类型			VARCHAR			16				0		0b00000 null
+	//包括了异常描述和堆栈信息
+	mq_task_log_comp	120		excdesc				异常描述			CLOB			0	        	0		0b00000 null 
+
+
+//	350863	mq_proj_wait_comp  		消息通知表(完结)			SNOPDATA_TBS	0	WRITE	READ
+ 	mq_proj_wait_comp		10   	projwaitid  		PWID   			VARCHAR			SZIBILL			0		0b00011 null
+	mq_proj_wait_comp		30   	projtype  			工程类型编号   		VARCHAR			MQPROJTYPE		0		0b00000 null	
+	mq_proj_wait_comp		20   	syscode  			请求方  			VARCHAR			MQSYSCODE		0		0b00000 null
+	mq_proj_wait_comp		40   	syscode_response  	响应方  			VARCHAR			MQSYSCODE		0		0b00000 null
+ 	mq_proj_wait_comp		50   	servid  			工程创建服务ID   	VARCHAR			MQSERVID		0		0b00000 null				
+	mq_proj_wait_comp		55   	inouttype  			请求/响应   			VARCHAR			2				0		0b00000 null
+ 	//状态:当前任务的状态,现有状态:"10 未开始","30 已激活","70 执行成功","80 执行失败"
+ 	mq_proj_wait_comp		70		status				状态				VARCHAR			4	        	0		0b00000 null
+	mq_proj_wait_comp		80		startdate			开始时间			DATE			8	        	0		0b00000	null
+	mq_proj_wait_comp		85		executedate			本次开始时间		DATE			8	        	0		0b00000	null
+	mq_proj_wait_comp		90		enddate				结束时间			DATE			8	        	0		0b00000	null
+	mq_proj_wait_comp   	95		exctime				运行时长			BIGINT			0				0		0b00000	null
+	mq_proj_wait_comp		120		runnum_max			允许执行次数		SMALLINT		2				0		0b00000	0
+	mq_proj_wait_comp		130		runnum				已执行次数			SMALLINT		2				0		0b00000	0	
+	//mq_proj_wait_comp		140		runnum_over			允许次数超期		SMALLINT		2				0		0b00000	0
+ 	//记录单据的业务发生日期
+	mq_proj_wait_comp		160		odate				业务发生时间		DATE			8	        	0		0b00000	null
+	mq_proj_wait_comp		170		allowtime			允许启动时间		DATE			8	        	0		0b00000	null
+	//间隔时间:当某次执行失败后,并还有剩余次数,会将当前时间+间隔时间更新到可执行时间
+	mq_proj_wait_comp		180		intvalseconds		间隔时间(秒)		INTEGER			10				0		0b00000	null
+	//消息中心处理完成后回执  projid，并赋值 receipttime receiptflags
+ 	mq_proj_wait_comp		190   	projid  			PID   			VARCHAR			SZIBILL			0		0b00000 null
+	mq_proj_wait_comp		200		receipttime			回执完成时间		DATE			8	        	0		0b00000	null
+	//1 已回执
+	mq_proj_wait_comp		205		nerepflag			需回执标识			SMALLINT		2				0		0b00000	0
+	mq_proj_wait_comp		210		receiptflags		回执标识			SMALLINT		2				0		0b00000	0
+	//mq_proj_wait_comp		220		excresult			执行结果			VARCHAR			512	        	0		0b00000 null
+	mq_proj_wait_comp		220		excresult			执行结果			VARCHAR			16	        	0		0b00000 null
+	mq_proj_wait_comp		230		excresultdesc		执行结果描述		VARCHAR			4000	        0		0b00000 null
+ 	mq_proj_wait_comp		240		innercode			数据主键   			VARCHAR			SZIBILL			0		0b00000 null
+ 	mq_proj_wait_comp		250		statusfrom			单据起始状态 		VARCHAR			SZSTATUS		0	   	0b00000 null                  
+ 	mq_proj_wait_comp   	260		statusto			单据终止状态 		VARCHAR			SZSTATUS		0	   	0b00000 null 
+	mq_proj_wait_comp		265		outercode			单据外码			VARCHAR			128				0		0b00000 null
+	mq_proj_wait_comp		270   	filepath			上传报文路径		VARCHAR			MQFILEPATH		0		0b00000	null
+ 	mq_proj_wait_comp		275   	recfilepath			回执报文路径		VARCHAR			MQFILEPATH		0		0b00000	null
+	mq_proj_wait_comp		401		param01  			短参数/01	   		VARCHAR			512				0		0b00000 null
+	mq_proj_wait_comp		402		param02  			短参数/02	   		VARCHAR			512				0		0b00000 null
+	mq_proj_wait_comp		403		param03  			短参数/03	   		VARCHAR			512				0		0b00000 null
+	mq_proj_wait_comp		421		param21  			中参数/01	   		VARCHAR			512				0		0b00000 null
+	mq_proj_wait_comp		422		param22  			中参数/02	   		VARCHAR			512				0		0b00000 null			
+
+	mq_proj_wait_comp		441		param41  			长参数/01	   		VARCHAR			512				0		0b00000 null
+	mq_proj_wait_comp		451		param51  			超长参数/01		VARCHAR			4000			0		0b00000 null
+	mq_proj_wait_comp		460		param60         	日期参数01       	DATE        	8   			0   	0b00000 null
+	mq_proj_wait_comp		461		param61         	日期参数02       	DATE        	8   			0   	0b00000 null
+	mq_proj_wait_comp		465		queryfromtime       查询起始时间       		DATE        	8   			0   	0b00000 null
+	mq_proj_wait_comp		466		querytotime         查询终止时间       		DATE        	8   			0   	0b00000 null
+	mq_proj_wait_comp		470		queryaddfilter      查询增加过滤条件       	VARCHAR			1024   			0   	0b00000 null
+	mq_proj_wait_comp		500		servip      		创建服务器IP       	VARCHAR			64   			0   	0b00000 null
+
+	mq_proj_wait_comp		510		flags				flags			SMALLINT		2				0		0b00000	0
+	//mq_proj_wait_comp		520		logflag				开启日志			SMALLINT		2				0		0b00000	0	
+	mq_proj_wait_comp		530		remark  			说明描述	   		VARCHAR			512				0		0b00000 null	
+	mq_proj_wait_comp		540		vprepare			制单人			VARCHAR			SZWCODE			0		0b00000	null
+	mq_proj_wait_comp		550		vpreparename		制单人名称			VARCHAR			256				0		0b00000	null
+	mq_proj_wait_comp		560		predate         	制单日期        		DATE        	8   			0   	0b00000 null
+	mq_proj_wait_comp		570		modifier        	修改人          			VARCHAR     	SZWCODE     	0     	0b00000 null
+	mq_proj_wait_comp		580		modifydate  		最近修改日期  		DATE        	8   			0   	0b00000 null
+ 	 	//测试执行，工程已执行，回执已执行
+ 	mq_proj_wait_comp		590		testflag			测试执行标识		SMALLINT		2				0		0b00000	0
+ 	mq_proj_wait_comp		600		exeftpfileflag		工程已执行标识		SMALLINT		2				0		0b00000	0
+ 	
+ 	mq_proj_wait_comp		610		endflag				完结标识			SMALLINT		2				0		0b00000	0
+ 	// 1 为无数据时废弃
+  	mq_proj_wait_comp		615		discardflag			废弃标识			SMALLINT		2				0		0b00000	0
+ 	mq_proj_wait_comp		620		orderflag			顺序执行标识		SMALLINT		2				0		0b00000	0
+	mq_proj_wait_comp		630		busitype			业务类型			VARCHAR			SZDICTCODE		0		0b00000	null
+ 	mq_proj_wait_comp		640		sleepseconds		休眠时间(秒)		INTEGER			10				0		0b00000	null
+	mq_proj_wait_comp		650		opertype			操作类型			VARCHAR			4				0		0b00000 null
+	mq_proj_wait_comp		660		sheetcode			单据类型			VARCHAR     	SZSHEET 	0   		0b00000 null
+ 
+//	350864	mq_proj_wait_log_comp  	消息通知日志表(完结)		SNOPDATA_TBS	0	WRITE	READ
+	mq_proj_wait_log_comp	10		id					ID				VARCHAR			SZIBILL	    	0		0b00011	null
+ 	mq_proj_wait_log_comp	20   	projwaitid  		PWID   			VARCHAR			SZIBILL			0		0b00010 null
+	mq_proj_wait_log_comp	30   	projtype  			工程类型编号   		VARCHAR			MQPROJTYPE		0		0b00000 null	
+	mq_proj_wait_log_comp	35   	syscode  			当前系统  			VARCHAR			MQSYSCODE		0		0b00000 null
+	mq_proj_wait_log_comp	40   	syscode_response  	响应方  			VARCHAR			MQSYSCODE		0		0b00000 null
+ 	//状态:当前任务的状态,现有状态:"10 未开始","30 已激活","70 执行成功","80 执行失败"
+ 	mq_proj_wait_log_comp	70		status				状态				VARCHAR			4	        	0		0b00000 null
+	mq_proj_wait_log_comp	80		startdate			开始时间			DATE			8	        	0		0b00000	null
+	mq_proj_wait_log_comp	90		enddate				结束时间			DATE			8	        	0		0b00000	null
+	mq_proj_wait_log_comp  	95		exctime				运行时长			BIGINT			0				0		0b00000	null
+	mq_proj_wait_log_comp	130		runnum				已执行次数			SMALLINT		2				0		0b00000	0	
+	mq_proj_wait_log_comp	110		exctype				异常类型			VARCHAR			MQEXCCODE		0		0b00000 null
+	//包括了异常描述和堆栈信息
+	mq_proj_wait_log_comp	120		excdesc				异常描述			CLOB			0	        	0		0b00000 null 
+
+//	350865	mq_msg_buff_queue_comp	消息缓冲队列备份			SNOPDATA_TBS	0	MQBF	MQBF
+	mq_msg_buff_queue_comp			10		id					ID					VARCHAR		SZIBILL		0			0b00011 null
+	mq_msg_buff_queue_comp			20		innercode			数据内码				VARCHAR		SZIBILL		0			0b00010 null
+	mq_msg_buff_queue_comp			30		outercode			数据外码				VARCHAR		SZNBILL		0			0b00000 null
+	mq_msg_buff_queue_comp			35		sheetcode			单据类型				VARCHAR     SZSHEET 	0   		0b00000 null
+	mq_msg_buff_queue_comp			40		projtype			工程类型				VARCHAR		64			0			0b00000 null
+	mq_msg_buff_queue_comp			41   	syscode  			当前系统  				VARCHAR		MQSYSCODE	0			0b00000 null
+	mq_msg_buff_queue_comp			42   	syscode_response  	响应方  				VARCHAR		MQSYSCODE	0			0b00000 null
+	//2:新增,3:删除,5:修改
+	mq_msg_buff_queue_comp			45		opertype			操作类型				VARCHAR		4			0			0b00000 null
+	mq_msg_buff_queue_comp			50		projwaitid			消息ID				VARCHAR		SZIBILL		0			0b00000 null
+	mq_msg_buff_queue_comp			60		predate         	创建日期        			DATE        8   		0   		0b00000 null
+	mq_msg_buff_queue_comp			65		modifier        	修改人          				VARCHAR     SZWCODE     0     		0b00000 null
+	mq_msg_buff_queue_comp			70		modifydate			最近修改日期			DATE		8			0			0b00000	null	
+	//10:未处理
+	mq_msg_buff_queue_comp			80		status				状态					VARCHAR     4		 	0   		0b00000 null	
+	mq_msg_buff_queue_comp			90		flushdate         	处理日期        			DATE        8   		0   		0b00000 null
+	mq_msg_buff_queue_comp			401		param01  			短参数/01	   			VARCHAR		512			0		0b00000 null
+	mq_msg_buff_queue_comp			402		param02  			短参数/02	   			VARCHAR		512			0		0b00000 null
+	mq_msg_buff_queue_comp			403		param03  			短参数/03	   			VARCHAR		512			0		0b00000 null
+	mq_msg_buff_queue_comp			421		param21  			中参数/01	   			VARCHAR		512			0		0b00000 null
+	mq_msg_buff_queue_comp			422		param22  			中参数/02	   			VARCHAR		512			0		0b00000 null			
+	mq_msg_buff_queue_comp			441		param41  			长参数/01	   			VARCHAR		512			0		0b00000 null
+	mq_msg_buff_queue_comp			451		param51  			超长参数/01	   		VARCHAR		4000		0		0b00000 null
+	mq_msg_buff_queue_comp			460		param60         	日期参数01       		DATE        8   		0   	0b00000 null
+	mq_msg_buff_queue_comp			461		param61         	日期参数02       		DATE        8   		0   	0b00000 null
+		
+refdef(refname,tblname1,tblname2,fields1,fields2,refflags)
+//cms_site_model_page			cms_site_model			cms_page_model		smid		smid		0b00000
+
+
+idxdef(tblname,idxname,idxfields,idxflags,storegrp)
+
+	mq_proj_wait		mq_proj_wait_outercode_idx		outercode	0b0000	SNMQINDX_TBS
+	mq_proj_wait_log	mq_proj_w_log_projwaitid_idx	projwaitid	0b0000	SNMQINDX_TBS 
+	
+	mq_proj				mq_proj_projwaitid_idx			projwaitid	0b0000	SNMQINDX_TBS
+	mq_proj				mq_proj_outercode_idx			outercode	0b0000	SNMQINDX_TBS
+	mq_proj				mq_proj_filename_idx			filename	0b0000	SNMQINDX_TBS
+	mq_task				mq_task_projid_idx				projid		0b0000	SNMQINDX_TBS
+	mq_task_log			mq_task_log_projid_idx			projid		0b0000	SNMQINDX_TBS
+	mq_task_log			mq_task_log_taskid_idx			taskid		0b0000	SNMQINDX_TBS
+	
+	mq_pack				mq_pack_idx						packid,status,predate	0b0000	SNMQINDX_TBS
+	mq_pack_file		mq_pack_file_idx				predate					0b0000	SNMQINDX_TBS
+//350825	mq_msg_buff_queue			消息缓冲队列			
+	mq_msg_buff_queue			mq_msg_buff_queue_projwid		projwaitid	0b0000	SNMQINDX_TBS
+
+	mq_proj_wait_comp			mq_proj_wc_outercode_idx		outercode	0b0000	SNMQINDX_TBS 
+	mq_proj_wait_log_comp		mq_proj_wc_log_projwaitid_idx	projwaitid	0b0000	SNMQINDX_TBS 
+
+	mq_proj_comp				mq_projc_projwaitid_idx			projwaitid	0b0000	SNMQINDX_TBS
+	mq_proj_comp				mq_projc_outercode_idx			outercode	0b0000	SNMQINDX_TBS
+	mq_proj_comp				mq_projc_filename_idx			filename	0b0000	SNMQINDX_TBS
+	mq_task_comp				mq_taskc_projid_idx				projid		0b0000	SNMQINDX_TBS
+	mq_task_log_comp			mq_taskc_log_projid_idx			projid		0b0000	SNMQINDX_TBS
+	mq_task_log_comp			mq_taskc_log_taskid_idx			taskid		0b0000	SNMQINDX_TBS
+	mq_msg_buff_queue_comp		mq_msg_buff_queue_c_projwid		projwaitid	0b0000	SNMQINDX_TBS
+	
