@@ -1,0 +1,7 @@
+contextsDir=E\:\\Program Files\\Apache Software Foundation\\Tomcat 7.0\\conf\\Catalina\\localhost
+eclipse.preferences.version=1
+fixTomcatHomeBug=fixed
+managerUrl=http\://localhost\:8080/manager
+tomcatConfigFile=E\:\\Program Files\\Apache Software Foundation\\Tomcat 7.0\\conf\\server.xml
+tomcatDir=E\:\\Program Files\\Apache Software Foundation\\Tomcat 7.0
+tomcatVersion=tomcatV7

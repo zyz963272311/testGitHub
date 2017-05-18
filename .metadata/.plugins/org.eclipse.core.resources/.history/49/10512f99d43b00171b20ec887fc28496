@@ -1,0 +1,27 @@
+package com.liiwin.main;
+
+import java.rmi.AlreadyBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+
+import com.liiwin.service.IService;
+import com.liiwin.service.impl.ServiceImpl;
+
+public class ServerMain {
+	public static IService service;
+	public static void main(String[] args) {
+		try {
+			service= new ServiceImpl("service");
+			Registry r = LocateRegistry.createRegistry(6666);
+			r.bind("service", service);
+			r.rebind("service", service);
+			System.out.println("服务器向命名表注册了远程服务对象");
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		} catch (AlreadyBoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+}

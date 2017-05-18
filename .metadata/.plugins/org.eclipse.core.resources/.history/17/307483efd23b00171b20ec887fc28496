@@ -1,0 +1,21 @@
+package xyz.zyzhu;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+
+public class Test {
+	public static void main(String[] args) {
+		String url = "rmi://localhost:6666/service";
+		String serviceName = "service02";
+		try {
+			Context context = new InitialContext();
+			context.lookup(url+serviceName);
+			System.out.println();
+		} catch (NamingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+}
