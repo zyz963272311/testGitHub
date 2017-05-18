@@ -33,6 +33,18 @@ public class Test_84
 
 	public static void main(String[] args) throws NoSuchMethodException, SecurityException
 	{
+		Integer integer = null;
+		if (integer == 0)
+		{
+		}
+	}
+
+	/**
+	 * 
+	 * 赵玉柱
+	 */
+	private static void main7()
+	{
 		Map<String,BigDecimal> t = new HashMap<String,BigDecimal>();
 		for (int i = 0; i < 10; i++)
 		{
