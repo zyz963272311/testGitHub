@@ -1,0 +1,12 @@
+package com.liiwin.util;
+
+import java.rmi.Naming;
+import java.rmi.Remote;
+
+
+public class ServiceUtil {
+	public static < C extends Remote,S extends Remote> C getRemoteService(Class<S> service,boolean isThrow)
+	{
+		Naming.lookup("rmi:localhost:6666/service");
+	}
+}

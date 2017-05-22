@@ -1,0 +1,5 @@
+package com.liiwin.service.impl;
+
+public class LoginServiceImpl implements LoginService{
+
+}
