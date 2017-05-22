@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databases>
+	<db>
+		<database name="zyztest" url="jdbc:mysql://127.0.0.1:3309" driver="com.mysql.jdbc.Driver" user="root" password="root"></database>
+	</db>
+	<database name="zyztest1" url="jdbc:mysql://127.0.0.1:3309" driver="com.mysql.jdbc.Driver" user="root" password="root"></database>
+</databases>
