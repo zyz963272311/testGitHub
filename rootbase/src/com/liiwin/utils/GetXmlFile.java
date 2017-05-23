@@ -1,6 +1,7 @@
 package com.liiwin.utils;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
@@ -23,39 +24,101 @@ import org.dom4j.io.SAXReader;
  */
 public class GetXmlFile
 {
-	public static Element getXMLElement(String filePath, String elementName)
+	/**
+	 * 获取某一个XML文件的根节点
+	 * @param filePath
+	 * @return
+	 * 赵玉柱
+	 */
+	public static Element getXMLElement(String filePath)
 	{
 		Document document = getXmlDocument(filePath);
 		Element root = document.getRootElement();
-		System.out.println(root.getName());
 		return root;
 	}
 
-	public static Element getXMLElementByFilter(Element parent, String filter, String elementName)
+	/**
+	 * 获取parent节点及节点下所有attribute的name=attrName并且value=attrValue的节点List集合
+	 * @param elements 节点集合
+	 * @param parent 
+	 * @param attrName 可空  空表示任何一个attrValue匹配即可
+	 * @param attrValue 可空 空表示不限制
+	 * 赵玉柱
+	 */
+	public static void getXMLElementByAttr(List<Element> elements, Element parent, String attrName, String attrValue)
 	{
-		Attribute attr = parent.attribute(filter);
-		if (attr != null)
-		{
-			if (elementName.equals(attr.getValue()))
-			{
-				return parent;
-			}
-		} else
-		{
-			List<Element> elements = parent.elements();
-			for (Element element : elements)
-			{
-				Element e = getXMLElementByFilter(element, filter, elementName);
-				if (e != null)
-				{
-					return e;
-				}
-			}
-			return null;
-		}
-		return null;
+		getXMLElementByNameAndAttr(elements, parent, null, attrName, attrValue);
 	}
 
+	/**
+	 * 获取parent节点及节点下所有name为elementName的节点的集合
+	 * @param elements
+	 * @param parent
+	 * @param elementName 可空 空表示不限制
+	 * 赵玉柱
+	 */
+	public static void getXMLElementByName(List<Element> elements, Element parent, String elementName)
+	{
+		getXMLElementByNameAndAttr(elements, parent, elementName, null, null);
+	}
+
+	/**
+	 * 获取pqrent节点及节点下所有name为elementName并且attributeName=attrName并且attributeValue=attrValue的节点的集合
+	 * @param elements
+	 * @param parent
+	 * @param elementName
+	 * @param attrName
+	 * @param attrValue
+	 * 赵玉柱
+	 */
+	public static void getXMLElementByNameAndAttr(List<Element> elements, Element parent, String elementName, String attrName, String attrValue)
+	{
+		if (parent != null)
+		{
+			String name = parent.getName();
+			if (elementName == null || elementName.trim().length() == 0 || elementName.equals(name))
+			{
+				if (attrName == null || attrName.trim().length() == 0)
+				{
+					if (attrValue == null || attrValue.trim().length() == 0)
+					{
+						elements.add(parent);
+					} else
+					{
+						List<Attribute> attrs = parent.attributes();
+						for (Attribute attr : attrs)
+						{
+							String value = attr.getValue();
+							if (attrValue.equals(value))
+							{
+								elements.add(parent);
+								break;
+							}
+						}
+					}
+				} else
+				{
+					String attr = parent.attributeValue(attrValue);
+					if (attrValue == null || attrValue.equals(attr))
+					{
+						elements.add(parent);
+					}
+				}
+			}
+			List<Element> elementTemp = parent.elements();
+			for (Element element : elementTemp)
+			{
+				getXMLElementByNameAndAttr(elements, element, elementName, attrName, attrValue);
+			}
+		}
+	}
+
+	/**
+	 * 获取路径为filePath的xml配置Document
+	 * @param filePath
+	 * @return
+	 * 赵玉柱
+	 */
 	public static Document getXmlDocument(String filePath)
 	{
 		Document document = null;
@@ -72,16 +135,28 @@ public class GetXmlFile
 
 	public static void main(String[] args)
 	{
-		Element e = getXMLElement("resources/cfgs/databases.xml", "database");
-		Element e1 = getXMLElementByFilter(e, "name1", "zyztest");
-		if (e1 != null)
+		Element e = getXMLElement("resources/update.xml");
+		//		Element e1 = getXMLElementByFilter(e, "name1", "zyztest");
+		//		if (e1 != null)
+		//		{
+		//			System.out.println(e1.getName());
+		//			List<Attribute> attrs = e1.attributes();
+		//			for (Attribute attr : attrs)
+		//			{
+		//				System.out.println(attr.getName() + "\t" + attr.getValue());
+		//			}
+		//		}
+		List<Element> elements = new ArrayList<>();
+		getXMLElementByNameAndAttr(elements, e, "path", null, null);
+		for (Element element : elements)
 		{
-			System.out.println(e1.getName());
-			List<Attribute> attrs = e1.attributes();
+			System.out.println(element.getName());
+			List<Attribute> attrs = element.attributes();
 			for (Attribute attr : attrs)
 			{
 				System.out.println(attr.getName() + "\t" + attr.getValue());
 			}
+			System.out.println("===================================");
 		}
 		System.out.println();
 	}

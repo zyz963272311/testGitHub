@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<updates>
+	<version>1.0.0</version>
+	<url target="127.0.0.1:8080/swing"></url>
+	<path relative="/">
+		<path relative="file1">
+			<file filename="aaa.txt"/>
+			<file filename="bbb.txt"/>
+		</path>
+		<files>
+			<file filename="aaa.txt"/>
+			<file filename="bbb.txt"/>
+		</files>
+	</path>
+</updates>
