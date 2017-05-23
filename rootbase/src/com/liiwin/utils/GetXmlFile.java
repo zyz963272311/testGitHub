@@ -2,6 +2,7 @@ package com.liiwin.utils;
 
 import java.io.File;
 import java.util.List;
+
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -70,6 +71,7 @@ public class GetXmlFile
 		return document;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void main(String[] args)
 	{
 		Element e = getXMLElement("resources/cfgs/databases.xml", "database");
