@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -12,7 +13,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.text.Document;
+
 import com.liiwin.frame.RegExpDocument;
+import com.liiwin.service.LoginService;
+import com.liiwin.service.impl.LoginServiceImpl;
 import com.liiwin.util.MD5Encrypt;
 import com.liiwin.util.StrUtil;
 import com.liiwin.util.WindowsSizeUtil;
@@ -170,9 +174,10 @@ public class Login extends JFrame implements ActionListener
 				String md5Password = MD5Encrypt.MD5Encode(password);
 				System.out.println(md5Password);
 			}
+			LoginService service = new LoginServiceImpl();
+			service.login(username, password);
 		} else if (e.getSource().equals(btnRegist))
 		{
-			System.out.println("点击了注册按钮");
 		}
 	}
 }

@@ -1,0 +1,26 @@
+package com.liiwin.service;
+
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+
+public class Test {
+	public static void main(String[] args) {
+		String url = "rmi://localhost:6666/";
+		String serviceName = "service";
+			try {
+				Naming.lookup(url+serviceName);
+				System.out.println();
+			} catch (MalformedURLException | RemoteException
+					| NotBoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
+
+}

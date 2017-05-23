@@ -1,0 +1,19 @@
+package com.liiwin.util;
+
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
+
+public class ServiceUtil {
+	public static < C extends Remote> C getRemoteService(Class<C> service,boolean isThrow)
+	{
+		try {
+			return (C)Naming.lookup("rmi:localhost:6666/service");
+		} catch (MalformedURLException | RemoteException | NotBoundException e) {
+			e.printStackTrace();
+		}
+	}
+}

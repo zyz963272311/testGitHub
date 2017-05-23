@@ -1,12 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="java.rmi.Remote"/>
 <fullyQualifiedTypeName name="java.rmi.RemoteException"/>
-<fullyQualifiedTypeName name="com.liiwin.service.IService"/>
 <fullyQualifiedTypeName name="com.liiwin.service.impl.ServiceImpl"/>
 <fullyQualifiedTypeName name="java.rmi.registry.Registry"/>
 <fullyQualifiedTypeName name="java.rmi.registry.LocateRegistry"/>
-<fullyQualifiedTypeName name="java.rmi.server.UnicastRemoteObject"/>
 <fullyQualifiedTypeName name="javax.naming.Context"/>
 <fullyQualifiedTypeName name="javax.naming.InitialContext"/>
+<fullyQualifiedTypeName name="com.liiwin.service.IService"/>
+<fullyQualifiedTypeName name="java.rmi.server.RemoteObject"/>
+<fullyQualifiedTypeName name="java.rmi.server.UnicastRemoteObject"/>
+<fullyQualifiedTypeName name="com.liiwin.db.DataBase"/>
+<fullyQualifiedTypeName name="com.liiwin.db.MySql"/>
+<fullyQualifiedTypeName name="java.util.HashMap"/>
+<fullyQualifiedTypeName name="com.liiwin.db.SqlUtil"/>
+<fullyQualifiedTypeName name="java.sql.ResultSet"/>
+<fullyQualifiedTypeName name="com.liiwin.db.ResultSetUtil"/>
+<fullyQualifiedTypeName name="com.liiwin.util.StrUtil"/>
+<fullyQualifiedTypeName name="com.liiwin.main.ServerMain"/>
+<fullyQualifiedTypeName name="java.rmi.Remote"/>
+<fullyQualifiedTypeName name="java.lang.Class"/>
+<fullyQualifiedTypeName name="com.sun.xml.internal.messaging.saaj.soap.name.NameImpl"/>
+<fullyQualifiedTypeName name="java.rmi.Naming"/>
+<fullyQualifiedTypeName name="java.lang.RuntimeException"/>
+<fullyQualifiedTypeName name="com.liiwin.util.ServiceUtil"/>
+<fullyQualifiedTypeName name="com.liiwin.service.RemoteLoginService"/>
+<fullyQualifiedTypeName name="java.util.Map"/>
+<fullyQualifiedTypeName name="com.liiwin.service.LoginService"/>
+<fullyQualifiedTypeName name="com.liiwin.service.impl.LoginServiceImpl"/>
 </qualifiedTypeNameHistroy>
