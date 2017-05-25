@@ -19,6 +19,10 @@ import javax.swing.JTextField;
  */
 public class HintTextField extends JTextField implements FocusListener
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1214333959161370580L;
 	private String	hint;
 	private boolean	showHint	= true;
 
@@ -44,7 +48,7 @@ public class HintTextField extends JTextField implements FocusListener
 	}
 
 	@Override
-	public void focusGained(FocusEvent e)
+	public  void focusGained(FocusEvent e)
 	{
 		if (this.getText().isEmpty() || this.getText().equals(hint))
 		{
@@ -54,7 +58,7 @@ public class HintTextField extends JTextField implements FocusListener
 	}
 
 	@Override
-	public void focusLost(FocusEvent e)
+	public  void focusLost(FocusEvent e)
 	{
 		if (this.getText().isEmpty())
 		{

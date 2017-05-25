@@ -1,0 +1,48 @@
+package com.testweb.servlet;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/Sheng")
+public class Sheng extends HttpServlet {
+
+	private static final long serialVersionUID = 1L;
+
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		String provincevalue = request.getParameter("sheng");
+		System.out.println("省份编号：" + provincevalue);
+		List<Map<String, String>> shis = new ArrayList<>();
+		if ("beijing".equals(provincevalue)) {
+			Map<String, String> shi = new HashMap<String, String>();
+			shi.put("id", "001");
+			shi.put("value", "beijing");
+			shi.put("show", "北京");
+			shis.add(shi);
+		}
+		else if("shanghai".equals(provincevalue))
+			Map<String, String> shi = new HashMap<String, String>();
+			shi.put("id", "001");
+			shi.put("value", "shanghai");
+			shi.put("show", "上海");
+			shis.add(shi);
+		{
+			
+		}
+	}
+
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		doGet(request, response);
+	}
+
+}
