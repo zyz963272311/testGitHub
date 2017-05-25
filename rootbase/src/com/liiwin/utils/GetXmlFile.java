@@ -98,7 +98,7 @@ public class GetXmlFile
 					}
 				} else
 				{
-					String attr = parent.attributeValue(attrValue);
+					String attr = parent.attributeValue(attrName);
 					if (attrValue == null || attrValue.equals(attr))
 					{
 						elements.add(parent);
