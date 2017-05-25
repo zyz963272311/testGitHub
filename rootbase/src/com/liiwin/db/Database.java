@@ -92,6 +92,16 @@ public class Database
 		}
 	}
 
+	public Map<String,Object> getMapFrimSql(String sql)
+	{
+		List<Map<String,Object>> resultList = getListMapFromSql(sql);
+		if (resultList != null && !resultList.isEmpty())
+		{
+			return resultList.get(0);
+		}
+		return null;
+	}
+
 	public List<Map<String,Object>> getListMapFromSql(String sql)
 	{
 		ResultSet rs = getResultSet(sql);
@@ -106,18 +116,24 @@ public class Database
 			ResultSetMetaData rsm = rs.getMetaData();
 			int col = rsm.getColumnCount();
 			String[] column = new String[col];
+			for (int i = 0; i < col; i++)
+			{
+				column[i] = rsm.getColumnName(i + 1);
+			}
 			while (rs.next())
 			{
-				Map<String,Object> rowValues = new HashMap<String,Object>();
+				Map<String,Object> rowValue = new HashMap<String,Object>();
 				for (int i = 0; i < col; i++)
 				{
+					rowValue.put(column[i], rs.getObject(i + 1));
 				}
+				resultList.add(rowValue);
 			}
 		} catch (SQLException e)
 		{
 			throw new RuntimeException("报错内容", e);
 		}
-		return null;
+		return resultList;
 	}
 
 	public ResultSet sqlSelect(String sql, Map<String,Object> params)
@@ -220,6 +236,11 @@ public class Database
 
 	public static void main(String[] args)
 	{
-		new Database("zyztestzzz");
+		Database db = new Database("zyztest");
+		List<Map<String,Object>> listMapFromSql = db.getListMapFromSql("select * from testtable");
+		for (Map<String,Object> map : listMapFromSql)
+		{
+			System.out.println(map);
+		}
 	}
 }
