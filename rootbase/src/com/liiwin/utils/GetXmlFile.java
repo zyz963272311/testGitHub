@@ -3,7 +3,6 @@ package com.liiwin.utils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -134,20 +133,9 @@ public class GetXmlFile
 		return document;
 	}
 
-	@SuppressWarnings("unchecked")
 	public static void main(String[] args)
 	{
 		Element e = getXMLElement("resources/update.xml");
-		//		Element e1 = getXMLElementByFilter(e, "name1", "zyztest");
-		//		if (e1 != null)
-		//		{
-		//			System.out.println(e1.getName());
-		//			List<Attribute> attrs = e1.attributes();
-		//			for (Attribute attr : attrs)
-		//			{
-		//				System.out.println(attr.getName() + "\t" + attr.getValue());
-		//			}
-		//		}
 		List<Element> elements = new ArrayList<>();
 		getXMLElementByNameAndAttr(elements, e, "path", null, null);
 		for (Element element : elements)

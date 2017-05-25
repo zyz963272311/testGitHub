@@ -57,9 +57,58 @@ public class SqlUtil
 		return sql;
 	}
 
+	/**
+	 * 将name和list拼接成name in (list) 的形式
+	 * @param name
+	 * @param list
+	 * @param params
+	 * @return
+	 * 赵玉柱
+	 */
 	public static String bindSqlIn(String name, String list, Map<String,Object> params)
 	{
+		return bindSqlIn(name, list, params, 0);
+	}
+
+	/**
+	 * 将name和list拼接成name in (list) 的形式
+	 * @param name filter名
+	 * @param list filter值
+	 * @param params 拼接到的map中
+	 * @param fromIdx 拼接的下标开始位置，防止有类似的条件
+	 * @return
+	 * 赵玉柱
+	 */
+	public static String bindSqlIn(String name, String list, Map<String,Object> params, int fromIdx)
+	{
 		StringBuffer sqlBuffer = new StringBuffer();
+		fromIdx = fromIdx < 0 ? 0 : fromIdx;
+		if (StrUtil.isNoStrTrimNull(name))
+		{
+			sqlBuffer.append(name).append(" in (");
+			int length = sqlBuffer.length();
+			if (StrUtil.isNoStrTrimNull(list))
+			{
+				String[] listArray = StrUtil.split(list, ',');
+				for (int i = 0; i < listArray.length; i++)
+				{
+					if (StrUtil.isNoStrTrimNull(listArray[i]))
+					{
+						String key = name + (i + fromIdx);
+						params.put(key, listArray[i]);
+						sqlBuffer.append(":").append(key).append(",");
+					}
+				}
+			}
+			if (sqlBuffer.length() > length)
+			{
+				sqlBuffer.setLength(sqlBuffer.length() - 1);
+				sqlBuffer.append(")");
+			} else
+			{
+				return "";
+			}
+		}
 		return sqlBuffer.toString();
 	}
 
@@ -158,7 +207,15 @@ public class SqlUtil
 		params.put("d", 123);
 		params.put("e", new Date());
 		params.put("f", new Date());
-		sql = sqlBindParams(new Database("zyztest"), sql, params);
+		Database db = new Database("zyztest");
+		sql = sqlBindParams(db, sql, params);
 		System.out.println(sql);
+		String a = "a,b,c,d,e";
+		String name = "a";
+		Map<String,Object> params1 = new HashMap<>();
+		sql += " and " + bindSqlIn(name, a, params1);
+		sql = sqlBindParams(db, sql, params1);
+		System.out.println(sql);
+		db.close();
 	}
 }

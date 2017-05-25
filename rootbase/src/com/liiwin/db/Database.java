@@ -3,10 +3,13 @@ package com.liiwin.db;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.dom4j.Element;
 import com.liiwin.utils.GetXmlFile;
 import com.liiwin.utils.StrUtil;
@@ -76,7 +79,7 @@ public class Database
 				{
 					url += "/";
 				}
-				this.conn = DriverManager.getConnection(url + databaseName + ".testtable", user, password);
+				this.conn = DriverManager.getConnection(url + databaseName, user, password);
 				if (this.conn != null)
 				{
 					System.out.println("连接数据库成功");
@@ -89,13 +92,84 @@ public class Database
 		}
 	}
 
+	public List<Map<String,Object>> getListMapFromSql(String sql)
+	{
+		ResultSet rs = getResultSet(sql);
+		List<Map<String,Object>> resultList = new ArrayList<>();
+		try
+		{
+			if (rs.next() == false)
+			{
+				return resultList;
+			}
+			rs.beforeFirst();
+			ResultSetMetaData rsm = rs.getMetaData();
+			int col = rsm.getColumnCount();
+			String[] column = new String[col];
+			while (rs.next())
+			{
+				Map<String,Object> rowValues = new HashMap<String,Object>();
+				for (int i = 0; i < col; i++)
+				{
+				}
+			}
+		} catch (SQLException e)
+		{
+			throw new RuntimeException("报错内容", e);
+		}
+		return null;
+	}
+
+	public ResultSet sqlSelect(String sql, Map<String,Object> params)
+	{
+		sql = SqlUtil.sqlBindParams(this, sql, params);
+		return sqlSelect(sql);
+	}
+
+	public ResultSet sqlSelect(String sql)
+	{
+		return getResultSet(sql);
+	}
+
+	public int update(String sql, Map<String,Object> params)
+	{
+		sql = SqlUtil.sqlBindParams(this, sql, params);
+		return update(sql);
+	}
+
+	public int update(String sql)
+	{
+		int result = -1;
+		try
+		{
+			if (connIsOpen())
+			{
+				Statement statement = this.conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+				result = statement.executeUpdate(sql);
+			} else
+			{
+				throw new RuntimeException("连接已关闭");
+			}
+		} catch (SQLException e)
+		{
+			throw new RuntimeException("报错内容", e);
+		}
+		return result;
+	}
+
 	public ResultSet getResultSet(String sql)
 	{
 		ResultSet rs = null;
 		try
 		{
-			Statement statement = this.conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			rs = statement.executeQuery(sql);
+			if (connIsOpen())
+			{
+				Statement statement = this.conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+				rs = statement.executeQuery(sql);
+			} else
+			{
+				throw new RuntimeException("连接已关闭");
+			}
 		} catch (SQLException e)
 		{
 			throw new RuntimeException("报错内容", e);
@@ -106,6 +180,42 @@ public class Database
 	public int getType()
 	{
 		return this.type;
+	}
+
+	public boolean connIsOpen()
+	{
+		boolean isOpen = false;
+		if (this != null)
+		{
+			try
+			{
+				if (this.conn != null && !this.conn.isClosed())
+				{
+					isOpen = true;
+				}
+			} catch (SQLException e)
+			{
+				throw new RuntimeException("报错内容", e);
+			}
+		}
+		return isOpen;
+	}
+
+	public void close()
+	{
+		if (this != null)
+		{
+			try
+			{
+				if (this.conn != null && !this.conn.isClosed())
+				{
+					this.conn.close();
+				}
+			} catch (SQLException e)
+			{
+				throw new RuntimeException("报错内容", e);
+			}
+		}
 	}
 
 	public static void main(String[] args)

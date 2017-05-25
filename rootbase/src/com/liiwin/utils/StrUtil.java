@@ -267,10 +267,17 @@ public class StrUtil
 
 	public static void main(String[] args)
 	{
-		String sql = null;
-		StringBuffer sb = new StringBuffer();
-		sb.append(sql);
-		System.out.println(sb.length() + "" + sb.toString());
+		String s = "1,2,3,4.5,6,7,8.9,a,b,c.d,e,f,g";
+		String[][] ss = StrUtil.split(s, '.', ',');
+		for (int i = 0; i < ss.length; i++)
+		{
+			String[] sss = ss[i];
+			for (int j = 0; j < sss.length; j++)
+			{
+				System.out.print("i=" + (i) + "\tj=" + j + "\t" + sss[j]);
+			}
+			System.out.println("\n======================");
+		}
 	}
 
 	public static int obj2int(Object o)
@@ -339,5 +346,97 @@ public class StrUtil
 	public static boolean isNull(String s)
 	{
 		return s == null || s.length() == 0;
+	}
+
+	public static String[][] split(String src, char c1, char c2)
+	{
+		String[] result1 = split(src, c1);
+		if (result1 != null && result1.length > 0)
+		{
+			String[][] result2 = new String[result1.length][];
+			for (int i = 0; i < result1.length; i++)
+			{
+				result2[i] = split(result1[i], c2);
+			}
+			return result2;
+		}
+		return null;
+	}
+
+	public static String[] split(String src, char c)
+	{
+		if (src != null)
+		{
+			return split(src, 0, src.length(), c);
+		}
+		return null;
+	}
+
+	public static String[] split(String src, int startIdx, char c)
+	{
+		if (src != null)
+		{
+			return split(src, startIdx, src.length(), c);
+		}
+		return null;
+	}
+
+	/**
+	 * 将一个字符串按照某个字符从某个位置开始到某个位置结束进行截取
+	 * @param src 源字符串
+	 * @param startIdx 开始位置，最小为0
+	 * @param endIdx 结束位置，最大为src.length-1
+	 * @param c 按照这个字符截取
+	 * @return
+	 * 赵玉柱
+	 */
+	public static String[] split(String src, int startIdx, int endIdx, char c)
+	{
+		if (src == null)
+		{
+			return null;
+		}
+		int length = src.length();
+		if (startIdx < 0 || startIdx >= length)
+		{
+			startIdx = 0;
+		}
+		if (endIdx < 0 || endIdx >= length)
+		{
+			endIdx = length - 1;
+		}
+		if (startIdx >= endIdx)
+		{
+			int tempIdx = startIdx;
+			startIdx = endIdx;
+			endIdx = tempIdx;
+		}
+		int n = 0;
+		for (int i = startIdx; i <= endIdx; i++)
+		{
+			if (src.charAt(i) == c)
+			{
+				n++;
+			}
+		}
+		if (n == 0)
+		{
+			return new String[] { src };
+		}
+		String[] result = new String[n + 1];
+		int j = 0;
+		int i = startIdx;
+		for (; i < endIdx;)
+		{
+			int iend = src.indexOf(c, i);
+			if (iend < 0)
+			{
+				break;
+			}
+			result[j++] = src.substring(i, iend);
+			i = iend + 1;
+		}
+		result[j] = src.substring(i);
+		return result;
 	}
 }
