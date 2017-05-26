@@ -1,5 +1,0 @@
-package com.liiwin.service;
-
-public interface LoginService {
-	public 
-}

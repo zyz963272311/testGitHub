@@ -1,0 +1,7 @@
+package com.liiwin.service;
+
+import java.rmi.Remote;
+
+public interface RemoteRegisterService extends Remote{
+
+}

@@ -135,8 +135,6 @@ public class AnnotationUtil
 
 	public static void main(String[] args) throws Exception
 	{
-		String packname = AnnotationUtil.class.getPackage().getName();
-		//		Set<Class<?>> clazzs = findFileClass(packname.substring(0, packname.indexOf(".")));
 		Set<Class<?>> clazzs = findFileClass("com.liiwin.util");
 		for (Class<?> clazz : clazzs)
 		{

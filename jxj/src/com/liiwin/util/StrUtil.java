@@ -1,5 +1,6 @@
 package com.liiwin.util;
 
+import java.util.List;
 import java.util.Map;
 /**
  * <p>标题：StringUtil工具 </p>
@@ -32,7 +33,7 @@ public class StrUtil
 	 * @return 若list不为空，返回一个String；若list为空，返回null<br>
 	 * 赵玉柱
 	 */
-	public static String strcat(java.util.List list, String link)
+	public static String strcat(List<?> list, String link)
 	{
 		if (list == null || list.size() == 0)
 		{

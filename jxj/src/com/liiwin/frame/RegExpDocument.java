@@ -21,6 +21,10 @@ import javax.swing.text.PlainDocument;
  */
 public class RegExpDocument extends PlainDocument
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final Pattern	pattern;
 	private Matcher			m;
 

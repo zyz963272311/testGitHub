@@ -17,6 +17,7 @@ import java.util.List;
  */
 public class ArrayUtil
 {
+	@SuppressWarnings("unchecked")
 	public static <T extends Object> T[] toArray(List<?> list, Class<T> clazz)
 	{
 		if (list == null)

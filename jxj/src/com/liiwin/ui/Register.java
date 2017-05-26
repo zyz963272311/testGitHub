@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -13,13 +15,16 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.text.Document;
 
 import com.liiwin.frame.RegExpDocument;
+import com.liiwin.service.RegisterService;
+import com.liiwin.service.impl.RegisterServiceImpl;
+import com.liiwin.util.MD5Encrypt;
 import com.liiwin.util.WindowsSizeUtil;
+import com.liiwin.utils.StrUtil;
 /**
  * <p>标题： 注册界面</p>
  * <p>功能： </p>
@@ -36,6 +41,10 @@ import com.liiwin.util.WindowsSizeUtil;
  */
 public class Register extends JFrame implements ActionListener
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final JFrame from ;
 	//用户的登录名将由系统自动生成，并返回
 	private final JLabel			labUsername	= new JLabel("用  户  名");
@@ -178,6 +187,32 @@ public class Register extends JFrame implements ActionListener
 		}else if(e.getSource()==btnRegist)
 		{
 			System.out.println("点击了注册按钮，进行注册操作");
+			String userName = txtUsername.getText();
+			String tel = txtTel.getText();
+			String password = new String(txtPwd.getPassword());
+			if(StrUtil.isNullIn(userName,tel,password))
+			{
+				JOptionPane.showConfirmDialog(this, "用户名，电话，密码不可为空", "提示信息", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
+			}
+			else
+			{
+				password = MD5Encrypt.MD5Encode(password);
+				Map<String, Object> registerParams = new HashMap<String, Object>();
+				registerParams.put("username", userName);
+				registerParams.put("telephone", tel);
+				registerParams.put("password", password);
+				RegisterService service = new RegisterServiceImpl();
+				Map<String, String> result = service.register(registerParams);
+				String errMsg = result.get("ERROR");
+				if(StrUtil.isNoStrTrimNull(errMsg))
+				{
+					JOptionPane.showConfirmDialog(this, errMsg, "提示信息", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
+				}
+				else {
+					JOptionPane.showConfirmDialog(this, "注册成功，您的用户ID", "提示信息", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
+				}
+				System.out.println(result);
+			}
 		}
 	}
 }

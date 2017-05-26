@@ -1,9 +1,0 @@
-package xyz.zyzhu;
-
-public class Test {
-	public static void main(String[] args) {
-		String url = "rmi://localhost/";
-		String serviceName = "service02"
-	}
-
-}

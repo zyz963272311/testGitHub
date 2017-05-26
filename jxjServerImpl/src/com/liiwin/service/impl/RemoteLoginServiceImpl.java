@@ -7,10 +7,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.liiwin.db.DataBase;
-import com.liiwin.db.MySql;
-import com.liiwin.db.ResultSetUtil;
-import com.liiwin.db.SqlUtil;
+import com.liiwin.db.Database;
 import com.liiwin.service.RemoteLoginService;
 import com.liiwin.util.StrUtil;
 
@@ -37,15 +34,15 @@ public class RemoteLoginServiceImpl extends UnicastRemoteObject implements Remot
 		{
 			return result;
 		}
-		DataBase db = new MySql();
+		Database db =null;
 		Map<String, Object> params = new HashMap<>();
 		params.put("userid", user);
 		params.put("username", user);
 		params.put("telephone", user);
 		String sql = "select * from users where (userid=:userid or username=:username or telephone =:telephone) ";
-		sql = SqlUtil.sqlBindParams(db, sql, params);
-		ResultSet rs = ResultSetUtil.getResultSet(db, sql);
 		try {
+			db=new Database("project01");
+			ResultSet rs = db.sqlSelect(sql, params);
 			rs.last();
 			int rowid = rs.getRow();
 			if(rowid<=0)
@@ -73,6 +70,13 @@ public class RemoteLoginServiceImpl extends UnicastRemoteObject implements Remot
 		} catch (SQLException e) {
 			e.printStackTrace();
 			result.put("sysErr", e.getMessage());
+		}
+		finally
+		{
+			if(db!=null)
+			{
+				db.close();
+			}
 		}
 		return result;
 		

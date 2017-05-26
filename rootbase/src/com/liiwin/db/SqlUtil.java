@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
 import com.liiwin.utils.EmptyUtil;
 import com.liiwin.utils.StrUtil;
 /**
@@ -123,7 +124,7 @@ public class SqlUtil
 	 */
 	private static String parseSql(Database db, String src, String key, Object value)
 	{
-		Class valueType = value.getClass();
+		Class<? extends Object> valueType = value.getClass();
 		//常用类型
 		boolean assignFlag = String.class.isAssignableFrom(valueType);
 		if (assignFlag == true)

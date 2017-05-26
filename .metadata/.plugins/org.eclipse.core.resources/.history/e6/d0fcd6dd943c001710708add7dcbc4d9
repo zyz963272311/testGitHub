@@ -1,9 +1,0 @@
-package com.liiwin.service.impl;
-
-import java.rmi.server.RemoteObject;
-
-import com.liiwin.service.LoginService;
-
-public class LoginServiceImpl extends RemoteObject implements LoginService {
-
-}

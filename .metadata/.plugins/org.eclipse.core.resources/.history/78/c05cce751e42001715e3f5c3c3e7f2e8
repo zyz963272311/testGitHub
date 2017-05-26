@@ -1,0 +1,31 @@
+package com.liiwin.service.impl;
+
+import java.util.Map;
+
+import com.liiwin.service.RegisterService;
+import com.liiwin.service.RemoteLoginService;
+import com.liiwin.service.RemoteRegisterService;
+import com.liiwin.util.ServiceUtil;
+
+public class RegisterServiceImpl implements RegisterService {
+
+	@Override
+	public Map<String, String> register(Map<String, Object>reginterParams) {
+		RemoteRegisterService reginter = ServiceUtil.getRemoteService(
+				RemoteLoginService.class, "service", false);
+		try {
+			Map<String, String> result = service.register(reginterParams);
+			if (result != null && !result.isEmpty()) {
+				System.out.println(result);
+			}
+			else
+			{
+				System.out.println("返回参数为空");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+}

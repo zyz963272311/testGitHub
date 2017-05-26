@@ -1,8 +1,0 @@
-package com.liiwin.service;
-
-import java.rmi.Remote;
-import java.util.Map;
-
-public interface LoginService extends Remote {
-	public Map<String, String> login(String,String);
-}

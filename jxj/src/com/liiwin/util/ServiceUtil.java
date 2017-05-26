@@ -8,6 +8,7 @@ import java.rmi.RemoteException;
 
 
 public class ServiceUtil {
+	@SuppressWarnings("unchecked")
 	public static < C extends Remote> C getRemoteService(Class<C> service,String servicename,boolean isThrow)
 	{
 		System.out.println();

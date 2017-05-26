@@ -58,7 +58,7 @@ public class EmptyUtil
 		}
 		if (value instanceof Map)
 		{
-			if (((Map) value).isEmpty())
+			if (((Map<?, ?>) value).isEmpty())
 			{
 				return true;
 			}
@@ -66,7 +66,7 @@ public class EmptyUtil
 		}
 		if (value instanceof List)
 		{
-			if (((List) value).isEmpty())
+			if (((List<?>) value).isEmpty())
 			{
 				return true;
 			}

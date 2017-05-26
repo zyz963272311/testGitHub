@@ -1,7 +1,0 @@
-package com.liiwin.service.impl;
-
-import com.liiwin.service.LoginService;
-
-public class LoginServiceImpl implements LoginService{
-
-}

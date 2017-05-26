@@ -1,0 +1,42 @@
+package com.liiwin.service.impl;
+
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.liiwin.code.CodePart;
+import com.liiwin.code.CodeType;
+import com.liiwin.db.Database;
+import com.liiwin.service.RemoteRegisterService;
+
+public class RemoteRegisterServiceImpl extends UnicastRemoteObject implements
+		RemoteRegisterService {
+
+	private static final long serialVersionUID = 1L;
+
+	protected RemoteRegisterServiceImpl() throws RemoteException {
+		super();
+	}
+
+	@Override
+	public Map<String, String> register(Map<String, Object> registerParams)
+			throws RemoteException {
+		Map<String, String> result = new HashMap<String, String>();
+		if (registerParams == null || registerParams.isEmpty()) {
+			result.put("ERROR", "请求参数为空");
+			return result;
+		}
+		Database db = null;
+		String userID = null;
+		try {
+			CodePart part1 = new CodePart("usr",3,CodeType.FIX_LENGTH);
+			CodePart part2 = new CodePart("yyyyMMdd",8,CodeType.TIME);
+			db = new Database("zyztest");
+		} catch (Exception e) {
+		} finally {
+		}
+		return null;
+	}
+
+}

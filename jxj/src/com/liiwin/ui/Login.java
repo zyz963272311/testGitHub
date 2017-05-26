@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -13,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.text.Document;
+
 import com.liiwin.frame.RegExpDocument;
 import com.liiwin.service.LoginService;
 import com.liiwin.service.impl.LoginServiceImpl;
@@ -48,6 +50,10 @@ import com.liiwin.utils.NetUtil;
  */
 public class Login extends JFrame implements ActionListener
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final JLabel			labUser		= new JLabel("登录名");
 	private final JLabel			labPwd		= new JLabel("密    码");
 	private final String			hintUser	= "请输入账号/用户名/电话号码";
@@ -198,7 +204,7 @@ public class Login extends JFrame implements ActionListener
 				String md5Password = MD5Encrypt.MD5Encode(password);
 				System.out.println(md5Password);
 				LoginService service = new LoginServiceImpl();
-				Map<String,String> loginInfo = service.login(username, password);
+				Map<String,String> loginInfo = service.login(username, md5Password);
 				if (loginInfo == null || loginInfo.isEmpty())
 				{
 					if (NetUtil.ipPortIsUseful("localhost", 6666) == false)

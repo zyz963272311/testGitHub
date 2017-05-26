@@ -1,0 +1,8 @@
+package com.liiwin.service;
+
+import java.rmi.Remote;
+import java.util.Map;
+
+public interface RemoteRegisterService extends Remote{
+	public Map<String, Object>
+}
