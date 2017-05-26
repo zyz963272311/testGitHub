@@ -382,6 +382,31 @@ public class StrUtil
 	}
 
 	/**
+	 * 判断一个数字是否在某一个数字列表之内
+	 * @param crs
+	 * @param comp
+	 * @return
+	 * 赵玉柱
+	 */
+	public static boolean isIntIn(int crs, int[] comp)
+	{
+		boolean result = false;
+		if (comp == null || comp.length == 0)
+		{
+			result = true;
+		}
+		for (int i = comp.length - 1; i >= 0; i--)
+		{
+			if (crs == comp[i])
+			{
+				result = true;
+				break;
+			}
+		}
+		return result;
+	}
+
+	/**
 	 * 将一个字符串按照某个字符从某个位置开始到某个位置结束进行截取
 	 * @param src 源字符串
 	 * @param startIdx 开始位置，最小为0
@@ -438,5 +463,33 @@ public class StrUtil
 		}
 		result[j] = src.substring(i);
 		return result;
+	}
+
+	/**
+	 * 将一个int类型的一个String
+	 * @param list
+	 * @return
+	 * 赵玉柱
+	 */
+	public static String intListToString(int[] list)
+	{
+		return intListToString(list, ',');
+	}
+
+	public static String intListToString(int[] list, char dim)
+	{
+		if (list == null || list.length == 0)
+		{
+			return "[]";
+		}
+		final StringBuffer sb = new StringBuffer('[');
+		final int listLength = list.length;
+		for (int i = 0; i < listLength; i++)
+		{
+			sb.append(list[i]).append(dim);
+		}
+		sb.setLength(sb.length() - 1);
+		sb.append(']');
+		return sb.toString();
 	}
 }

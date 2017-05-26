@@ -1,5 +1,9 @@
 package com.liiwin.date;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -40,6 +44,59 @@ public class DateUtil
 	public static Date getCurWeekFirstDay(Date date)
 	{
 		return getCurWeekOneDay(date, Calendar.MONDAY);
+	}
+
+	public static long getCurMillisecondOnToday()
+	{
+		//今天的0时0分0秒
+		Calendar calendar = Calendar.getInstance();
+		//当前时间
+		Calendar curCalender = Calendar.getInstance();
+		Date curDate = new Date();
+		curDate = getCurDate(curDate.getTime());
+		Date curDateTemp = (Date) curDate.clone();
+		curCalender.setTime(curDate);
+		calendar.setTime(curDateTemp);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		return curCalender.getTimeInMillis() - calendar.getTimeInMillis();
+	}
+
+	public static Date getNetDate()
+	{
+		return getNetDate("http://www.ntsc.ac.cn");
+	}
+
+	public static Date getNetDate(String webUrl)
+	{
+		Date date = null;
+		try
+		{
+			URL url = new URL(webUrl);
+			URLConnection uc = url.openConnection();
+			uc.connect();
+			long ld = uc.getDate();
+			date = new Date(ld);
+		} catch (MalformedURLException e)
+		{
+			throw new RuntimeException("报错内容", e);
+		} catch (IOException e)
+		{
+			throw new RuntimeException("报错内容", e);
+		}
+		return date;
+	}
+
+	public static Date getCurDate()
+	{
+		return new Date();
+	}
+
+	public static Date getCurDate(long timeTemp)
+	{
+		return new Date(timeTemp);
 	}
 
 	/**
@@ -215,10 +272,18 @@ public class DateUtil
 
 	public static void main(String[] args)
 	{
-		Date date = getLastWeekFirstDay(new Date());
-		System.out.println(formateDate(date, DATA_FORMATE_9));
-		System.out.println(formateDate(DATA_FORMATE_7));
-		System.out.println(text2Date(formateDate(DATA_FORMATE_7), DATA_FORMATE_7));
-		System.out.println(getLocatTimeZone(new Date()));
+		//		Date date = getLastWeekFirstDay(new Date());
+		//		System.out.println(formateDate(date, DATA_FORMATE_9));
+		//		System.out.println(formateDate(DATA_FORMATE_7));
+		//		System.out.println(text2Date(formateDate(DATA_FORMATE_7), DATA_FORMATE_7));
+		//		System.out.println(getLocatTimeZone(new Date()));
+		//		Date date = new Date();
+		//		System.out.println(date.toString());
+		//		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
+		//		System.out.println(dateFormat.format(date));
+		long start = System.currentTimeMillis();
+		Date date = getNetDate("http://www.ntsc.ac.cn");
+		System.out.println(formateDate(date, DATA_FORMATE_7) + "生成时间" + (System.currentTimeMillis() - start));
+		System.out.println(formateDate(new Date(System.currentTimeMillis()), DATA_FORMATE_7) + "生成时间" + (System.currentTimeMillis() - start));
 	}
 }
