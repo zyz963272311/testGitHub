@@ -477,6 +477,16 @@ public class StrUtil
 		return intListToString(list, ',');
 	}
 
+	public static String obj2str(Object obj)
+	{
+		return obj2str(obj, null);
+	}
+
+	public static String obj2str(Object obj, String defaultValue)
+	{
+		return obj != null ? obj.toString() : defaultValue;
+	}
+
 	public static String intListToString(int[] list, char dim)
 	{
 		if (list == null || list.length == 0)

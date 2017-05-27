@@ -16,7 +16,10 @@ package com.liiwin.code;
  */
 public class CodeType
 {
+	/**一个随机数字，说是随机数字，实际上是一个当前时间对应当天的毫秒数，正常的时间毫秒数应该是8位，超过的部分将自动生成一个随机数*/
 	public static int	RANDOM_NUMBER	= 1;
+	/**一个时间格式*/
 	public static int	TIME			= 2;
+	/**按照给定长度的字符串，直接扔上去*/
 	public static int	FIX_LENGTH		= 4;
 }

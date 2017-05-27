@@ -24,6 +24,7 @@ public class DataColumn
 	}
 
 	String	columnname;
+	String	sqlFilter;
 	String	tablename;
 	String	title;
 	/**见java.sql.Types类*/

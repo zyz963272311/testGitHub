@@ -128,9 +128,10 @@ public class Code
 		{
 			final StringBuffer tempSB = new StringBuffer();
 			final int diff = randomLength - length;
+			Random random = new Random();
 			for (int i = 0; i < diff; i++)
 			{
-				tempSB.append('0');
+				tempSB.append(random.nextInt(10));
 			}
 			randomString = randomString + tempSB.toString();
 		} else
