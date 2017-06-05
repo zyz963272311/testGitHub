@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhu.ssm.dao.UserDao">
+	<sql id = "inc_where">
+		<if test="username!=null">
+			and username=#{username}
+		</if>
+	</sql>
+	<insert id="createUser">
+		INSERT INTO t_user( username) VALUES (#{username, jdbcType=VARCHAR})
+	</insert>
+	<delete id="deleteUser">
+		DELETE FROM t_user  
+        <include refid="inc_whereClause"/>
+	</delete>
+	 <update id="updateUser">  
+      UPDATE t_user  
+      <set>  
+          <if test="username!=null">  
+              username = #{username, jdbcType=VARCHAR},  
+          </if>  
+      </set>  
+      where userid = #{userid}  
+    </update> 
+    <select id="findUserByParams" resultType="com.zhu.ssm.model.User">  
+        SELECT userid , username  
+        from t_user  
+        <include refid="inc_whereClause"/>  
+    </select>   
+</mapper>
