@@ -4,6 +4,9 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee  
     http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">  
+    <welcome-file-list>  
+    	<welcome-file>index.jsp</welcome-file>  
+	</welcome-file-list> 
   <context-param>  
     <param-name>webAppRootKey</param-name>  
     <param-value>WeddingPhoto.root</param-value>  
@@ -27,7 +30,7 @@
   <listener>  
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>  
   </listener>  
-  <!-- spring字符集过滤器 
+  <!-- spring字符集过滤器 -->  
   <filter>  
     <filter-name>CharacterEncodingFilter</filter-name>  
     <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>  
@@ -46,7 +49,7 @@
     <dispatcher>REQUEST</dispatcher>  
     <dispatcher>FORWARD</dispatcher>  
   </filter-mapping>  
-  -->  
+  
   <servlet>  
     <servlet-name>dispatcher</servlet-name>  
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>  
