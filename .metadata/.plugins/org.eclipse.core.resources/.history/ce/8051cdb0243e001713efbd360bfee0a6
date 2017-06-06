@@ -1,6 +1,0 @@
-#mysql
-mysql.driver="com.mysql.jdbc.Driver"
-mysql.url
-mysql.db
-mysql.user
-mysql.pwd

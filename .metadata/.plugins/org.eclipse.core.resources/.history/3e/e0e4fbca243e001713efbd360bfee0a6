@@ -1,6 +1,0 @@
-#mysql
-mysql.driver=com.mysql.jdbc.Driver
-mysql.url=jdbc:mysql://127.0.0.1:3306/
-mysql.db=project01
-mysql.user=root
-mysql.pwd
