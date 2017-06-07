@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="libs/jmagick.jar"/>
 	<classpathentry kind="lib" path="libs/QRCode.jar"/>
 	<classpathentry kind="lib" path="libs/Qrcodeen.jar"/>
+	<classpathentry kind="lib" path="libs/jedis-2.1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
