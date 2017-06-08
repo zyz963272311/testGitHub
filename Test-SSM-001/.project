@@ -3,6 +3,7 @@
 	<name>Test-SSM-001</name>
 	<comment></comment>
 	<projects>
+		<project>rootbase</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

@@ -1,5 +1,6 @@
 package com.zhu.ssm.model;
 
+import java.io.Serializable;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -14,7 +15,7 @@ package com.zhu.ssm.model;
  * 监听使用界面:
  * @version 8.0
  */
-public class User
+public class User implements Serializable
 {
 	private String	userid;
 	private String	username;

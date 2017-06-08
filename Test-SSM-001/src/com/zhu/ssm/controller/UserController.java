@@ -39,9 +39,9 @@ public class UserController
 		return pageInfo;
 	}
 
-	@RequestMapping(value = "add", method = { RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(value = "insert", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
-	public ResultBean add(User user)
+	public ResultBean insertUser(User user)
 	{
 		ResultBean rb = new ResultBean();
 		userService.createUser(user);
@@ -51,7 +51,7 @@ public class UserController
 
 	@RequestMapping(value = "delete", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
-	public ResultBean delete(User user)
+	public ResultBean deleteUser(User user)
 	{
 		ResultBean rb = new ResultBean();
 		userService.deleteUser(user);
@@ -61,7 +61,7 @@ public class UserController
 
 	@RequestMapping(value = "update", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
-	public ResultBean update(User user)
+	public ResultBean updateUser(User user)
 	{
 		ResultBean rb = new ResultBean();
 		userService.updateUser(user);

@@ -14,17 +14,17 @@ import com.liiwin.code.CodePart;
 import com.liiwin.code.CodeType;
 import com.liiwin.utils.StrUtil;
 import com.zhu.ssm.common.PageInfo;
-import com.zhu.ssm.dao.UserDao;
-import com.zhu.ssm.model.User;
-import com.zhu.ssm.service.UserService;
+import com.zhu.ssm.dao.GoodsDao;
+import com.zhu.ssm.model.Goods;
+import com.zhu.ssm.service.GoodsService;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
  * <p>所属模块： TODO</p>
  * <p>版权： Copyright © 2017 SNSOFT</p>
  * <p>公司: 北京南北天地科技股份有限公司</p>
- * <p>创建日期：2017年6月5日 下午3:54:14</p>
- * <p>类全名：com.zhu.ssm.service.impl.UserServiceImpl</p>
+ * <p>创建日期：2017年6月8日 下午3:16:53</p>
+ * <p>类全名：com.zhu.ssm.service.impl.GoodsServiceImpl</p>
  * 作者：赵玉柱
  * 初审：
  * 复审：
@@ -32,27 +32,27 @@ import com.zhu.ssm.service.UserService;
  * @version 8.0
  */
 @Service
-public class UserServiceImpl implements UserService
+public class GoodsServiceImpl implements GoodsService
 {
-	Log				logger	= LogFactory.getLog(UserServiceImpl.class);
+	Log					logger	= LogFactory.getLog(GoodsServiceImpl.class);
 	@Autowired
-	private UserDao	userDao;
+	private GoodsDao	goodsDao;
 
 	@Override
-	public void findUser(PageInfo pageInfo, User user)
+	public void findGood(PageInfo pageInfo, Goods goods)
 	{
-		logger.info("findUser pageInfo:" + JSON.toJSONString(pageInfo));
+		logger.info("findGoods pageInfo:" + JSON.toJSONString(pageInfo));
 		Page<?> page = PageHelper.startPage(pageInfo.getPageNumber(), pageInfo.getPageSize());
-		pageInfo.setRows(userDao.findUserByParams(user));
+		pageInfo.setRows(goodsDao.findGoodsByParams(goods));
 		pageInfo.setTotal(page.getTotal());
 	}
 
 	@Override
-	public void createUser(User user)
+	public void createGood(Goods goods)
 	{
-		if (user != null)
+		if (goods != null)
 		{
-			if (StrUtil.isStrTrimNull(user.getUserid()))
+			if (StrUtil.isStrTrimNull(goods.getGoodsid()))
 			{
 				List<CodePart> codeParts = new ArrayList<>();
 				CodePart codePart1 = new CodePart();
@@ -65,21 +65,21 @@ public class UserServiceImpl implements UserService
 				codePart2.setType(CodeType.RANDOM_NUMBER);
 				codeParts.add(codePart2);
 				Code code = new Code(codeParts);
-				user.setUserid(code.makeCode());
+				goods.setGoodsid(code.makeCode());
 			}
-			userDao.createUser(user);
+			goodsDao.createGoods(goods);
 		}
 	}
 
 	@Override
-	public void deleteUser(User user)
+	public void deleteGood(Goods goods)
 	{
-		userDao.deleteUser(user);
+		goodsDao.deleteGoods(goods);
 	}
 
 	@Override
-	public void updateUser(User user)
+	public void updateGood(Goods goods)
 	{
-		userDao.updateuser(user);
+		goodsDao.updateGoods(goods);
 	}
 }

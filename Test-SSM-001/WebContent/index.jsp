@@ -13,6 +13,10 @@
 <body>
  我告诉你我是首页
 <br>
-<a href="<%=basePath %>user/list?pageNumber=1&pageSize=1">获取分页</a>
+<a href="<%=basePath %>user/list?pageNumber=1&pageSize=1">获取分页用户</a>
+<br>
+<a href="<%=basePath %>user/insert?username=zyz">添加用户zyz</a>
+<br>
+<a href="<%=basePath %>goods/findGoods?pageNumber=1&pageSize=1&price=12">获取分页商品</a>
 </body>
 </html>
