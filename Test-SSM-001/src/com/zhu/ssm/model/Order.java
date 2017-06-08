@@ -21,10 +21,10 @@ public class Order implements Serializable
 	private String	orderid;
 	private String	userid;
 	private String	goodsid;
-	private double	price;
+	private Double	price;
 	private Date	predate;
-	private double	qty;
-	private String	market;
+	private Integer	qty;
+	private String	remark;
 	private Goods	good;
 	private User	user;
 
@@ -58,12 +58,12 @@ public class Order implements Serializable
 		this.goodsid = goodsid;
 	}
 
-	public double getPrice()
+	public Double getPrice()
 	{
 		return price;
 	}
 
-	public void setPrice(double price)
+	public void setPrice(Double price)
 	{
 		this.price = price;
 	}
@@ -78,43 +78,37 @@ public class Order implements Serializable
 		this.predate = predate;
 	}
 
-	public double getQty()
+	public Integer getQty()
 	{
 		return qty;
 	}
 
-	public void setQty(double qty)
+	public void setQty(Integer qty)
 	{
 		this.qty = qty;
 	}
 
-	public String getMarket()
-	{
-		return market;
+	public String getRemark() {
+		return remark;
+	}
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
-	public void setMarket(String market)
-	{
-		this.market = market;
-	}
-
-	public Goods getGood()
-	{
+	public Goods getGood() {
 		return good;
 	}
 
-	public void setGood(Goods good)
-	{
+	public void setGood(Goods good) {
 		this.good = good;
 	}
 
-	public User getUser()
-	{
+	public User getUser() {
 		return user;
 	}
 
-	public void setUser(User user)
-	{
+	public void setUser(User user) {
 		this.user = user;
 	}
+	
 }

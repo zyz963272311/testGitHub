@@ -1,3 +1,4 @@
 #Tomcat publish data
-#Tue Jun 06 21:47:13 CST 2017
+#Thu Jun 08 23:08:32 CST 2017
 org.eclipse.jst.jee.server\:/binary\:D\:\\MyProject\\OnGithub\\Test-SSM-001\\WebContent\\WEB-INF\\lib\\spring-web-4.3.0.RELEASE.jar=WEB-INF/lib/spring-web-4.3.0.RELEASE.jar
+org.eclipse.jst.j2ee.server\:rootbase=WEB-INF/lib/rootbase.jar

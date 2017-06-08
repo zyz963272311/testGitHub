@@ -13,7 +13,6 @@
         </property>  
     </bean>  
   
-    <!-- 配置数据源 -->  
     <!-- org.apache.commons.dbcp.BasicDataSource 管理datasorce  ${jdbc.driverClassName} 表示引用properties配置文件中的值-->
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">  
         <property name="driverClassName" value="${jdbc.driverClassName}"/>  
@@ -34,7 +33,6 @@
         <property name="removeAbandonedTimeout" value="${jdbc.removeAbandonedTimeout}"/>  
     </bean>  
   
-    <!-- myBatis文件 -->  
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
         <property name="dataSource" ref="dataSource" />  
         <property name="mapperLocations" value="classpath*:com/zhu/ssm/model/mybatis/*.xml" />  
@@ -68,6 +66,7 @@
             <!-- 配置事务属性 -->  
             <!-- 默认值： isolation="DEFAULT" timeout="-1" propagation="REQUIRED" read-only="false" -->  
             <tx:method name="insert*" propagation="REQUIRED" />  
+            <tx:method name="create*" propagation="REQUIRED" />  
             <tx:method name="update*" propagation="REQUIRED" />  
             <tx:method name="delete*" propagation="REQUIRED" />  
             <tx:method name="batch*" propagation="REQUIRED" />  

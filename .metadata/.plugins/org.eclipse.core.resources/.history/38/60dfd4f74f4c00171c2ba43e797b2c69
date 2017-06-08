@@ -1,0 +1,26 @@
+package com.zhu.ssm.service.impl;
+
+import org.springframework.stereotype.Service;
+
+import com.zhu.ssm.common.PageInfo;
+import com.zhu.ssm.model.Order;
+import com.zhu.ssm.service.OrderService;
+@Service
+public class OrderServiceImpl implements OrderService {
+
+	@Override
+	public PageInfo findOrderByParams(PageInfo pageInfo, Order order) {
+		return null;
+	}
+
+	@Override
+	public void insertOrder(Order order) {
+		
+	}
+
+	@Override
+	public void deleteOrder(Order order) {
+		
+	}
+
+}

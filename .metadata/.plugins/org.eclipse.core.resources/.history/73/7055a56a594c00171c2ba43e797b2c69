@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhu.ssm.dao.OrderDao">
+	<sql id = "inc_whereOrder">
+		where 1=1 
+		<if test="orderid!=null">
+			and orderid=#{orderid}
+		</if>
+		<if test="goodsid!=null">
+			and goodsid=#{goodsid}
+		</if>
+		<if test="userid!=null">
+			and userid=#{userid}
+		</if>
+	</sql>
+	<insert id="insert">
+		INSERT INTO orders(orderid,userid,goodsid,price,qty,predate,remark)
+		VALUES(
+			#{orderid,jdbcType=VARCHAR},
+			#{userid,jdbcType=VARCHAR},
+			#{goodsid,jdbcType=VARCHAR},
+			#{price,jdbcType=DOUBLE},
+			#{predate,jdbcType=DATE},
+			#{remark,jdbcType=LONGVARCHAR}
+		)
+	</insert>
+	<select id="findOrderByParams" resultType="com.zhu.ssm.model.Order">
+		SELECT orderid,userid,goodsid,price,qty 
+		FROM orders 
+		<include refid="inc_whereOrder"></include>
+	</select>
+	<delete id="delete">
+		DELETE FROM orders 
+		<include refid="inc_whereOrder"></include>
+	</delete>
+</mapper>

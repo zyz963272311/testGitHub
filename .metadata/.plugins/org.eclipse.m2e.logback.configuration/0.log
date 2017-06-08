@@ -1242,3 +1242,9 @@
 2017-05-26 22:39:17,518 [Worker-61] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
 2017-05-26 22:39:19,625 [New I/O client worker #1-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/mysql/mysql-connector-java/5.1.22/mysql-connector-java-5.1.22-sources.jar
 2017-05-26 22:39:20,440 [New I/O client worker #1-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/mysql/mysql-connector-java/5.1.22/mysql-connector-java-5.1.22-sources.jar
+2017-06-08 21:53:46,154 [Worker-62] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-06-08 21:53:47,150 [New I/O client worker #1-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/springframework/spring-aop/4.3.0.RELEASE/spring-aop-4.3.0.RELEASE-sources.jar
+2017-06-08 21:53:48,289 [New I/O client worker #1-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/springframework/spring-aop/4.3.0.RELEASE/spring-aop-4.3.0.RELEASE-sources.jar
+2017-06-08 22:06:23,674 [Worker-70] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-06-08 22:06:24,919 [New I/O client worker #2-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/com/github/pagehelper/pagehelper/3.7.3/pagehelper-3.7.3-sources.jar
+2017-06-08 22:06:25,295 [New I/O client worker #2-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/com/github/pagehelper/pagehelper/3.7.3/pagehelper-3.7.3-sources.jar

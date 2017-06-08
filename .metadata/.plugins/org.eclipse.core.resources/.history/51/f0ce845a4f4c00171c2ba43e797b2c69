@@ -1,0 +1,4 @@
+package com.zhu.ssm.dao;
+
+public interface OrderDao {
+}
