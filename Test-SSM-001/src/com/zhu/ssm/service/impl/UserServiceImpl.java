@@ -74,12 +74,18 @@ public class UserServiceImpl implements UserService
 	@Override
 	public void deleteUser(User user)
 	{
-		userDao.deleteUser(user);
+		if (user != null && StrUtil.isNoStrTrimNull(user.getUserid()))
+		{
+			userDao.deleteUser(user);
+		}
 	}
 
 	@Override
 	public void updateUser(User user)
 	{
-		userDao.updateuser(user);
+		if (user != null && StrUtil.isNoStrTrimNull(user.getUserid()))
+		{
+			userDao.updateuser(user);
+		}
 	}
 }

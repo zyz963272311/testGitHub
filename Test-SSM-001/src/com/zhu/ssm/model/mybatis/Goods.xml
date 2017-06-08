@@ -3,6 +3,9 @@
 <mapper namespace="com.zhu.ssm.dao.GoodsDao">
 	<sql id = "inc_whereClause">
 		where 1=1 
+		<if test="goodsid!=null">
+			and goodsid=#{goodsid}
+		</if>
 		<if test="goodsname!=null">
 			and goodsname=#{goodsname}
 		</if>

@@ -3,6 +3,9 @@
 <mapper namespace="com.zhu.ssm.dao.UserDao">
 	<sql id = "inc_whereClause">
 		where 1=1 
+		<if test="userid!=null">
+			and userid=#{userid}
+		</if>
 		<if test="username!=null">
 			and username=#{username}
 		</if>
