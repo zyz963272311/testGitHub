@@ -5,16 +5,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.zhu.ssm.common.Constans;
 import com.zhu.ssm.common.PageInfo;
 import com.zhu.ssm.common.ResultBean;
 import com.zhu.ssm.model.Order;
 import com.zhu.ssm.service.OrderService;
-
 @Controller
-@RequestMapping(value="order")
-public class OrderController {
+@RequestMapping(value = "/order")
+public class OrderController
+{
 	@Autowired
 	private OrderService	orderService;
 
@@ -35,7 +34,6 @@ public class OrderController {
 		resultBean.setFlag(Constans.SUCCESS);
 		return resultBean;
 	}
-
 
 	@RequestMapping(value = "insert", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody

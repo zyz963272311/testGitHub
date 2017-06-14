@@ -63,7 +63,6 @@
     <!-- 配置事务处理面（事务通知） -->  
     <tx:advice id="appAdvice" transaction-manager="transactionManager">  
         <tx:attributes>  
-            <!-- 配置事务属性 -->  
             <!-- 默认值： isolation="DEFAULT" timeout="-1" propagation="REQUIRED" read-only="false" -->  
             <tx:method name="insert*" propagation="REQUIRED" />  
             <tx:method name="create*" propagation="REQUIRED" />  
@@ -78,12 +77,9 @@
         </tx:attributes>  
     </tx:advice>  
   
-    <!-- 配置AOP事务 -->  
     <aop:config>  
-        <!-- 配置事务切点 -->  
         <aop:pointcut expression="execution(* com.zhu.ssm.service.*Service.*(..))"  
                       id="appPoint" />  
-        <!-- 结合事务切点与切面 -->  
         <aop:advisor advice-ref="appAdvice" pointcut-ref="appPoint" />  
     </aop:config>  
   

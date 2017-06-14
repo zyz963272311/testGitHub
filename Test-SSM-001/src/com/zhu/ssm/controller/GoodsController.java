@@ -25,7 +25,7 @@ import com.zhu.ssm.service.GoodsService;
  * @version 8.0
  */
 @Controller
-@RequestMapping(value = "goods")
+@RequestMapping(value = "/goods")
 public class GoodsController
 {
 	@Autowired

@@ -25,7 +25,7 @@ import com.zhu.ssm.service.UserService;
  * @version 8.0
  */
 @Controller
-@RequestMapping(value = "user")
+@RequestMapping(value = "/user")
 public class UserController
 {
 	@Autowired
