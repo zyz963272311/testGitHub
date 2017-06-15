@@ -16,11 +16,15 @@
 		var userid = document.getElementById("deleteUserId").value;
 		if(userid == undefined||userid=="")
 		{
-			throw "userid不可为空";
+			alert("userid不可为空");
+			return false;
 		}
-		url=url+userid;
-		alert(url);
-		dom.href = url;
+		else
+		{
+			url=url+userid;
+			window.location=url;
+			return true;
+		}
 	}
 </script>
 </head>
@@ -31,7 +35,7 @@
 <br>
 <a href="<%=basePath %>user/insert?username=zyz">添加用户zyz</a>
 <br>
-<a href="<%=basePath %>user/delete?userid=" onclick="deleteUsr(this)">删除用户</a><input id="deleteUserId"/>
+<a href="<%=basePath %>user/delete?userid=" onclick="deleteUsr(this);return false;">删除用户</a><input id="deleteUserId"/>
 <br>
 <a href="<%=basePath %>goods/findGoods?pageNumber=1&pageSize=1&price=12">获取分页商品</a>
 <br>
