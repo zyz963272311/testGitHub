@@ -1,9 +1,0 @@
-package com.zhu.ssm.dao;
-
-import com.zhu.ssm.model.Order;
-
-public interface OrderDao {
-	void findOrderByParams(Order order);
-	void delete(Order order);
-	void insert(Order order);
-}

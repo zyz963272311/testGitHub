@@ -1,8 +1,0 @@
-package com.zhu.ssm.service;
-
-import com.zhu.ssm.common.PageInfo;
-import com.zhu.ssm.model.Order;
-
-public interface OrderService {
-	PageInfo findOrderByParams(PageInfo pageInfo,Order order);
-}

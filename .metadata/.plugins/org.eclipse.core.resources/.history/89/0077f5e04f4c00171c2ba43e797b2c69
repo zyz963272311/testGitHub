@@ -1,7 +1,0 @@
-package com.zhu.ssm.service.impl;
-
-import com.zhu.ssm.service.OrderService;
-
-public class OrderServiceImpl implements OrderService {
-
-}
