@@ -11,6 +11,7 @@
 <script type="text/javascript" src="<%=path %>/resources/js/echarts.min.js"></script>
 <script type="text/javascript">
 	var num = Math.random();//Math.random()：得到一个0到1之间的随机数
+	var nm = "tyghjkl;hjkl';kj';kj';kjds;lakd;lsakd;lsa";
 	var myChart;
 	//在界面加载的时候初始化echarts
 	function initECharts(id)
@@ -100,29 +101,87 @@
             },
             legend: {
             	//在使用的时候，请把下面的注释去掉，使用默认的只有名称的显示
-                data:leg,
+                //data:leg,
                 //是否显示,默认显示,如果为false则不显示上边的多个标题
-                show:false,
+                show:true,
                 //不懂，默认0
                 zlevel:0,
                 //不懂，默认2
                 z:2,
                 //距离容器左边框的距离
-                left:'auto',
-                //距离容器上边框的距离
-                top:'auto',
-                //距离容器右边框的距离
-                right:'auto',
-                //距离容器下边框的距离
-                bottom:'auto',
-                //图例组件的宽度。默认自适应。
-                width:'auto',
-                //图例组件的高度。默认自适应。
-                height:'auto',
+//                 left:'auto',
+//                 //距离容器上边框的距离
+//                 top:'auto',
+//                 //距离容器右边框的距离
+//                 right:'auto',
+//                 //距离容器下边框的距离
+//                 bottom:'auto',
+//                 //图例组件的宽度。默认自适应。
+//                 width:'auto',
+//                 //图例组件的高度。默认自适应。
+//                 height:'auto',
                 //设置布局朝向，默认垂直,可选horizontal，vertical
-                orient:'horizontal',
-                //图例列表的布局朝向
-                align:
+                orient:'vertical',
+                //图例列表的布局朝向可选 小图标相对于文字的方向auto ，left，right
+                align:'left',
+                //图标的内边距 上右下左
+                padding:[10,50,10,10,],
+                //设置每个选项之间的间距 默认10
+                itemGap:20,
+                //每个小图标的宽度 默认25
+                itemWidth:40,
+                //每个小图标的高度 默认14
+                itemHeight:10,
+                //用来格式化图标的文本,支持{}和回调方法
+                formatter:function () {
+                    //参数：需要转换的【文字】，【总宽度】，【文字每个宽度样式】，【超出部分的显示样式】
+        			return echarts.format.truncateText(nm, 40, '14px Microsoft Yahei', '~~');
+    			},
+                //formatter:'dghfkjdfhkljfashjdsjafkldjskl',
+                //图例选择的模式，控制是否可以通过点击图例改变系列的显示状态。默认开启图例选择，可以设成 false 关闭。
+				//除此之外也可以设成 'single' 或者 'multiple' 使用单选或者多选模式。
+                selectedMode:true,
+                //图标关闭时的图标颜色，默认#ccc
+                inactiveColor:'#ff9900',
+                //图标的选中状态表{data[0]:bool,data[1]:bool},默认true
+                selected:{'legend0':true,'legend1':true},
+                //图例的公用文本样式。上面都有
+                textStyle:{
+                    //颜色,默认#333,当被选中时文字的颜色
+                    color:'#00ff00',
+                    //文字的样式,同上面的fontStyle
+                    fontStyle:'noormal'
+                },
+                //显示提示框，比如当文字很长的情况下，可以使用这个配置来悬浮显示全部文字，默认开启
+                //详细信息参考后面的tooltip
+                tooltip:{
+                    show:true
+                },
+                //图例的数据数组。数组项通常为一个字符串，每一项代表一个系列的 name（如果是饼图，也可以是饼图单个数据的 name）。图例组件会自动根据对应系列的图形标记（symbol）来绘制自己的颜色和标记，特殊字符串 ''（空字符串）或者 '\n'（换行字符串）用于图例的换行。
+				//如果要设置单独一项的样式，也可以把该项写成配置项对象。此时必须使用 name 属性对应表示系列的 name。
+				data:[{
+						 name: 'legend0',
+					    // 强制设置图形为圆。
+					    icon: 'circle',
+					    // 设置文本为红色
+					    textStyle: {
+					        color: 'red'
+						   }
+					},
+					{
+						 name: 'legend1',
+					    // 强制设置图形为圆。
+					    icon: 'circle',
+					    // 设置文本为红色
+					    textStyle: {
+					        color: 'blue'
+						}
+					}
+				],
+				//背景颜色，同上面的北京颜色，默认透明
+				backgroundColor:'rgba(255,255,255,1)'
+				//borderColor,borderWidth,shadowBlur,shadowColor,shadowOffsetX,shadowOffsetY,同上
+				
             },
             tooltip: {},
             xAxis: {
