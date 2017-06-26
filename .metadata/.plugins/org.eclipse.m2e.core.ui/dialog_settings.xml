@@ -18,6 +18,8 @@
 			<item value="0.0.1-SNAPSHOT"/>
 		</list>
 	</section>
+	<section name="org.jboss.tools.project.examples.stacksrequirements">
+	</section>
 	<section name="MavenProjectWizardArchetypePage">
 		<list key="projectNameTemplate">
 			<item value="[artifactId]"/>
@@ -29,6 +31,10 @@
 	</section>
 	<section name="MavenProjectWizardLocationPage">
 		<list key="location">
+		</list>
+		<list key="projectNameCombo">
+		</list>
+		<list key="packageCombo">
 		</list>
 		<list key="projectNameTemplate">
 			<item value="[artifactId]"/>

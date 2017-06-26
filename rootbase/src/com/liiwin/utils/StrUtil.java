@@ -332,7 +332,18 @@ public class StrUtil
 
 	public static boolean isNullIn(String... stringList)
 	{
+		return isNullIn(false,stringList);
+	}
+	public static boolean isNullIn(boolean stringListIsNull,String... stringList)
+	{
 		boolean hasNull = false;
+		if(stringList == null||stringList.length == 0)
+		{
+			if(stringListIsNull)
+			{
+				return true;
+			}
+		}
 		for (String s : stringList)
 		{
 			hasNull = isNull(s);

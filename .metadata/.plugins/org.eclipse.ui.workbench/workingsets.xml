@@ -3,7 +3,7 @@
 <workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1495546714157_1" label="Maven" name="Maven"/>
 <workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1495546800347_2" label="jxj" name="jxj">
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/RemoteSystemsTempFiles" type="4"/>
-<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/zyztest" type="4"/>
+<item elementID="=zyztest" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=rootbase" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=testGitHub" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=jxj" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
@@ -12,8 +12,9 @@
 </workingSet>
 <workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1496754868210_4" label="ZYZTEST" name="ZYZTEST">
 <item elementID="=Test-SSM-001" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=Test-Redis-001" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=Test-javascript-01" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=Test-Redis-001" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=Userinfo" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 </workingSet>
 <workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1495028529731_0" label="Window Working Set" name="Aggregate for window 1495028529729"/>
 <mruList name="jxj"/>

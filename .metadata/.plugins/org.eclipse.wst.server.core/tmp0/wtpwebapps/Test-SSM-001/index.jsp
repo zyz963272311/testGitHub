@@ -40,5 +40,7 @@
 <a href="<%=basePath %>goods/findGoods?pageNumber=1&pageSize=1&price=12">获取分页商品</a>
 <br>
 <a href="<%=basePath %>order/findOrder?pageNumber=1&pageSize=2">获取分页订单</a>
+<br>
+<a href="file.jsp">文件上传下载</a>
 </body>
 </html>

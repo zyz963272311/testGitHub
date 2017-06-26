@@ -50,5 +50,12 @@
         <property name="prefix" value="/pages/" />  
         <property name="suffix" value=".jsp"></property>  
     </bean>
+    <!-- 文件定义解释器 -->
+    <bean id="multipartResolver" class = "org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    	<!-- 设置文件的编码为utf-8 -->
+    	<property name="defaultEncoding" value="utf-8"></property>
+    	<!-- 设置文件的最大大小为5M -->
+    	<property name="maxUploadSize" value="5242440"></property>
+    </bean>
 
 </beans>  

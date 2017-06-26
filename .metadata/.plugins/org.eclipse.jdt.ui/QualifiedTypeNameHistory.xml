@@ -1,16 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="java.lang.Class"/>
-<fullyQualifiedTypeName name="com.sun.xml.internal.messaging.saaj.soap.name.NameImpl"/>
-<fullyQualifiedTypeName name="java.rmi.Naming"/>
-<fullyQualifiedTypeName name="com.liiwin.util.ServiceUtil"/>
-<fullyQualifiedTypeName name="com.liiwin.service.RemoteLoginService"/>
-<fullyQualifiedTypeName name="com.liiwin.service.LoginService"/>
-<fullyQualifiedTypeName name="com.liiwin.service.impl.LoginServiceImpl"/>
-<fullyQualifiedTypeName name="java.awt.List"/>
-<fullyQualifiedTypeName name="java.sql.Array"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
-<fullyQualifiedTypeName name="java.io.PrintWriter"/>
 <fullyQualifiedTypeName name="com.liiwin.ui.Register"/>
 <fullyQualifiedTypeName name="javax.swing.JPanel"/>
 <fullyQualifiedTypeName name="java.awt.event.WindowAdapter"/>
@@ -25,12 +14,10 @@
 <fullyQualifiedTypeName name="java.rmi.Remote"/>
 <fullyQualifiedTypeName name="java.rmi.RemoteException"/>
 <fullyQualifiedTypeName name="com.liiwin.service.RemoteRegisterService"/>
-<fullyQualifiedTypeName name="java.lang.String"/>
 <fullyQualifiedTypeName name="com.liiwin.db.DataBase"/>
 <fullyQualifiedTypeName name="java.lang.Deprecated"/>
 <fullyQualifiedTypeName name="java.lang.Object"/>
 <fullyQualifiedTypeName name="com.liiwin.db.ResultSetUtil"/>
-<fullyQualifiedTypeName name="java.lang.Exception"/>
 <fullyQualifiedTypeName name="com.liiwin.code.CodePart"/>
 <fullyQualifiedTypeName name="com.liiwin.code.CodeType"/>
 <fullyQualifiedTypeName name="com.liiwin.code.Code"/>
@@ -39,14 +26,12 @@
 <fullyQualifiedTypeName name="java.lang.StringBuffer"/>
 <fullyQualifiedTypeName name="com.liiwin.db.SqlUtil"/>
 <fullyQualifiedTypeName name="com.liiwin.db.Database"/>
-<fullyQualifiedTypeName name="java.lang.RuntimeException"/>
 <fullyQualifiedTypeName name="com.liiwin.service.impl.RemoteRegisterServiceImpl"/>
 <fullyQualifiedTypeName name="java.util.HashMap"/>
 <fullyQualifiedTypeName name="com.liiwin.service.RegisterService"/>
 <fullyQualifiedTypeName name="com.liiwin.service.impl.RegisterServiceImpl"/>
 <fullyQualifiedTypeName name="java.util.Map"/>
 <fullyQualifiedTypeName name="com.liiwin.util.StrUtil"/>
-<fullyQualifiedTypeName name="com.liiwin.utils.StrUtil"/>
 <fullyQualifiedTypeName name="javax.swing.JEditorPane"/>
 <fullyQualifiedTypeName name="javax.swing.JTextField"/>
 <fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
@@ -60,4 +45,19 @@
 <fullyQualifiedTypeName name="com.zhu.ssm.model.Order"/>
 <fullyQualifiedTypeName name="java.lang.Double"/>
 <fullyQualifiedTypeName name="java.lang.Integer"/>
+<fullyQualifiedTypeName name="java.io.OutputStream"/>
+<fullyQualifiedTypeName name="java.util.zip.ZipOutputStream"/>
+<fullyQualifiedTypeName name="java.lang.Exception"/>
+<fullyQualifiedTypeName name="java.lang.String"/>
+<fullyQualifiedTypeName name="java.nio.charset.Charset"/>
+<fullyQualifiedTypeName name="com.liiwin.utils.StrUtil"/>
+<fullyQualifiedTypeName name="java.util.zip.ZipInputStream"/>
+<fullyQualifiedTypeName name="java.io.FileInputStream"/>
+<fullyQualifiedTypeName name="java.lang.RuntimeException"/>
+<fullyQualifiedTypeName name="java.io.BufferedInputStream"/>
+<fullyQualifiedTypeName name="java.util.zip.ZipEntry"/>
+<fullyQualifiedTypeName name="java.io.FileOutputStream"/>
+<fullyQualifiedTypeName name="java.io.BufferedOutputStream"/>
+<fullyQualifiedTypeName name="java.io.File"/>
+<fullyQualifiedTypeName name="java.lang.Character"/>
 </qualifiedTypeNameHistroy>
