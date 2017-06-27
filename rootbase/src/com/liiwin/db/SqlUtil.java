@@ -397,7 +397,7 @@ public class SqlUtil
 
 	public static void main(String[] args)
 	{
-		//main2();
+		main2();
 		main1();
 	}
 

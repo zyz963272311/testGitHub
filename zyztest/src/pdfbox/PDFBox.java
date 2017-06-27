@@ -2,11 +2,12 @@ package pdfbox;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.util.Iterator;
 import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.PDPageContentStream.AppendMode;
 import org.apache.pdfbox.pdmodel.PDResources;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -99,25 +100,25 @@ public class PDFBox
 						{
 							PDImageXObject image = (PDImageXObject) resources.getXObject(key);
 							//方式1，将pdf中的图片，分别另存为pdf文档
-							/*PDPageContentStream contentStream = new PDPageContentStream(document_out, page_out, AppendMode.APPEND, true);
+							PDPageContentStream contentStream = new PDPageContentStream(document_out, page_out, AppendMode.APPEND, true);
 							float scale = 1f;
 							contentStream.drawImage(image, 20, 20, image.getWidth(), image.getHeight());
 							contentStream.close();
 							document_out.save(filePath_image + j + ".pdf");
 							System.out.println(image.getSuffix() + "--" + image.getWidth() + "--" + image.getHeight());
-							*/
 							//方式2，将PDF中的图片，另存为图片，这种方式保存为文件格式有问题
-							File file = new File(filePath_image + j + ".jpg");
-							FileOutputStream outputStream = new FileOutputStream(file);
-							InputStream input = image.createInputStream();
-							int byteCount = 0;
-							byte[] bytes = new byte[1024];
-							while ((byteCount = input.read(bytes)) > 0)
-							{
-								outputStream.write(bytes, 0, byteCount);
-							}
-							input.close();
-							outputStream.close();
+							//							File file = new File(filePath_image + j + ".jpeg");
+							//							FileOutputStream outputStream = new FileOutputStream(file);
+							//							InputStream input = image.createInputStream();
+							//							int byteCount = 0;
+							//							byte[] bytes = new byte[1024];
+							//							while ((byteCount = input.read(bytes)) != -1)
+							//							{
+							//								outputStream.write(bytes, 0, byteCount);
+							//								outputStream.flush();
+							//							}
+							//							input.close();
+							//							outputStream.close();
 							j++;
 							System.out.println(j);
 						} catch (Exception e)

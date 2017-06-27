@@ -1,12 +1,19 @@
 package itext;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
+import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.List;
+import org.apache.commons.io.FileUtils;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -17,6 +24,7 @@ import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.html.simpleparser.HTMLWorker;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
@@ -58,6 +66,8 @@ public class ITextTest
 		printTable();
 		//打印图片，按照二进制流
 		printImageByBytes();
+		//按照html模版打印
+		printTemplete();
 		//打印隔行换色的table
 		try
 		{
@@ -66,6 +76,41 @@ public class ITextTest
 		} catch (Exception e)
 		{
 			System.out.println("打印出错" + e.getMessage());
+		}
+	}
+
+	public static void printTemplete()
+	{
+		String templetePath = "D:/MyProject/OnGithub/templete.html";
+		String targetPath = "D:/templete.pdf";
+		try
+		{
+			String str = FileUtils.readFileToString(new File(templetePath), Charset.forName("gbk"));
+			StringReader rd = new StringReader(str);
+			BufferedReader br = new BufferedReader(new FileReader(templetePath));
+			@SuppressWarnings("deprecation")
+			List<Element> parseToList = HTMLWorker.parseToList(rd, null, new HashMap<String,Object>());
+			Document document = new Document(PageSize.A4);
+			PdfWriter.getInstance(document, new FileOutputStream(targetPath));
+			document.open();
+			for (Element e : parseToList)
+			{
+				document.add(e);
+			}
+			System.out.println("templete完成");
+			System.out.println(String.valueOf(br));
+			System.out.println(String.valueOf(rd));
+			System.out.println(String.valueOf(str));
+			document.close();
+		} catch (FileNotFoundException e)
+		{
+			throw new RuntimeException("报错内容", e);
+		} catch (IOException e)
+		{
+			throw new RuntimeException("报错内容", e);
+		} catch (DocumentException e)
+		{
+			throw new RuntimeException("报错内容", e);
 		}
 	}
 
@@ -87,8 +132,10 @@ public class ITextTest
 		cell1.setHorizontalAlignment(Element.ALIGN_RIGHT);//设置水平方向居右，对应的还有LEFT与CENTER
 		cell1.setMinimumHeight(100);
 		table.addCell(cell1);
-		table.addCell(new PdfPCell(new Phrase("無幽之路IText教程")));
-		table.addCell(new PdfPCell(new Phrase("無幽之路IText教程")));
+		table.addCell(new PdfPCell(new Phrase("無幽之路IText教程")));//没有打印中文是因为没有使用itext-asia的jar包作为字体
+		table.addCell(new PdfPCell(new Phrase("無幽之路IText教程", new Font(//
+				BaseFont.createFont("STSong-Light", "UniGB-UCS2-H", BaseFont.NOT_EMBEDDED),// 
+				24, Font.BOLD, BaseColor.RED))));
 		document.add(table);
 		document.close();
 	}
@@ -241,6 +288,9 @@ public class ITextTest
 			PdfWriter.getInstance(document, new FileOutputStream("D://testTable.pdf"));
 			document.open();
 			PdfPTable table = new PdfPTable(3);
+			Paragraph paragraph = new Paragraph("test Rotation");
+			document.add(paragraph);
+			document.add(new Paragraph("tak me as tatle"));
 			document.add(new Paragraph("tak me as tatle"));
 			document.add(new Paragraph("tak me as tatle"));
 			document.add(new Paragraph("tak me as tatle"));
@@ -252,6 +302,7 @@ public class ITextTest
 			table.setWidthPercentage(288 / 5.23f);
 			table.setWidths(new int[] { 2, 1, 1 });
 			PdfPCell cell = new PdfPCell(new Phrase("TABLE 1"));
+			//cell.setRotation(30);
 			cell.setColspan(3);
 			table.addCell(cell);
 			cell = new PdfPCell(new Phrase("cell with rows 2"));

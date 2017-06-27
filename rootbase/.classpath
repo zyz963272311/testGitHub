@@ -7,6 +7,14 @@
 	<classpathentry kind="lib" path="libs/QRCode.jar"/>
 	<classpathentry kind="lib" path="libs/Qrcodeen.jar"/>
 	<classpathentry kind="lib" path="libs/jedis-2.1.0.jar"/>
+	<classpathentry kind="lib" path="libs/thumbnailator-0.4.8.jar"/>
+	<classpathentry kind="lib" path="libs/fontbox-2.0.4.jar"/>
+	<classpathentry kind="lib" path="libs/itext-asian.jar"/>
+	<classpathentry kind="lib" path="libs/itextpdf.jar"/>
+	<classpathentry kind="lib" path="libs/pdfbox-2.0.4.jar"/>
+	<classpathentry kind="lib" path="libs/pdfbox-debugger-2.0.4.jar"/>
+	<classpathentry kind="lib" path="libs/pdfbox-tools-2.0.4.jar"/>
+	<classpathentry kind="lib" path="libs/commons-io-2.5.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v7.0">
 		<attributes>

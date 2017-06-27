@@ -1,5 +1,6 @@
 package com.liiwin.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 /**
@@ -332,14 +333,15 @@ public class StrUtil
 
 	public static boolean isNullIn(String... stringList)
 	{
-		return isNullIn(false,stringList);
+		return isNullIn(false, stringList);
 	}
-	public static boolean isNullIn(boolean stringListIsNull,String... stringList)
+
+	public static boolean isNullIn(boolean stringListIsNull, String... stringList)
 	{
 		boolean hasNull = false;
-		if(stringList == null||stringList.length == 0)
+		if (stringList == null || stringList.length == 0)
 		{
-			if(stringListIsNull)
+			if (stringListIsNull)
 			{
 				return true;
 			}
@@ -513,5 +515,24 @@ public class StrUtil
 		sb.setLength(sb.length() - 1);
 		sb.append(']');
 		return sb.toString();
+	}
+
+	public static int[] getStrIndexs(String resStr, String str)
+	{
+		if (isNullIn(true, resStr, str))
+		{
+			return new int[] {};
+		}
+		if (resStr.length() < str.length())
+		{
+			return new int[] {};
+		}
+		List<Integer> resultInteger = new ArrayList<>();
+		int fromIdx = 0;
+		int idx = 0;
+		while ((idx = resStr.indexOf(str, fromIdx)) >= 0)
+		{
+		}
+		return null;
 	}
 }
