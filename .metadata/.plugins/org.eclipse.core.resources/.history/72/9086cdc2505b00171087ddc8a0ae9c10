@@ -1,0 +1,38 @@
+package com.liiwin.formula;
+
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import com.liiwin.utils.StrUtil;
+
+public class FormulaParse 
+{
+	/*匹配#{xx}*/
+	private static Pattern pattern = Pattern.compile("\\#\\{(.+?)\\}");
+	public static String parse(String formula,Map<String, Object> values)
+	{
+		String result = "";
+		if(StrUtil.isStrTrimNull(formula))
+		{
+			return result;
+		}
+		if(values == null || values.isEmpty())
+		{
+			return formula;
+		}
+		return result;
+	}
+	private String finalExpression(String formula,Map<String, Object> values)
+	{
+		String result = "";
+		Matcher m = pattern.matcher(formula);
+		if(!m.find())
+		{
+			return formula;
+		}
+		m.reset();
+		int group = m.groupCount();
+		return result;
+	}
+}

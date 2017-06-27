@@ -1,0 +1,12 @@
+package com.liiwin.formula;
+
+import java.util.Map;
+import java.util.regex.Pattern;
+
+public class FormulaParse 
+{
+	private static Pattern pattern = Pattern.compile("\\#\\{(.+?)\\}");
+	public static void parse(String formula,Map<String, Object> values)
+	{
+	}
+}

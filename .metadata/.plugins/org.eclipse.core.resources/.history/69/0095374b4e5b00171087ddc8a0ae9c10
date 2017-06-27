@@ -1,0 +1,8 @@
+package com.liiwin.formula;
+
+import java.util.regex.Pattern;
+
+public class FormulaParse 
+{
+	private static Pattern pattern = Pattern.compile("\\#\\{(.+?)\\}");
+}

@@ -1,0 +1,6 @@
+package com.liiwin.formula;
+
+public class FormulaParse 
+{
+	private static Pattern pattern = Pattern.compile("\\#\\{(.+?)\\}");
+}

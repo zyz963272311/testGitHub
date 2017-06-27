@@ -516,7 +516,12 @@ public class StrUtil
 		sb.append(']');
 		return sb.toString();
 	}
-
+	/**
+	 * 获取原字符串中所有子字符串出现的位置
+	 * @param resStr
+	 * @param str
+	 * @return
+	 */
 	public static int[] getStrIndexs(String resStr, String str)
 	{
 		if (isNullIn(true, resStr, str))
@@ -532,7 +537,221 @@ public class StrUtil
 		int idx = 0;
 		while ((idx = resStr.indexOf(str, fromIdx)) >= 0)
 		{
+			resultInteger.add(idx);
+			fromIdx = idx+1;
 		}
-		return null;
+		if(resultInteger.isEmpty())
+		{
+			return new int[] {};
+		}
+		int[] result = new int[resultInteger.size()];
+		for(int i = resultInteger.size()-1;i>=0;i--)
+		{
+			result[i]=resultInteger.get(i);
+		}
+		return result;
+	}
+	/**
+	 * 获取一个字符串的一些片段
+	 * @param resStr
+	 * @param fromIdx 起点
+	 * @param toIdx 重点
+	 * @return
+	 */
+	public static String[] getSubstring(String resStr,int[] fromIdx,int[] toIdx)
+	{
+		if(isStrTrimNull(resStr))
+		{
+			return null;
+		}
+		if(fromIdx == null ||toIdx == null||fromIdx.length!=toIdx.length)
+		{
+			return null;
+		}
+		String[] result = null;
+		double[] data1 = new double[fromIdx.length];
+		double[] data2 = new double[toIdx.length];
+		for(int i = 0;i<fromIdx.length;i++)
+		{
+			data1[i] = fromIdx[i];
+		}
+		for(int i = 0;i<toIdx.length;i++)
+		{
+			data2[i] = toIdx[i];
+		}
+		if(sameDirectionSameSymbol(data1, data2))
+		{
+			result =new String[fromIdx.length];
+			for(int i = 0; i< fromIdx.length;i++)
+			{
+				result[i] = resStr.substring(fromIdx[i], toIdx[i]);
+			}
+		}
+		return result;
+	}
+	/**
+	 * 判断data1的每一个值-data2的每一个值的符号是不是相同的
+	 * @param data1
+	 * @param data2
+	 * @return
+	 */
+	public static boolean sameDirectionSameSymbol(double[] data1,double[] data2)
+	{
+		if(data1 == null||data2 == null ||data1.length==1||data2.length == 1)
+		{
+			return true;
+		}
+		boolean dataiBigThanData2 = data1[0]-data2[0]>=0;
+		boolean result = false;
+		if(dataiBigThanData2)
+		{
+			result = data1BigThanData2(data1, data2);
+		}
+		else
+		{
+			result = data1BigThanData2(data1, data2);
+		}
+		return result;
+	}
+	/**
+	 * 是否是data1的每个元素大于data2的对应的元素
+	 * @param data1
+	 * @param data2
+	 * @return
+	 */
+	public static boolean data1BigThanData2(double[] data1,double[] data2)
+	{
+		if(data1 == null||data2 == null ||data1.length==1||data2.length == 1)
+		{
+			return true;
+		}
+		if(data1.length!=data2.length)
+		{
+			return false;
+		}
+		int length = data1.length-data2.length>0?data2.length:data1.length;
+		boolean result = true;
+		for(int i = 0; i < length; i++)
+		{
+			result = data1[i]>data2[i];
+			if(!result)
+			{
+				break;
+			}
+		}
+		return result;
+	}
+	/**
+	 * 是否是data1的每个元素小于等于data2的对应的元素
+	 * @param data1
+	 * @param data2
+	 * @return
+	 */
+	public static boolean data1SmallThanData2(double[] data1,double[] data2)
+	{
+		if(data1 == null||data2 == null ||data1.length==1||data2.length == 1)
+		{
+			return true;
+		}
+		if(data1.length!=data2.length)
+		{
+			return false;
+		}
+		int length = data1.length-data2.length>0?data2.length:data1.length;
+		boolean result = true;
+		for(int i = 0; i < length; i++)
+		{
+			result = data1[i]<data2[i];
+			if(!result)
+			{
+				break;
+			}
+		}
+		return result;
+	}
+	/**
+	 * 判断一个int数组是不是同向递增
+	 * @param data
+	 * @return
+	 */
+	public static boolean isSameDirection(double[] data)
+	{
+		if(data==null||data.length <=1)
+		{
+			return true;
+		}
+		boolean isAsc = (data[1]-data[0]>=0);
+		boolean result = false;
+		if(isAsc)
+		{
+			result = isAscDirection(data);
+		}
+		else
+		{
+			result = isDescDirection(data);
+		}
+		return result;
+	}
+	/**
+	 * 判断一个int数组是不是正向递增
+	 * @param data
+	 * @return
+	 */
+	public static boolean isAscDirection(double[] data)
+	{
+		if(data==null||data.length <=1)
+		{
+			return true;
+		}
+		boolean result = true;
+		for(int i = data.length-1;i>0;i--)
+		{
+			result = data[i]-data[i-1]<=0;
+			if(!result)
+			{
+				break;
+			}
+		}
+		return result;
+	}
+	/**
+	 * 判断一个int数组是不是反向递增
+	 * @param data
+	 * @return
+	 */
+	public static boolean isDescDirection(double[] data)
+	{
+		if(data==null||data.length <=1)
+		{
+			return true;
+		}
+		boolean result = true;
+		for(int i = data.length-1;i>0;i--)
+		{
+			result = data[i]-data[i-1]>=0;
+			if(!result)
+			{
+				break;
+			}
+		}
+		return result;
+	}
+	/**
+	 * 将data设置一个偏移量
+	 * @param data
+	 * @param deviation
+	 * @return
+	 */
+	public static int[] setDeviation(int[] data,int deviation)
+	{
+		if(data == null || data.length == 0)
+		{
+			return data;
+		}
+		for(int i = data.length-1;i>=0;i--)
+		{
+			data[i] = data[i]+deviation;
+		}
+		return data;
 	}
 }

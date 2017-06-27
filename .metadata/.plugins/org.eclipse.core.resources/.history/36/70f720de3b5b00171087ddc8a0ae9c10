@@ -1,0 +1,5 @@
+package com.liiwin.exception;
+
+public class DataException {
+
+}
