@@ -9,13 +9,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-
 import org.apache.commons.io.FileUtils;
-
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -39,7 +36,6 @@ import com.liiwin.utils.StrUtil;
  * 监听使用界面:
  * @version 8.0
  */
-@SuppressWarnings("deprecation")
 public class PrintHtmlTemple
 {
 	/**
@@ -72,6 +68,7 @@ public class PrintHtmlTemple
 			throw new RuntimeException("报错内容", e);
 		} catch (DocumentException e)
 		{
+			// TODO Auto-generated catch block
 			throw new RuntimeException("报错内容", e);
 		}
 	}
