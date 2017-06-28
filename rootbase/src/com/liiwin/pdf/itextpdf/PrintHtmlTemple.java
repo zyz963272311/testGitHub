@@ -1,18 +1,24 @@
 package com.liiwin.pdf.itextpdf;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-
 import org.apache.commons.io.FileUtils;
-
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.html.simpleparser.HTMLWorker;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.liiwin.exception.DataException;
 import com.liiwin.formula.FormulaParse;
 import com.liiwin.utils.StrUtil;
@@ -44,11 +50,29 @@ public class PrintHtmlTemple
 		{
 			String str = FileUtils.readFileToString(new File(templtPath), Charset.forName("gbk"));
 			String newStr = dealKV(str, values);
+			StringReader rd = new StringReader(newStr);
+			List<Element> parseToList = HTMLWorker.parseToList(rd, null, new HashMap<String,Object>());
+			Document document = new Document(PageSize.A4);
+			PdfWriter.getInstance(document, new FileOutputStream(targetPath));
+			document.open();
+			for (Element e : parseToList)
+			{
+				document.add(e);
+			}
+			System.out.println("templete完成");
+			System.out.println(String.valueOf(rd));
+			System.out.println(String.valueOf(str));
+			document.close();
 		} catch (IOException e)
 		{
 			throw new RuntimeException("报错内容", e);
+		} catch (DocumentException e)
+		{
+			// TODO Auto-generated catch block
+			throw new RuntimeException("报错内容", e);
 		}
 	}
+
 	/**
 	 * 根据模版文件生成的字符串信息，处理其中的公式，进行计算
 	 * @param str
@@ -61,68 +85,72 @@ public class PrintHtmlTemple
 		int[] formulaStartIdxs = StrUtil.getStrIndexs(str, "<formula>");
 		formulaStartIdxs = StrUtil.setDeviation(formulaStartIdxs, "<formula>".length());
 		int[] formulaEndIdxs = StrUtil.getStrIndexs(str, "</formula>");
-		if(formulaStartIdxs == null ||formulaEndIdxs == null||formulaStartIdxs.length!=formulaEndIdxs.length)
+		if (formulaStartIdxs == null || formulaEndIdxs == null || formulaStartIdxs.length != formulaEndIdxs.length)
 		{
-			throw  new DataException("打印格式错误");
+			throw new DataException("打印格式错误");
 		}
 		double[] data1 = new double[formulaStartIdxs.length];
 		double[] data2 = new double[formulaEndIdxs.length];
-		for(int i = 0; i<data1.length;i++)
+		for (int i = 0; i < data1.length; i++)
 		{
 			data1[i] = formulaStartIdxs[i];
 		}
-		for(int i = 0; i<data2.length;i++)
+		for (int i = 0; i < data2.length; i++)
 		{
 			data2[i] = formulaEndIdxs[i];
 		}
 		String[] formulas = null;
-		if(StrUtil.isAscDirection(data1)&&StrUtil.isAscDirection(data2))
+		if (StrUtil.isAscDirection(data1) && StrUtil.isAscDirection(data2))
 		{
 			formulas = StrUtil.getSubstring(resultStr, formulaStartIdxs, formulaEndIdxs);
 		}
-		Map<String, String> resultMap = bindFormulas(formulas, values);
-		if(resultMap!=null && !resultMap.isEmpty())
+		Map<String,String> resultMap = bindFormulas(formulas, values);
+		if (resultMap != null && !resultMap.isEmpty())
 		{
-			Set<String>keys = resultMap.keySet();
-			for(String key:keys)
+			Set<String> keys = resultMap.keySet();
+			for (String key : keys)
 			{
-				resultStr =resultStr.replace(key, resultMap.get(key));
+				resultStr = resultStr.replace(key, resultMap.get(key));
 			}
 		}
 		return resultStr;
 	}
+
 	/**
 	 * 处理公式
 	 * @param formulas
 	 * @param values
 	 * @return
 	 */
-	private static Map<String, String> bindFormulas(String[] formulas,Map<String, Object>values)
+	private static Map<String,String> bindFormulas(String[] formulas, Map<String,Object> values)
 	{
-		if(formulas == null || formulas.length == 0)
+		if (formulas == null || formulas.length == 0)
 		{
 			return null;
 		}
-		Map<String, String> result = new HashMap<>();
+		Map<String,String> result = new HashMap<>();
 		ScriptEngine jse = new ScriptEngineManager().getEngineByName("JavaScript");
-		try {
-			for(int i = 0;i<formulas.length;i++)
+		try
+		{
+			for (int i = 0; i < formulas.length; i++)
 			{
 				String parse = FormulaParse.parse(formulas[i], values);
-				result.put(formulas[i], StrUtil.obj2str(jse.eval(parse),formulas[i]));
-				System.out.println("formula="+formulas[i]+"\t结果是\t"+jse.eval(parse));
+				result.put(formulas[i], StrUtil.obj2str(jse.eval(parse), formulas[i]));
+				System.out.println("formula=" + formulas[i] + "\t结果是\t" + jse.eval(parse));
 			}
-		} catch (ScriptException e) {
+		} catch (ScriptException e)
+		{
 			e.printStackTrace();
 			throw new DataException(e.getMessage());
 		}
 		return result;
 	}
-	public static void main(String[] args) 
+
+	public static void main(String[] args)
 	{
 		String templtPath = "D:/MyProject/OnGithub/templete.html";
 		String targetPath = "D:/templete.pdf";
-		Map<String, Object> values = new HashMap<String, Object>();
+		Map<String,Object> values = new HashMap<String,Object>();
 		values.put("ab", "123");
 		values.put("cd", "456");
 		printHtmlTemple(templtPath, targetPath, values);

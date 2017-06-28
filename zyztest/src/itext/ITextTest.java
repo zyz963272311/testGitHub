@@ -1,12 +1,10 @@
 package itext;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
@@ -87,7 +85,6 @@ public class ITextTest
 		{
 			String str = FileUtils.readFileToString(new File(templetePath), Charset.forName("gbk"));
 			StringReader rd = new StringReader(str);
-			BufferedReader br = new BufferedReader(new FileReader(templetePath));
 			@SuppressWarnings("deprecation")
 			List<Element> parseToList = HTMLWorker.parseToList(rd, null, new HashMap<String,Object>());
 			Document document = new Document(PageSize.A4);
@@ -98,7 +95,6 @@ public class ITextTest
 				document.add(e);
 			}
 			System.out.println("templete完成");
-			System.out.println(String.valueOf(br));
 			System.out.println(String.valueOf(rd));
 			System.out.println(String.valueOf(str));
 			document.close();
