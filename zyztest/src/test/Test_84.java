@@ -33,10 +33,14 @@ public class Test_84
 
 	public static void main(String[] args) throws NoSuchMethodException, SecurityException
 	{
-		Integer integer = null;
-		if (integer == 0)
-		{
-		}
+		List<String> testList = new ArrayList<>();
+		testList.add("a");
+		testList.add("b");
+		testList.add("c");
+		List<String> testList1 = new ArrayList<>();
+		testList1.addAll(testList);
+		System.out.println(testList);
+		System.out.println(testList1);
 	}
 
 	/**
