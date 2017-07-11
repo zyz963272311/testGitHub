@@ -25,6 +25,7 @@ public class FileUtil
 		try
 		{
 			String result = "";
+			@SuppressWarnings("resource")
 			BufferedReader br = new BufferedReader(new FileReader(filePath));
 			String temp = "";
 			while ((temp = br.readLine()) != null)
