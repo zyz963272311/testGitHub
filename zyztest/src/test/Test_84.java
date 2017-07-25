@@ -33,9 +33,36 @@ public class Test_84
 
 	public static void main(String[] args) throws NoSuchMethodException, SecurityException
 	{
-		List<String> list = new ArrayList<>();
-		list.add("abd");
-		System.out.println(list.toArray());
+		List<String> listA = new ArrayList<>();
+		List<String> listB = new ArrayList<>();
+		String[] a = { "0", "a", "b", "c", "d", "e", "f", "g" };
+		String[] b = { "-1", "a", "3", "c", "d", "h", "i", "j" };
+		for (String _a : a)
+		{
+			listA.add(_a);
+		}
+		for (String _b : b)
+		{
+			listB.add(_b);
+		}
+		System.out.println(listA);
+		System.out.println(listB);
+		List<String> listC = new ArrayList<>();
+		for (int i = listB.size() - 1; i >= 0; i--)
+		{
+			String lB = listB.get(i);
+			for (int j = 0; j < listA.size(); j++)
+			{
+				String lA = listA.get(j);
+				if (lA.equals(lB))
+				{
+					//break;
+					listB.remove(j);
+				}
+			}
+		}
+		System.out.println(listC);
+		System.out.println(listB);
 	}
 
 	/**
