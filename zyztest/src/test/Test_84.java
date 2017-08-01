@@ -1,5 +1,6 @@
 package test;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -32,6 +33,17 @@ public class Test_84
 	private final Map<String,String>	map	= new HashMap<>();
 
 	public static void main(String[] args) throws NoSuchMethodException, SecurityException
+	{
+		Bean2 t = new Bean2();
+		Field[] f = t.getClass().getDeclaredFields();
+		System.out.println(f[0].getClass());
+	}
+
+	/**
+	 * 
+	 * 赵玉柱
+	 */
+	private static void test10()
 	{
 		List<String> listA = new ArrayList<>();
 		List<String> listB = new ArrayList<>();

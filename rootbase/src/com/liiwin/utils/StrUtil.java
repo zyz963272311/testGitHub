@@ -1,8 +1,13 @@
 package com.liiwin.utils;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 /**
  * <p>标题：StringUtil工具 </p>
  * <p>功能：StringUtil工具 </p>
@@ -269,17 +274,16 @@ public class StrUtil
 
 	public static void main(String[] args)
 	{
-		String s = "1,2,3,4.5,6,7,8.9,a,b,c.d,e,f,g";
-		String[][] ss = StrUtil.split(s, '.', ',');
-		for (int i = 0; i < ss.length; i++)
-		{
-			String[] sss = ss[i];
-			for (int j = 0; j < sss.length; j++)
-			{
-				System.out.print("i=" + (i) + "\tj=" + j + "\t" + sss[j]);
-			}
-			System.out.println("\n======================");
-		}
+		Map<String,Object> map = new HashMap<>();
+		map.put("a", new Integer(3));
+		map.put("b", new Boolean(false));
+		map.put("c", new String("sss"));
+		map.put("d", null);
+		map.put("d", new String());
+		Map<String,String> get = dealGetMethod(map);
+		Map<String,String> set = dealSetMethod(map);
+		System.out.println(get);
+		System.out.println(set);
 	}
 
 	public static int obj2int(Object o)
@@ -516,6 +520,7 @@ public class StrUtil
 		sb.append(']');
 		return sb.toString();
 	}
+
 	/**
 	 * 获取原字符串中所有子字符串出现的位置
 	 * @param resStr
@@ -538,19 +543,20 @@ public class StrUtil
 		while ((idx = resStr.indexOf(str, fromIdx)) >= 0)
 		{
 			resultInteger.add(idx);
-			fromIdx = idx+1;
+			fromIdx = idx + 1;
 		}
-		if(resultInteger.isEmpty())
+		if (resultInteger.isEmpty())
 		{
 			return new int[] {};
 		}
 		int[] result = new int[resultInteger.size()];
-		for(int i = resultInteger.size()-1;i>=0;i--)
+		for (int i = resultInteger.size() - 1; i >= 0; i--)
 		{
-			result[i]=resultInteger.get(i);
+			result[i] = resultInteger.get(i);
 		}
 		return result;
 	}
+
 	/**
 	 * 获取一个字符串的一些片段
 	 * @param resStr
@@ -558,117 +564,120 @@ public class StrUtil
 	 * @param toIdx 重点
 	 * @return
 	 */
-	public static String[] getSubstring(String resStr,int[] fromIdx,int[] toIdx)
+	public static String[] getSubstring(String resStr, int[] fromIdx, int[] toIdx)
 	{
-		if(isStrTrimNull(resStr))
+		if (isStrTrimNull(resStr))
 		{
 			return null;
 		}
-		if(fromIdx == null ||toIdx == null||fromIdx.length!=toIdx.length)
+		if (fromIdx == null || toIdx == null || fromIdx.length != toIdx.length)
 		{
 			return null;
 		}
 		String[] result = null;
 		double[] data1 = new double[fromIdx.length];
 		double[] data2 = new double[toIdx.length];
-		for(int i = 0;i<fromIdx.length;i++)
+		for (int i = 0; i < fromIdx.length; i++)
 		{
 			data1[i] = fromIdx[i];
 		}
-		for(int i = 0;i<toIdx.length;i++)
+		for (int i = 0; i < toIdx.length; i++)
 		{
 			data2[i] = toIdx[i];
 		}
-		if(sameDirectionSameSymbol(data1, data2))
+		if (sameDirectionSameSymbol(data1, data2))
 		{
-			result =new String[fromIdx.length];
-			for(int i = 0; i< fromIdx.length;i++)
+			result = new String[fromIdx.length];
+			for (int i = 0; i < fromIdx.length; i++)
 			{
 				result[i] = resStr.substring(fromIdx[i], toIdx[i]);
 			}
 		}
 		return result;
 	}
+
 	/**
 	 * 判断data1的每一个值-data2的每一个值的符号是不是相同的
 	 * @param data1
 	 * @param data2
 	 * @return
 	 */
-	public static boolean sameDirectionSameSymbol(double[] data1,double[] data2)
+	public static boolean sameDirectionSameSymbol(double[] data1, double[] data2)
 	{
-		if(data1 == null||data2 == null ||data1.length==1||data2.length == 1)
+		if (data1 == null || data2 == null || data1.length == 1 || data2.length == 1)
 		{
 			return true;
 		}
-		boolean dataiBigThanData2 = data1[0]-data2[0]>=0;
+		boolean dataiBigThanData2 = data1[0] - data2[0] >= 0;
 		boolean result = false;
-		if(dataiBigThanData2)
+		if (dataiBigThanData2)
 		{
 			result = data1BigThanData2(data1, data2);
-		}
-		else
+		} else
 		{
 			result = data1BigThanData2(data1, data2);
 		}
 		return result;
 	}
+
 	/**
 	 * 是否是data1的每个元素大于data2的对应的元素
 	 * @param data1
 	 * @param data2
 	 * @return
 	 */
-	public static boolean data1BigThanData2(double[] data1,double[] data2)
+	public static boolean data1BigThanData2(double[] data1, double[] data2)
 	{
-		if(data1 == null||data2 == null ||data1.length==1||data2.length == 1)
+		if (data1 == null || data2 == null || data1.length == 1 || data2.length == 1)
 		{
 			return true;
 		}
-		if(data1.length!=data2.length)
+		if (data1.length != data2.length)
 		{
 			return false;
 		}
-		int length = data1.length-data2.length>0?data2.length:data1.length;
+		int length = data1.length - data2.length > 0 ? data2.length : data1.length;
 		boolean result = true;
-		for(int i = 0; i < length; i++)
+		for (int i = 0; i < length; i++)
 		{
-			result = data1[i]>data2[i];
-			if(!result)
+			result = data1[i] > data2[i];
+			if (!result)
 			{
 				break;
 			}
 		}
 		return result;
 	}
+
 	/**
 	 * 是否是data1的每个元素小于等于data2的对应的元素
 	 * @param data1
 	 * @param data2
 	 * @return
 	 */
-	public static boolean data1SmallThanData2(double[] data1,double[] data2)
+	public static boolean data1SmallThanData2(double[] data1, double[] data2)
 	{
-		if(data1 == null||data2 == null ||data1.length==1||data2.length == 1)
+		if (data1 == null || data2 == null || data1.length == 1 || data2.length == 1)
 		{
 			return true;
 		}
-		if(data1.length!=data2.length)
+		if (data1.length != data2.length)
 		{
 			return false;
 		}
-		int length = data1.length-data2.length>0?data2.length:data1.length;
+		int length = data1.length - data2.length > 0 ? data2.length : data1.length;
 		boolean result = true;
-		for(int i = 0; i < length; i++)
+		for (int i = 0; i < length; i++)
 		{
-			result = data1[i]<data2[i];
-			if(!result)
+			result = data1[i] < data2[i];
+			if (!result)
 			{
 				break;
 			}
 		}
 		return result;
 	}
+
 	/**
 	 * 判断一个int数组是不是同向递增
 	 * @param data
@@ -676,22 +685,22 @@ public class StrUtil
 	 */
 	public static boolean isSameDirection(double[] data)
 	{
-		if(data==null||data.length <=1)
+		if (data == null || data.length <= 1)
 		{
 			return true;
 		}
-		boolean isAsc = (data[1]-data[0]>=0);
+		boolean isAsc = (data[1] - data[0] >= 0);
 		boolean result = false;
-		if(isAsc)
+		if (isAsc)
 		{
 			result = isAscDirection(data);
-		}
-		else
+		} else
 		{
 			result = isDescDirection(data);
 		}
 		return result;
 	}
+
 	/**
 	 * 判断一个int数组是不是正向递增
 	 * @param data
@@ -699,21 +708,22 @@ public class StrUtil
 	 */
 	public static boolean isAscDirection(double[] data)
 	{
-		if(data==null||data.length <=1)
+		if (data == null || data.length <= 1)
 		{
 			return true;
 		}
 		boolean result = true;
-		for(int i = data.length-1;i>0;i--)
+		for (int i = data.length - 1; i > 0; i--)
 		{
-			result = data[i]-data[i-1]<=0;
-			if(!result)
+			result = data[i] - data[i - 1] <= 0;
+			if (!result)
 			{
 				break;
 			}
 		}
 		return result;
 	}
+
 	/**
 	 * 判断一个int数组是不是反向递增
 	 * @param data
@@ -721,37 +731,221 @@ public class StrUtil
 	 */
 	public static boolean isDescDirection(double[] data)
 	{
-		if(data==null||data.length <=1)
+		if (data == null || data.length <= 1)
 		{
 			return true;
 		}
 		boolean result = true;
-		for(int i = data.length-1;i>0;i--)
+		for (int i = data.length - 1; i > 0; i--)
 		{
-			result = data[i]-data[i-1]>=0;
-			if(!result)
+			result = data[i] - data[i - 1] >= 0;
+			if (!result)
 			{
 				break;
 			}
 		}
 		return result;
 	}
+
 	/**
 	 * 将data设置一个偏移量
 	 * @param data
 	 * @param deviation
 	 * @return
 	 */
-	public static int[] setDeviation(int[] data,int deviation)
+	public static int[] setDeviation(int[] data, int deviation)
 	{
-		if(data == null || data.length == 0)
+		if (data == null || data.length == 0)
 		{
 			return data;
 		}
-		for(int i = data.length-1;i>=0;i--)
+		for (int i = data.length - 1; i >= 0; i--)
 		{
-			data[i] = data[i]+deviation;
+			data[i] = data[i] + deviation;
 		}
 		return data;
+	}
+
+	/**
+	 * 按照map中的值生成固定的get与set方法
+	 * @param map
+	 * @return
+	 * 赵玉柱
+	 */
+	public static Map<String,String> dealGetMethod(Map<String,Object> map)
+	{
+		if (map == null)
+		{
+			return null;
+		}
+		if (map.isEmpty())
+		{
+			return new HashMap<String,String>();
+		}
+		Map<String,String> resultMap = new HashMap<>();
+		Set<Entry<String,Object>> entrySet = map.entrySet();
+		for (Entry<String,Object> entry : entrySet)
+		{
+			String methodStr = dealGetMethod(entry.getKey(), entry.getValue());
+			if (isNoStrTrimNull(methodStr))
+			{
+				resultMap.put(entry.getKey(), methodStr);
+			}
+		}
+		return resultMap;
+	}
+
+	public static Map<String,Method> dealSetMethod(Object obj)
+	{
+		if (obj == null)
+		{
+			return null;
+		}
+		Class clazz = obj.getClass();
+		Field[] fields = clazz.getFields();
+		return dealSetMethod(fields, clazz);
+	}
+
+	/**
+	 * 按照map中的值生成固定的get与set方法
+	 * @param map
+	 * @return
+	 * 赵玉柱
+	 */
+	public static Map<String,String> dealSetMethod(Map<String,Object> map)
+	{
+		if (map == null)
+		{
+			return null;
+		}
+		if (map.isEmpty())
+		{
+			return new HashMap<String,String>();
+		}
+		Map<String,String> resultMap = new HashMap<>();
+		Set<Entry<String,Object>> entrySet = map.entrySet();
+		for (Entry<String,Object> entry : entrySet)
+		{
+			String methodStr = dealSetMethod(entry.getKey(), entry.getValue());
+			if (isNoStrTrimNull(methodStr))
+			{
+				resultMap.put(entry.getKey(), methodStr);
+			}
+		}
+		return resultMap;
+	}
+
+	/**
+	 * 将key转换成get方法
+	 * @param key
+	 * @param obj
+	 * @return
+	 * 赵玉柱
+	 */
+	public static String dealGetMethod(String key, Object obj)
+	{
+		return dealMethod(key, obj, true);
+	}
+
+	/**
+	 * 将key转换成get方法
+	 * @param key
+	 * @param obj
+	 * @return
+	 * 赵玉柱
+	 */
+	public static String dealSetMethod(String key, Object obj)
+	{
+		return dealMethod(key, obj, false);
+	}
+
+	/**
+	 * 将一个key转换成一个get或set方法
+	 * @param key key
+	 * @param obj 对象
+	 * @param isGet 是否是get方法
+	 * @return
+	 * 赵玉柱
+	 */
+	public static String dealMethod(String key, Object obj, boolean isGet)
+	{
+		if (obj == null || isStrTrimNull(key))
+		{
+			return null;
+		}
+		if (isGet)
+		{
+			if (obj instanceof Boolean)
+			{
+				return "is" + setFirstUpperOrLower(key, true);
+			}
+			return "get" + setFirstUpperOrLower(key, true);
+		} else
+		{
+			return "set" + setFirstUpperOrLower(key, true);
+		}
+	}
+
+	public static Map<String,Method> dealSetMethod(Field[] fields, Class clazz)
+	{
+		if (fields == null || fields.length == 0 || clazz == null)
+		{
+			return null;
+		}
+		Map<String,Method> resultMap = new HashMap<>();
+		for (Field field : fields)
+		{
+			Method dealSetMethod = dealSetMethod(field, clazz);
+			if (dealSetMethod != null)
+			{
+				resultMap.put(field.getName(), dealSetMethod);
+			}
+		}
+		return resultMap;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static Method dealSetMethod(Field field, Class clazz)
+	{
+		if (field == null)
+		{
+			return null;
+		}
+		String fieldName = field.getName();
+		try
+		{
+			return clazz.getMethod("set" + setFirstUpperOrLower(fieldName, true), field.getClass());
+		} catch (NoSuchMethodException e)
+		{
+			throw new RuntimeException("报错内容", e);
+		} catch (SecurityException e)
+		{
+			throw new RuntimeException("报错内容", e);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static Method dealGetMethod(Field field, Class clazz)
+	{
+		if (field == null)
+		{
+			return null;
+		}
+		String fieldName = field.getName();
+		try
+		{
+			String pre = null;
+			//Boolean.class == field.getClass() || boolean.class == field.getClass() ||
+			if (Boolean.class.isAssignableFrom(field.getClass()) || boolean.class.isAssignableFrom(field.getClass()))
+			{
+			}
+			return clazz.getMethod("set" + setFirstUpperOrLower(fieldName, true), field.getClass());
+		} catch (NoSuchMethodException e)
+		{
+			throw new RuntimeException("报错内容", e);
+		} catch (SecurityException e)
+		{
+			throw new RuntimeException("报错内容", e);
+		}
 	}
 }
