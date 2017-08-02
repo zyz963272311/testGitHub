@@ -274,16 +274,18 @@ public class StrUtil
 
 	public static void main(String[] args)
 	{
-		Map<String,Object> map = new HashMap<>();
-		map.put("a", new Integer(3));
-		map.put("b", new Boolean(false));
-		map.put("c", new String("sss"));
-		map.put("d", null);
-		map.put("d", new String());
-		Map<String,String> get = dealGetMethod(map);
-		Map<String,String> set = dealSetMethod(map);
-		System.out.println(get);
-		System.out.println(set);
+		//		Map<String,Object> map = new HashMap<>();
+		//		map.put("a", new Integer(3));
+		//		map.put("b", new Boolean(false));
+		//		map.put("c", new String("sss"));
+		//		map.put("d", null);
+		//		map.put("d", new String());
+		//		Map<String,String> get = dealGetMethod(map);
+		//		Map<String,String> set = dealSetMethod(map);
+		//		System.out.println(get);
+		//		System.out.println(set);
+		String strcat = strcat("321321", "456456", 20, '5');
+		System.out.println(strcat);
 	}
 
 	public static int obj2int(Object o)
@@ -947,5 +949,42 @@ public class StrUtil
 		{
 			throw new RuntimeException("报错内容", e);
 		}
+	}
+
+	public static String strcat(String prefix, String str, int length, char limit)
+	{
+		if (isStrTrimNull(str) && isStrTrimNull(prefix))
+		{
+			return strcat(limit, length);
+		}
+		String result = null;
+		if (isStrTrimNull(prefix))
+		{
+			int len = length - str.length();
+			result = strcat(limit, len);
+			result = result + str;
+			return result;
+		}
+		if (isStrTrimNull(prefix))
+		{
+			int len = length - prefix.length();
+			result = strcat(limit, len);
+			result = prefix + result;
+			return result;
+		}
+		int len = length - str.length() - prefix.length();
+		result = strcat(limit, len);
+		result = prefix + result + str;
+		return result;
+	}
+
+	public static String strcat(char limit, int length)
+	{
+		StringBuffer buffer = new StringBuffer();
+		for (int i = 0; i < length; i++)
+		{
+			buffer.append(limit);
+		}
+		return buffer.toString();
 	}
 }

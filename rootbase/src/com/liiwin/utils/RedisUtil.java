@@ -153,4 +153,51 @@ public class RedisUtil
 		}
 		System.out.println("get2" + get("test"));
 	}
+
+	/**
+	 * 给某一个redis加锁 需要设置同步锁
+	 * @param key 键
+	 * @param time 时间数量
+	 * @param timeType 时间类型
+	 * @return
+	 * 赵玉柱
+	 */
+	synchronized public static int setLock(String key, int time, int timeType)
+	{
+		if (key == null)
+		{
+			throw new RuntimeException("redis存入数据的键不可为空");
+		}
+		//获取上一次的锁，如果为0或空表示没有锁
+		int value = StrUtil.obj2int(get(key), 0);
+		//将锁的次数加一
+		set(key, ++value, time, timeType);
+		//返回锁的次数
+		return value;
+	}
+
+	/**
+	 * 给某一个redis解锁 需要设置同步锁
+	 * @param key
+	 * @param time 时间数量
+	 * @param timeType 时间类型
+	 * @return
+	 * 赵玉柱
+	 */
+	synchronized public static int unLock(String key, int time, int timeType)
+	{
+		if (key == null)
+		{
+			throw new RuntimeException("redis存入数据的键不可为空");
+		}
+		//获取上一次的锁，如果为0或空表示没有锁
+		int value = StrUtil.obj2int(get(key), 0);
+		//将锁的次数减一
+		if (value != 0)
+		{
+			set(key, --value, time, timeType);
+		}
+		//返回锁的次数
+		return value;
+	}
 }
