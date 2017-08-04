@@ -951,6 +951,15 @@ public class StrUtil
 		}
 	}
 
+	/**
+	 * 将字符串组装成一个 {prefix}+{str}x length+{str}的字符串
+	 * @param prefix
+	 * @param str
+	 * @param length
+	 * @param limit
+	 * @return
+	 * 赵玉柱
+	 */
 	public static String strcat(String prefix, String str, int length, char limit)
 	{
 		if (isStrTrimNull(str) && isStrTrimNull(prefix))
@@ -965,7 +974,7 @@ public class StrUtil
 			result = result + str;
 			return result;
 		}
-		if (isStrTrimNull(prefix))
+		if (isStrTrimNull(str))
 		{
 			int len = length - prefix.length();
 			result = strcat(limit, len);
@@ -978,6 +987,13 @@ public class StrUtil
 		return result;
 	}
 
+	/**
+	 * 将字符组装成一个长度为 length的 内部字符全部为limit字符串
+	 * @param limit
+	 * @param length
+	 * @return
+	 * 赵玉柱
+	 */
 	public static String strcat(char limit, int length)
 	{
 		StringBuffer buffer = new StringBuffer();

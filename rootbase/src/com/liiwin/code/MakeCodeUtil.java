@@ -1,5 +1,6 @@
 package com.liiwin.code;
 
+import java.util.Calendar;
 import com.liiwin.utils.RedisUtil;
 import com.liiwin.utils.StrUtil;
 /**
@@ -22,9 +23,6 @@ public class MakeCodeUtil
 
 	public static String makeOuttercode(String prefix, int codeLength, String key)
 	{
-		if (StrUtil.isNoStrTrimNull(prefix))
-		{
-		}
 		String result = makeCode(prefix, codeLength, key);
 		return result;
 	}
@@ -41,6 +39,15 @@ public class MakeCodeUtil
 		{
 			codeLength = DEFAULT_LENGTH;
 		}
+		if (StrUtil.isStrTrimNull(prefix))
+		{
+			Calendar calendar = Calendar.getInstance();
+			String year = StrUtil.obj2str(calendar.get(Calendar.YEAR)).substring(2);
+			String month = StrUtil.strcat(null, StrUtil.obj2str(calendar.get(Calendar.MONDAY) + 1), 2, '0');
+			String day = StrUtil.strcat(null, StrUtil.obj2str(calendar.get(Calendar.DATE)), 2, '0');
+			prefix = year + month + day + Long.toHexString((calendar.getTimeInMillis() % 86400) / 1000);
+		}
+		prefix = prefix.toUpperCase();
 		if (result.length() < codeLength)
 		{
 			result = StrUtil.strcat(prefix, result, codeLength, '0');
@@ -50,6 +57,6 @@ public class MakeCodeUtil
 
 	public static void main(String[] args)
 	{
-		System.out.println(makeOuttercode("zyzhu", 0, "dsadsadsadsds"));
+		System.out.println(makeOuttercode(null, 5, "dsadsadsadsds"));
 	}
 }
