@@ -84,24 +84,54 @@ public class JavaScriptEngineUtil
 		return ScriptEngineUtil.execute(engine, clazz, reader, bindings);
 	}
 
+	/**
+	 * 根据JS所在的file路径执行js脚本
+	 * @param clazz 返回的类型
+	 * @param filepath JS文件路径
+	 * @return
+	 * 赵玉柱
+	 */
 	public static <T extends Object> T executeByFilepath(Class<T> clazz, String filepath)
 	{
 		ScriptEngine engine = getScriptEngine();
 		return ScriptEngineUtil.executeScriptFilepath(engine, clazz, filepath);
 	}
 
+	/**
+	 * 根据JS所在的File路径执行JS脚本
+	 * @param clazz 返回的类型
+	 * @param filepath JS文件路径
+	 * @param bindings 绑定值
+	 * @return
+	 * 赵玉柱
+	 */
 	public static <T extends Object> T executeByFilepath(Class<T> clazz, String filepath, Bindings bindings)
 	{
 		ScriptEngine engine = getScriptEngine();
 		return ScriptEngineUtil.executeScriptFilepath(engine, clazz, filepath, bindings);
 	}
 
+	/**
+	 * 根据JS文件执行jS脚本
+	 * @param clazz 返回的类型
+	 * @param file JS文件
+	 * @return
+	 * 赵玉柱
+	 */
 	public static <T extends Object> T executeByFile(Class<T> clazz, File file)
 	{
 		ScriptEngine engine = getScriptEngine();
 		return ScriptEngineUtil.executeScriptFile(engine, clazz, file);
 	}
 
+	/**
+	 * 根据js文件执行JS脚本
+	 * @param clazz 返回的类型
+	 * @param file JS文件
+	 * @param bindings JS绑定值
+	 * @return
+	 * 赵玉柱
+	 */
 	public static <T extends Object> T executeByFile(Class<T> clazz, File file, Bindings bindings)
 	{
 		ScriptEngine engine = getScriptEngine();
@@ -110,6 +140,9 @@ public class JavaScriptEngineUtil
 
 	public static void main(String[] args)
 	{
-		System.out.println(execute(Double.class, "3+4"));
+		Bindings bindings = getScriptEngine().createBindings();
+		bindings.put("a", 3);
+		bindings.put("b", 4);
+		System.out.println(executeByFile(Double.class, new File("D:/MyProject/OnGithub/testEngine.js"), bindings));
 	}
 }
