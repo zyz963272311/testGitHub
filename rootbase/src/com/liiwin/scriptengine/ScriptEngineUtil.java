@@ -24,7 +24,7 @@ import com.liiwin.utils.StrUtil;
  * 复审：
  * 监听使用界面:
  * @version 8.0
- *  * 赵玉柱
+ * 赵玉柱
  * <table border="1" >
  * <tr><th>名称<th>拓展名<th>mimetype
  * <tr><td>JavaScript<td>js<td>text/javascript
