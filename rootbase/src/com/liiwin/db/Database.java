@@ -110,7 +110,7 @@ public class Database
 		}
 	}
 
-	public Map<String,Object> getMapFrimSql(String sql)
+	public Map<String,Object> getMapFromSql(String sql)
 	{
 		List<Map<String,Object>> resultList = getListMapFromSql(sql);
 		if (resultList != null && !resultList.isEmpty())

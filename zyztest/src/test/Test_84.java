@@ -1,6 +1,5 @@
 package test;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -34,9 +33,10 @@ public class Test_84
 
 	public static void main(String[] args) throws NoSuchMethodException, SecurityException
 	{
-		Bean2 t = new Bean2();
-		Field[] f = t.getClass().getDeclaredFields();
-		System.out.println(f[0].getClass());
+		Object[] a = new Object[2];
+		Object[] b = new Object[2];
+		System.out.println(a == b);
+		System.out.println((a = b).length == 1);
 	}
 
 	/**

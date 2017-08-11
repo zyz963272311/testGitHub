@@ -1,0 +1,17 @@
+﻿1:发布webservice服务										供外部使用
+2:编写一个自定义的controller用于接收发布的用Post方式解析	供内部与外部使用
+3:编写一个Client用于调用WebService服务						供内部使用
+
+
+
+外部两种调用方式：
+1:直接调用webservice
+2:调用controller发送post的json数据调用
+
+内部的几种调用方式
+1:当作正常的类进行调用
+2:直接调用webservice
+3:调用controller发送post的json数据调用(界面)
+4:使用client进行调用(根据POJO) 需要模拟浏览器
+5:Service工具类进行调用(根据ServiceID返回)实现类
+向外提供API的jar包
