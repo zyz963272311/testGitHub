@@ -1,6 +1,6 @@
-﻿1:发布webservice服务										供外部使用
+﻿1:发布webservice服务						供外部使用
 2:编写一个自定义的controller用于接收发布的用Post方式解析	供内部与外部使用
-3:编写一个Client用于调用WebService服务						供内部使用
+3:编写一个Client用于调用WebService服务				供内部使用
 
 
 

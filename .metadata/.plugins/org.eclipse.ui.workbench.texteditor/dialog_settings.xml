@@ -8,6 +8,7 @@
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="&#x09;&#x09;if(requestPojo == null)"/>
 			<item value="File.separator"/>
 			<item value="/"/>
 			<item value="、"/>
@@ -15,7 +16,6 @@
 			<item value="heihei/servlet1"/>
 			<item value="getXAxis"/>
 			<item value="features"/>
-			<item value="stringHttpMessageConverter"/>
 		</list>
 		<list key="replacehistory">
 			<item value="&quot;/&quot;"/>

@@ -1,27 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="java.lang.Deprecated"/>
-<fullyQualifiedTypeName name="com.liiwin.db.ResultSetUtil"/>
-<fullyQualifiedTypeName name="com.liiwin.code.CodePart"/>
-<fullyQualifiedTypeName name="com.liiwin.code.CodeType"/>
-<fullyQualifiedTypeName name="com.liiwin.code.Code"/>
-<fullyQualifiedTypeName name="java.util.Map.Entry"/>
-<fullyQualifiedTypeName name="java.lang.StringBuffer"/>
-<fullyQualifiedTypeName name="com.liiwin.db.SqlUtil"/>
-<fullyQualifiedTypeName name="com.liiwin.db.Database"/>
-<fullyQualifiedTypeName name="com.liiwin.service.impl.RemoteRegisterServiceImpl"/>
-<fullyQualifiedTypeName name="com.liiwin.service.RegisterService"/>
-<fullyQualifiedTypeName name="com.liiwin.service.impl.RegisterServiceImpl"/>
-<fullyQualifiedTypeName name="com.liiwin.util.StrUtil"/>
-<fullyQualifiedTypeName name="javax.swing.JEditorPane"/>
-<fullyQualifiedTypeName name="javax.swing.JTextField"/>
-<fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
-<fullyQualifiedTypeName name="com.zhu.ssm.common.PageInfo"/>
 <fullyQualifiedTypeName name="org.springframework.stereotype.Service"/>
 <fullyQualifiedTypeName name="com.zhu.ssm.dao.OrderDao"/>
 <fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="org.springframework.stereotype.Controller"/>
-<fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestMapping"/>
 <fullyQualifiedTypeName name="com.zhu.ssm.service.OrderService"/>
 <fullyQualifiedTypeName name="com.zhu.ssm.model.Order"/>
 <fullyQualifiedTypeName name="java.lang.Double"/>
@@ -36,7 +18,6 @@
 <fullyQualifiedTypeName name="java.io.FileOutputStream"/>
 <fullyQualifiedTypeName name="java.io.BufferedOutputStream"/>
 <fullyQualifiedTypeName name="java.lang.Character"/>
-<fullyQualifiedTypeName name="java.lang.RuntimeException"/>
 <fullyQualifiedTypeName name="com.liiwin.utils.ArrayUtil"/>
 <fullyQualifiedTypeName name="java.lang.Integer"/>
 <fullyQualifiedTypeName name="javax.script.ScriptEngine"/>
@@ -60,4 +41,23 @@
 <fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="java.nio.channels.FileChannel"/>
 <fullyQualifiedTypeName name="java.nio.channels.FileChannel.MapMode"/>
+<fullyQualifiedTypeName name="javax.xml.ws.Service"/>
+<fullyQualifiedTypeName name="xyz.zyzhu.service.HelloService"/>
+<fullyQualifiedTypeName name="xyz.zyzhu.webservice.HelloWebService"/>
+<fullyQualifiedTypeName name="org.springframework.http.HttpRequest"/>
+<fullyQualifiedTypeName name="org.springframework.stereotype.Component"/>
+<fullyQualifiedTypeName name="javax.jws.WebMethod"/>
+<fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestMapping"/>
+<fullyQualifiedTypeName name="com.liiwin.config.BasConfig"/>
+<fullyQualifiedTypeName name="xyz.zyzhu.pojo.BasResponsePojo"/>
+<fullyQualifiedTypeName name="xyz.zyzhu.pojo.BasRequestPojo"/>
+<fullyQualifiedTypeName name="java.lang.RuntimeException"/>
+<fullyQualifiedTypeName name="java.lang.IllegalArgumentException"/>
+<fullyQualifiedTypeName name="com.alibaba.fastjson.JSONObject"/>
+<fullyQualifiedTypeName name="com.alibaba.fastjson.JSON"/>
+<fullyQualifiedTypeName name="com.liiwin.http.HttpClientUtil"/>
+<fullyQualifiedTypeName name="com.liiwin.reflect.Test"/>
+<fullyQualifiedTypeName name="xyz.zyzhu.utils.SpringOpenApiClient"/>
+<fullyQualifiedTypeName name="xyz.zyzhu.pojo.HelloRequestPojo"/>
+<fullyQualifiedTypeName name="xyz.zyzhu.pojo.HelloResponsePojo"/>
 </qualifiedTypeNameHistroy>

@@ -1,0 +1,13 @@
+<classpath>
+  <container id="Test-Spring-001!org.eclipse.jst.j2ee.internal.web.container">
+    <entry id="D:/MyProject/OnGithub/Test-Spring-001/WebContent/WEB-INF/lib/fastJson-1.2.24.jar">
+      <source-attachment-path>C:/Users/Administrator.SC-201705112105/.m2/repository/com/alibaba/fastjson/1.2.24/fastjson-1.2.24-sources.jar</source-attachment-path>
+    </entry>
+    <entry id="D:/MyProject/OnGithub/Test-Spring-001/WebContent/WEB-INF/lib/spring-context-4.0.5.RELEASE.jar">
+      <source-attachment-path>C:/Users/Administrator.SC-201705112105/.m2/repository/org/springframework/spring-context/4.0.5.RELEASE/spring-context-4.0.5.RELEASE-sources.jar</source-attachment-path>
+    </entry>
+    <entry id="D:/MyProject/OnGithub/Test-Spring-001/WebContent/WEB-INF/lib/rootbase.jar">
+      <source-attachment-path>/rootbase</source-attachment-path>
+    </entry>
+  </container>
+</classpath>

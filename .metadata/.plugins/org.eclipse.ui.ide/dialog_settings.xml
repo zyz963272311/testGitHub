@@ -5,8 +5,8 @@
 		<item value="false" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
 		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
 		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
-			<item value="C:\Users\Administrator.SC-201705112105\Desktop"/>
 			<item value="D:\MyProject\OnGithub"/>
+			<item value="C:\Users\Administrator.SC-201705112105\Desktop"/>
 			<item value="E:\MyProject"/>
 			<item value="D:\MyProject\OnGithub\rootbase"/>
 		</list>

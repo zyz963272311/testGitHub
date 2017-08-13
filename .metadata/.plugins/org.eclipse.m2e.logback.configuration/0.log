@@ -1254,3 +1254,12 @@
 2017-06-23 23:24:08,249 [main] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
 2017-06-23 23:24:08,619 [New I/O client worker #2-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/wildfly/archetype/wildfly-javaee7-webapp-archetype/8.2.0.Final/wildfly-javaee7-webapp-archetype-8.2.0.Final.jar
 2017-06-23 23:24:08,946 [New I/O client worker #2-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/wildfly/archetype/wildfly-javaee7-webapp-archetype/8.2.0.Final/wildfly-javaee7-webapp-archetype-8.2.0.Final.jar
+2017-08-12 12:46:19,874 [Worker-0] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-12 12:46:21,427 [New I/O client worker #1-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/springframework/spring-context/4.0.5.RELEASE/spring-context-4.0.5.RELEASE-sources.jar
+2017-08-12 12:46:22,946 [New I/O client worker #1-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/springframework/spring-context/4.0.5.RELEASE/spring-context-4.0.5.RELEASE-sources.jar
+2017-08-12 13:19:50,625 [Worker-61] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-12 13:19:51,059 [New I/O client worker #2-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/com/alibaba/fastjson/1.2.24/fastjson-1.2.24-sources.jar
+2017-08-12 13:19:51,704 [New I/O client worker #2-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/com/alibaba/fastjson/1.2.24/fastjson-1.2.24-sources.jar
+2017-08-12 13:52:22,896 [Worker-84] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-12 13:52:23,351 [New I/O client worker #3-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/net/coobird/thumbnailator/0.4.8/thumbnailator-0.4.8-sources.jar
+2017-08-12 13:52:23,801 [New I/O client worker #3-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/net/coobird/thumbnailator/0.4.8/thumbnailator-0.4.8-sources.jar
