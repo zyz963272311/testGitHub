@@ -33,10 +33,7 @@ public class Test_84
 
 	public static void main(String[] args) throws NoSuchMethodException, SecurityException
 	{
-		Object[] a = new Object[2];
-		Object[] b = new Object[2];
-		System.out.println(a == b);
-		System.out.println((a = b).length == 1);
+		System.out.println(System.getProperty("user.dir"));
 	}
 
 	/**

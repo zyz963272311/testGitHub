@@ -3,6 +3,8 @@
 	<name>Test-Spring-001</name>
 	<comment></comment>
 	<projects>
+		<project>rootbase</project>
+		<project>Test-Spring-001-API</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

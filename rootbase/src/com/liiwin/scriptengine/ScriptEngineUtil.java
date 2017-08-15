@@ -315,6 +315,7 @@ public class ScriptEngineUtil
 	 * 
 	 * 赵玉柱
 	 */
+	@SuppressWarnings("unused")
 	private static void test2()
 	{
 		ScriptEngineManager manager = new ScriptEngineManager();
@@ -335,6 +336,7 @@ public class ScriptEngineUtil
 	 * 
 	 * 赵玉柱
 	 */
+	@SuppressWarnings("unused")
 	private static void test1()
 	{
 		ScriptEngine engine1 = getEngineByMime("text/javascript");

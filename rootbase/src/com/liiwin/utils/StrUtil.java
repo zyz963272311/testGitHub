@@ -936,7 +936,6 @@ public class StrUtil
 		String fieldName = field.getName();
 		try
 		{
-			String pre = null;
 			//Boolean.class == field.getClass() || boolean.class == field.getClass() ||
 			if (Boolean.class.isAssignableFrom(field.getClass()) || boolean.class.isAssignableFrom(field.getClass()))
 			{

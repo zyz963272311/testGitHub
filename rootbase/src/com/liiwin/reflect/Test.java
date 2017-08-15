@@ -3,9 +3,7 @@ package com.liiwin.reflect;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 /**
  * <p>标题： 测试反射 用TYPE</p>
@@ -26,7 +24,6 @@ public class Test
 	public static void main(String[] args)
 	{
 		Set<String> set = new HashSet<>();
-		Map<String,Object> params = new HashMap<String,Object>();
 		TestA<Number,BigDecimal> testA = new TestA<>();
 		set.getClass();
 		Type types = testA.getClass();
