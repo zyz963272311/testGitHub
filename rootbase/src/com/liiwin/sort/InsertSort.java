@@ -1,7 +1,7 @@
 package com.liiwin.sort;
 
 /**
- * <p>标题： </p>
+ * <p>标题： 插入排序</p>
  * <p>功能： </p>
  * <p>所属模块： ICIP企业端</p>
  * <p>版权： Copyright © 2016 SNSOFT</p>

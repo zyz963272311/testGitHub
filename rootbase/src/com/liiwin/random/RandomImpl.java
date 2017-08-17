@@ -28,22 +28,22 @@ public class RandomImpl implements Random
 			o = getRandomObject(Character.MIN_SURROGATE, max);
 		} else if (max instanceof Byte)
 		{
-			o = getRandomObject((byte) 0, max);
+			o = getRandomObject(Byte.MIN_VALUE, max);
 		} else if (max instanceof Short)
 		{
-			o = getRandomObject((short) 0, max);
+			o = getRandomObject(Short.MIN_VALUE, max);
 		} else if (max instanceof Integer)
 		{
-			o = getRandomObject(0, max);
+			o = getRandomObject(Integer.MIN_VALUE, max);
 		} else if (max instanceof Long)
 		{
-			o = getRandomObject(0, max);
+			o = getRandomObject(Long.MIN_VALUE, max);
 		} else if (max instanceof Float)
 		{
-			o = getRandomObject(0.0f, max);
+			o = getRandomObject(Float.MIN_VALUE, max);
 		} else if (max instanceof Double)
 		{
-			o = getRandomObject(0.0, max);
+			o = getRandomObject(Double.MIN_VALUE, max);
 		}
 		return o;
 	}
@@ -52,155 +52,246 @@ public class RandomImpl implements Random
 	public Object getRandomObject(Object min, Object max)
 	{
 		Object o = null;
-		if (max instanceof Boolean)
+		if (min.getClass().equals(max.getClass()))
 		{
-			o = getRandomObject(false, max);
-		} else if (max instanceof Character)
-		{
-			o = getRandomObject(Character.MIN_SURROGATE, max);
-		} else if (max instanceof Byte)
-		{
-			o = getRandomObject((byte) 0, max);
-		} else if (max instanceof Short)
-		{
-			o = getRandomObject((short) 0, max);
-		} else if (max instanceof Integer)
-		{
-			o = getRandomObject(0, max);
-		} else if (max instanceof Long)
-		{
-			o = getRandomObject(0, max);
-		} else if (max instanceof Float)
-		{
-			o = getRandomObject(0.0f, max);
-		} else if (max instanceof Double)
-		{
-			o = getRandomObject(0.0, max);
+			if (max instanceof Boolean)
+			{
+				o = getRandomBoolean((boolean) min, (boolean) max);
+			} else if (max instanceof Character)
+			{
+				o = getRandomChar((char) min, (char) max);
+			} else if (max instanceof Byte)
+			{
+				o = getRandomByte((byte) min, (byte) max);
+			} else if (max instanceof Short)
+			{
+				o = getRandomShort((short) min, (short) max);
+			} else if (max instanceof Integer)
+			{
+				o = getRandomInt((int) min, (int) max);
+			} else if (max instanceof Long)
+			{
+				o = getRandomLong((long) min, (long) max);
+			} else if (max instanceof Float)
+			{
+				o = getRandomFloat((float) min, (float) max);
+			} else if (max instanceof Double)
+			{
+				o = getRandomDouble((double) min, (double) max);
+			}
 		}
 		return o;
 	}
 
 	@Override
-	public long getRandomObject(Object[] o, Object max, int length)
+	public Object[] getRandomObjectArray(Object max, int length)
 	{
-		long time = 0;
-		if (o instanceof Boolean[])
+		Object[] array = null;
+		if (max instanceof Boolean[])
 		{
-			time = getRandomObject(o, false, max, length);
-		} else if (o instanceof Character[])
+			array = getRandomObjectArray(false, max, length);
+		} else if (max instanceof Character[])
 		{
-			time = getRandomObject(o, Character.MIN_VALUE, max, length);
-		} else if (o instanceof Byte[])
+			array = getRandomObjectArray(Character.MIN_VALUE, max, length);
+		} else if (max instanceof Byte[])
 		{
-			time = getRandomObject(o, (byte) 0, max, length);
-		} else if (o instanceof Short[])
+			array = getRandomObjectArray((byte) 0, max, length);
+		} else if (max instanceof Short[])
 		{
-			time = getRandomObject(o, (short) 0, max, length);
-		} else if (o instanceof Integer[])
+			array = getRandomObjectArray((short) 0, max, length);
+		} else if (max instanceof Integer[])
 		{
-			time = getRandomObject(o, 0, max, length);
-		} else if (o instanceof Long[])
+			array = getRandomObjectArray(0, max, length);
+		} else if (max instanceof Long[])
 		{
-			time = getRandomObject(o, (long) 0, max, length);
-		} else if (o instanceof Float[])
+			array = getRandomObjectArray((long) 0, max, length);
+		} else if (max instanceof Float[])
 		{
-			time = getRandomObject(o, 0.0f, max, length);
-		} else if (o instanceof Double[])
+			array = getRandomObjectArray(0.0f, max, length);
+		} else if (max instanceof Double[])
 		{
-			time = getRandomObject(o, 0.0d, max, length);
+			array = getRandomObjectArray(0.0d, max, length);
 		}
-		return time;
+		return array;
 	}
 
 	@Override
-	public long getRandomObject(Object[] o, Object min, Object max, int length)
+	public Object[] getRandomObjectArray(Object min, Object max, int length)
 	{
-		long start = System.currentTimeMillis();
-		//TODO impl
-		long end = System.currentTimeMillis();
-		return end - start;
+		Object[] array = null;
+		if (min.getClass().equals(max.getClass()))
+		{
+			if (max instanceof Boolean)
+			{
+				array = getRandomBooleanArray((boolean) min, (boolean) max, length);
+			} else if (max instanceof Character)
+			{
+				array = getRandomCharArray((char) min, (char) max, length);
+			} else if (max instanceof Byte)
+			{
+				array = getRandomByteArray((byte) min, (byte) max, length);
+			} else if (max instanceof Short)
+			{
+				array = getRandomShortArray((short) min, (short) max, length);
+			} else if (max instanceof Integer)
+			{
+				array = getRandomIntArray((int) min, (int) max, length);
+			} else if (max instanceof Long)
+			{
+				array = getRandomLongArray((long) min, (long) max, length);
+			} else if (max instanceof Float)
+			{
+				array = getRandomFloatArray((float) min, (float) max, length);
+			} else if (max instanceof Double)
+			{
+				array = getRandomDoubleArray((double) min, (double) max, length);
+			}
+		}
+		return array;
 	}
 
 	/************************************私有方法分割线************************/
 	/************************************getRandomObject实现****************/
 	boolean getRandomBoolean(boolean min, boolean max)
 	{
-		return false;
+		if (min)
+		{
+			return true;
+		}
+		if (!max)
+		{
+			return false;
+		}
+		return new java.util.Random().nextBoolean();
 	}
 
 	char getRandomChar(char min, char max)
 	{
-		return Character.MIN_VALUE;
+		return (char) (min + (max - min) * Math.random());
 	}
 
 	byte getRandomByte(byte min, byte max)
 	{
-		return Byte.MIN_VALUE;
+		return (byte) (min + (max - min) * Math.random());
 	}
 
 	short getRandomShort(short min, short max)
 	{
-		return Short.MIN_VALUE;
+		return (short) (min + (max - min) * Math.random());
 	}
 
 	int getRandomInt(int min, int max)
 	{
-		return Integer.MIN_VALUE;
+		return (int) (min + (max - min) * Math.random());
 	}
 
 	long getRandomLong(long min, long max)
 	{
-		return Long.MIN_VALUE;
+		return (long) (min + (max - min) * Math.random());
 	}
 
 	float getRandomFloat(float min, float max)
 	{
-		return Float.MIN_VALUE;
+		return (float) (min + (max - min) * Math.random());
 	}
 
 	double getRandomDouble(double min, double max)
 	{
-		return Double.MIN_VALUE;
+		return (min + (max - min) * Math.random());
 	}
 
-	/************************************getRandomObject数组实现****************/
-	boolean[] getRandomBoolean(boolean[] o, boolean min, boolean max, int length)
+	/************************************getRandomObjectArray实现****************/
+	Object[] getRandomBooleanArray(boolean min, boolean max, int length)
 	{
-		return null;
+		Object[] o = new Object[length];
+		for (int i = 0; i < length; i++)
+		{
+			o[i] = getRandomBoolean(min, max);
+		}
+		return o;
 	}
 
-	char[] getRandomChar(char[] o, char min, char max, int length)
+	Object[] getRandomCharArray(char min, char max, int length)
 	{
-		return null;
+		Object[] o = new Object[length];
+		for (int i = 0; i < length; i++)
+		{
+			o[i] = getRandomChar(min, max);
+		}
+		return o;
 	}
 
-	byte[] getRandomByte(byte[] o, byte min, byte max, int length)
+	Object[] getRandomByteArray(byte min, byte max, int length)
 	{
-		return null;
+		Object[] o = new Object[length];
+		for (int i = 0; i < length; i++)
+		{
+			o[i] = getRandomByte(min, max);
+		}
+		return o;
 	}
 
-	short[] getRandomShort(short[] o, short min, short max, int length)
+	Object[] getRandomShortArray(short min, short max, int length)
 	{
-		return null;
+		Object[] o = new Object[length];
+		for (int i = 0; i < length; i++)
+		{
+			o[i] = getRandomShort(min, max);
+		}
+		return o;
 	}
 
-	int[] getRandomInt(int[] o, int min, int max, int length)
+	Object[] getRandomIntArray(int min, int max, int length)
 	{
-		return null;
+		Object[] o = new Object[length];
+		for (int i = 0; i < length; i++)
+		{
+			o[i] = getRandomInt(min, max);
+		}
+		return o;
 	}
 
-	long[] getRandomLong(long[] o, long min, long max, int length)
+	Object[] getRandomLongArray(long min, long max, int length)
 	{
-		return null;
+		Object[] o = new Object[length];
+		for (int i = 0; i < length; i++)
+		{
+			o[i] = getRandomLong(min, max);
+		}
+		return o;
 	}
 
-	float[] getRandomFloat(float[] o, float min, float max, int length)
+	Object[] getRandomFloatArray(float min, float max, int length)
 	{
-		return null;
+		Object[] o = new Object[length];
+		for (int i = 0; i < length; i++)
+		{
+			o[i] = getRandomFloat(min, max);
+		}
+		return o;
 	}
 
-	double[] getRandomDouble(double[] o, double min, double max, int length)
+	Object[] getRandomDoubleArray(double min, double max, int length)
 	{
-		return null;
+		Object[] o = new Object[length];
+		for (int i = 0; i < length; i++)
+		{
+			o[i] = getRandomDouble(min, max);
+		}
+		return o;
+	}
+
+	/*************************测试main方法***********************/
+	public static void main(String[] args)
+	{
+		Random random = new RandomImpl();
+		System.out.println(random.getRandomObject(new Integer(1), new Integer(10)));
+		long start = System.currentTimeMillis();
+		Object[] array = random.getRandomObjectArray(new Integer(-10), new Integer(10), 1000000);
+		System.out.println("耗时" + (System.currentTimeMillis() - start));
+		for (Object object : array)
+		{
+			System.out.println(object);
+		}
 	}
 }

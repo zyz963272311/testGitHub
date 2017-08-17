@@ -34,6 +34,10 @@ public class Test_84
 	public static void main(String[] args) throws NoSuchMethodException, SecurityException
 	{
 		System.out.println(System.getProperty("user.dir"));
+		for (int i = 0; i < 10; i++)
+		{
+			System.out.println(true & (i % 5 == 0));
+		}
 	}
 
 	/**

@@ -7,8 +7,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import com.liiwin.random.RandomString;
+import com.liiwin.random.RandomStringImpl;
 import com.liiwin.utils.EmptyUtil;
 import com.liiwin.utils.StrUtil;
+import com.liiwin.utils.Validator;
 /**
  * <p>标题： SQL工具类</p>
  * <p>功能： </p>
@@ -25,10 +28,14 @@ import com.liiwin.utils.StrUtil;
  */
 public class SqlUtil
 {
-	public static String	PAGESIZE	= "Page.size";
-	public static String	PAGENO		= "Page.no";
-	public static String	ROWFROM		= "Row.from";
-	public static String	ROWTO		= "Row.to";
+	//两种方式实现sql分页查询
+	//页大小+页号
+	public static String		PAGESIZE	= "Page.size";
+	public static String		PAGENO		= "Page.no";
+	//行号从+行号到
+	public static String		ROWFROM		= "Row.from";
+	public static String		ROWTO		= "Row.to";
+	private static final int	inSize		= 1000;
 
 	/**
 	 * 将sql与params进行绑定
@@ -90,33 +97,73 @@ public class SqlUtil
 	 * @param params 拼接到的map中
 	 * @param fromIdx 拼接的下标开始位置，防止有类似的条件
 	 * @return
+	 * 注意：当查询条件的in超过1000的情况下，查询将出现异常</br>
 	 * 赵玉柱
 	 */
 	public static String bindSqlIn(String name, String list, Map<String,Object> params, int fromIdx)
 	{
-		StringBuffer sqlBuffer = new StringBuffer();
+		String[] listArray = null;
+		if (StrUtil.isNoStrTrimNull(list))
+		{
+			listArray = StrUtil.split(list, ',');
+		}
+		return bindSqlIn(name, listArray, params, fromIdx);
+	}
+
+	/**
+	 * 将name和listArray拼接成name in (listArray) 的形式
+	 * @param name filter名
+	 * @param listArray filter值
+	 * @param params 拼接到的map中
+	 * @return 
+	 * 赵玉柱
+	 */
+	public static String bindSqlIn(String name, Object[] listArray, Map<String,Object> params)
+	{
+		return bindSqlIn(name, listArray, params, 0);
+	}
+
+	/**
+	 * 将name和listArray拼接成name in (listArray) 的形式
+	 * @param name  filter名
+	 * @param listArray filter值
+	 * @param params filter值
+	 * @param fromIdx 起始下标
+	 * @return
+	 * 赵玉柱
+	 */
+	public static String bindSqlIn(String name, Object[] listArray, Map<String,Object> params, int fromIdx)
+	{
+		StringBuffer sqlBuffer = new StringBuffer("(");
 		fromIdx = fromIdx < 0 ? 0 : fromIdx;
 		if (StrUtil.isNoStrTrimNull(name))
 		{
 			sqlBuffer.append(name).append(" in (");
 			int length = sqlBuffer.length();
-			if (StrUtil.isNoStrTrimNull(list))
+			int control = 0;
+			if (listArray != null)
 			{
-				String[] listArray = StrUtil.split(list, ',');
 				for (int i = 0; i < listArray.length; i++)
 				{
-					if (StrUtil.isNoStrTrimNull(listArray[i]))
+					if (Validator.isNotNull(listArray[i]))
 					{
+						if (control >= 1000)
+						{
+							sqlBuffer.setLength(sqlBuffer.length() - 1);//去掉最后的逗号
+							sqlBuffer.append(") or ").append(name).append(" in (");
+							control = 0;
+						}
 						String key = name + (i + fromIdx);
 						params.put(key, listArray[i]);
 						sqlBuffer.append(":").append(key).append(",");
 					}
+					control++;
 				}
 			}
 			if (sqlBuffer.length() > length)
 			{
 				sqlBuffer.setLength(sqlBuffer.length() - 1);
-				sqlBuffer.append(")");
+				sqlBuffer.append("))");
 			} else
 			{
 				return "";
@@ -281,49 +328,49 @@ public class SqlUtil
 		boolean assignFlag = String.class.isAssignableFrom(valueType);
 		if (assignFlag == true)
 		{
-			return src.replace(":" + key, "'" + value + "'");
+			return replaceSql(src, ":" + key, "'" + value + "'");
 		}
 		//基本数据类型
 		assignFlag = Byte.class.isAssignableFrom(valueType);
 		if (assignFlag == true)
 		{
-			return src.replace(":" + key, "" + ((Byte) (value)).byteValue());
+			return replaceSql(src, ":" + key, "" + ((Byte) (value)).byteValue());
 		}
 		assignFlag = Short.class.isAssignableFrom(valueType);
 		if (assignFlag == true)
 		{
-			return src.replace(":" + key, "" + ((Short) (value)).shortValue());
+			return replaceSql(src, ":" + key, "" + ((Short) (value)).shortValue());
 		}
 		assignFlag = Integer.class.isAssignableFrom(valueType);
 		if (assignFlag == true)
 		{
-			return src.replace(":" + key, "" + ((Integer) (value)).intValue());
+			return replaceSql(src, ":" + key, "" + ((Integer) (value)).intValue());
 		}
 		assignFlag = Long.class.isAssignableFrom(valueType);
 		if (assignFlag == true)
 		{
-			return src.replace(":" + key, "" + ((Long) (value)).longValue());
+			return replaceSql(src, ":" + key, "" + ((Long) (value)).longValue());
 		}
 		assignFlag = Float.class.isAssignableFrom(valueType);
 		if (assignFlag == true)
 		{
-			return src.replace(":" + key, "" + ((Float) (value)).floatValue());
+			return replaceSql(src, ":" + key, "" + ((Float) (value)).floatValue());
 		}
 		assignFlag = Double.class.isAssignableFrom(valueType);
 		if (assignFlag == true)
 		{
-			return src.replace(":" + key, "" + ((Double) (value)).doubleValue());
+			return replaceSql(src, ":" + key, "" + ((Double) (value)).doubleValue());
 		}
 		assignFlag = Character.class.isAssignableFrom(valueType);
 		if (assignFlag == true)
 		{
-			return src.replace(":" + key, "'" + ((Character) (value)).charValue() + "'");
+			return replaceSql(src, ":" + key, "'" + ((Character) (value)).charValue() + "'");
 		}
 		//其他类型
 		assignFlag = BigDecimal.class.isAssignableFrom(valueType);
 		if (assignFlag == true)
 		{
-			return src.replace(":" + key, "" + ((BigDecimal) (value)).toString());
+			return replaceSql(src, ":" + key, "" + ((BigDecimal) (value)).toString());
 		}
 		//特殊Date类型，对于不同数据库，应该采用不同的方式进行处理
 		assignFlag = Date.class.isAssignableFrom(valueType);
@@ -334,17 +381,17 @@ public class SqlUtil
 			if (db.getType() == Databasetype.MYSQL)
 			{
 				//SELECT STR_TO_DATE('2010-05-20 11:22:33','%Y-%m-%d %H:%i:%s') 
-				return src.replace(":" + key, "STR_TO_DATE('" + format.format((Date) value) + "','%Y-%m-%d %H:%i:%s')");
+				return replaceSql(src, ":" + key, "STR_TO_DATE('" + format.format((Date) value) + "','%Y-%m-%d %H:%i:%s')");
 			}
 			//Oracle
 			if (db.getType() == Databasetype.ORACLE)
 			{
-				return src.replace(":" + key, "to_date('" + format.format((Date) value) + "','YYYY-MM-DD HH24:MI:SS')");
+				return replaceSql(src, ":" + key, "to_date('" + format.format((Date) value) + "','YYYY-MM-DD HH24:MI:SS')");
 			}
 			//SQLServer
 			if (db.getType() == Databasetype.SQLSQRVER)
 			{
-				return src.replace(":" + key, "CONVERT(DATETIME,'" + format.format((Date) value) + "')");
+				return replaceSql(src, ":" + key, "CONVERT(DATETIME,'" + format.format((Date) value) + "')");
 			}
 		}
 		return src;
@@ -395,6 +442,23 @@ public class SqlUtil
 		return sql;
 	}
 
+	/**
+	 * 解决 存在 key 同时存在 x32与x32_下出现的bug,
+	 * @param sql
+	 * @param key
+	 * @param value
+	 * @return
+	 * 赵玉柱
+	 */
+	private static String replaceSql(String sql, String key, String value)
+	{
+		sql = sql.replace(key + ")", value + ")");
+		sql = sql.replace(key + ",", value + ",");
+		sql = sql.replace(key + " ", value + " ");
+		sql = sql.replace(key + "(", value + "(");
+		return sql;
+	}
+
 	public static void main(String[] args)
 	{
 		main2();
@@ -439,12 +503,15 @@ public class SqlUtil
 		Database db = new Database("zyztest");
 		sql = sqlBindParams(db, sql, params);
 		System.out.println(sql);
-		String a = "a,b,c,d,e";
+		RandomString rs = new RandomStringImpl();
+		String[] array = rs.getRandomStringArray(5, 10000, 'a', 'z');
 		String name = "a";
 		Map<String,Object> params1 = new HashMap<>();
-		sql = addWhereFilter(sql, bindSqlIn(name, a, params1));
+		long start = System.currentTimeMillis();
+		sql = addWhereFilter(sql, bindSqlIn(name, array, params1, 0));
 		sql = sqlBindParams(db, sql, params1);
 		System.out.println(sql);
+		System.out.println("解析sql消耗时间为" + (System.currentTimeMillis() - start));
 		db.close();
 	}
 }

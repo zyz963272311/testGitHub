@@ -9,28 +9,17 @@ import com.liiwin.config.BasConfig;
 import com.liiwin.db.Database;
 import com.liiwin.utils.StrUtil;
 /**
- * <p>
- * 标题： 服务加载的时候发布WebService
- * </p>
- * <p>
- * 功能：
- * </p>
- * <p>
- * 所属模块： TestSpring
- * </p>
- * <p>
- * 版权： Copyright © 2017 zyzhu
- * </p>
- * <p>
- * 公司: zyzhu.xyz
- * </p>
- * <p>
- * 创建日期：2017年8月11日 上午9:56:19
- * </p>
- * <p>
- * 类全名：xyz.zyzhu.initlistener.LoadWebServiceImpl
- * </p>
- * 作者：赵玉柱 初审： 复审： 监听使用界面:
+ * <p>标题： 服务加载的时候发布WebService</p>
+ * <p>功能：</p>
+ * <p>所属模块： TestSpring</p>
+ * <p>版权： Copyright © 2017 zyzhu</p>
+ * <p>公司: zyzhu.xyz</p>
+ * <p>创建日期：2017年8月11日 上午9:56:19</p>
+ * <p>类全名：xyz.zyzhu.initlistener.LoadWebServiceImpl</p>
+ * 作者：赵玉柱 
+ * 初审： 
+ * 复审： 
+ * 监听使用界面:
  * 
  * @version 8.0
  */
@@ -48,7 +37,7 @@ public class LoadWebServiceImpl implements ServletContextListener
 	public void contextInitialized(ServletContextEvent arg0)
 	{
 		System.out.println("当前目录--" + System.getProperty("user.dir"));
-		Database database = new Database("project01");
+		Database database = new Database("zyztest");
 		StringBuffer sql = new StringBuffer();
 		sql.append("select ")//
 				.append(" servicename")//

@@ -11,7 +11,7 @@ import java.util.Set;
 /**
  * <p>标题：StringUtil工具 </p>
  * <p>功能：StringUtil工具 </p>
- * <p>所属模块： ICIP企业端</p>
+ * <p>所属模块： ICIP企业端</p> 
  * <p>版权： Copyright © 2016 SNSOFT</p>
  * <p>公司: 北京南北天地科技股份有限公司</p>
  * <p>创建日期：2016年9月20日 上午10:24:10</p>
@@ -274,18 +274,10 @@ public class StrUtil
 
 	public static void main(String[] args)
 	{
-		//		Map<String,Object> map = new HashMap<>();
-		//		map.put("a", new Integer(3));
-		//		map.put("b", new Boolean(false));
-		//		map.put("c", new String("sss"));
-		//		map.put("d", null);
-		//		map.put("d", new String());
-		//		Map<String,String> get = dealGetMethod(map);
-		//		Map<String,String> set = dealSetMethod(map);
-		//		System.out.println(get);
-		//		System.out.println(set);
-		String strcat = strcat("321321", "456456", 20, '5');
-		System.out.println(strcat);
+		long a = 'a';
+		long b = 'b';
+		quickSwap(a, b);
+		System.out.println(a + "\t" + b);
 	}
 
 	public static int obj2int(Object o)
@@ -1001,5 +993,19 @@ public class StrUtil
 			buffer.append(limit);
 		}
 		return buffer.toString();
+	}
+
+	/**
+	 * 快速交换两个值
+	 * @param a
+	 * @param b
+	 * 赵玉柱
+	 */
+	public static void quickSwap(long a, long b)
+	{
+		a = a ^ b;
+		b = a ^ b;
+		a = a ^ b;
+		System.out.println(a + "\t" + b);
 	}
 }

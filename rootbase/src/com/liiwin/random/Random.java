@@ -18,7 +18,7 @@ public interface Random
 {
 	/**
 	 * 随机生成一个Object类型的对象
-	 * @param max Object对象的最大值，并且可以记录要生成的数据类型x&lt;max
+	 * @param max Object对象的最大值，并且可以记录要生成的数据类型 返回值&lt;max
 	 * @return 返回生成的数据
 	 * x250-2
 	 */
@@ -27,30 +27,28 @@ public interface Random
 	/**
 	 * 随机生成一个Object类型的对象，
 	 * @param min Object对象的最小值
-	 * @param max Object对象的最大值 min&lt;=x&lt;max
+	 * @param max Object对象的最大值 min&lt;=返回值&lt;max
 	 * @return 返回生成的数据
-	 * x250-2
+	 * 赵玉柱
 	 */
 	Object getRandomObject(Object min, Object max);
 
 	/**
 	 * 随机生成一个Object对象数组
-	 * @param o Object对象空数组
 	 * @param max Object对象最大值o[i]&lt;max
 	 * @param length 数组长度
-	 * @return 返回生成数组的时间
-	 * x250-2
+	 * @return 
+	 * 赵玉柱
 	 */
-	long getRandomObject(Object[] o, Object max, int length);
+	Object[] getRandomObjectArray(Object max, int length);
 
 	/**
 	 * 随机生成Object对象数组
-	 * @param o Object对象空数组
 	 * @param min Object对象最小值
 	 * @param max Object对象最大值min&lt;o[i]&lt;max
 	 * @param length 数组长度
-	 * @return 返回生成数组的时间
-	 * x250-2
+	 * @return 
+	 * 赵玉柱
 	 */
-	long getRandomObject(Object[] o, Object min, Object max, int length);
+	Object[] getRandomObjectArray(Object min, Object max, int length);
 }

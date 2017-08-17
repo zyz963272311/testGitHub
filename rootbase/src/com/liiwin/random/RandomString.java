@@ -16,11 +16,34 @@ package com.liiwin.random;
  */
 public interface RandomString
 {
+	/**
+	 * 获取一个随机的字符串
+	 * @param length 字符串长度
+	 * @param max 最大字符
+	 * @return
+	 * 赵玉柱
+	 */
 	String getRandomString(int length, char max);
 
+	/**
+	 * 获取一个随机字符串
+	 * @param length 字符串长度
+	 * @param min 最小字符
+	 * @param max 最大字符
+	 * @return
+	 * 赵玉柱
+	 */
 	String getRandomString(int length, char min, char max);
 
-	String[] getRandomString(String[] o, int length, int size, char max);
+	/**
+	 * 获取一个随机字符串数据
+	 * @param length 每个字符串的
+	 * @param size 字符串数组长度
+	 * @param max
+	 * @return
+	 * 赵玉柱
+	 */
+	String[] getRandomStringArray(int length, int size, char max);
 
-	String[] getRandomString(String[] o, int length, int size, char min, char max);
+	String[] getRandomStringArray(int length, int size, char min, char max);
 }

@@ -14,7 +14,7 @@ package com.liiwin.sort;
  * 监听使用界面:
  * @version 8.0
  */
-public class QuickSort implements Sort, StringSort
+public class QuickSort implements Sort
 {
 	@Override
 	public long sort(int[] o)
@@ -62,10 +62,8 @@ public class QuickSort implements Sort, StringSort
 		}
 	}
 
-	@Override
 	public long sort(String[] o)
 	{
-		// TODO Auto-generated method stub
 		if (o == null || o.length == 0)
 		{
 			return -1;
