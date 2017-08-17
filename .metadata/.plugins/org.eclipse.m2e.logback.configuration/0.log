@@ -1263,3 +1263,880 @@
 2017-08-12 13:52:22,896 [Worker-84] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
 2017-08-12 13:52:23,351 [New I/O client worker #3-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/net/coobird/thumbnailator/0.4.8/thumbnailator-0.4.8-sources.jar
 2017-08-12 13:52:23,801 [New I/O client worker #3-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/net/coobird/thumbnailator/0.4.8/thumbnailator-0.4.8-sources.jar
+2017-08-17 22:54:57,123 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:54:58,386 [New I/O client worker #1-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-compiler-plugin/3.1/maven-compiler-plugin-3.1.jar
+2017-08-17 22:54:58,698 [New I/O client worker #1-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-compiler-plugin/3.1/maven-compiler-plugin-3.1.jar
+2017-08-17 22:54:59,104 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:54:59,432 [New I/O client worker #2-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-war-plugin/2.3/maven-war-plugin-2.3.jar
+2017-08-17 22:54:59,837 [New I/O client worker #2-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-war-plugin/2.3/maven-war-plugin-2.3.jar
+2017-08-17 22:55:00,212 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:00,524 [New I/O client worker #3-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-compiler-plugin/3.1/maven-compiler-plugin-3.1.pom
+2017-08-17 22:55:00,539 [New I/O client worker #3-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-compiler-plugin/3.1/maven-compiler-plugin-3.1.pom
+2017-08-17 22:55:00,726 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:01,054 [New I/O client worker #4-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-plugins/24/maven-plugins-24.pom
+2017-08-17 22:55:01,070 [New I/O client worker #4-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-plugins/24/maven-plugins-24.pom
+2017-08-17 22:55:03,534 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:03,893 [New I/O client worker #5-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-compiler-api/2.2/plexus-compiler-api-2.2.pom
+2017-08-17 22:55:03,893 [New I/O client worker #5-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-compiler-api/2.2/plexus-compiler-api-2.2.pom
+2017-08-17 22:55:04,096 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:04,439 [New I/O client worker #6-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-compiler/2.2/plexus-compiler-2.2.pom
+2017-08-17 22:55:04,439 [New I/O client worker #6-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-compiler/2.2/plexus-compiler-2.2.pom
+2017-08-17 22:55:04,736 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:05,079 [New I/O client worker #7-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-utils/3.0.8/plexus-utils-3.0.8.pom
+2017-08-17 22:55:05,079 [New I/O client worker #7-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-utils/3.0.8/plexus-utils-3.0.8.pom
+2017-08-17 22:55:05,266 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:05,594 [New I/O client worker #8-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus/3.2/plexus-3.2.pom
+2017-08-17 22:55:05,765 [New I/O client worker #8-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus/3.2/plexus-3.2.pom
+2017-08-17 22:55:05,952 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:06,280 [New I/O client worker #9-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-compiler-manager/2.2/plexus-compiler-manager-2.2.pom
+2017-08-17 22:55:06,280 [New I/O client worker #9-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-compiler-manager/2.2/plexus-compiler-manager-2.2.pom
+2017-08-17 22:55:06,483 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:06,810 [New I/O client worker #10-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-compiler-javac/2.2/plexus-compiler-javac-2.2.pom
+2017-08-17 22:55:06,810 [New I/O client worker #10-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-compiler-javac/2.2/plexus-compiler-javac-2.2.pom
+2017-08-17 22:55:06,998 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:07,341 [New I/O client worker #11-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-compilers/2.2/plexus-compilers-2.2.pom
+2017-08-17 22:55:07,341 [New I/O client worker #11-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-compilers/2.2/plexus-compilers-2.2.pom
+2017-08-17 22:55:07,918 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:08,246 [New I/O client worker #12-2] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-compiler-manager/2.2/plexus-compiler-manager-2.2.jar
+2017-08-17 22:55:08,246 [New I/O client worker #12-2] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-compiler-manager/2.2/plexus-compiler-manager-2.2.jar
+2017-08-17 22:55:08,261 [New I/O client worker #12-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-compiler-api/2.2/plexus-compiler-api-2.2.jar
+2017-08-17 22:55:08,261 [New I/O client worker #12-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-compiler-javac/2.2/plexus-compiler-javac-2.2.jar
+2017-08-17 22:55:08,433 [New I/O client worker #12-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-compiler-javac/2.2/plexus-compiler-javac-2.2.jar
+2017-08-17 22:55:08,433 [New I/O client worker #12-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-compiler-api/2.2/plexus-compiler-api-2.2.jar
+2017-08-17 22:55:09,681 [Worker-9] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: xyz.zyzhu.Test-Spring-001:Test-Spring-001:0.0.1-SNAPSHOT @ D:\MyProject\OnGithub\Test-Spring-001\pom.xml.
+2017-08-17 22:55:09,696 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:10,024 [New I/O client worker #13-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/commons-codec/commons-codec/1.9/commons-codec-1.9.pom
+2017-08-17 22:55:10,024 [New I/O client worker #13-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/commons-codec/commons-codec/1.9/commons-codec-1.9.pom
+2017-08-17 22:55:10,227 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:10,554 [New I/O client worker #14-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/commons/commons-parent/32/commons-parent-32.pom
+2017-08-17 22:55:10,882 [New I/O client worker #14-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/commons/commons-parent/32/commons-parent-32.pom
+2017-08-17 22:55:11,085 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:11,412 [New I/O client worker #15-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/commons-io/commons-io/2.5/commons-io-2.5.pom
+2017-08-17 22:55:11,412 [New I/O client worker #15-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/commons-io/commons-io/2.5/commons-io-2.5.pom
+2017-08-17 22:55:11,600 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:11,927 [New I/O client worker #16-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/commons/commons-parent/39/commons-parent-39.pom
+2017-08-17 22:55:12,286 [New I/O client worker #16-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/commons/commons-parent/39/commons-parent-39.pom
+2017-08-17 22:55:12,473 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:12,801 [New I/O client worker #17-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/apache/16/apache-16.pom
+2017-08-17 22:55:12,957 [New I/O client worker #17-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/apache/16/apache-16.pom
+2017-08-17 22:55:13,316 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:13,659 [New I/O client worker #18-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/com/alibaba/fastjson/1.2.24/fastjson-1.2.24.pom
+2017-08-17 22:55:13,659 [New I/O client worker #18-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/com/alibaba/fastjson/1.2.24/fastjson-1.2.24.pom
+2017-08-17 22:55:13,846 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:14,174 [New I/O client worker #19-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/pdfbox/pdfbox/1.8.1/pdfbox-1.8.1.pom
+2017-08-17 22:55:14,174 [New I/O client worker #19-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/pdfbox/pdfbox/1.8.1/pdfbox-1.8.1.pom
+2017-08-17 22:55:14,345 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:14,688 [New I/O client worker #20-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/pdfbox/pdfbox-parent/1.8.1/pdfbox-parent-1.8.1.pom
+2017-08-17 22:55:14,688 [New I/O client worker #20-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/pdfbox/pdfbox-parent/1.8.1/pdfbox-parent-1.8.1.pom
+2017-08-17 22:55:14,860 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:15,203 [New I/O client worker #21-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/apache/10/apache-10.pom
+2017-08-17 22:55:15,359 [New I/O client worker #21-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/apache/10/apache-10.pom
+2017-08-17 22:55:15,546 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:15,890 [New I/O client worker #22-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/pdfbox/fontbox/1.8.1/fontbox-1.8.1.pom
+2017-08-17 22:55:15,890 [New I/O client worker #22-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/pdfbox/fontbox/1.8.1/fontbox-1.8.1.pom
+2017-08-17 22:55:16,155 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:16,482 [New I/O client worker #23-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/pdfbox/jempbox/1.8.1/jempbox-1.8.1.pom
+2017-08-17 22:55:16,482 [New I/O client worker #23-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/pdfbox/jempbox/1.8.1/jempbox-1.8.1.pom
+2017-08-17 22:55:16,670 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:17,013 [New I/O client worker #24-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpclient-cache/4.5/httpclient-cache-4.5.pom
+2017-08-17 22:55:17,013 [New I/O client worker #24-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpclient-cache/4.5/httpclient-cache-4.5.pom
+2017-08-17 22:55:17,200 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:17,528 [New I/O client worker #25-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpcomponents-client/4.5/httpcomponents-client-4.5.pom
+2017-08-17 22:55:17,684 [New I/O client worker #25-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpcomponents-client/4.5/httpcomponents-client-4.5.pom
+2017-08-17 22:55:17,871 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:18,214 [New I/O client worker #26-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/httpcomponents/project/7/project-7.pom
+2017-08-17 22:55:18,417 [New I/O client worker #26-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/httpcomponents/project/7/project-7.pom
+2017-08-17 22:55:18,604 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:18,947 [New I/O client worker #27-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpclient/4.5/httpclient-4.5.pom
+2017-08-17 22:55:18,947 [New I/O client worker #27-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpclient/4.5/httpclient-4.5.pom
+2017-08-17 22:55:19,150 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:19,478 [New I/O client worker #28-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpcore/4.4.1/httpcore-4.4.1.pom
+2017-08-17 22:55:19,493 [New I/O client worker #28-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpcore/4.4.1/httpcore-4.4.1.pom
+2017-08-17 22:55:19,680 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:20,008 [New I/O client worker #29-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpcomponents-core/4.4.1/httpcomponents-core-4.4.1.pom
+2017-08-17 22:55:20,008 [New I/O client worker #29-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpcomponents-core/4.4.1/httpcomponents-core-4.4.1.pom
+2017-08-17 22:55:20,211 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:20,538 [New I/O client worker #30-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/com/itextpdf/itext-asian/5.2.0/itext-asian-5.2.0.pom
+2017-08-17 22:55:20,538 [New I/O client worker #30-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/com/itextpdf/itext-asian/5.2.0/itext-asian-5.2.0.pom
+2017-08-17 22:55:20,726 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:21,053 [New I/O client worker #31-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/com/itextpdf/itext-parent/1.0.0/itext-parent-1.0.0.pom
+2017-08-17 22:55:21,069 [New I/O client worker #31-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/com/itextpdf/itext-parent/1.0.0/itext-parent-1.0.0.pom
+2017-08-17 22:55:21,240 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:21,584 [New I/O client worker #32-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/com/itextpdf/itextpdf/5.4.2/itextpdf-5.4.2.pom
+2017-08-17 22:55:21,584 [New I/O client worker #32-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/com/itextpdf/itextpdf/5.4.2/itextpdf-5.4.2.pom
+2017-08-17 22:55:21,786 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:22,114 [New I/O client worker #33-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/redis/clients/jedis/2.1.0/jedis-2.1.0.pom
+2017-08-17 22:55:22,114 [New I/O client worker #33-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/redis/clients/jedis/2.1.0/jedis-2.1.0.pom
+2017-08-17 22:55:22,348 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:22,738 [New I/O client worker #34-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/commons-pool/commons-pool/1.5.5/commons-pool-1.5.5.pom
+2017-08-17 22:55:22,738 [New I/O client worker #34-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/commons-pool/commons-pool/1.5.5/commons-pool-1.5.5.pom
+2017-08-17 22:55:22,988 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:23,456 [New I/O client worker #35-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/springframework/spring-aop/4.0.5.RELEASE/spring-aop-4.0.5.RELEASE.pom
+2017-08-17 22:55:23,456 [New I/O client worker #35-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/springframework/spring-aop/4.0.5.RELEASE/spring-aop-4.0.5.RELEASE.pom
+2017-08-17 22:55:23,643 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:24,033 [New I/O client worker #36-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/springframework/spring-beans/4.0.5.RELEASE/spring-beans-4.0.5.RELEASE.pom
+2017-08-17 22:55:24,033 [New I/O client worker #36-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/springframework/spring-beans/4.0.5.RELEASE/spring-beans-4.0.5.RELEASE.pom
+2017-08-17 22:55:24,282 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:24,688 [New I/O client worker #37-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/springframework/spring-core/4.0.5.RELEASE/spring-core-4.0.5.RELEASE.pom
+2017-08-17 22:55:24,688 [New I/O client worker #37-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/springframework/spring-core/4.0.5.RELEASE/spring-core-4.0.5.RELEASE.pom
+2017-08-17 22:55:25,062 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:25,390 [New I/O client worker #38-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/springframework/spring-context/4.0.5.RELEASE/spring-context-4.0.5.RELEASE.pom
+2017-08-17 22:55:25,406 [New I/O client worker #38-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/springframework/spring-context/4.0.5.RELEASE/spring-context-4.0.5.RELEASE.pom
+2017-08-17 22:55:25,593 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:25,920 [New I/O client worker #39-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/springframework/spring-expression/4.0.5.RELEASE/spring-expression-4.0.5.RELEASE.pom
+2017-08-17 22:55:25,920 [New I/O client worker #39-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/springframework/spring-expression/4.0.5.RELEASE/spring-expression-4.0.5.RELEASE.pom
+2017-08-17 22:55:26,139 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:26,466 [New I/O client worker #40-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/springframework/spring-web/4.0.5.RELEASE/spring-web-4.0.5.RELEASE.pom
+2017-08-17 22:55:26,482 [New I/O client worker #40-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/springframework/spring-web/4.0.5.RELEASE/spring-web-4.0.5.RELEASE.pom
+2017-08-17 22:55:26,669 [Worker-9] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for xyz.zyzhu.rootbase:rootbase:jar:0.0.1-SNAPSHOT is missing, no dependency information available
+2017-08-17 22:55:26,669 [Worker-9] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for xyz.zyzhu.Test-Spring-001-API:Test-Spring-001-API:jar:0.0.1-SNAPSHOT is missing, no dependency information available
+2017-08-17 22:55:26,700 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:27,090 [New I/O client worker #41-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/commons-codec/commons-codec/1.9/commons-codec-1.9.jar
+2017-08-17 22:55:27,090 [New I/O client worker #41-5] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/pdfbox/fontbox/1.8.1/fontbox-1.8.1.jar
+2017-08-17 22:55:27,090 [New I/O client worker #41-2] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/commons-io/commons-io/2.5/commons-io-2.5.jar
+2017-08-17 22:55:27,090 [New I/O client worker #41-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpcore/4.4.1/httpcore-4.4.1.jar
+2017-08-17 22:55:27,090 [New I/O client worker #41-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/com/alibaba/fastjson/1.2.24/fastjson-1.2.24.jar
+2017-08-17 22:55:27,090 [New I/O client worker #41-6] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/pdfbox/jempbox/1.8.1/jempbox-1.8.1.jar
+2017-08-17 22:55:27,106 [New I/O client worker #41-4] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/pdfbox/pdfbox/1.8.1/pdfbox-1.8.1.jar
+2017-08-17 22:55:27,106 [New I/O client worker #41-7] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpclient-cache/4.5/httpclient-cache-4.5.jar
+2017-08-17 22:55:27,106 [New I/O client worker #41-8] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/springframework/spring-beans/4.0.5.RELEASE/spring-beans-4.0.5.RELEASE.jar
+2017-08-17 22:55:27,106 [New I/O client worker #41-5] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/commons-pool/commons-pool/1.5.5/commons-pool-1.5.5.jar
+2017-08-17 22:55:27,106 [New I/O client worker #41-6] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/springframework/spring-aop/4.0.5.RELEASE/spring-aop-4.0.5.RELEASE.jar
+2017-08-17 22:55:27,122 [New I/O client worker #41-2] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/springframework/spring-expression/4.0.5.RELEASE/spring-expression-4.0.5.RELEASE.jar
+2017-08-17 22:55:27,122 [New I/O client worker #41-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/springframework/spring-web/4.0.5.RELEASE/spring-web-4.0.5.RELEASE.jar
+2017-08-17 22:55:27,137 [New I/O client worker #41-8] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpclient/4.5/httpclient-4.5.jar
+2017-08-17 22:55:27,137 [New I/O client worker #41-7] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/springframework/spring-core/4.0.5.RELEASE/spring-core-4.0.5.RELEASE.jar
+2017-08-17 22:55:27,137 [New I/O client worker #41-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/springframework/spring-context/4.0.5.RELEASE/spring-context-4.0.5.RELEASE.jar
+2017-08-17 22:55:27,153 [New I/O client worker #41-2] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/com/itextpdf/itext-asian/5.2.0/itext-asian-5.2.0.jar
+2017-08-17 22:55:27,153 [New I/O client worker #41-4] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/redis/clients/jedis/2.1.0/jedis-2.1.0.jar
+2017-08-17 22:55:27,168 [New I/O client worker #41-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/com/itextpdf/itextpdf/5.4.2/itextpdf-5.4.2.jar
+2017-08-17 22:55:27,605 [New I/O client worker #41-6] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/pdfbox/jempbox/1.8.1/jempbox-1.8.1.jar
+2017-08-17 22:55:28,011 [New I/O client worker #41-5] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/commons-pool/commons-pool/1.5.5/commons-pool-1.5.5.jar
+2017-08-17 22:55:28,401 [New I/O client worker #41-7] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpclient-cache/4.5/httpclient-cache-4.5.jar
+2017-08-17 22:55:28,510 [New I/O client worker #41-4] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/redis/clients/jedis/2.1.0/jedis-2.1.0.jar
+2017-08-17 22:55:28,806 [New I/O client worker #41-2] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/commons-io/commons-io/2.5/commons-io-2.5.jar
+2017-08-17 22:55:29,118 [New I/O client worker #41-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/commons-codec/commons-codec/1.9/commons-codec-1.9.jar
+2017-08-17 22:55:29,508 [New I/O client worker #41-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpcore/4.4.1/httpcore-4.4.1.jar
+2017-08-17 22:55:29,742 [New I/O client worker #41-6] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/springframework/spring-aop/4.0.5.RELEASE/spring-aop-4.0.5.RELEASE.jar
+2017-08-17 22:55:29,774 [New I/O client worker #41-5] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/pdfbox/fontbox/1.8.1/fontbox-1.8.1.jar
+2017-08-17 22:55:29,867 [New I/O client worker #41-2] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/springframework/spring-expression/4.0.5.RELEASE/spring-expression-4.0.5.RELEASE.jar
+2017-08-17 22:55:30,039 [New I/O client worker #41-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/com/alibaba/fastjson/1.2.24/fastjson-1.2.24.jar
+2017-08-17 22:55:31,068 [New I/O client worker #41-8] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/springframework/spring-beans/4.0.5.RELEASE/spring-beans-4.0.5.RELEASE.jar
+2017-08-17 22:55:31,100 [New I/O client worker #41-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/springframework/spring-web/4.0.5.RELEASE/spring-web-4.0.5.RELEASE.jar
+2017-08-17 22:55:31,302 [New I/O client worker #41-8] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpclient/4.5/httpclient-4.5.jar
+2017-08-17 22:55:31,864 [New I/O client worker #41-7] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/springframework/spring-core/4.0.5.RELEASE/spring-core-4.0.5.RELEASE.jar
+2017-08-17 22:55:31,880 [New I/O client worker #41-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/springframework/spring-context/4.0.5.RELEASE/spring-context-4.0.5.RELEASE.jar
+2017-08-17 22:55:33,502 [New I/O client worker #41-2] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/com/itextpdf/itext-asian/5.2.0/itext-asian-5.2.0.jar
+2017-08-17 22:55:35,171 [New I/O client worker #41-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/com/itextpdf/itextpdf/5.4.2/itextpdf-5.4.2.jar
+2017-08-17 22:55:37,371 [New I/O client worker #41-4] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/pdfbox/pdfbox/1.8.1/pdfbox-1.8.1.jar
+2017-08-17 22:55:39,726 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:40,163 [New I/O client worker #42-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-war-plugin/2.3/maven-war-plugin-2.3.pom
+2017-08-17 22:55:40,163 [New I/O client worker #42-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-war-plugin/2.3/maven-war-plugin-2.3.pom
+2017-08-17 22:55:40,350 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:40,662 [New I/O client worker #43-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-plugins/23/maven-plugins-23.pom
+2017-08-17 22:55:40,662 [New I/O client worker #43-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-plugins/23/maven-plugins-23.pom
+2017-08-17 22:55:40,990 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:41,302 [New I/O client worker #44-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/maven/maven-archiver/2.5/maven-archiver-2.5.pom
+2017-08-17 22:55:41,302 [New I/O client worker #44-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/maven/maven-archiver/2.5/maven-archiver-2.5.pom
+2017-08-17 22:55:41,489 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:41,801 [New I/O client worker #45-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/maven/shared/maven-shared-components/17/maven-shared-components-17.pom
+2017-08-17 22:55:41,801 [New I/O client worker #45-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/maven/shared/maven-shared-components/17/maven-shared-components-17.pom
+2017-08-17 22:55:41,973 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:42,285 [New I/O client worker #46-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/maven/maven-parent/21/maven-parent-21.pom
+2017-08-17 22:55:42,472 [New I/O client worker #46-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/maven/maven-parent/21/maven-parent-21.pom
+2017-08-17 22:55:42,644 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:42,956 [New I/O client worker #47-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-archiver/2.1/plexus-archiver-2.1.pom
+2017-08-17 22:55:42,956 [New I/O client worker #47-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-archiver/2.1/plexus-archiver-2.1.pom
+2017-08-17 22:55:43,236 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:43,548 [New I/O client worker #48-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-io/2.0.2/plexus-io-2.0.2.pom
+2017-08-17 22:55:43,548 [New I/O client worker #48-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-io/2.0.2/plexus-io-2.0.2.pom
+2017-08-17 22:55:43,798 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:44,094 [New I/O client worker #49-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-interpolation/1.15/plexus-interpolation-1.15.pom
+2017-08-17 22:55:44,110 [New I/O client worker #49-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-interpolation/1.15/plexus-interpolation-1.15.pom
+2017-08-17 22:55:44,282 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:44,594 [New I/O client worker #50-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-io/2.0.5/plexus-io-2.0.5.pom
+2017-08-17 22:55:44,594 [New I/O client worker #50-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-io/2.0.5/plexus-io-2.0.5.pom
+2017-08-17 22:55:44,765 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:45,077 [New I/O client worker #51-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-components/1.2/plexus-components-1.2.pom
+2017-08-17 22:55:45,077 [New I/O client worker #51-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-components/1.2/plexus-components-1.2.pom
+2017-08-17 22:55:45,264 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:45,576 [New I/O client worker #52-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-archiver/2.2/plexus-archiver-2.2.pom
+2017-08-17 22:55:45,576 [New I/O client worker #52-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-archiver/2.2/plexus-archiver-2.2.pom
+2017-08-17 22:55:45,764 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:46,060 [New I/O client worker #53-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-components/1.1.20/plexus-components-1.1.20.pom
+2017-08-17 22:55:46,076 [New I/O client worker #53-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-components/1.1.20/plexus-components-1.1.20.pom
+2017-08-17 22:55:46,263 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:46,575 [New I/O client worker #54-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus/3.1/plexus-3.1.pom
+2017-08-17 22:55:46,746 [New I/O client worker #54-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus/3.1/plexus-3.1.pom
+2017-08-17 22:55:46,918 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:47,246 [New I/O client worker #55-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-utils/3.0.7/plexus-utils-3.0.7.pom
+2017-08-17 22:55:47,246 [New I/O client worker #55-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-utils/3.0.7/plexus-utils-3.0.7.pom
+2017-08-17 22:55:47,417 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:47,729 [New I/O client worker #56-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-io/2.0.4/plexus-io-2.0.4.pom
+2017-08-17 22:55:47,729 [New I/O client worker #56-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-io/2.0.4/plexus-io-2.0.4.pom
+2017-08-17 22:55:47,901 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:48,228 [New I/O client worker #57-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/com/thoughtworks/xstream/xstream/1.4.3/xstream-1.4.3.pom
+2017-08-17 22:55:48,228 [New I/O client worker #57-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/com/thoughtworks/xstream/xstream/1.4.3/xstream-1.4.3.pom
+2017-08-17 22:55:48,400 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:51,707 [New I/O client worker #58-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/com/thoughtworks/xstream/xstream-parent/1.4.3/xstream-parent-1.4.3.pom
+2017-08-17 22:55:51,863 [New I/O client worker #58-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/com/thoughtworks/xstream/xstream-parent/1.4.3/xstream-parent-1.4.3.pom
+2017-08-17 22:55:52,035 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:52,347 [New I/O client worker #59-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/codehaus/codehaus-parent/3/codehaus-parent-3.pom
+2017-08-17 22:55:52,362 [New I/O client worker #59-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/codehaus/codehaus-parent/3/codehaus-parent-3.pom
+2017-08-17 22:55:52,534 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:52,846 [New I/O client worker #60-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/xmlpull/xmlpull/1.1.3.1/xmlpull-1.1.3.1.pom
+2017-08-17 22:55:52,846 [New I/O client worker #60-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/xmlpull/xmlpull/1.1.3.1/xmlpull-1.1.3.1.pom
+2017-08-17 22:55:53,018 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:53,330 [New I/O client worker #61-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/xpp3/xpp3_min/1.1.4c/xpp3_min-1.1.4c.pom
+2017-08-17 22:55:53,330 [New I/O client worker #61-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/xpp3/xpp3_min/1.1.4c/xpp3_min-1.1.4c.pom
+2017-08-17 22:55:53,501 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:53,813 [New I/O client worker #62-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/maven/shared/maven-filtering/1.0-beta-2/maven-filtering-1.0-beta-2.pom
+2017-08-17 22:55:53,813 [New I/O client worker #62-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/maven/shared/maven-filtering/1.0-beta-2/maven-filtering-1.0-beta-2.pom
+2017-08-17 22:55:53,985 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:54,312 [New I/O client worker #63-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/maven/shared/maven-shared-components/10/maven-shared-components-10.pom
+2017-08-17 22:55:54,312 [New I/O client worker #63-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/maven/shared/maven-shared-components/10/maven-shared-components-10.pom
+2017-08-17 22:55:54,484 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:54,796 [New I/O client worker #64-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/maven/maven-parent/9/maven-parent-9.pom
+2017-08-17 22:55:54,983 [New I/O client worker #64-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/maven/maven-parent/9/maven-parent-9.pom
+2017-08-17 22:55:55,170 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:55,482 [New I/O client worker #65-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-utils/1.5.6/plexus-utils-1.5.6.pom
+2017-08-17 22:55:55,482 [New I/O client worker #65-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-utils/1.5.6/plexus-utils-1.5.6.pom
+2017-08-17 22:55:55,670 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:55,982 [New I/O client worker #66-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus/1.0.12/plexus-1.0.12.pom
+2017-08-17 22:55:55,982 [New I/O client worker #66-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus/1.0.12/plexus-1.0.12.pom
+2017-08-17 22:55:56,153 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:56,465 [New I/O client worker #67-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-interpolation/1.6/plexus-interpolation-1.6.pom
+2017-08-17 22:55:56,465 [New I/O client worker #67-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-interpolation/1.6/plexus-interpolation-1.6.pom
+2017-08-17 22:55:56,668 [Worker-9] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 22:55:56,996 [New I/O client worker #68-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/maven/maven-archiver/2.5/maven-archiver-2.5.jar
+2017-08-17 22:55:56,996 [New I/O client worker #68-2] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-io/2.0.5/plexus-io-2.0.5.jar
+2017-08-17 22:55:56,996 [New I/O client worker #68-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-archiver/2.2/plexus-archiver-2.2.jar
+2017-08-17 22:55:57,011 [New I/O client worker #68-4] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-interpolation/1.15/plexus-interpolation-1.15.jar
+2017-08-17 22:55:57,011 [New I/O client worker #68-6] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/xmlpull/xmlpull/1.1.3.1/xmlpull-1.1.3.1.jar
+2017-08-17 22:55:57,011 [New I/O client worker #68-6] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/xmlpull/xmlpull/1.1.3.1/xmlpull-1.1.3.1.jar
+2017-08-17 22:55:57,011 [New I/O client worker #68-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/maven/shared/maven-filtering/1.0-beta-2/maven-filtering-1.0-beta-2.jar
+2017-08-17 22:55:57,027 [New I/O client worker #68-7] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/xpp3/xpp3_min/1.1.4c/xpp3_min-1.1.4c.jar
+2017-08-17 22:55:57,027 [New I/O client worker #68-8] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-utils/3.0.8/plexus-utils-3.0.8.jar
+2017-08-17 22:55:57,042 [New I/O client worker #68-5] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/com/thoughtworks/xstream/xstream/1.4.3/xstream-1.4.3.jar
+2017-08-17 22:55:57,152 [New I/O client worker #68-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/maven/maven-archiver/2.5/maven-archiver-2.5.jar
+2017-08-17 22:55:57,198 [New I/O client worker #68-7] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/xpp3/xpp3_min/1.1.4c/xpp3_min-1.1.4c.jar
+2017-08-17 22:55:57,214 [New I/O client worker #68-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/maven/shared/maven-filtering/1.0-beta-2/maven-filtering-1.0-beta-2.jar
+2017-08-17 22:55:57,323 [New I/O client worker #68-2] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-io/2.0.5/plexus-io-2.0.5.jar
+2017-08-17 22:55:57,339 [New I/O client worker #68-4] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-interpolation/1.15/plexus-interpolation-1.15.jar
+2017-08-17 22:55:57,557 [New I/O client worker #68-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-archiver/2.2/plexus-archiver-2.2.jar
+2017-08-17 22:55:57,666 [New I/O client worker #68-8] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-utils/3.0.8/plexus-utils-3.0.8.jar
+2017-08-17 22:55:57,791 [New I/O client worker #68-5] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/com/thoughtworks/xstream/xstream/1.4.3/xstream-1.4.3.jar
+2017-08-17 22:55:59,538 [Worker-9] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for xyz.zyzhu.rootbase:rootbase:jar:0.0.1-SNAPSHOT is missing, no dependency information available
+2017-08-17 22:55:59,538 [Worker-9] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for xyz.zyzhu.Test-Spring-001-API:Test-Spring-001-API:jar:0.0.1-SNAPSHOT is missing, no dependency information available
+2017-08-17 22:56:00,350 [Worker-9] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 22:56:00,365 [Worker-9] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2017-08-17 22:56:00,396 [Worker-9] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 22:56:00,396 [Worker-9] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 22:56:02,627 [Worker-5] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 22:56:02,643 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2017-08-17 22:56:02,643 [Worker-5] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 22:56:02,643 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 22:56:47,025 [Worker-8] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: xyz.zyzhu.Test-Spring-001-API:Test-Spring-001-API:0.0.1-SNAPSHOT @ D:\MyProject\OnGithub\Test-Spring-001-API\pom.xml.
+2017-08-17 22:56:47,072 [Worker-8] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: xyz.zyzhu.Test-Spring-001:Test-Spring-001:0.0.1-SNAPSHOT @ D:\MyProject\OnGithub\Test-Spring-001\pom.xml.
+2017-08-17 22:56:47,228 [Worker-8] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for xyz.zyzhu.rootbase:rootbase:jar:0.0.1-SNAPSHOT is missing, no dependency information available
+2017-08-17 22:56:47,431 [Worker-8] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for xyz.zyzhu.rootbase:rootbase:jar:0.0.1-SNAPSHOT is missing, no dependency information available
+2017-08-17 22:56:48,133 [Worker-8] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 22:56:48,133 [Worker-8] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001-API\src\main\resources
+2017-08-17 22:56:48,148 [Worker-8] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 22:56:48,148 [Worker-8] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001-API\src\test\resources
+2017-08-17 22:56:48,304 [Worker-8] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: xyz.zyzhu.rootbase:rootbase:0.0.1-SNAPSHOT @ D:\MyProject\OnGithub\rootbase\pom.xml.
+2017-08-17 22:56:48,335 [Worker-8] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: xyz.zyzhu.Test-Spring-001:Test-Spring-001:0.0.1-SNAPSHOT @ D:\MyProject\OnGithub\Test-Spring-001\pom.xml.
+2017-08-17 22:56:49,287 [Worker-8] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 22:56:49,303 [Worker-8] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 3 resources
+2017-08-17 22:56:49,303 [Worker-8] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 22:56:49,303 [Worker-8] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\rootbase\src\test\resources
+2017-08-17 22:56:50,051 [Worker-5] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 22:56:50,051 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2017-08-17 22:56:50,051 [Worker-5] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 22:56:50,051 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 22:58:01,406 [Worker-8] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Update started
+2017-08-17 22:58:01,484 [Worker-8] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: xyz.zyzhu.Test-Spring-001-API:Test-Spring-001-API:0.0.1-SNAPSHOT @ D:\MyProject\OnGithub\Test-Spring-001-API\pom.xml.
+2017-08-17 22:58:01,546 [Worker-8] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Test-Spring-001-API/src
+2017-08-17 22:58:01,546 [Worker-8] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Not adding source folder /Test-Spring-001-API/src/test/java because it overlaps with /Test-Spring-001-API/src
+2017-08-17 22:58:02,045 [Worker-8] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Update completed: 0 sec
+2017-08-17 22:58:02,373 [Worker-9] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: xyz.zyzhu.Test-Spring-001-API:Test-Spring-001-API:0.0.1-SNAPSHOT @ D:\MyProject\OnGithub\Test-Spring-001-API\pom.xml.
+2017-08-17 22:58:02,560 [Worker-9] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 22:58:02,560 [Worker-9] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001-API\src\main\resources
+2017-08-17 22:58:02,560 [Worker-9] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 22:58:02,560 [Worker-9] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001-API\src\test\resources
+2017-08-17 23:00:47,423 [Worker-12] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: xyz.zyzhu.Test-Spring-001-API:Test-Spring-001-API:0.0.1-SNAPSHOT @ D:\MyProject\OnGithub\Test-Spring-001-API\pom.xml.
+2017-08-17 23:00:47,544 [Worker-12] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:00:47,546 [Worker-12] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001-API\src\main\resources
+2017-08-17 23:00:47,548 [Worker-12] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:00:47,554 [Worker-12] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001-API\src\test\resources
+2017-08-17 23:01:58,087 [Worker-2] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: xyz.zyzhu.Test-Spring-001-API:Test-Spring-001-API:0.0.1-SNAPSHOT @ D:\MyProject\OnGithub\Test-Spring-001-API\pom.xml.
+2017-08-17 23:01:58,162 [Worker-2] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:01:58,163 [Worker-2] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001-API\src\main\resources
+2017-08-17 23:01:58,167 [Worker-2] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:01:58,168 [Worker-2] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001-API\src\test\resources
+2017-08-17 23:02:35,301 [Worker-8] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:02:35,302 [Worker-8] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001-API\src\main\resources
+2017-08-17 23:02:35,305 [Worker-8] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:02:35,307 [Worker-8] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001-API\src\test\resources
+2017-08-17 23:02:35,328 [Worker-8] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:02:35,330 [Worker-8] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2017-08-17 23:02:35,331 [Worker-8] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:02:35,332 [Worker-8] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\rootbase\src\test\resources
+2017-08-17 23:02:35,350 [Worker-8] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:02:35,351 [Worker-8] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2017-08-17 23:02:35,353 [Worker-8] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:02:35,353 [Worker-8] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 23:02:51,099 [Worker-2] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: xyz.zyzhu.Test-Spring-001-API:Test-Spring-001-API:0.0.1-SNAPSHOT @ D:\MyProject\OnGithub\Test-Spring-001-API\pom.xml.
+2017-08-17 23:02:51,165 [Worker-2] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:02:51,165 [Worker-2] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001-API\src\main\resources
+2017-08-17 23:02:51,167 [Worker-2] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:02:51,168 [Worker-2] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001-API\src\test\resources
+2017-08-17 23:04:25,139 [Worker-6] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:04:25,139 [Worker-6] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001-API\src\main\resources
+2017-08-17 23:04:25,141 [Worker-6] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:04:25,142 [Worker-6] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001-API\src\test\resources
+2017-08-17 23:04:27,273 [Worker-6] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:04:27,278 [Worker-6] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 3 resources
+2017-08-17 23:04:27,286 [Worker-6] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:04:27,287 [Worker-6] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\rootbase\src\test\resources
+2017-08-17 23:04:28,404 [Worker-6] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:04:28,407 [Worker-6] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2017-08-17 23:04:28,411 [Worker-6] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:04:28,412 [Worker-6] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 23:06:26,839 [Worker-19] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: xyz.zyzhu.Test-Spring-001-API:Test-Spring-001-API:0.0.1-SNAPSHOT @ D:\MyProject\OnGithub\Test-Spring-001-API\pom.xml.
+2017-08-17 23:06:26,914 [Worker-19] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:06:26,915 [Worker-19] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001-API\src\main\resources
+2017-08-17 23:06:26,919 [Worker-19] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:06:26,920 [Worker-19] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001-API\src\test\resources
+2017-08-17 23:12:04,085 [Worker-18] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:12:04,108 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2017-08-17 23:12:04,110 [Worker-18] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:12:04,111 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 23:26:13,549 [Worker-25] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: xyz.zyzhu.Test-Spring-001:Test-Spring-001:0.0.1-SNAPSHOT @ D:\MyProject\OnGithub\Test-Spring-001\pom.xml.
+2017-08-17 23:26:15,115 [Worker-25] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:26:15,128 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2017-08-17 23:26:15,129 [Worker-25] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:26:15,130 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 23:26:15,151 [Worker-25] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Changed resources require a complete clean of filtered resources of Test-Spring-001
+2017-08-17 23:26:15,152 [Worker-25] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Executing resource filtering for Test-Spring-001
+2017-08-17 23:26:15,301 [Worker-25] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:26:44,701 [Worker-28] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: xyz.zyzhu.Test-Spring-001:Test-Spring-001:0.0.1-SNAPSHOT @ D:\MyProject\OnGithub\Test-Spring-001\pom.xml.
+2017-08-17 23:26:45,936 [Worker-28] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:26:45,956 [Worker-28] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2017-08-17 23:26:45,958 [Worker-28] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:26:45,959 [Worker-28] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 23:26:45,959 [Worker-28] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Changed resources require a complete clean of filtered resources of Test-Spring-001
+2017-08-17 23:26:45,959 [Worker-28] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Executing resource filtering for Test-Spring-001
+2017-08-17 23:26:45,963 [Worker-28] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:27:08,286 [Worker-27] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: xyz.zyzhu.Test-Spring-001:Test-Spring-001:0.0.1-SNAPSHOT @ D:\MyProject\OnGithub\Test-Spring-001\pom.xml.
+2017-08-17 23:27:08,443 [Worker-27] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:27:08,903 [New I/O client worker #69-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/springframework/spring-aop/4.3.0.RELEASE/spring-aop-4.3.0.RELEASE.pom
+2017-08-17 23:27:08,904 [New I/O client worker #69-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/springframework/spring-aop/4.3.0.RELEASE/spring-aop-4.3.0.RELEASE.pom
+2017-08-17 23:27:09,096 [Worker-27] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:27:09,421 [New I/O client worker #70-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/springframework/spring-beans/4.3.0.RELEASE/spring-beans-4.3.0.RELEASE.pom
+2017-08-17 23:27:09,421 [New I/O client worker #70-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/springframework/spring-beans/4.3.0.RELEASE/spring-beans-4.3.0.RELEASE.pom
+2017-08-17 23:27:09,598 [Worker-27] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:27:09,628 [Worker-25] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:27:09,632 [Worker-25] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/springframework/spring-aop/${spring.version}/spring-aop-${spring.version}.pom
+2017-08-17 23:27:09,683 [Worker-25] ERROR o.e.m.c.u.i.actions.OpenPomAction - Could not resolve artifact org.springframework:spring-aop:pom:${spring.version}
+org.eclipse.core.runtime.CoreException: Could not resolve artifact org.springframework:spring-aop:pom:${spring.version}
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl$5.call(MavenImpl.java:750) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl$5.call(MavenImpl.java:1) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.executeBare(MavenExecutionContext.java:161) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:137) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:89) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.resolve(MavenImpl.java:717) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.resolve(MavenImpl.java:694) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.ui.internal.actions.OpenPomAction.openEditor(OpenPomAction.java:211) ~[org.eclipse.m2e.core.ui_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.editor.xml.PomHyperlinkDetector$6$1.run(PomHyperlinkDetector.java:616) [org.eclipse.m2e.editor.xml_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53) [org.eclipse.core.jobs_3.5.300.v20130429-1813.jar:na]
+2017-08-17 23:27:09,931 [New I/O client worker #71-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/springframework/spring-core/4.3.0.RELEASE/spring-core-4.3.0.RELEASE.pom
+2017-08-17 23:27:09,932 [New I/O client worker #71-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/springframework/spring-core/4.3.0.RELEASE/spring-core-4.3.0.RELEASE.pom
+2017-08-17 23:27:10,171 [Worker-27] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:27:10,507 [New I/O client worker #73-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/springframework/spring-aop/4.3.0.RELEASE/spring-aop-4.3.0.RELEASE.jar
+2017-08-17 23:27:10,519 [New I/O client worker #73-2] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/springframework/spring-core/4.3.0.RELEASE/spring-core-4.3.0.RELEASE.jar
+2017-08-17 23:27:11,301 [New I/O client worker #73-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/springframework/spring-aop/4.3.0.RELEASE/spring-aop-4.3.0.RELEASE.jar
+2017-08-17 23:27:11,802 [New I/O client worker #73-2] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/springframework/spring-core/4.3.0.RELEASE/spring-core-4.3.0.RELEASE.jar
+2017-08-17 23:27:12,464 [Worker-27] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:27:12,465 [Worker-27] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2017-08-17 23:27:12,467 [Worker-27] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:27:12,467 [Worker-27] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 23:27:12,468 [Worker-27] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Changed resources require a complete clean of filtered resources of Test-Spring-001
+2017-08-17 23:27:12,468 [Worker-27] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Executing resource filtering for Test-Spring-001
+2017-08-17 23:27:12,471 [Worker-27] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:27:13,952 [Worker-26] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:27:13,957 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2017-08-17 23:27:13,961 [Worker-26] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:27:13,962 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 23:27:57,980 [Worker-24] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: xyz.zyzhu.Test-Spring-001:Test-Spring-001:0.0.1-SNAPSHOT @ D:\MyProject\OnGithub\Test-Spring-001\pom.xml.
+2017-08-17 23:27:58,413 [Worker-24] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:27:58,414 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2017-08-17 23:27:58,416 [Worker-24] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:27:58,417 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 23:27:58,418 [Worker-24] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Changed resources require a complete clean of filtered resources of Test-Spring-001
+2017-08-17 23:27:58,418 [Worker-24] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Executing resource filtering for Test-Spring-001
+2017-08-17 23:27:58,422 [Worker-24] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:28:11,555 [Worker-24] ERROR o.e.m.c.u.i.actions.OpenPomAction - Could not resolve artifact org.springframework:spring-aop:pom:${spring.version}
+org.eclipse.core.runtime.CoreException: Could not resolve artifact org.springframework:spring-aop:pom:${spring.version}
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl$5.call(MavenImpl.java:750) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl$5.call(MavenImpl.java:1) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.executeBare(MavenExecutionContext.java:161) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:137) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:89) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.resolve(MavenImpl.java:717) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.resolve(MavenImpl.java:694) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.ui.internal.actions.OpenPomAction.openEditor(OpenPomAction.java:211) ~[org.eclipse.m2e.core.ui_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.editor.xml.PomHyperlinkDetector$6$1.run(PomHyperlinkDetector.java:616) [org.eclipse.m2e.editor.xml_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53) [org.eclipse.core.jobs_3.5.300.v20130429-1813.jar:na]
+2017-08-17 23:31:06,538 [Worker-18] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: xyz.zyzhu.Test-Spring-001:Test-Spring-001:0.0.1-SNAPSHOT @ D:\MyProject\OnGithub\Test-Spring-001\pom.xml.
+2017-08-17 23:31:06,669 [Worker-18] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:31:06,673 [Worker-18] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/springframework/spring-aop/${spring.version }/spring-aop-${spring.version }.pom
+2017-08-17 23:31:06,979 [Worker-18] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:31:06,996 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2017-08-17 23:31:06,998 [Worker-18] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:31:06,998 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 23:31:06,999 [Worker-18] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Changed resources require a complete clean of filtered resources of Test-Spring-001
+2017-08-17 23:31:06,999 [Worker-18] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Executing resource filtering for Test-Spring-001
+2017-08-17 23:31:07,002 [Worker-18] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:31:07,572 [Worker-24] ERROR o.e.m.c.u.i.actions.OpenPomAction - Could not resolve artifact org.springframework:spring-aop:pom:${spring.version }
+org.eclipse.core.runtime.CoreException: Could not resolve artifact org.springframework:spring-aop:pom:${spring.version }
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl$5.call(MavenImpl.java:750) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl$5.call(MavenImpl.java:1) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.executeBare(MavenExecutionContext.java:161) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:137) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:89) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.resolve(MavenImpl.java:717) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.resolve(MavenImpl.java:694) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.ui.internal.actions.OpenPomAction.openEditor(OpenPomAction.java:211) ~[org.eclipse.m2e.core.ui_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.editor.xml.PomHyperlinkDetector$6$1.run(PomHyperlinkDetector.java:616) [org.eclipse.m2e.editor.xml_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53) [org.eclipse.core.jobs_3.5.300.v20130429-1813.jar:na]
+2017-08-17 23:31:08,219 [Worker-30] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:31:08,220 [Worker-30] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2017-08-17 23:31:08,221 [Worker-30] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:31:08,222 [Worker-30] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 23:31:14,862 [Worker-31] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: xyz.zyzhu.Test-Spring-001:Test-Spring-001:0.0.1-SNAPSHOT @ D:\MyProject\OnGithub\Test-Spring-001\pom.xml.
+2017-08-17 23:31:15,681 [Worker-31] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:31:15,682 [Worker-31] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2017-08-17 23:31:15,690 [Worker-31] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:31:15,691 [Worker-31] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 23:31:15,692 [Worker-31] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Changed resources require a complete clean of filtered resources of Test-Spring-001
+2017-08-17 23:31:15,692 [Worker-31] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Executing resource filtering for Test-Spring-001
+2017-08-17 23:31:15,698 [Worker-31] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:31:17,171 [Worker-24] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:31:17,176 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2017-08-17 23:31:17,180 [Worker-24] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:31:17,181 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 23:31:30,336 [Worker-35] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: xyz.zyzhu.Test-Spring-001:Test-Spring-001:0.0.1-SNAPSHOT @ D:\MyProject\OnGithub\Test-Spring-001\pom.xml.
+2017-08-17 23:31:30,754 [Worker-35] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:31:30,755 [Worker-35] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2017-08-17 23:31:30,757 [Worker-35] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:31:30,758 [Worker-35] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 23:31:30,758 [Worker-35] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Changed resources require a complete clean of filtered resources of Test-Spring-001
+2017-08-17 23:31:30,758 [Worker-35] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Executing resource filtering for Test-Spring-001
+2017-08-17 23:31:30,762 [Worker-35] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:31:31,295 [Worker-35] ERROR o.e.m.c.u.i.actions.OpenPomAction - Could not resolve artifact org.springframework:spring-aop:pom:${spring.version}
+org.eclipse.core.runtime.CoreException: Could not resolve artifact org.springframework:spring-aop:pom:${spring.version}
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl$5.call(MavenImpl.java:750) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl$5.call(MavenImpl.java:1) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.executeBare(MavenExecutionContext.java:161) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:137) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:89) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.resolve(MavenImpl.java:717) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.resolve(MavenImpl.java:694) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.ui.internal.actions.OpenPomAction.openEditor(OpenPomAction.java:211) ~[org.eclipse.m2e.core.ui_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.editor.xml.PomHyperlinkDetector$6$1.run(PomHyperlinkDetector.java:616) [org.eclipse.m2e.editor.xml_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53) [org.eclipse.core.jobs_3.5.300.v20130429-1813.jar:na]
+2017-08-17 23:31:34,650 [Worker-29] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: xyz.zyzhu.Test-Spring-001:Test-Spring-001:0.0.1-SNAPSHOT @ D:\MyProject\OnGithub\Test-Spring-001\pom.xml.
+2017-08-17 23:31:35,338 [Worker-29] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:31:35,339 [Worker-29] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2017-08-17 23:31:35,341 [Worker-29] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:31:35,343 [Worker-29] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 23:31:35,344 [Worker-29] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Changed resources require a complete clean of filtered resources of Test-Spring-001
+2017-08-17 23:31:35,344 [Worker-29] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Executing resource filtering for Test-Spring-001
+2017-08-17 23:31:35,347 [Worker-29] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:31:36,854 [Worker-18] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: xyz.zyzhu.Test-Spring-001:Test-Spring-001:0.0.1-SNAPSHOT @ D:\MyProject\OnGithub\Test-Spring-001\pom.xml.
+2017-08-17 23:31:36,975 [Worker-18] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:31:37,008 [Worker-18] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/springframework/spring-aop/${ spring.version}/spring-aop-${ spring.version}.pom
+2017-08-17 23:31:37,221 [Worker-34] ERROR o.e.m.c.u.i.actions.OpenPomAction - Could not resolve artifact org.springframework:spring-aop:pom:${ spring.version}
+org.eclipse.core.runtime.CoreException: Could not resolve artifact org.springframework:spring-aop:pom:${ spring.version}
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl$5.call(MavenImpl.java:750) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl$5.call(MavenImpl.java:1) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.executeBare(MavenExecutionContext.java:161) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:137) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:89) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.resolve(MavenImpl.java:717) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.resolve(MavenImpl.java:694) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.ui.internal.actions.OpenPomAction.openEditor(OpenPomAction.java:211) ~[org.eclipse.m2e.core.ui_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.editor.xml.PomHyperlinkDetector$6$1.run(PomHyperlinkDetector.java:616) [org.eclipse.m2e.editor.xml_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53) [org.eclipse.core.jobs_3.5.300.v20130429-1813.jar:na]
+2017-08-17 23:31:37,493 [Worker-18] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:31:37,495 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2017-08-17 23:31:37,499 [Worker-18] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:31:37,500 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 23:31:37,500 [Worker-18] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Changed resources require a complete clean of filtered resources of Test-Spring-001
+2017-08-17 23:31:37,500 [Worker-18] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Executing resource filtering for Test-Spring-001
+2017-08-17 23:31:37,504 [Worker-18] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:31:38,880 [Worker-23] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:31:38,881 [Worker-23] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2017-08-17 23:31:38,882 [Worker-23] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:31:38,885 [Worker-23] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 23:31:55,020 [Worker-36] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: xyz.zyzhu.Test-Spring-001:Test-Spring-001:0.0.1-SNAPSHOT @ D:\MyProject\OnGithub\Test-Spring-001\pom.xml.
+2017-08-17 23:31:55,614 [Worker-36] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:31:55,615 [Worker-36] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2017-08-17 23:31:55,616 [Worker-36] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:31:55,617 [Worker-36] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 23:31:55,617 [Worker-36] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Changed resources require a complete clean of filtered resources of Test-Spring-001
+2017-08-17 23:31:55,617 [Worker-36] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Executing resource filtering for Test-Spring-001
+2017-08-17 23:31:55,621 [Worker-36] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:31:57,016 [Worker-30] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:31:57,021 [Worker-30] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2017-08-17 23:31:57,024 [Worker-30] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:31:57,032 [Worker-30] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 23:32:17,677 [Worker-24] ERROR o.e.m.c.u.i.actions.OpenPomAction - Could not resolve artifact org.springframework:spring-aop:pom:${spring.version}
+org.eclipse.core.runtime.CoreException: Could not resolve artifact org.springframework:spring-aop:pom:${spring.version}
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl$5.call(MavenImpl.java:750) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl$5.call(MavenImpl.java:1) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.executeBare(MavenExecutionContext.java:161) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:137) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:89) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.resolve(MavenImpl.java:717) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.resolve(MavenImpl.java:694) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.ui.internal.actions.OpenPomAction.openEditor(OpenPomAction.java:211) ~[org.eclipse.m2e.core.ui_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.editor.xml.PomHyperlinkDetector$6$1.run(PomHyperlinkDetector.java:616) [org.eclipse.m2e.editor.xml_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53) [org.eclipse.core.jobs_3.5.300.v20130429-1813.jar:na]
+2017-08-17 23:33:31,267 [Worker-36] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: xyz.zyzhu.Test-Spring-001:Test-Spring-001:0.0.1-SNAPSHOT @ D:\MyProject\OnGithub\Test-Spring-001\pom.xml.
+2017-08-17 23:33:31,666 [Worker-36] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:33:31,667 [Worker-36] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2017-08-17 23:33:31,669 [Worker-36] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:33:31,670 [Worker-36] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 23:33:31,670 [Worker-36] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Changed resources require a complete clean of filtered resources of Test-Spring-001
+2017-08-17 23:33:31,670 [Worker-36] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Executing resource filtering for Test-Spring-001
+2017-08-17 23:33:31,675 [Worker-36] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:34:23,168 [Worker-32] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: xyz.zyzhu.Test-Spring-001:Test-Spring-001:0.0.1-SNAPSHOT @ D:\MyProject\OnGithub\Test-Spring-001\pom.xml.
+2017-08-17 23:34:23,270 [Worker-32] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:34:23,826 [New I/O client worker #76-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/springframework/spring-context/4.3.0.RELEASE/spring-context-4.3.0.RELEASE.pom
+2017-08-17 23:34:23,827 [New I/O client worker #76-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/springframework/spring-context/4.3.0.RELEASE/spring-context-4.3.0.RELEASE.pom
+2017-08-17 23:34:24,057 [Worker-32] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:34:24,485 [New I/O client worker #77-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/springframework/spring-expression/4.3.0.RELEASE/spring-expression-4.3.0.RELEASE.pom
+2017-08-17 23:34:24,485 [New I/O client worker #77-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/springframework/spring-expression/4.3.0.RELEASE/spring-expression-4.3.0.RELEASE.pom
+2017-08-17 23:34:24,756 [Worker-32] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:34:25,176 [New I/O client worker #78-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/springframework/spring-context/4.3.0.RELEASE/spring-context-4.3.0.RELEASE.jar
+2017-08-17 23:34:26,551 [New I/O client worker #78-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/springframework/spring-context/4.3.0.RELEASE/spring-context-4.3.0.RELEASE.jar
+2017-08-17 23:34:27,278 [Worker-32] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:34:27,279 [Worker-32] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2017-08-17 23:34:27,281 [Worker-32] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:34:27,281 [Worker-32] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 23:34:27,282 [Worker-32] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Changed resources require a complete clean of filtered resources of Test-Spring-001
+2017-08-17 23:34:27,282 [Worker-32] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Executing resource filtering for Test-Spring-001
+2017-08-17 23:34:27,285 [Worker-32] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:34:28,616 [Worker-23] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:34:28,621 [Worker-23] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2017-08-17 23:34:28,624 [Worker-23] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:34:28,625 [Worker-23] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 23:39:24,103 [Worker-24] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: xyz.zyzhu.Test-Spring-001:Test-Spring-001:0.0.1-SNAPSHOT @ D:\MyProject\OnGithub\Test-Spring-001\pom.xml.
+2017-08-17 23:39:24,209 [Worker-24] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:39:24,779 [New I/O client worker #79-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/springframework/spring-web/4.3.0.RELEASE/spring-web-4.3.0.RELEASE.pom
+2017-08-17 23:39:24,780 [New I/O client worker #79-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/springframework/spring-web/4.3.0.RELEASE/spring-web-4.3.0.RELEASE.pom
+2017-08-17 23:39:25,054 [Worker-24] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:39:25,519 [New I/O client worker #80-2] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/springframework/spring-expression/4.3.0.RELEASE/spring-expression-4.3.0.RELEASE.jar
+2017-08-17 23:39:25,527 [New I/O client worker #80-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/springframework/spring-beans/4.3.0.RELEASE/spring-beans-4.3.0.RELEASE.jar
+2017-08-17 23:39:25,531 [New I/O client worker #80-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/springframework/spring-web/4.3.0.RELEASE/spring-web-4.3.0.RELEASE.jar
+2017-08-17 23:39:26,441 [New I/O client worker #80-2] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/springframework/spring-expression/4.3.0.RELEASE/spring-expression-4.3.0.RELEASE.jar
+2017-08-17 23:39:26,988 [New I/O client worker #80-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/springframework/spring-beans/4.3.0.RELEASE/spring-beans-4.3.0.RELEASE.jar
+2017-08-17 23:39:27,024 [New I/O client worker #80-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/springframework/spring-web/4.3.0.RELEASE/spring-web-4.3.0.RELEASE.jar
+2017-08-17 23:39:28,179 [Worker-24] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:39:28,180 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2017-08-17 23:39:28,181 [Worker-24] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:39:28,182 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 23:39:28,182 [Worker-24] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Changed resources require a complete clean of filtered resources of Test-Spring-001
+2017-08-17 23:39:28,182 [Worker-24] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Executing resource filtering for Test-Spring-001
+2017-08-17 23:39:28,185 [Worker-24] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:39:29,529 [Worker-29] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:39:29,537 [Worker-29] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2017-08-17 23:39:29,544 [Worker-29] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:39:29,558 [Worker-29] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 23:42:56,837 [Worker-49] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: xyz.zyzhu.Test-Spring-001:Test-Spring-001:0.0.1-SNAPSHOT @ D:\MyProject\OnGithub\Test-Spring-001\pom.xml.
+2017-08-17 23:42:56,963 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:42:57,427 [New I/O client worker #81-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/springframework/spring-webmvc/4.3.0.RELEASE/spring-webmvc-4.3.0.RELEASE.pom
+2017-08-17 23:42:57,431 [New I/O client worker #81-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/springframework/spring-webmvc/4.3.0.RELEASE/spring-webmvc-4.3.0.RELEASE.pom
+2017-08-17 23:42:57,638 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:42:57,975 [New I/O client worker #82-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/springframework/spring-webmvc/4.3.0.RELEASE/spring-webmvc-4.3.0.RELEASE.jar
+2017-08-17 23:43:01,592 [New I/O client worker #82-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/springframework/spring-webmvc/4.3.0.RELEASE/spring-webmvc-4.3.0.RELEASE.jar
+2017-08-17 23:43:02,118 [Worker-49] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:43:02,119 [Worker-49] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2017-08-17 23:43:02,120 [Worker-49] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:43:02,121 [Worker-49] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 23:43:02,122 [Worker-49] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Changed resources require a complete clean of filtered resources of Test-Spring-001
+2017-08-17 23:43:02,122 [Worker-49] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Executing resource filtering for Test-Spring-001
+2017-08-17 23:43:02,126 [Worker-49] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:43:03,440 [Worker-45] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:43:03,446 [Worker-45] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2017-08-17 23:43:03,451 [Worker-45] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:43:03,452 [Worker-45] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 23:43:47,530 [Worker-46] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: xyz.zyzhu.Test-Spring-001:Test-Spring-001:0.0.1-SNAPSHOT @ D:\MyProject\OnGithub\Test-Spring-001\pom.xml.
+2017-08-17 23:43:47,944 [Worker-46] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:43:47,946 [Worker-46] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2017-08-17 23:43:47,947 [Worker-46] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:43:47,948 [Worker-46] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 23:43:47,948 [Worker-46] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Changed resources require a complete clean of filtered resources of Test-Spring-001
+2017-08-17 23:43:47,949 [Worker-46] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Executing resource filtering for Test-Spring-001
+2017-08-17 23:43:47,952 [Worker-46] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:43:49,432 [Worker-42] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:43:49,438 [Worker-42] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2017-08-17 23:43:49,443 [Worker-42] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:43:49,444 [Worker-42] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 23:50:14,037 [Worker-54] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:50:14,038 [Worker-54] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2017-08-17 23:50:14,040 [Worker-54] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:50:14,040 [Worker-54] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 23:50:28,023 [Worker-49] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Update started
+2017-08-17 23:50:28,384 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:28,455 [New I/O client worker #83-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-war-plugin/2.3/maven-war-plugin-2.3.jar
+2017-08-17 23:50:28,505 [New I/O client worker #83-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-war-plugin/2.3/maven-war-plugin-2.3.jar
+2017-08-17 23:50:34,637 [Worker-49] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: xyz.zyzhu.Test-Spring-001:Test-Spring-001:0.0.1-SNAPSHOT @ D:\MyProject\OnGithub\Test-Spring-001\pom.xml.
+2017-08-17 23:50:34,639 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:34,720 [New I/O client worker #84-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/commons-codec/commons-codec/1.9/commons-codec-1.9.pom
+2017-08-17 23:50:34,725 [New I/O client worker #84-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/commons-codec/commons-codec/1.9/commons-codec-1.9.pom
+2017-08-17 23:50:34,852 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:34,976 [New I/O client worker #85-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/apache/commons/commons-parent/32/commons-parent-32.pom
+2017-08-17 23:50:35,007 [New I/O client worker #85-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/apache/commons/commons-parent/32/commons-parent-32.pom
+2017-08-17 23:50:35,130 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:35,210 [New I/O client worker #86-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/commons-io/commons-io/2.5/commons-io-2.5.pom
+2017-08-17 23:50:35,230 [New I/O client worker #86-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/commons-io/commons-io/2.5/commons-io-2.5.pom
+2017-08-17 23:50:35,317 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:35,459 [New I/O client worker #87-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/apache/commons/commons-parent/39/commons-parent-39.pom
+2017-08-17 23:50:35,506 [New I/O client worker #87-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/apache/commons/commons-parent/39/commons-parent-39.pom
+2017-08-17 23:50:35,676 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:36,033 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:36,315 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:36,412 [New I/O client worker #90-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/com/alibaba/fastjson/1.2.24/fastjson-1.2.24.pom
+2017-08-17 23:50:36,413 [New I/O client worker #90-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/com/alibaba/fastjson/1.2.24/fastjson-1.2.24.pom
+2017-08-17 23:50:36,463 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:36,589 [New I/O client worker #91-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/apache/pdfbox/pdfbox/1.8.1/pdfbox-1.8.1.pom
+2017-08-17 23:50:36,589 [New I/O client worker #91-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/apache/pdfbox/pdfbox/1.8.1/pdfbox-1.8.1.pom
+2017-08-17 23:50:36,667 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:36,826 [New I/O client worker #92-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/apache/pdfbox/pdfbox-parent/1.8.1/pdfbox-parent-1.8.1.pom
+2017-08-17 23:50:36,898 [New I/O client worker #92-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/apache/pdfbox/pdfbox-parent/1.8.1/pdfbox-parent-1.8.1.pom
+2017-08-17 23:50:37,070 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:37,315 [New I/O client worker #93-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/apache/pdfbox/fontbox/1.8.1/fontbox-1.8.1.pom
+2017-08-17 23:50:37,315 [New I/O client worker #93-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/apache/pdfbox/fontbox/1.8.1/fontbox-1.8.1.pom
+2017-08-17 23:50:37,390 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:37,524 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:37,599 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:37,726 [New I/O client worker #96-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/apache/pdfbox/jempbox/1.8.1/jempbox-1.8.1.pom
+2017-08-17 23:50:37,726 [New I/O client worker #96-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/apache/pdfbox/jempbox/1.8.1/jempbox-1.8.1.pom
+2017-08-17 23:50:37,798 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:38,545 [New I/O client worker #97-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/apache/httpcomponents/httpclient-cache/4.5/httpclient-cache-4.5.pom
+2017-08-17 23:50:38,545 [New I/O client worker #97-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/apache/httpcomponents/httpclient-cache/4.5/httpclient-cache-4.5.pom
+2017-08-17 23:50:38,659 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:38,732 [New I/O client worker #98-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/apache/httpcomponents/httpcomponents-client/4.5/httpcomponents-client-4.5.pom
+2017-08-17 23:50:38,764 [New I/O client worker #98-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/apache/httpcomponents/httpcomponents-client/4.5/httpcomponents-client-4.5.pom
+2017-08-17 23:50:38,806 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:38,861 [New I/O client worker #99-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/apache/httpcomponents/project/7/project-7.pom
+2017-08-17 23:50:38,895 [New I/O client worker #99-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/apache/httpcomponents/project/7/project-7.pom
+2017-08-17 23:50:38,942 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:39,066 [New I/O client worker #100-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/apache/httpcomponents/httpclient/4.5/httpclient-4.5.pom
+2017-08-17 23:50:39,066 [New I/O client worker #100-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/apache/httpcomponents/httpclient/4.5/httpclient-4.5.pom
+2017-08-17 23:50:39,133 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:39,226 [New I/O client worker #101-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/apache/httpcomponents/httpcore/4.4.1/httpcore-4.4.1.pom
+2017-08-17 23:50:39,227 [New I/O client worker #101-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/apache/httpcomponents/httpcore/4.4.1/httpcore-4.4.1.pom
+2017-08-17 23:50:39,293 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:39,363 [New I/O client worker #102-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/apache/httpcomponents/httpcomponents-core/4.4.1/httpcomponents-core-4.4.1.pom
+2017-08-17 23:50:39,368 [New I/O client worker #102-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/apache/httpcomponents/httpcomponents-core/4.4.1/httpcomponents-core-4.4.1.pom
+2017-08-17 23:50:39,427 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:39,510 [New I/O client worker #103-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/com/itextpdf/itext-asian/5.2.0/itext-asian-5.2.0.pom
+2017-08-17 23:50:39,510 [New I/O client worker #103-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/com/itextpdf/itext-asian/5.2.0/itext-asian-5.2.0.pom
+2017-08-17 23:50:39,559 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:39,715 [New I/O client worker #104-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/com/itextpdf/itext-parent/1.0.0/itext-parent-1.0.0.pom
+2017-08-17 23:50:39,715 [New I/O client worker #104-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/com/itextpdf/itext-parent/1.0.0/itext-parent-1.0.0.pom
+2017-08-17 23:50:39,765 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:39,887 [New I/O client worker #105-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/com/itextpdf/itextpdf/5.4.2/itextpdf-5.4.2.pom
+2017-08-17 23:50:39,887 [New I/O client worker #105-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/com/itextpdf/itextpdf/5.4.2/itextpdf-5.4.2.pom
+2017-08-17 23:50:40,003 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:40,086 [New I/O client worker #106-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/redis/clients/jedis/2.1.0/jedis-2.1.0.pom
+2017-08-17 23:50:40,087 [New I/O client worker #106-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/redis/clients/jedis/2.1.0/jedis-2.1.0.pom
+2017-08-17 23:50:40,172 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:40,245 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:40,297 [New I/O client worker #108-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/commons-pool/commons-pool/1.5.5/commons-pool-1.5.5.pom
+2017-08-17 23:50:40,301 [New I/O client worker #108-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/commons-pool/commons-pool/1.5.5/commons-pool-1.5.5.pom
+2017-08-17 23:50:40,384 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:40,543 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:40,701 [New I/O client worker #110-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/springframework/spring-aop/4.3.0.RELEASE/spring-aop-4.3.0.RELEASE.pom
+2017-08-17 23:50:40,701 [New I/O client worker #110-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/springframework/spring-aop/4.3.0.RELEASE/spring-aop-4.3.0.RELEASE.pom
+2017-08-17 23:50:40,783 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:40,922 [New I/O client worker #111-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/springframework/spring-beans/4.3.0.RELEASE/spring-beans-4.3.0.RELEASE.pom
+2017-08-17 23:50:40,923 [New I/O client worker #111-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/springframework/spring-beans/4.3.0.RELEASE/spring-beans-4.3.0.RELEASE.pom
+2017-08-17 23:50:41,035 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:41,111 [New I/O client worker #112-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/springframework/spring-core/4.3.0.RELEASE/spring-core-4.3.0.RELEASE.pom
+2017-08-17 23:50:41,112 [New I/O client worker #112-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/springframework/spring-core/4.3.0.RELEASE/spring-core-4.3.0.RELEASE.pom
+2017-08-17 23:50:41,175 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:41,250 [New I/O client worker #113-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/springframework/spring-context/4.3.0.RELEASE/spring-context-4.3.0.RELEASE.pom
+2017-08-17 23:50:41,250 [New I/O client worker #113-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/springframework/spring-context/4.3.0.RELEASE/spring-context-4.3.0.RELEASE.pom
+2017-08-17 23:50:41,289 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:41,357 [New I/O client worker #114-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/springframework/spring-expression/4.3.0.RELEASE/spring-expression-4.3.0.RELEASE.pom
+2017-08-17 23:50:41,357 [New I/O client worker #114-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/springframework/spring-expression/4.3.0.RELEASE/spring-expression-4.3.0.RELEASE.pom
+2017-08-17 23:50:41,398 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:41,468 [New I/O client worker #115-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/springframework/spring-web/4.3.0.RELEASE/spring-web-4.3.0.RELEASE.pom
+2017-08-17 23:50:41,469 [New I/O client worker #115-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/springframework/spring-web/4.3.0.RELEASE/spring-web-4.3.0.RELEASE.pom
+2017-08-17 23:50:41,536 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:41,633 [New I/O client worker #116-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/springframework/spring-webmvc/4.3.0.RELEASE/spring-webmvc-4.3.0.RELEASE.pom
+2017-08-17 23:50:41,660 [New I/O client worker #116-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/springframework/spring-webmvc/4.3.0.RELEASE/spring-webmvc-4.3.0.RELEASE.pom
+2017-08-17 23:50:41,790 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:41,854 [New I/O client worker #117-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/commons-codec/commons-codec/1.9/commons-codec-1.9.jar
+2017-08-17 23:50:41,874 [New I/O client worker #117-2] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/commons-io/commons-io/2.5/commons-io-2.5.jar
+2017-08-17 23:50:41,928 [New I/O client worker #117-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/com/alibaba/fastjson/1.2.24/fastjson-1.2.24.jar
+2017-08-17 23:50:41,985 [New I/O client worker #117-6] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/apache/pdfbox/jempbox/1.8.1/jempbox-1.8.1.jar
+2017-08-17 23:50:41,990 [New I/O client worker #117-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/springframework/spring-expression/4.3.0.RELEASE/spring-expression-4.3.0.RELEASE.jar
+2017-08-17 23:50:42,009 [New I/O client worker #117-4] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/redis/clients/jedis/2.1.0/jedis-2.1.0.jar
+2017-08-17 23:50:42,022 [New I/O client worker #117-2] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/springframework/spring-web/4.3.0.RELEASE/spring-web-4.3.0.RELEASE.jar
+2017-08-17 23:50:42,061 [New I/O client worker #117-4] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/apache/pdfbox/pdfbox/1.8.1/pdfbox-1.8.1.jar
+2017-08-17 23:50:42,112 [New I/O client worker #117-6] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/springframework/spring-aop/4.3.0.RELEASE/spring-aop-4.3.0.RELEASE.jar
+2017-08-17 23:50:42,130 [New I/O client worker #117-8] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/springframework/spring-context/4.3.0.RELEASE/spring-context-4.3.0.RELEASE.jar
+2017-08-17 23:50:42,149 [New I/O client worker #117-7] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/springframework/spring-beans/4.3.0.RELEASE/spring-beans-4.3.0.RELEASE.jar
+2017-08-17 23:50:42,180 [New I/O client worker #117-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/com/itextpdf/itextpdf/5.4.2/itextpdf-5.4.2.jar
+2017-08-17 23:50:42,194 [New I/O client worker #117-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/apache/httpcomponents/httpcore/4.4.1/httpcore-4.4.1.jar
+2017-08-17 23:50:42,202 [New I/O client worker #117-8] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/apache/httpcomponents/httpclient/4.5/httpclient-4.5.jar
+2017-08-17 23:50:42,216 [New I/O client worker #117-6] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/apache/pdfbox/jempbox/1.8.1/jempbox-1.8.1.jar
+2017-08-17 23:50:42,232 [New I/O client worker #117-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/springframework/spring-webmvc/4.3.0.RELEASE/spring-webmvc-4.3.0.RELEASE.jar
+2017-08-17 23:50:42,262 [New I/O client worker #117-2] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/com/itextpdf/itext-asian/5.2.0/itext-asian-5.2.0.jar
+2017-08-17 23:50:42,266 [New I/O client worker #117-5] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/commons-pool/commons-pool/1.5.5/commons-pool-1.5.5.jar
+2017-08-17 23:50:42,292 [New I/O client worker #117-4] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/springframework/spring-core/4.3.0.RELEASE/spring-core-4.3.0.RELEASE.jar
+2017-08-17 23:50:42,497 [New I/O client worker #117-5] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/apache/pdfbox/fontbox/1.8.1/fontbox-1.8.1.jar
+2017-08-17 23:50:42,789 [New I/O client worker #117-2] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/commons-io/commons-io/2.5/commons-io-2.5.jar
+2017-08-17 23:50:42,998 [New I/O client worker #117-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/commons-codec/commons-codec/1.9/commons-codec-1.9.jar
+2017-08-17 23:50:43,017 [New I/O client worker #117-4] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/redis/clients/jedis/2.1.0/jedis-2.1.0.jar
+2017-08-17 23:50:43,022 [New I/O client worker #117-5] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/commons-pool/commons-pool/1.5.5/commons-pool-1.5.5.jar
+2017-08-17 23:50:43,129 [New I/O client worker #117-7] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/apache/httpcomponents/httpclient-cache/4.5/httpclient-cache-4.5.jar
+2017-08-17 23:50:43,725 [New I/O client worker #117-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/springframework/spring-expression/4.3.0.RELEASE/spring-expression-4.3.0.RELEASE.jar
+2017-08-17 23:50:44,139 [New I/O client worker #117-7] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/apache/httpcomponents/httpclient-cache/4.5/httpclient-cache-4.5.jar
+2017-08-17 23:50:44,357 [New I/O client worker #117-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/apache/httpcomponents/httpcore/4.4.1/httpcore-4.4.1.jar
+2017-08-17 23:50:44,512 [New I/O client worker #117-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/com/alibaba/fastjson/1.2.24/fastjson-1.2.24.jar
+2017-08-17 23:50:44,595 [New I/O client worker #117-6] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/springframework/spring-aop/4.3.0.RELEASE/spring-aop-4.3.0.RELEASE.jar
+2017-08-17 23:50:46,088 [New I/O client worker #117-8] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/apache/httpcomponents/httpclient/4.5/httpclient-4.5.jar
+2017-08-17 23:50:46,253 [New I/O client worker #117-2] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/springframework/spring-web/4.3.0.RELEASE/spring-web-4.3.0.RELEASE.jar
+2017-08-17 23:50:46,690 [New I/O client worker #117-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/springframework/spring-webmvc/4.3.0.RELEASE/spring-webmvc-4.3.0.RELEASE.jar
+2017-08-17 23:50:47,220 [New I/O client worker #117-8] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/springframework/spring-context/4.3.0.RELEASE/spring-context-4.3.0.RELEASE.jar
+2017-08-17 23:50:47,265 [New I/O client worker #117-4] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/springframework/spring-core/4.3.0.RELEASE/spring-core-4.3.0.RELEASE.jar
+2017-08-17 23:50:47,815 [New I/O client worker #117-7] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/springframework/spring-beans/4.3.0.RELEASE/spring-beans-4.3.0.RELEASE.jar
+2017-08-17 23:50:48,471 [New I/O client worker #117-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/com/itextpdf/itextpdf/5.4.2/itextpdf-5.4.2.jar
+2017-08-17 23:50:49,495 [New I/O client worker #117-2] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/com/itextpdf/itext-asian/5.2.0/itext-asian-5.2.0.jar
+2017-08-17 23:50:50,016 [New I/O client worker #117-4] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/apache/pdfbox/pdfbox/1.8.1/pdfbox-1.8.1.jar
+2017-08-17 23:50:51,175 [Worker-49] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:50:51,270 [New I/O client worker #118-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-war-plugin/2.3/maven-war-plugin-2.3.pom
+2017-08-17 23:50:51,271 [New I/O client worker #118-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-war-plugin/2.3/maven-war-plugin-2.3.pom
+2017-08-17 23:50:52,817 [Worker-49] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Test-Spring-001/src
+2017-08-17 23:50:52,818 [Worker-49] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Resources folder /Test-Spring-001/src overlaps with sources folder /Test-Spring-001/src
+2017-08-17 23:50:52,820 [Worker-49] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Not adding source folder /Test-Spring-001/src/test/java because it overlaps with /Test-Spring-001/src
+2017-08-17 23:51:03,478 [Worker-49] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Cleaning filtered folder for Test-Spring-001
+2017-08-17 23:51:03,492 [Worker-49] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Update completed: 35 sec
+2017-08-17 23:51:04,029 [Worker-61] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: xyz.zyzhu.Test-Spring-001:Test-Spring-001:0.0.1-SNAPSHOT @ D:\MyProject\OnGithub\Test-Spring-001\pom.xml.
+2017-08-17 23:51:05,465 [Worker-61] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:51:05,540 [New I/O client worker #119-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/codehaus/plexus/plexus-io/2.0.5/plexus-io-2.0.5.pom
+2017-08-17 23:51:05,541 [New I/O client worker #119-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/codehaus/plexus/plexus-io/2.0.5/plexus-io-2.0.5.pom
+2017-08-17 23:51:05,579 [Worker-61] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:51:05,694 [New I/O client worker #120-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/codehaus/plexus/plexus-components/1.2/plexus-components-1.2.pom
+2017-08-17 23:51:05,695 [New I/O client worker #120-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/codehaus/plexus/plexus-components/1.2/plexus-components-1.2.pom
+2017-08-17 23:51:05,750 [Worker-61] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:51:05,875 [New I/O client worker #121-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/codehaus/plexus/plexus-archiver/2.2/plexus-archiver-2.2.pom
+2017-08-17 23:51:05,875 [New I/O client worker #121-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/codehaus/plexus/plexus-archiver/2.2/plexus-archiver-2.2.pom
+2017-08-17 23:51:05,971 [Worker-61] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:51:06,030 [New I/O client worker #122-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/codehaus/plexus/plexus-components/1.1.20/plexus-components-1.1.20.pom
+2017-08-17 23:51:06,031 [New I/O client worker #122-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/codehaus/plexus/plexus-components/1.1.20/plexus-components-1.1.20.pom
+2017-08-17 23:51:06,167 [Worker-61] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:51:06,237 [New I/O client worker #123-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/codehaus/plexus/plexus-utils/3.0.7/plexus-utils-3.0.7.pom
+2017-08-17 23:51:06,238 [New I/O client worker #123-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/codehaus/plexus/plexus-utils/3.0.7/plexus-utils-3.0.7.pom
+2017-08-17 23:51:06,284 [Worker-61] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:51:06,347 [New I/O client worker #124-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/codehaus/plexus/plexus-io/2.0.4/plexus-io-2.0.4.pom
+2017-08-17 23:51:06,348 [New I/O client worker #124-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/codehaus/plexus/plexus-io/2.0.4/plexus-io-2.0.4.pom
+2017-08-17 23:51:06,387 [Worker-61] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:51:06,474 [New I/O client worker #125-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/com/thoughtworks/xstream/xstream/1.4.3/xstream-1.4.3.pom
+2017-08-17 23:51:06,482 [New I/O client worker #125-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/com/thoughtworks/xstream/xstream/1.4.3/xstream-1.4.3.pom
+2017-08-17 23:51:06,551 [Worker-61] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:51:06,634 [New I/O client worker #126-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/com/thoughtworks/xstream/xstream-parent/1.4.3/xstream-parent-1.4.3.pom
+2017-08-17 23:51:06,642 [New I/O client worker #126-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/com/thoughtworks/xstream/xstream-parent/1.4.3/xstream-parent-1.4.3.pom
+2017-08-17 23:51:06,819 [Worker-61] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:51:06,921 [New I/O client worker #127-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/xmlpull/xmlpull/1.1.3.1/xmlpull-1.1.3.1.pom
+2017-08-17 23:51:06,921 [New I/O client worker #127-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/xmlpull/xmlpull/1.1.3.1/xmlpull-1.1.3.1.pom
+2017-08-17 23:51:07,010 [Worker-61] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:51:07,132 [Worker-61] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:51:07,253 [Worker-61] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:51:07,524 [Worker-61] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:51:07,615 [Worker-61] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:51:07,719 [Worker-61] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:51:07,845 [Worker-61] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:51:07,917 [New I/O client worker #134-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/com/thoughtworks/xstream/xstream/1.4.3/xstream-1.4.3.jar
+2017-08-17 23:51:07,919 [New I/O client worker #134-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/codehaus/plexus/plexus-io/2.0.5/plexus-io-2.0.5.jar
+2017-08-17 23:51:07,934 [New I/O client worker #134-2] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/org/codehaus/plexus/plexus-archiver/2.2/plexus-archiver-2.2.jar
+2017-08-17 23:51:07,966 [New I/O client worker #134-4] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://maven.aliyun.com/nexus/content/groups/public/xmlpull/xmlpull/1.1.3.1/xmlpull-1.1.3.1.jar
+2017-08-17 23:51:07,967 [New I/O client worker #134-4] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/xmlpull/xmlpull/1.1.3.1/xmlpull-1.1.3.1.jar
+2017-08-17 23:51:07,999 [New I/O client worker #134-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/codehaus/plexus/plexus-io/2.0.5/plexus-io-2.0.5.jar
+2017-08-17 23:51:08,363 [New I/O client worker #134-2] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/codehaus/plexus/plexus-archiver/2.2/plexus-archiver-2.2.jar
+2017-08-17 23:51:08,532 [New I/O client worker #134-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/com/thoughtworks/xstream/xstream/1.4.3/xstream-1.4.3.jar
+2017-08-17 23:51:09,832 [Worker-61] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:51:09,835 [Worker-61] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2017-08-17 23:51:09,850 [Worker-61] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:51:09,851 [Worker-61] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 23:52:03,752 [Worker-42] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Update started
+2017-08-17 23:52:03,791 [Worker-42] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: xyz.zyzhu.Test-Spring-001:Test-Spring-001:0.0.1-SNAPSHOT @ D:\MyProject\OnGithub\Test-Spring-001\pom.xml.
+2017-08-17 23:52:04,135 [Worker-42] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Test-Spring-001/src
+2017-08-17 23:52:04,136 [Worker-42] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Resources folder /Test-Spring-001/src overlaps with sources folder /Test-Spring-001/src
+2017-08-17 23:52:04,136 [Worker-42] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Not adding source folder /Test-Spring-001/src/test/java because it overlaps with /Test-Spring-001/src
+2017-08-17 23:52:04,463 [Worker-42] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Cleaning filtered folder for Test-Spring-001
+2017-08-17 23:52:04,473 [Worker-42] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Update completed: 0 sec
+2017-08-17 23:52:04,680 [Worker-54] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: xyz.zyzhu.Test-Spring-001:Test-Spring-001:0.0.1-SNAPSHOT @ D:\MyProject\OnGithub\Test-Spring-001\pom.xml.
+2017-08-17 23:52:05,150 [Worker-54] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:52:05,153 [Worker-54] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2017-08-17 23:52:05,158 [Worker-54] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:52:05,159 [Worker-54] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 23:56:31,045 [Worker-65] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: xyz.zyzhu.Test-Spring-001:Test-Spring-001:0.0.1-SNAPSHOT @ D:\MyProject\OnGithub\Test-Spring-001\pom.xml.
+2017-08-17 23:56:31,411 [Worker-65] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:56:31,414 [Worker-65] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2017-08-17 23:56:31,416 [Worker-65] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:56:31,416 [Worker-65] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 23:56:31,416 [Worker-65] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Changed resources require a complete clean of filtered resources of Test-Spring-001
+2017-08-17 23:56:31,417 [Worker-65] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Executing resource filtering for Test-Spring-001
+2017-08-17 23:56:31,441 [Worker-65] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for org.apache.maven.plugins:maven-clean-plugin:jar:2.4.1 is missing, no dependency information available
+2017-08-17 23:56:31,442 [Worker-65] WARN  o.e.m.c.i.embedder.EclipseLogger - Failed to retrieve plugin descriptor for org.apache.maven.plugins:maven-clean-plugin:2.4.1: Plugin org.apache.maven.plugins:maven-clean-plugin:2.4.1 or one of its dependencies could not be resolved: Failed to read artifact descriptor for org.apache.maven.plugins:maven-clean-plugin:jar:2.4.1
+2017-08-17 23:56:31,444 [Worker-65] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for org.apache.maven.plugins:maven-clean-plugin:jar:2.4.1 is missing, no dependency information available
+2017-08-17 23:56:31,444 [Worker-65] WARN  o.e.m.c.i.embedder.EclipseLogger - Failed to retrieve plugin descriptor for org.apache.maven.plugins:maven-clean-plugin:2.4.1: Plugin org.apache.maven.plugins:maven-clean-plugin:2.4.1 or one of its dependencies could not be resolved: Failed to read artifact descriptor for org.apache.maven.plugins:maven-clean-plugin:jar:2.4.1
+2017-08-17 23:56:31,449 [Worker-65] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:56:32,768 [Worker-61] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:56:32,773 [Worker-61] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2017-08-17 23:56:32,776 [Worker-61] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:56:32,777 [Worker-61] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 23:58:58,334 [Worker-65] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
+2017-08-17 23:58:58,696 [New I/O client worker #135-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://maven.aliyun.com/nexus/content/groups/public/org/springframework/spring-web/4.3.0.RELEASE/spring-web-4.3.0.RELEASE-sources.jar
+2017-08-17 23:58:58,729 [Worker-65] ERROR o.e.m.j.internal.DownloadSourcesJob - Could not download sources for org.springframework:spring-web:4.3.0.RELEASE
+org.eclipse.core.runtime.CoreException: Could not resolve artifact org.springframework:spring-web:jar:sources:4.3.0.RELEASE
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl$5.call(MavenImpl.java:750) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl$5.call(MavenImpl.java:1) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.executeBare(MavenExecutionContext.java:161) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:137) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:89) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.resolve(MavenImpl.java:717) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.resolve(MavenImpl.java:694) ~[org.eclipse.m2e.core_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.jdt.internal.DownloadSourcesJob.download(DownloadSourcesJob.java:231) [org.eclipse.m2e.jdt_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.jdt.internal.DownloadSourcesJob.downloadAttachments(DownloadSourcesJob.java:210) [org.eclipse.m2e.jdt_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.jdt.internal.DownloadSourcesJob.downloadMaven(DownloadSourcesJob.java:184) [org.eclipse.m2e.jdt_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.m2e.jdt.internal.DownloadSourcesJob.run(DownloadSourcesJob.java:140) [org.eclipse.m2e.jdt_1.4.0.20130601-0317.jar:na]
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53) [org.eclipse.core.jobs_3.5.300.v20130429-1813.jar:na]
+2017-08-17 23:58:58,974 [Worker-59] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:58:58,975 [Worker-59] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2017-08-17 23:58:58,977 [Worker-59] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:58:58,977 [Worker-59] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-17 23:59:01,067 [Worker-59] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:59:01,068 [Worker-59] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2017-08-17 23:59:01,070 [Worker-59] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-17 23:59:01,071 [Worker-59] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-18 00:03:09,637 [Worker-70] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-18 00:03:09,639 [Worker-70] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2017-08-18 00:03:09,641 [Worker-70] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-18 00:03:09,642 [Worker-70] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-18 00:03:17,918 [Worker-61] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-18 00:03:17,919 [Worker-61] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2017-08-18 00:03:17,922 [Worker-61] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-18 00:03:17,923 [Worker-61] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
+2017-08-18 00:05:18,144 [Worker-70] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-18 00:05:18,145 [Worker-70] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2017-08-18 00:05:18,146 [Worker-70] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+2017-08-18 00:05:18,147 [Worker-70] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\MyProject\OnGithub\Test-Spring-001\src\test\resources
