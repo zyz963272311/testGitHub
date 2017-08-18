@@ -5,6 +5,8 @@ import java.util.Map;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.xml.ws.Endpoint;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.stereotype.Component;
 import com.liiwin.config.BasConfig;
 import com.liiwin.db.Database;
 import com.liiwin.utils.StrUtil;
@@ -23,6 +25,7 @@ import com.liiwin.utils.StrUtil;
  * 
  * @version 8.0
  */
+@Component("LoadWebServiceImpl")
 public class LoadWebServiceImpl implements ServletContextListener
 {
 	@Override
@@ -36,7 +39,8 @@ public class LoadWebServiceImpl implements ServletContextListener
 	@Override
 	public void contextInitialized(ServletContextEvent arg0)
 	{
-		System.out.println("当前目录--" + System.getProperty("user.dir"));
+		System.out.println("contextInitialized");
+		System.out.println("当前目录--" + this.getClass().getClassLoader().getResource("/"));
 		Database database = new Database("zyztest");
 		StringBuffer sql = new StringBuffer();
 		sql.append("select ")//
@@ -87,5 +91,13 @@ public class LoadWebServiceImpl implements ServletContextListener
 	{
 		LoadWebServiceImpl impl = new LoadWebServiceImpl();
 		impl.contextInitialized(null);
+	}
+
+	public void onApplicationEvent(ContextRefreshedEvent event)
+	{
+		System.out.println(this.getClass().getClassLoader().getResource("/"));
+		System.out.println("spring容易初始化完毕================================================");
+		System.out.println("当前目录--" + System.getProperty("user.dir"));
+		System.out.println("当前目录--" + System.getProperty("web.root"));
 	}
 }

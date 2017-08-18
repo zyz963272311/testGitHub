@@ -6,7 +6,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="libs/dom4j-1.6.1.jar" sourcepath="C:/Users/Administrator.SC-201705112105/.m2/repository/dom4j/dom4j/1.6.1/dom4j-1.6.1-sources.jar"/>
 	<classpathentry kind="lib" path="libs/mysql-connector-java-5.1.22-bin.jar"/>
 	<classpathentry kind="lib" path="libs/jmagick.jar"/>
 	<classpathentry kind="lib" path="libs/QRCode.jar"/>

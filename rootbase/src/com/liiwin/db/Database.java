@@ -40,7 +40,7 @@ public class Database
 
 	public Database(String databaseName)
 	{
-		Element root = GetXmlFile.getXMLElement(System.getProperty("user.dir") + "/resources/cfgs/databases.xml");
+		Element root = GetXmlFile.getXMLElement(this.getClass().getClassLoader().getResource("/") + "resources/cfgs/databases.xml");
 		if (root == null)
 		{
 			throw new RuntimeException("获取数据库异常，databases.xml");
