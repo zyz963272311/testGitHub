@@ -1,7 +1,5 @@
 package com.liiwin.config;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 import com.liiwin.utils.StrUtil;
@@ -28,19 +26,15 @@ public class BasConfig
 	 * 
 	 * 赵玉柱
 	 */
-	public static void LoadConfig()
+	public synchronized static void LoadConfig()
 	{
-		String userdir = System.getProperty("user.dir");
-		System.out.println(userdir);
-		String configFilePath = userdir + "/resources/config.properties";
-		properties = new Properties();
-		File file = new File(configFilePath);
-		if (file.isFile() && file.exists())
+		if (properties == null)
 		{
+			properties = new Properties();
+			String configFilePath = "/resources/config.properties";
 			try
 			{
-				FileInputStream fileInputStream = new FileInputStream(file);
-				properties.load(fileInputStream);
+				properties.load(BasConfig.class.getResourceAsStream(configFilePath));
 			} catch (IOException e)
 			{
 				throw new RuntimeException("报错内容", e);

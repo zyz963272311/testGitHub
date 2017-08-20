@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="org.springframework.stereotype.Service"/>
-<fullyQualifiedTypeName name="com.zhu.ssm.dao.OrderDao"/>
 <fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="org.springframework.stereotype.Controller"/>
 <fullyQualifiedTypeName name="com.zhu.ssm.service.OrderService"/>
@@ -36,7 +34,6 @@
 <fullyQualifiedTypeName name="java.nio.ByteBuffer"/>
 <fullyQualifiedTypeName name="java.nio.MappedByteBuffer"/>
 <fullyQualifiedTypeName name="java.io.RandomAccessFile"/>
-<fullyQualifiedTypeName name="java.io.File"/>
 <fullyQualifiedTypeName name="java.io.FileInputStream"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="java.nio.channels.FileChannel"/>
@@ -60,4 +57,7 @@
 <fullyQualifiedTypeName name="xyz.zyzhu.utils.SpringOpenApiClient"/>
 <fullyQualifiedTypeName name="xyz.zyzhu.pojo.HelloRequestPojo"/>
 <fullyQualifiedTypeName name="xyz.zyzhu.pojo.HelloResponsePojo"/>
+<fullyQualifiedTypeName name="java.io.File"/>
+<fullyQualifiedTypeName name="java.io.InputStream"/>
+<fullyQualifiedTypeName name="java.util.Properties"/>
 </qualifiedTypeNameHistroy>

@@ -126,7 +126,7 @@
              Note: The pattern used is equivalent to using pattern="common" -->
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log." suffix=".txt"/>
 
-      <Context docBase="D:\MyProject\OnGithub\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\ROOT" path="" reloadable="false"/><Context docBase="D:\MyProject\OnGithub\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Userinfo" path="/Userinfo" reloadable="true" source="org.eclipse.jst.jee.server:Userinfo"/><Context docBase="D:\MyProject\OnGithub\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Test-SSM-001" path="/Test-SSM-001" reloadable="true" source="org.eclipse.jst.jee.server:Test-SSM-001"/><Context docBase="D:\MyProject\OnGithub\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Test-Spring-001" path="/Test-Spring-001" reloadable="true" source="org.eclipse.jst.jee.server:Test-Spring-001"/></Host>
+      <Context docBase="D:\MyProject\OnGithub\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\ROOT" path="" reloadable="false"/><Context docBase="D:\MyProject\OnGithub\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Test-Spring-001" path="/Test-Spring-001" reloadable="true" source="org.eclipse.jst.jee.server:Test-Spring-001"/></Host>
     </Engine>
   </Service>
 </Server>

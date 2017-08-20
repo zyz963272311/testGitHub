@@ -41,7 +41,7 @@ public class LoadWebServiceImpl implements ServletContextListener
 	{
 		System.out.println("contextInitialized");
 		System.out.println("当前目录--" + this.getClass().getClassLoader().getResource("/"));
-		Database database = new Database("zyztest");
+		Database database = new Database("project01");
 		StringBuffer sql = new StringBuffer();
 		sql.append("select ")//
 				.append(" servicename")//
@@ -76,15 +76,6 @@ public class LoadWebServiceImpl implements ServletContextListener
 				}
 			}
 		}
-		try
-		{
-			System.out.println("进入休眠时间");
-			Thread.sleep(10000);
-		} catch (InterruptedException e)
-		{
-			throw new RuntimeException("报错内容", e);
-		}
-		System.out.println("休眠结束");
 	}
 
 	public static void main(String[] args)
