@@ -15,13 +15,13 @@ import java.io.Serializable;
  * 监听使用界面:
  * @version 8.0
  */
-public class BasRequestPojo implements Cloneable, Serializable
+public abstract class BasRequestPojo implements Cloneable, Serializable
 {
 	private static final long	serialVersionUID	= 4147907350070675551L;
 	private String				token;										//token
 	private String				fromCode;									// 调用方
 
-	public Class<BasResponsePojo> getRespClass()
+	public Class<? extends BasResponsePojo> getRespClass()
 	{
 		return BasResponsePojo.class;
 	}
@@ -45,4 +45,11 @@ public class BasRequestPojo implements Cloneable, Serializable
 	{
 		this.fromCode = fromCode;
 	}
+
+	/**
+	 * 为了获取APIname，构造
+	 * @return
+	 * 赵玉柱
+	 */
+	public abstract String getApiName();
 }

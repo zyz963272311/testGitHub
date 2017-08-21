@@ -38,8 +38,7 @@ public class Database
 
 	public Database(String databaseName)
 	{
-		//		Element root = GetXmlFile.getXMLElement(this.getClass().getClassLoader().getResource("/") + "resources/cfg/databases.xml");
-		Element root = GetXmlFile.getXMLElement("/resources/cfg/databases.xml");
+		Element root = DBElement.getRoot("/resources/cfg/databases.xml");
 		if (root == null)
 		{
 			throw new RuntimeException("获取数据库异常，databases.xml");
@@ -382,7 +381,10 @@ public class Database
 
 	public static void main(String[] args)
 	{
-		Database db = new Database("zyztest");
+		//家里电脑
+		//Database db = new Database("zyztest");
+		//公司电脑
+		Database db = new Database("project01");
 		List<Map<String,Object>> listMapFromSql = db.getListMapFromSql("select * from testtable");
 		for (Map<String,Object> map : listMapFromSql)
 		{

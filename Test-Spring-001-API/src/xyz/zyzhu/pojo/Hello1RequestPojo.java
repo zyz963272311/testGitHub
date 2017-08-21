@@ -14,7 +14,7 @@ package xyz.zyzhu.pojo;
  * 监听使用界面:
  * @version 8.0
  */
-public class HelloRequestPojo extends BasRequestPojo
+public class Hello1RequestPojo extends BasRequestPojo
 {
 	private static final long	serialVersionUID	= -4494265262222786500L;
 	private String				name;
@@ -32,12 +32,12 @@ public class HelloRequestPojo extends BasRequestPojo
 	@Override
 	public String getApiName()
 	{
-		return "spring.HelloWebService";
+		return "spring.Hello1WebService";
 	}
 
 	@Override
 	public Class<? extends BasResponsePojo> getRespClass()
 	{
-		return HelloResponsePojo.class;
+		return Hello1ResponsePojo.class;
 	}
 }

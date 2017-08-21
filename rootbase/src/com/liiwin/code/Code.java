@@ -157,7 +157,7 @@ public class Code
 	{
 		List<CodePart> codeParts = new ArrayList<>();
 		CodePart codePart1 = new CodePart("kkkk", 4, 4);
-		CodePart codePart2 = new CodePart("MMMM", 2, 2);
+		CodePart codePart2 = new CodePart("MM", 2, 2);
 		CodePart codePart3 = new CodePart("", 8, 1);
 		System.out.println(codePart1.toString());
 		System.out.println(codePart2.toString());

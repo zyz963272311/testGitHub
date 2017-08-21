@@ -27,6 +27,8 @@ public class LoadConfigListener implements ServletContextListener
 	@Override
 	public void contextInitialized(ServletContextEvent arg0)
 	{
+		System.out.println("加载config数据");
 		BasConfig.LoadConfig();
+		System.out.println("config数据加载完成" + BasConfig.getProperties());
 	}
 }
