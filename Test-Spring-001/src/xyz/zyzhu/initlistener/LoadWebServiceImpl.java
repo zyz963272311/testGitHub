@@ -41,7 +41,8 @@ public class LoadWebServiceImpl implements ServletContextListener
 	{
 		System.out.println("contextInitialized");
 		System.out.println("当前目录--" + this.getClass().getClassLoader().getResource("/"));
-		Database database = new Database("zyztest");
+		Database database = new Database("project01");
+		//		Database database = new Database("zyztest");
 		StringBuffer sql = new StringBuffer();
 		sql.append("select ")//
 				.append(" servicename")//

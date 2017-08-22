@@ -4,8 +4,13 @@
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
+  <!-- 加载webservice -->
   <listener>
 	<listener-class>xyz.zyzhu.initlistener.LoadWebServiceImpl</listener-class>
+  </listener>
+  <!-- 加载配置信息 -->
+  <listener>
+	<listener-class>xyz.zyzhu.initlistener.LoadConfigListener</listener-class>
   </listener>
   <servlet>
     <servlet-name>springDispatcherServlet</servlet-name>

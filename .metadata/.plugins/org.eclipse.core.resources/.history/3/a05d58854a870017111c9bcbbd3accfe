@@ -1,0 +1,90 @@
+package xyz.zyzhu.controller;
+
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
+import xyz.zyzhu.pojo.BasResponsePojo;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.liiwin.db.Database;
+import com.liiwin.utils.StrUtil;
+/**
+ * <p>标题： Webservice 服務端Controller</p>
+ * <p>功能：</p>
+ * <p>所属模块： Test-Spring</p>
+ * <p>版权： Copyright © 2017 zyzhu</p>
+ * <p>公司: zyzhu.xyz</p>
+ * <p>创建日期：2017年8月12日 下午12:31:31</p>
+ * <p>类全名：xyz.zyzhu.controller.WSController</p>
+ * 作者：赵玉柱 
+ * 初审： 
+ * 复审： 
+ * 监听使用界面:
+ * 
+ * @version 8.0
+ */
+@Component()
+@RequestMapping("/api")
+public class WSController
+{
+	@RequestMapping("/executeApi")
+	public void executeApi(HttpServletRequest request, HttpServletResponse response)
+	{
+		System.out.println("调用WSController.executeApi");
+		String requestJson = request.getHeader("requestJson");
+		String requestClass = request.getHeader("requestClass");
+		String result = null;
+		BasResponsePojo responsePojo = null;
+		if (requestJson != null)
+		{
+			JSONObject json = JSON.parseObject(requestJson);
+			if (json.containsKey("respClass") && json.containsKey("apiName"))
+			{
+				String respClass = json.getString("respClass");
+				String apiName = json.getString("apiName");
+				try
+				{
+					Object requestPojo = JSON.parseObject(requestJson, Class.forName(requestClass));
+					Database database = new Database("project01");
+					//		Database database = new Database("zyztest");
+					StringBuffer sql = new StringBuffer();
+					sql.append("select ")//
+							.append(" m.servicename as servicename")//
+							.append(",m.serviceinterface as serviceinterface")//
+							.append(",m.serviceimpl as serviceimpl ")//
+							.append(",g.method as  method ")//
+							.append(" from webservice m,webmethod g")//
+							.append(" where usedflags=1 ")//
+							.append(" and apiname='" + json.getString("apiName") + "'")//
+							.append(" and m.servicename=g.servicename");
+					List<Map<String,Object>> webServiceList = database.getListMapFromSql(sql.toString());
+					if (webServiceList == null || webServiceList.isEmpty())
+					{
+						throw new RuntimeException("根据apiname[" + apiName + "]为找到对应的WebService");
+					}
+					Map<String,Object> webserviceMap = webServiceList.get(0);
+					String serviceimplName = StrUtil.obj2str(webserviceMap.get("serviceimpl"));
+					String methodName = StrUtil.obj2str(webserviceMap.get("method"));
+					Class serviceimpl = Class.forName(serviceimplName);
+					Method method = serviceimpl.getDeclaredMethod(methodName, requestPojo.getClass());
+					responsePojo = (BasResponsePojo) method.invoke(serviceimpl.newInstance(), requestPojo);
+				} catch (Exception e)
+				{
+					responsePojo = new BasResponsePojo();
+					responsePojo.setMessage(e.getMessage());
+					responsePojo.setStatus("FALSE");
+					responsePojo.setCode("500");
+					throw new RuntimeException("报错内容", e);
+				}
+			}
+		}
+		result = JSON.toJSONString(responsePojo);
+		response.setHeader("result", result);
+		System.out.println(result);
+		System.out.println(requestJson);
+	}
+}

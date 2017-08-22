@@ -32,7 +32,7 @@ public class HelloRequestPojo extends BasRequestPojo
 	@Override
 	public String getApiName()
 	{
-		return "spring.HelloWebService";
+		return "spring.HelloWebService.sayHello";
 	}
 
 	@Override

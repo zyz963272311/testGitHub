@@ -1,0 +1,5 @@
+#webservice发布的IP+端口
+webservice-host=http://127.0.0.1:8899
+#本地URL调用
+webservice-localhost=http://127.0.0.1:8899
+project-Test-Spring-001=http://127.0.0.1:8080/Test-Spring-001
