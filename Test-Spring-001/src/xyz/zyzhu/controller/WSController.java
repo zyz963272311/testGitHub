@@ -1,5 +1,7 @@
 package xyz.zyzhu.controller;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +41,7 @@ public class WSController
 		String requestClass = request.getHeader("requestClass");
 		String result = null;
 		BasResponsePojo responsePojo = null;
+		OutputStream out = null;
 		if (requestJson != null)
 		{
 			JSONObject json = JSON.parseObject(requestJson);
@@ -71,16 +74,41 @@ public class WSController
 					Class<?> serviceimpl = Class.forName(serviceimplName);
 					Method method = serviceimpl.getDeclaredMethod(methodName, requestPojo.getClass());
 					responsePojo = (BasResponsePojo) method.invoke(serviceimpl.newInstance(), requestPojo);
+					result = JSON.toJSONString(responsePojo);
 				} catch (Exception e)
 				{
 					responsePojo = new BasResponsePojo();
 					responsePojo.setMessage(e.getMessage());
 					responsePojo.setStatus("FALSE");
 					responsePojo.setCode("500");
+					result = JSON.toJSONString(responsePojo);
+				} finally
+				{
+					try
+					{
+						out = response.getOutputStream();
+						out.write(result.getBytes("utf-8"));
+						out.flush();
+					} catch (IOException e)
+					{
+						throw new RuntimeException("报错内容", e);
+					} finally
+					{
+						if (out != null)
+						{
+							try
+							{
+								out.close();
+							} catch (IOException e)
+							{
+								// TODO Auto-generated catch block
+								throw new RuntimeException("报错内容", e);
+							}
+						}
+					}
 				}
 			}
 		}
-		result = JSON.toJSONString(responsePojo);
 		response.setHeader("responseJson", result);
 		System.out.println(result);
 		System.out.println(requestJson);

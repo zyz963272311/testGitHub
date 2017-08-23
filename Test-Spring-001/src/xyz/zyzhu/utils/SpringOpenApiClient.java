@@ -1,6 +1,7 @@
 package xyz.zyzhu.utils;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -60,8 +61,16 @@ public class SpringOpenApiClient
 			conn.setDoOutput(true);
 			conn.setDoInput(true);
 			out = new PrintWriter(conn.getOutputStream());
-			out.print(requestPojo);
-			out.flush();
+			InputStream in = conn.getInputStream();
+			byte[] respBytes = new byte[1024];
+			int len = 0;
+			String result = "";
+			while ((len = in.read(respBytes)) > -1)
+			{
+				result += new String(respBytes, 0, len, "utf-8");
+			}
+			System.out.println(result);
+			responsePojo = JSON.parseObject(result, requestPojo.getRespClass());
 		} catch (MalformedURLException e)
 		{
 			throw new RuntimeException("报错内容", e);
