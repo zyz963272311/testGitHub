@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import net.sf.json.JSONObject;
 import util.ArrayUtil;
 /**
@@ -33,10 +35,21 @@ public class Test_84
 
 	public static void main(String[] args) throws NoSuchMethodException, SecurityException
 	{
-		System.out.println(System.getProperty("user.dir"));
-		for (int i = 0; i < 10; i++)
+		String s = "321321456132-14564";
+		String reg = "^[0-9|-]{3,20}$";
+		Pattern pattern = Pattern.compile(reg);
+		Matcher matcher = pattern.matcher(s);
+		while (matcher.find())
 		{
-			System.out.println(true & (i % 5 == 0));
+			System.out.println(matcher.group());
+		}
+		String id = "11122233344455X";
+		String regid = "^[0-9]{14}[0-9|X]{1}$";
+		Pattern pattern2 = Pattern.compile(regid);
+		Matcher matcher2 = pattern2.matcher(id);
+		while (matcher2.find())
+		{
+			System.out.println(matcher2.group());
 		}
 	}
 
