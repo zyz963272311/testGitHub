@@ -2,7 +2,7 @@ package xyz.zyzhu.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -46,9 +46,10 @@ public class SpringOpenApiClient
 	public <P extends BasResponsePojo,Q extends BasRequestPojo> P execute(Q requestPojo)
 	{
 		String jsonString = JSON.toJSONString(requestPojo);
-		PrintWriter out = null;
+		OutputStream out = null;
 		//		BufferedReader in = null;
 		Object responsePojo = null;
+		InputStream in = null;
 		try
 		{
 			URL apiUrl = new URL(httpurl);
@@ -56,12 +57,13 @@ public class SpringOpenApiClient
 			conn.setRequestProperty("accept", "*/*");
 			conn.setRequestProperty("connection", "Keep-Alive");
 			conn.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
-			conn.setRequestProperty("requestJson", jsonString);
 			conn.setRequestProperty("requestClass", requestPojo.getClass().getName());
 			conn.setDoOutput(true);
 			conn.setDoInput(true);
-			out = new PrintWriter(conn.getOutputStream());
-			InputStream in = conn.getInputStream();
+			out = conn.getOutputStream();
+			out.write(jsonString.getBytes("utf-8"));
+			out.flush();
+			in = conn.getInputStream();
 			byte[] respBytes = new byte[1024];
 			int len = 0;
 			String result = "";
@@ -77,6 +79,28 @@ public class SpringOpenApiClient
 		} catch (IOException e)
 		{
 			throw new RuntimeException("报错内容", e);
+		} finally
+		{
+			if (in != null)
+			{
+				try
+				{
+					in.close();
+				} catch (IOException e)
+				{
+					throw new RuntimeException("报错内容", e);
+				}
+			}
+			if (out != null)
+			{
+				try
+				{
+					out.close();
+				} catch (IOException e)
+				{
+					throw new RuntimeException("报错内容", e);
+				}
+			}
 		}
 		return (P) responsePojo;
 	}

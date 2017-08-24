@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,17 @@ public class Test_84
 	private final Map<String,String>	map	= new HashMap<>();
 
 	public static void main(String[] args) throws NoSuchMethodException, SecurityException
+	{
+		String str = "2017/";
+		Date d = new Date(str);
+		System.out.println(d);
+	}
+
+	/**
+	 * 
+	 * 赵玉柱
+	 */
+	private static void test001()
 	{
 		String s = "321321456132-14564";
 		String reg = "^[0-9|-]{3,20}$";
