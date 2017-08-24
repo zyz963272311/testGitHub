@@ -55,10 +55,10 @@ public class WSController
 				req += new String(respBytes, 0, len, "utf-8");
 			}
 			BasRequestPojo requestPojo = (BasRequestPojo) JSONObject.parseObject(req, Class.forName(requestClass));
-			//					Database database = new Database("project01");
 			if (requestPojo != null)
 			{
-				Database database = new Database("zyztest");
+				Database database = new Database("project01");
+				//				Database database = new Database("zyztest");
 				StringBuffer sql = new StringBuffer();
 				sql.append("select ")//
 						.append(" m.servicename as servicename")//
