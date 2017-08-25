@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 import com.liiwin.random.RandomString;
 import com.liiwin.random.RandomStringImpl;
 import com.liiwin.utils.EmptyUtil;
@@ -54,8 +52,6 @@ public class SqlUtil
 			return sql;
 		}
 		Set<Entry<String,Object>> entrySet = params.entrySet();
-		int cyclicBarrierSize = entrySet.size() / 1000 == 0 ? entrySet.size() % 1000 : entrySet.size() % 1000 + 1;
-		ThreadPoolExecutor poolExecutor = new ThreadPoolExecutor(1, cyclicBarrierSize, 60, TimeUnit.SECONDS, null);
 		for (Entry<String,Object> entry : entrySet)
 		{
 			String key = entry.getKey();

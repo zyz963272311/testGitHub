@@ -108,6 +108,25 @@ public class Database
 		}
 	}
 
+	/**
+	 * 根据sql获取Map
+	 * @param sql
+	 * @param params
+	 * @return
+	 * 赵玉柱
+	 */
+	public Map<String,Object> getMapFromSql(String sql, Map<String,Object> params)
+	{
+		sql = SqlUtil.sqlBindParams(this, sql, params);
+		return getMapFromSql(sql);
+	}
+
+	/**
+	 * 根据sql
+	 * @param sql
+	 * @return
+	 * 赵玉柱
+	 */
 	public Map<String,Object> getMapFromSql(String sql)
 	{
 		List<Map<String,Object>> resultList = getListMapFromSql(sql);
@@ -118,6 +137,25 @@ public class Database
 		return null;
 	}
 
+	/**
+	 * 根据DB获取list
+	 * @param sql
+	 * @param params
+	 * @return
+	 * 赵玉柱
+	 */
+	public List<Map<String,Object>> getListMapFromSql(String sql, Map<String,Object> params)
+	{
+		sql = SqlUtil.sqlBindParams(this, sql, params);
+		return getListMapFromSql(sql);
+	}
+
+	/**
+	 * 根据sql获取List
+	 * @param sql
+	 * @return
+	 * 赵玉柱
+	 */
 	public List<Map<String,Object>> getListMapFromSql(String sql)
 	{
 		List<Map<String,Object>> resultList = new ArrayList<>();
@@ -382,10 +420,10 @@ public class Database
 	public static void main(String[] args)
 	{
 		//家里电脑
-		//Database db = new Database("zyztest");
+		//		Database db = new Database("project01");
 		//公司电脑
-		Database db = new Database("project01");
-		List<Map<String,Object>> listMapFromSql = db.getListMapFromSql("select * from testtable");
+		Database db = new Database("zyztest");
+		List<Map<String,Object>> listMapFromSql = db.getListMapFromSql("select * from information_schema.COLUMNS where table_schema='zyztest'");
 		for (Map<String,Object> map : listMapFromSql)
 		{
 			System.out.println(map);
