@@ -129,6 +129,7 @@ public class Database
 	 */
 	public Map<String,Object> getMapFromSql(String sql)
 	{
+		System.out.println("执行sql[" + sql + "]");
 		List<Map<String,Object>> resultList = getListMapFromSql(sql);
 		if (resultList != null && !resultList.isEmpty())
 		{
@@ -158,6 +159,7 @@ public class Database
 	 */
 	public List<Map<String,Object>> getListMapFromSql(String sql)
 	{
+		System.out.println("执行sql[" + sql + "]");
 		List<Map<String,Object>> resultList = new ArrayList<>();
 		try
 		{
@@ -172,7 +174,7 @@ public class Database
 			String[] column = new String[col];
 			for (int i = 0; i < col; i++)
 			{
-				column[i] = rsm.getColumnName(i + 1);
+				column[i] = rsm.getColumnLabel(i + 1);
 			}
 			while (rs.next())
 			{
@@ -420,10 +422,10 @@ public class Database
 	public static void main(String[] args)
 	{
 		//家里电脑
-		//		Database db = new Database("project01");
+		Database db = new Database("project01");
 		//公司电脑
-		Database db = new Database("zyztest");
-		List<Map<String,Object>> listMapFromSql = db.getListMapFromSql("select * from information_schema.COLUMNS where table_schema='zyztest'");
+		//		Database db = new Database("zyztest");
+		List<Map<String,Object>> listMapFromSql = db.getListMapFromSql("select * from information_schema.COLUMNS where table_schema='project01'");
 		for (Map<String,Object> map : listMapFromSql)
 		{
 			System.out.println(map);

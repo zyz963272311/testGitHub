@@ -6,8 +6,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" path="resources"/>
-	<classpathentry excluding="src/|resources/" kind="src" path=""/>
 	<classpathentry kind="lib" path="libs/jmagick.jar"/>
 	<classpathentry kind="lib" path="libs/QRCode.jar"/>
 	<classpathentry kind="lib" path="libs/Qrcodeen.jar"/>

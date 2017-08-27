@@ -498,6 +498,29 @@ public class StrUtil
 		return obj != null ? obj.toString() : defaultValue;
 	}
 
+	public static boolean obj2bool(Object obj)
+	{
+		return obj2bool(obj, false);
+	}
+
+	public static boolean obj2bool(Object obj, boolean defaultValue)
+	{
+		if (obj == null)
+		{
+			return defaultValue;
+		}
+		Class<?> clz = obj.getClass();
+		if (Boolean.class.isAssignableFrom(clz))
+		{
+			return ((Boolean) obj).booleanValue();
+		}
+		if (Number.class.isAssignableFrom(clz))
+		{
+			return ((Number) obj).intValue() != 0;
+		}
+		return obj.toString().toUpperCase().equals("TRUE");
+	}
+
 	public static String intListToString(int[] list, char dim)
 	{
 		if (list == null || list.length == 0)

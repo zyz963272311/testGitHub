@@ -1,0 +1,35 @@
+package com.liiwin.createdb;
+
+/**
+ * <p>标题： CreateDatabase使用的列对象</p>
+ * <p>功能： </p>
+ * <p>所属模块： rootbase</p>
+ * <p>版权： Copyright © 2017 zyzhu</p>
+ * <p>公司: xyz.zyzhu</p>
+ * <p>创建日期：2017年8月26日 下午1:00:23</p>
+ * <p>类全名：com.liiwin.createdb.Column</p>
+ * 作者：赵玉柱
+ * 初审：
+ * 复审：
+ * 监听使用界面:
+ * @version 8.0
+ */
+public class Column
+{
+	private String	tableName;	//表名
+	private String	columnName; //列名
+	private String	dataType;	//字段类型
+	private String	dataLength; //字段长度
+	private String	decimal;	//精度
+	private String	comment;	//注释
+	/**
+	 * flags 
+	 * 0：无约束
+	 * 1：主键约束
+	 * 2：非空约束
+	 * 4：唯一约束
+	 * 8：外键约束
+	 */
+	private int		constraint; //约束
+	private Object defaultValue;//默认值
+}

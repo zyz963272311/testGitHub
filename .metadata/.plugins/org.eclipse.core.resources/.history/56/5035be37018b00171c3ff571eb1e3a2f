@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databases>
+	<db>
+		<database default="1" name="zyztest" type="1"
+			url="jdbc:mysql://127.0.0.1:3309" driver="com.mysql.jdbc.Driver"
+			user="root" password="root"></database>
+	</db>
+	<database name="project01" type="1" url="jdbc:mysql://127.0.0.1:3306"
+		driver="com.mysql.jdbc.Driver" user="root" password="root"></database>
+	<database name="zyztest2" type="2" url="jdbc:mysql://127.0.0.1:3309"
+		driver="com.mysql.jdbc.Driver" user="root" password="root"></database>
+	<database name="zyztest3" type="4" url="jdbc:mysql://127.0.0.1:3309"
+		driver="com.mysql.jdbc.Driver" user="root" password="root"></database>
+	<database name="test" type="1" url="jdbc:mysql://127.0.0.1:3306"
+		driver="com.mysql.jdbc.Driver" user="root" password="root"></database>
+</databases>
