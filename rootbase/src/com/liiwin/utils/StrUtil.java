@@ -364,7 +364,7 @@ public class StrUtil
 		{
 			return true;
 		}
-		if (s.toLowerCase().equals("NULL"))
+		if (s.toUpperCase().equals("NULL"))
 		{
 			return true;
 		}
@@ -1113,6 +1113,23 @@ public class StrUtil
 			}
 		}
 		return src.substring(from, to);
+	}
+
+	public static boolean equals(Object a, Object b)
+	{
+		if (a == null && b == null)
+		{
+			return true;
+		}
+		if (a == null || b == null)
+		{
+			return false;
+		}
+		if (a.equals(b))
+		{
+			return true;
+		}
+		return false;
 	}
 
 	/**

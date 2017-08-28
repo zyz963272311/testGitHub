@@ -1,6 +1,7 @@
 package com.liiwin.createdb;
 
 import java.io.Serializable;
+import com.liiwin.utils.StrUtil;
 /**
  * <p>标题： CreateDatabase使用的列对象</p>
  * <p>功能： </p>
@@ -127,11 +128,11 @@ public class Column implements Serializable
 		{
 			throw new RuntimeException("column不可为空");
 		}
-		if (this.columnName != column.getColumnName() || !this.columnName.equals(column.getColumnName()))
+		if (!StrUtil.equals(columnName, column.getColumnName()))
 		{
 			return true;
 		}
-		if (this.dataType != column.getDataType() || !this.dataType.equals(column.getDataType()))
+		if (!StrUtil.equals(dataType, column.getDataType()))
 		{
 			return true;
 		}
@@ -147,14 +148,20 @@ public class Column implements Serializable
 		{
 			return true;
 		}
-		if (this.comment != column.comment || !this.comment.equals(column.comment))
+		if (!StrUtil.equals(comment, column.getComment()))
 		{
 			return true;
 		}
-		if (this.defaultValue != column.getDefaultValue() || !this.defaultValue.equals(column.getDefaultValue()))
+		if (!StrUtil.equals(defaultValue, column.getDefaultValue()))
 		{
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "tablename=[" + tableName + "]\tcolumnname=[" + columnName + "]\tcomment=[" + comment + "]\tnot null[" + ((constraint & 2) == 2) + "]\tprimary key[" + ((constraint & 1) == 1) + "]";
 	}
 }

@@ -1,0 +1,2 @@
+	webservice	servicename	服务名称	varchar	128,0	0b00000011
+	webservice	serviceinterface	接口名称	varchar	256,0	0b00000011

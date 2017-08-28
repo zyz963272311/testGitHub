@@ -71,15 +71,7 @@ public class CreateDatabase
 		Map<Database,List<String>> sqlDbMap = compareDBAndDBFile(dbMessage2Table, selectDBFileMessage, dbList);
 		System.out.println(dbMessage2Table);
 		System.out.println(selectDBFileMessage);
-		if (sqlDbMap != null)
-		{
-			Set<Entry<Database,List<String>>> sqlSet = sqlDbMap.entrySet();
-			for (Entry<Database,List<String>> sqlEntry : sqlSet)
-			{
-				List<String> value = sqlEntry.getValue();
-				System.out.println(value);
-			}
-		}
+		execUpdateSql(sqlDbMap);
 	}
 
 	private static Map<Database,List<Map<String,Object>>> getSelectDBMessage(List<Database> dbList)
@@ -88,6 +80,8 @@ public class CreateDatabase
 		for (Database db : dbList)
 		{
 			List<Map<String,Object>> dbMessage = getDBMessage(db);
+			System.out.println("dbMessage");
+			System.out.println(dbMessage);
 			selectDBMessage.put(db, dbMessage);
 		}
 		return selectDBMessage;
@@ -162,13 +156,13 @@ public class CreateDatabase
 				//					private Object				defaultValue;								//默认值
 				column.setTableName(tableName);
 				column.setComment(StrUtil.obj2str(selectTableMap.get("comm")));
-				int dataLength = StrUtil.obj2int(selectTableMap.get("maxlength"), StrUtil.obj2int(tableMap.get("NUMERIC_PRECISION")));
+				int dataLength = StrUtil.obj2int(selectTableMap.get("maxlength"), StrUtil.obj2int(tableMap.get("maxlength")));
 				int decimal = StrUtil.obj2int(selectTableMap.get("scaly"));
 				String columnName = StrUtil.obj2str(selectTableMap.get("columnname"));
 				String dataType = StrUtil.obj2str(selectTableMap.get("datatype"));
 				boolean isNullable = StrUtil.obj2bool(selectTableMap.get("isnullable"));
 				boolean columnkey = StrUtil.obj2bool(StrUtil.obj2str(selectTableMap.get("columnkey")).equals("PRI"));
-				int constraint = (isNullable ? 2 : 0) | (columnkey ? 1 : 0);
+				int constraint = (!isNullable ? 2 : 0) | (columnkey ? 1 : 0);
 				column.setConstraint(constraint);
 				column.setDataLength(dataLength);
 				column.setDataType(dataType);
@@ -179,6 +173,7 @@ public class CreateDatabase
 				{
 					columns = new HashMap<>();
 				}
+				System.out.println(column);
 				columns.put(columnName, column);
 				table.setColumns(columns);
 			}
@@ -320,7 +315,6 @@ public class CreateDatabase
 	{
 		List<String> returnSql = new ArrayList<>();
 		int dbType = fileTable.getDbType();
-		StringBuffer sql = new StringBuffer();
 		if (dbTable == null)
 		{
 			Map<String,Column> columns = fileTable.getColumns();
@@ -328,7 +322,10 @@ public class CreateDatabase
 			switch (dbType)
 			{
 			case Databasetype.MYSQL:
-				sql.append("create table " + fileTable.getTableName() + "\n(\n");
+				StringBuffer sql = new StringBuffer();
+				StringBuffer primarySB = new StringBuffer(" primary key (");
+				int srcPriLength = primarySB.length();
+				sql.append("create table `" + fileTable.getTableName() + "`\n(\n");
 				Set<Entry<String,Column>> columnEntrySet = columns.entrySet();
 				for (Entry<String,Column> columnEntry : columnEntrySet)
 				{
@@ -342,7 +339,7 @@ public class CreateDatabase
 					int constraint = column.getConstraint();
 					if ((constraint & 1) == 1)
 					{
-						sql.append(" primary key PK_" + column.getTableName() + "_" + column.getColumnName());
+						primarySB.append(column.getColumnName() + ",");
 					}
 					if ((constraint & 2) == 2)
 					{
@@ -351,10 +348,21 @@ public class CreateDatabase
 					String defaultValue = column.getDefaultValue();
 					if (!StrUtil.asNull(defaultValue))
 					{
-						sql.append(" default " + defaultValue + ",\n");
+						sql.append(" default " + defaultValue + "");
 					}
+					sql.append(",\n");
 				}
-				sql.setLength(sql.length() - 2);
+				if (primarySB.length() > srcPriLength)
+				{
+					sql.setLength(sql.length() - 1);
+					primarySB.setLength(primarySB.length() - 1);
+					primarySB.append(")");
+					sql.append("\n");
+					sql.append(primarySB);
+				} else
+				{
+					sql.setLength(sql.length() - 2);
+				}
 				sql.append("\n)");
 				returnSql.add(sql.toString());
 				break;
@@ -374,13 +382,14 @@ public class CreateDatabase
 				Set<Entry<String,Column>> columnEntrySet = columns.entrySet();
 				for (Entry<String,Column> columnEntry : columnEntrySet)
 				{
+					StringBuffer sql = new StringBuffer();
 					String columnName = columnEntry.getKey();
 					Column column = columnEntry.getValue();
 					if (!dbColumns.containsKey(columnName))
 					{
 						//添加字段
-						sql.append("alert table " + column.getTableName() + " add ");
-						sql.append(column.getColumnName() + " " + column.getDataType() + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "") + ")");
+						sql.append("alter table `" + column.getTableName() + "` add ");
+						sql.append("`" + column.getColumnName() + "` " + column.getDataType() + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "") + ")");
 						String comment = column.getComment();
 						if (comment != null)
 						{
@@ -402,22 +411,18 @@ public class CreateDatabase
 						}
 					} else
 					{
-						//添加字段
+						//修改字段
 						Column dbColumn = dbColumns.get(columnName);
 						if (dbColumn.isDiffWith(column))
 						{
-							sql.append("alert table " + column.getTableName() + " modify column ");
-							sql.append(column.getColumnName() + " " + column.getDataType() + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "") + ")");
+							sql.append("alter table `" + column.getTableName() + "` modify column ");
+							sql.append("`" + column.getColumnName() + "` " + column.getDataType() + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "") + ")");
 							String comment = column.getComment();
 							if (comment != null)
 							{
 								sql.append(" COMMENT '" + comment + "'");
 							}
 							int constraint = column.getConstraint();
-							if ((constraint & 1) == 1)
-							{
-								sql.append(" primary key PK_" + column.getTableName() + "_" + column.getColumnName());
-							}
 							if ((constraint & 2) == 2)
 							{
 								sql.append(" not null ");
@@ -427,9 +432,9 @@ public class CreateDatabase
 							{
 								sql.append(" default " + defaultValue);
 							}
-							returnSql.add(sql.toString());
 						}
 					}
+					returnSql.add(sql.toString());
 				}
 				break;
 			case Databasetype.ORACLE:
@@ -441,8 +446,51 @@ public class CreateDatabase
 		return returnSql;
 	}
 
+	private static void execUpdateSql(Map<Database,List<String>> sqlDBMap)
+	{
+		if (sqlDBMap != null)
+		{
+			Set<Entry<Database,List<String>>> sqlSet = sqlDBMap.entrySet();
+			for (Entry<Database,List<String>> sqlEntry : sqlSet)
+			{
+				boolean rollback = true;
+				Database db = null;
+				try
+				{
+					db = sqlEntry.getKey();
+					List<String> value = sqlEntry.getValue();
+					if (value != null)
+					{
+						for (String sql : value)
+						{
+							if (!StrUtil.isStrTrimNull(sql))
+							{
+								db.execSqlForWrite(sql);
+							}
+						}
+					}
+					db.commit();
+					rollback = false;
+				} catch (Exception e)
+				{
+					System.out.println("createDatabase异常" + e.getMessage());
+					throw e;
+				} finally
+				{
+					if (db != null)
+					{
+						if (rollback)
+						{
+							db.rollback(rollback, true);
+						}
+					}
+				}
+			}
+		}
+	}
+
 	public static void main(String[] args)
 	{
-		createDatabase(new String[] { "zyztest", "ssm-test" });
+		createDatabase(new String[] { "project01", "ssm-test" });
 	}
 }

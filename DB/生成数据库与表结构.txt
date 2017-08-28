@@ -9,7 +9,8 @@ create table tablename
 mysql
 create table tablename
 (
-	columnname 类型(长度)[COMMENT '字段注释'] [primary key 主键] [not null 非空 unique 唯一] [default val 默认值][,]
+	columnname 类型(长度)[COMMENT '字段注释']  [not null 非空 unique 唯一] [default val 默认值][,]
+	[,primary key (主键)]
 )[comment '表注释']
 
 sqlserver

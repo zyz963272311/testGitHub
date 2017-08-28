@@ -2,20 +2,20 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="3.2.8" key="selection"/>
+		<item value="PREC" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="prec"/>
+			<item value="alert"/>
 			<item value="4.3.0"/>
 			<item value="publishRequestHandledEvent"/>
 			<item value="webmvc"/>
 			<item value="spring.version"/>
 			<item value="&#x09;&#x09;if(requestPojo == null)"/>
 			<item value="File.separator"/>
-			<item value="/"/>
-			<item value="、"/>
 		</list>
 		<list key="replacehistory">
 			<item value="3.2.8"/>
