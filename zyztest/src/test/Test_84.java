@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,9 +35,10 @@ public class Test_84
 
 	public static void main(String[] args) throws NoSuchMethodException, SecurityException
 	{
-		String str = "2017/";
-		Date d = new Date(str);
-		System.out.println(d);
+		StringBuffer sb = new StringBuffer("abc\n");
+		System.out.println(sb);
+		sb.setLength(sb.length() - 1);
+		System.out.println(sb);
 	}
 
 	/**

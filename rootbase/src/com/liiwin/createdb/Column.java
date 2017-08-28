@@ -33,7 +33,7 @@ public class Column implements Serializable
 	 * 8：外键约束 一般不用
 	 */
 	private int					constraint;								//约束
-	private Object				defaultValue;								//默认值
+	private String				defaultValue;								//默认值
 
 	public String getTableName()
 	{
@@ -105,13 +105,56 @@ public class Column implements Serializable
 		this.constraint = constraint;
 	}
 
-	public Object getDefaultValue()
+	public String getDefaultValue()
 	{
 		return defaultValue;
 	}
 
-	public void setDefaultValue(Object defaultValue)
+	public void setDefaultValue(String defaultValue)
 	{
 		this.defaultValue = defaultValue;
+	}
+
+	/**
+	 * 比较两个Column对象是否一样
+	 * @param column
+	 * @return
+	 * 赵玉柱
+	 */
+	public boolean isDiffWith(Column column)
+	{
+		if (column == null)
+		{
+			throw new RuntimeException("column不可为空");
+		}
+		if (this.columnName != column.getColumnName() || !this.columnName.equals(column.getColumnName()))
+		{
+			return true;
+		}
+		if (this.dataType != column.getDataType() || !this.dataType.equals(column.getDataType()))
+		{
+			return true;
+		}
+		if (this.dataLength != column.getDataLength())
+		{
+			return true;
+		}
+		if (this.decimal != column.getDecimal())
+		{
+			return true;
+		}
+		if (this.constraint != column.constraint)
+		{
+			return true;
+		}
+		if (this.comment != column.comment || !this.comment.equals(column.comment))
+		{
+			return true;
+		}
+		if (this.defaultValue != column.getDefaultValue() || !this.defaultValue.equals(column.getDefaultValue()))
+		{
+			return true;
+		}
+		return false;
 	}
 }

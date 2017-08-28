@@ -66,7 +66,20 @@ public class CreateDatabase
 	private static void createDatabase(List<Database> dbList, List<BufferedReader> dbFile)
 	{
 		Map<Database,List<Map<String,Object>>> selectDBMessage = getSelectDBMessage(dbList);
-		dbMessage2Table(selectDBMessage);
+		Map<String,Map<String,Table>> dbMessage2Table = dbMessage2Table(selectDBMessage);
+		Map<String,Map<String,Table>> selectDBFileMessage = getSelectDBFileMessage(dbList, dbFile);
+		Map<Database,List<String>> sqlDbMap = compareDBAndDBFile(dbMessage2Table, selectDBFileMessage, dbList);
+		System.out.println(dbMessage2Table);
+		System.out.println(selectDBFileMessage);
+		if (sqlDbMap != null)
+		{
+			Set<Entry<Database,List<String>>> sqlSet = sqlDbMap.entrySet();
+			for (Entry<Database,List<String>> sqlEntry : sqlSet)
+			{
+				List<String> value = sqlEntry.getValue();
+				System.out.println(value);
+			}
+		}
 	}
 
 	private static Map<Database,List<Map<String,Object>>> getSelectDBMessage(List<Database> dbList)
@@ -105,7 +118,9 @@ public class CreateDatabase
 	{
 		Map<String,Map<String,Table>> dbTableMap = new HashMap<>();
 		if (selectDBMessage.isEmpty())
+		{
 			return dbTableMap;
+		}
 		Set<Entry<Database,List<Map<String,Object>>>> selectDBSet = selectDBMessage.entrySet();
 		for (Entry<Database,List<Map<String,Object>>> selectDBEntry : selectDBSet)
 		{
@@ -172,8 +187,262 @@ public class CreateDatabase
 		return dbTableMap;
 	}
 
+	private static Map<String,Map<String,Table>> getSelectDBFileMessage(List<Database> dbList, List<BufferedReader> dbFile)
+	{
+		if (dbFile == null || dbFile.isEmpty())
+		{
+			System.out.println("dbFile为空");
+			return null;
+		}
+		Map<String,Map<String,Table>> selectDBFileMessage = new HashMap<>();
+		for (int i = 0; i < dbFile.size(); i++)
+		{
+			Map<String,Table> dbFileMessage = new HashMap<>();
+			BufferedReader reader = dbFile.get(i);
+			Database db = dbList.get(i);
+			if (reader != null)
+			{
+				try
+				{
+					while (reader.read() != -1)
+					{
+						String row = reader.readLine();
+						String srcRow = row;
+						if (row != null)
+						{
+							row = StrUtil.removeSub(row, new char[] { ' ', '\t', '\n' }, 3, 0);
+							if (row.startsWith("//"))
+							{
+								//这个开头表示注释，这种数据不进行处理
+								continue;
+							}
+							System.out.println(row);
+							row = row.replaceAll("\\s{1,}", "#");
+							String[] colMsg = StrUtil.split(row, '#');
+							if (colMsg == null || colMsg.length < 6)
+							{
+								throw new RuntimeException("dbFile配置错误,行信息[" + srcRow + "]");
+							}
+							String tablename = colMsg[0];
+							Table table = dbFileMessage.get(tablename);
+							if (table == null)
+							{
+								table = new Table();
+								table.setDbName(db.getDatabaseName());
+								table.setDbType(db.getType());
+								table.setTableName(tablename);
+							}
+							String columnname = colMsg[1];
+							Map<String,Column> columns = table.getColumns();
+							if (columns == null)
+							{
+								columns = new HashMap<>();
+							}
+							Column column = columns.get(columnname);
+							if (column == null)
+							{
+								String comment = colMsg[2];
+								String datatype = colMsg[3];
+								String datalength_decimal = colMsg[4];
+								int constraint = Integer.parseInt(colMsg[5].substring(2), 2);
+								String defaultValue = null;
+								if (colMsg.length > 6)
+								{
+									defaultValue = colMsg[6];
+								}
+								column = new Column();
+								column.setTableName(tablename);
+								column.setColumnName(columnname);
+								column.setComment(comment);
+								column.setConstraint(constraint);
+								column.setDataType(datatype);
+								String[] split = StrUtil.split(datalength_decimal, ',');
+								column.setDataLength(StrUtil.obj2int(split[0]));
+								column.setDecimal(StrUtil.obj2int(split[1]));
+								column.setDefaultValue(defaultValue);
+								columns.put(columnname, column);
+							}
+							table.setColumns(columns);
+							dbFileMessage.put(tablename, table);
+						}
+					}
+				} catch (Exception e)
+				{
+					System.out.println("db文件读取失败:" + e.getMessage());
+				} finally
+				{
+					try
+					{
+						reader.close();
+					} catch (Exception e)
+					{
+						System.out.println("reader关闭异常" + reader);
+					}
+				}
+			}
+			selectDBFileMessage.put(db.getDatabaseName(), dbFileMessage);
+		}
+		return selectDBFileMessage;
+	}
+
+	private static Map<Database,List<String>> compareDBAndDBFile(Map<String,Map<String,Table>> dbMessage2Table, Map<String,Map<String,Table>> selectDBFileMessage, List<Database> dbList)
+	{
+		if (dbMessage2Table == null || dbMessage2Table.size() == 0 || selectDBFileMessage == null || selectDBFileMessage.size() == 0)
+		{
+			return null;
+		}
+		Map<Database,List<String>> returnSql = new HashMap<>();
+		for (Database db : dbList)
+		{
+			String dbName = db.getDatabaseName();
+			if (!dbMessage2Table.containsKey(dbName))
+			{
+				continue;
+			}
+			Map<String,Table> dbFileMessage = selectDBFileMessage.get(dbName);
+			Map<String,Table> dbMessage = dbMessage2Table.get(dbName);
+			Set<Entry<String,Table>> tableFileMessage = dbFileMessage.entrySet();
+			if (tableFileMessage != null)
+			{
+				for (Entry<String,Table> tableFileEntry : tableFileMessage)
+				{
+					String fileTableName = tableFileEntry.getKey();
+					Table fileTable = tableFileEntry.getValue();
+					Table dbTable = dbMessage.get(fileTableName);
+					returnSql.put(db, compareTableAndTableFile(fileTable, dbTable));
+				}
+			}
+		}
+		return returnSql;
+	}
+
+	private static List<String> compareTableAndTableFile(Table fileTable, Table dbTable)
+	{
+		List<String> returnSql = new ArrayList<>();
+		int dbType = fileTable.getDbType();
+		StringBuffer sql = new StringBuffer();
+		if (dbTable == null)
+		{
+			Map<String,Column> columns = fileTable.getColumns();
+			//新增表结构
+			switch (dbType)
+			{
+			case Databasetype.MYSQL:
+				sql.append("create table " + fileTable.getTableName() + "\n(\n");
+				Set<Entry<String,Column>> columnEntrySet = columns.entrySet();
+				for (Entry<String,Column> columnEntry : columnEntrySet)
+				{
+					Column column = columnEntry.getValue();
+					sql.append(column.getColumnName() + " " + column.getDataType() + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "") + ")");
+					String comment = column.getComment();
+					if (comment != null)
+					{
+						sql.append(" COMMENT '" + comment + "'");
+					}
+					int constraint = column.getConstraint();
+					if ((constraint & 1) == 1)
+					{
+						sql.append(" primary key PK_" + column.getTableName() + "_" + column.getColumnName());
+					}
+					if ((constraint & 2) == 2)
+					{
+						sql.append(" not null ");
+					}
+					String defaultValue = column.getDefaultValue();
+					if (!StrUtil.asNull(defaultValue))
+					{
+						sql.append(" default " + defaultValue + ",\n");
+					}
+				}
+				sql.setLength(sql.length() - 2);
+				sql.append("\n)");
+				returnSql.add(sql.toString());
+				break;
+			case Databasetype.ORACLE:
+				break;
+			case Databasetype.SQLSQRVER:
+				break;
+			}
+		} else
+		{
+			Map<String,Column> columns = fileTable.getColumns();
+			Map<String,Column> dbColumns = dbTable.getColumns();
+			//更新表结构
+			switch (dbType)
+			{
+			case Databasetype.MYSQL:
+				Set<Entry<String,Column>> columnEntrySet = columns.entrySet();
+				for (Entry<String,Column> columnEntry : columnEntrySet)
+				{
+					String columnName = columnEntry.getKey();
+					Column column = columnEntry.getValue();
+					if (!dbColumns.containsKey(columnName))
+					{
+						//添加字段
+						sql.append("alert table " + column.getTableName() + " add ");
+						sql.append(column.getColumnName() + " " + column.getDataType() + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "") + ")");
+						String comment = column.getComment();
+						if (comment != null)
+						{
+							sql.append(" COMMENT '" + comment + "'");
+						}
+						int constraint = column.getConstraint();
+						if ((constraint & 1) == 1)
+						{
+							sql.append(" primary key PK_" + column.getTableName() + "_" + column.getColumnName());
+						}
+						if ((constraint & 2) == 2)
+						{
+							sql.append(" not null ");
+						}
+						String defaultValue = column.getDefaultValue();
+						if (!StrUtil.asNull(defaultValue))
+						{
+							sql.append(" default " + defaultValue + ",\n");
+						}
+					} else
+					{
+						//添加字段
+						Column dbColumn = dbColumns.get(columnName);
+						if (dbColumn.isDiffWith(column))
+						{
+							sql.append("alert table " + column.getTableName() + " modify column ");
+							sql.append(column.getColumnName() + " " + column.getDataType() + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "") + ")");
+							String comment = column.getComment();
+							if (comment != null)
+							{
+								sql.append(" COMMENT '" + comment + "'");
+							}
+							int constraint = column.getConstraint();
+							if ((constraint & 1) == 1)
+							{
+								sql.append(" primary key PK_" + column.getTableName() + "_" + column.getColumnName());
+							}
+							if ((constraint & 2) == 2)
+							{
+								sql.append(" not null ");
+							}
+							String defaultValue = column.getDefaultValue();
+							if (!StrUtil.asNull(defaultValue))
+							{
+								sql.append(" default " + defaultValue);
+							}
+							returnSql.add(sql.toString());
+						}
+					}
+				}
+				break;
+			case Databasetype.ORACLE:
+				break;
+			case Databasetype.SQLSQRVER:
+				break;
+			}
+		}
+		return returnSql;
+	}
+
 	public static void main(String[] args)
 	{
-		createDatabase(new String[] { "project01", "ssm-test" });
+		createDatabase(new String[] { "zyztest", "ssm-test" });
 	}
 }

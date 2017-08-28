@@ -274,10 +274,8 @@ public class StrUtil
 
 	public static void main(String[] args)
 	{
-		long a = 'a';
-		long b = 'b';
-		quickSwap(a, b);
-		System.out.println(a + "\t" + b);
+		String ret = removeSub(" 	dsadsa dsadsa 	\n", new char[] { ' ', '\t', '\n' }, 3, 0);
+		System.out.println(ret);
 	}
 
 	public static int obj2int(Object o)
@@ -358,6 +356,19 @@ public class StrUtil
 	public static boolean isNull(String s)
 	{
 		return s == null || s.length() == 0;
+	}
+
+	public static boolean asNull(String s)
+	{
+		if (isNull(s))
+		{
+			return true;
+		}
+		if (s.toLowerCase().equals("NULL"))
+		{
+			return true;
+		}
+		return false;
 	}
 
 	public static String[][] split(String src, char c1, char c2)
@@ -1016,6 +1027,92 @@ public class StrUtil
 			buffer.append(limit);
 		}
 		return buffer.toString();
+	}
+
+	/**
+	 * 判断c是否在src中
+	 * @param src
+	 * @param c
+	 * @return
+	 * 赵玉柱
+	 */
+	public static boolean isCharIn(char[] src, char c)
+	{
+		if (src == null || src.length == 0)
+		{
+			return false;
+		}
+		for (char s : src)
+		{
+			if (c == s)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * 将src的前/后n个limit字符去掉
+	 * @param src
+	 * @param limit
+	 * @param direction 方向 1：从前向后；2：从后向前
+	 * @param size 去掉多少位 0表示不限制
+	 * @return
+	 * 赵玉柱
+	 */
+	public static String removeSub(String src, char[] limit, int direction, int size)
+	{
+		if (src == null)
+		{
+			return src;
+		}
+		if (size < 0 || size > src.length())
+		{
+			return src;
+		}
+		int length = src.length();
+		int from = 0;
+		int to = length;
+		if ((direction & 1) == 1)
+		{
+			//去掉前面的n个字符串
+			if (size == 0)
+			{
+				size = length;
+			}
+			for (int i = 0; i < size; i++)
+			{
+				if (isCharIn(limit, src.charAt(i)))
+				{
+					from++;
+					continue;
+				} else
+				{
+					break;
+				}
+			}
+		}
+		if ((direction & 2) == 2)
+		{
+			//去掉后面的n个字符串
+			if (size == 0)
+			{
+				size = length;
+			}
+			for (int i = 0; i < size; i++)
+			{
+				if (isCharIn(limit, src.charAt(length - i - 1)))
+				{
+					to--;
+					continue;
+				} else
+				{
+					break;
+				}
+			}
+		}
+		return src.substring(from, to);
 	}
 
 	/**

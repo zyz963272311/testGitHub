@@ -16,7 +16,7 @@ package com.liiwin.db;
  */
 public class Databasetype
 {
-	public static int	MYSQL		= 1;
-	public static int	ORACLE		= 2;
-	public static int	SQLSQRVER	= 4;
+	public final static int	MYSQL		= 1;
+	public final static int	ORACLE		= 2;
+	public final static int	SQLSQRVER	= 4;
 }
