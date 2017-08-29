@@ -20,17 +20,18 @@ import com.liiwin.utils.StrUtil;
  */
 public class DatabasePoolManager
 {
-	public Hashtable<String,IDatabasePool>	pools	= new Hashtable<>();
-	private static DatabasePoolManager		maneger;
+	public static Hashtable<String,IDatabasePool>	pools	= new Hashtable<>();
+	private static DatabasePoolManager				maneger;
 
 	private DatabasePoolManager()
 	{
 	}
 
-	public static DatabasePoolManager getNewInstance()
+	public static synchronized DatabasePoolManager getNewInstance()
 	{
 		if (maneger == null)
 		{
+			System.out.println("DatabasePoolManager被实例化了");
 			maneger = new DatabasePoolManager();
 		}
 		return maneger;
@@ -48,7 +49,9 @@ public class DatabasePoolManager
 			database = getPool(dbName).getDatabase();
 		} else
 		{
-			throw new RuntimeException("db不存在[" + dbName + "]");
+			database = new Database(dbName);
+			DatabasePool pool = new DatabasePool(database);
+			pools.put(dbName, pool);
 		}
 		return database;
 	}
@@ -137,6 +140,24 @@ public class DatabasePoolManager
 		{
 			throw new RuntimeException("database与dbName不匹配，不可进行提交操作");
 		}
+		database.commit();
+		if (closeDB)
+		{
+			close(dbName, database);
+		}
+	}
+
+	public void rollback(Database database, String dbName, boolean rollback, boolean closeDB)
+	{
+		if (!isDBNameOf(database, dbName))
+		{
+			throw new RuntimeException("database与dbName不匹配，不可进行回滚操作");
+		}
+		database.rollback(rollback);
+		if (closeDB)
+		{
+			close(dbName, database);
+		}
 	}
 
 	/**
@@ -161,5 +182,66 @@ public class DatabasePoolManager
 			return true;
 		}
 		return false;
+	}
+
+	public static void main(String[] args)
+	{
+		Thread t1 = new Test1();
+		t1.start();
+		try
+		{
+			Thread.sleep(5000);
+		} catch (InterruptedException e)
+		{
+			throw new RuntimeException("报错内容", e);
+		}
+		Thread t2 = new Test2();
+		t2.start();
+	}
+
+	void test1()
+	{
+		DatabasePoolManager poolManager = DatabasePoolManager.getNewInstance();
+		System.out.println("poolManager=" + poolManager);
+		long start = System.currentTimeMillis();
+		Database database = poolManager.getDatabase("ssm-test");
+		System.out.println("初始化连接时长" + (System.currentTimeMillis() - start) + "ms");
+		try
+		{
+			System.out.println("休眠10秒");
+			Thread.sleep(10000);
+		} catch (InterruptedException e)
+		{
+			throw new RuntimeException("报错内容", e);
+		}
+		int times = 3;
+		Database[] dbs = new Database[times];
+		for (int i = 0; i < times; i++)
+		{
+			start = System.currentTimeMillis();
+			Database db = poolManager.getDatabase("ssm-test");
+			dbs[i] = db;
+			System.out.println("第" + i + "次连接时长为" + (System.currentTimeMillis() - start) + "ms");
+		}
+		try
+		{
+			System.out.println("休眠10秒");
+			Thread.sleep(10000);
+		} catch (InterruptedException e)
+		{
+			throw new RuntimeException("报错内容", e);
+		}
+		start = System.currentTimeMillis();
+		poolManager.close(database);
+		System.out.println("关闭DB时长" + (System.currentTimeMillis() - start) + "ms");
+		if (dbs != null)
+		{
+			for (Database db : dbs)
+			{
+				start = System.currentTimeMillis();
+				poolManager.close(db);
+				System.out.println("关闭DB时长" + (System.currentTimeMillis() - start) + "ms");
+			}
+		}
 	}
 }

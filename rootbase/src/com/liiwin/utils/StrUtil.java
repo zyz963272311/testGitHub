@@ -303,6 +303,31 @@ public class StrUtil
 		return defaultValue;
 	}
 
+	public static long obj2long(Object o)
+	{
+		return obj2long(o, 0L);
+	}
+
+	public static long obj2long(Object o, long defaultValue)
+	{
+		if (o instanceof Number)
+		{
+			return ((Number) o).longValue();
+		}
+		if (o instanceof String)
+		{
+			final String s = ((String) o).trim();
+			try
+			{
+				return Long.parseLong(s);
+			} catch (Exception e)
+			{
+			}
+			return Double.valueOf(s).longValue();
+		}
+		return defaultValue;
+	}
+
 	public static double obj2double(Object o)
 	{
 		return obj2double(o, 0);

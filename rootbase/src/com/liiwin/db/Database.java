@@ -37,16 +37,16 @@ public class Database
 	private final int	type;
 	//连接属性
 	private Connection	conn;
-	private int			minConnects				= 1;				//最小连接数
-	private int			maxConnects				= 5;				//最大连接数
-	private int			initConnections			= 5;				//初始化线程个数
-	private long		connTimeOut				= 1000;			//重复获得连接的频率
-	private int			maxActiveConnections	= 100;				//允许的最大连接数
-	private long		connectionTimeOut		= 1000 * 60 * 20;	//最大超时时间默认20分钟
-	private boolean		isCurrentConnection		= true;			//是否获取当前的链接
-	private boolean		isCheckPool				= true;			//是否检查连接池
-	private long		lazyCheck				= 1000 * 60 * 60;	//延迟多长时间开始检查
-	private long		periodCheck				= 1000 * 60 * 60;	//检查频率
+	private int			minConnects;			//最小连接数
+	private int			maxConnects;			//最大连接数
+	private int			initConnections;		//初始化线程个数
+	private long		connTimeOut;			//重复获得连接的频率
+	private int			maxActiveConnections;	//允许的最大连接数
+	private long		connectionTimeOut;		//最大超时时间默认20分钟
+	private boolean		isCurrentConnection;	//是否获取当前的链接
+	private boolean		isCheckPool;			//是否检查连接池
+	private long		lazyCheck;				//延迟多长时间开始检查
+	private long		periodCheck;			//检查频率
 
 	/**
 	 * 根据DBname获取DB，此DB需要在下面的XML文件中进行配置
@@ -80,6 +80,16 @@ public class Database
 		this.driver = database.attributeValue("driver");
 		this.user = database.attributeValue("user");
 		this.password = database.attributeValue("password");
+		this.minConnects = StrUtil.obj2int(database.attributeValue("minConnects"), 1);
+		this.maxConnects = StrUtil.obj2int(database.attributeValue("maxConnects"), 10);
+		this.initConnections = StrUtil.obj2int(database.attributeValue("initConnections"), 5);
+		this.connTimeOut = StrUtil.obj2long(database.attributeValue("connTimeOut"), 1000);
+		this.maxActiveConnections = StrUtil.obj2int(database.attributeValue("maxActiveConnections"), 100);
+		this.connectionTimeOut = StrUtil.obj2int(database.attributeValue("connectionTimeOut"), 1000 * 60 * 20);
+		this.isCurrentConnection = StrUtil.obj2bool(database.attributeValue("isCurrentConnection"), true);
+		this.isCheckPool = StrUtil.obj2bool(database.attributeValue("isCheckPool"), true);
+		this.lazyCheck = StrUtil.obj2int(database.attributeValue("lazyCheck"), 1000 * 60 * 60);
+		this.periodCheck = StrUtil.obj2int(database.attributeValue("periodCheck"), 1000 * 60 * 60);
 		if (StrUtil.isNullIn(url, driver, user, password))
 		{
 			throw new RuntimeException("获取数据库异常，databases.xml中name=【" + databaseName + "】的database的url,driver,user,password必须配置");

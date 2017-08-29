@@ -58,7 +58,14 @@ public class DatabasePool implements IDatabasePool
 			{
 				for (int i = 0; i < db.getInitConnections(); i++)
 				{
-					Database database = new Database(db.getDatabaseName());
+					Database database = null;
+					if (i == 0)
+					{
+						database = db;
+					} else
+					{
+						database = new Database(db.getDatabaseName());
+					}
 					if (database.getConn() != null)
 					{
 						freeDatabase.add(database);
