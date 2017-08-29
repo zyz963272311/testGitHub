@@ -17,7 +17,7 @@ import com.liiwin.utils.StrUtil;
 /**
  * <p>标题： Database工具 </p>
  * <p>功能：</p>
- * <p>所属模块： TODO</p>
+ * <p>所属模块： rootbase</p>
  * <p>版权： Copyright © 2017 SNSOFT</p>
  * <p>公司: 北京南北天地科技股份有限公司</p>
  * <p>创建日期：2017年5月22日 下午2:24:26</p>
@@ -28,14 +28,30 @@ import com.liiwin.utils.StrUtil;
  */
 public class Database
 {
+	//基础属性
 	private String		databaseName;
 	private String		url;
 	private String		driver;
 	private String		user;
 	private String		password;
-	private Connection	conn;
 	private final int	type;
+	//连接属性
+	private Connection	conn;
+	private int			minConnects				= 1;				//最小连接数
+	private int			maxConnects				= 5;				//最大连接数
+	private int			initConnections			= 5;				//初始化线程个数
+	private long		connTimeOut				= 1000;			//重复获得连接的频率
+	private int			maxActiveConnections	= 100;				//允许的最大连接数
+	private long		connectionTimeOut		= 1000 * 60 * 20;	//最大超时时间默认20分钟
+	private boolean		isCurrentConnection		= true;			//是否获取当前的链接
+	private boolean		isCheckPool				= true;			//是否检查连接池
+	private long		lazyCheck				= 1000 * 60 * 60;	//延迟多长时间开始检查
+	private long		periodCheck				= 1000 * 60 * 60;	//检查频率
 
+	/**
+	 * 根据DBname获取DB，此DB需要在下面的XML文件中进行配置
+	 * @param databaseName
+	 */
 	public Database(String databaseName)
 	{
 		Element root = DBElement.getRoot("/resources/cfg/databases.xml");
@@ -71,7 +87,12 @@ public class Database
 		getConnection(this);
 	}
 
-	private void getConnection(Database db)
+	/**
+	 * 获取数据库连接
+	 * @param db
+	 * 赵玉柱
+	 */
+	public void getConnection(Database db)
 	{
 		if (db != null)
 		{
@@ -79,7 +100,16 @@ public class Database
 		}
 	}
 
-	private void getConnection(String databaseName, String url, String driver, String user, String password)
+	/**
+	 * 获取数据库连接
+	 * @param databaseName
+	 * @param url
+	 * @param driver
+	 * @param user
+	 * @param password
+	 * 赵玉柱
+	 */
+	public void getConnection(String databaseName, String url, String driver, String user, String password)
 	{
 		if (this.conn == null)
 		{
@@ -192,17 +222,37 @@ public class Database
 		return resultList;
 	}
 
+	/**
+	 * 查询数据，返回resultset
+	 * @param sql
+	 * @param params
+	 * @return
+	 * 赵玉柱
+	 */
 	public ResultSet sqlSelect(String sql, Map<String,Object> params)
 	{
 		sql = SqlUtil.sqlBindParams(this, sql, params);
 		return sqlSelect(sql);
 	}
 
+	/**
+	 * 查询数据，获取resultset
+	 * @param sql
+	 * @return
+	 * 赵玉柱
+	 */
 	public ResultSet sqlSelect(String sql)
 	{
 		return getResultSet(sql);
 	}
 
+	/**
+	 * 插入表
+	 * @param table
+	 * @param params
+	 * @return
+	 * 赵玉柱
+	 */
 	public int insertTable(String table, Map<String,Object> params)
 	{
 		if (StrUtil.isNoStrTrimNull(table) && params != null && !params.isEmpty())
@@ -223,27 +273,53 @@ public class Database
 			return insert(sql, params);
 		} else
 		{
-			throw new RuntimeException("表名不可为空切要插入的数据不可为空");
+			throw new RuntimeException("表名不可为空且要插入的数据不可为空");
 		}
 	}
 
+	/**
+	 * 插入表
+	 * @param sql
+	 * @param params
+	 * @return
+	 * 赵玉柱
+	 */
 	public int insert(String sql, Map<String,Object> params)
 	{
 		String sqlTemp = SqlUtil.sqlBindParams(this, sql, params);
 		return insert(sqlTemp);
 	}
 
+	/**
+	 * 插入表
+	 * @param sql
+	 * @return
+	 * 赵玉柱
+	 */
 	public int insert(String sql)
 	{
 		return update(sql);
 	}
 
+	/**
+	 * 更新表
+	 * @param sql
+	 * @param params
+	 * @return
+	 * 赵玉柱
+	 */
 	public int update(String sql, Map<String,Object> params)
 	{
 		sql = SqlUtil.sqlBindParams(this, sql, params);
 		return update(sql);
 	}
 
+	/**
+	 * 更新表
+	 * @param sql
+	 * @return
+	 * 赵玉柱
+	 */
 	public int update(String sql)
 	{
 		int result = -1;
@@ -264,6 +340,12 @@ public class Database
 		return result;
 	}
 
+	/**
+	 * 根据sql获取ResultSet
+	 * @param sql
+	 * @return
+	 * 赵玉柱
+	 */
 	public ResultSet getResultSet(String sql)
 	{
 		ResultSet rs = null;
@@ -284,6 +366,13 @@ public class Database
 		return rs;
 	}
 
+	/**
+	 * 根据sql执行一个写操作
+	 * @param sql
+	 * @param params
+	 * @return
+	 * 赵玉柱
+	 */
 	public boolean execSqlForWrite(String sql, Map<String,Object> params)
 	{
 		sql = SqlUtil.sqlBindParams(this, sql, params);
@@ -311,11 +400,21 @@ public class Database
 		return result;
 	}
 
+	/**
+	 * 获取数据库类型
+	 * @return
+	 * 赵玉柱
+	 */
 	public int getType()
 	{
 		return this.type;
 	}
 
+	/**
+	 * 获取当前数据库连接是否已经打开
+	 * @return
+	 * 赵玉柱
+	 */
 	public boolean connIsOpen()
 	{
 		boolean isOpen = false;
@@ -335,6 +434,11 @@ public class Database
 		return isOpen;
 	}
 
+	/**
+	 * 关闭当前连接
+	 * 
+	 * 赵玉柱
+	 */
 	public void close()
 	{
 		if (this != null)
@@ -352,6 +456,11 @@ public class Database
 		}
 	}
 
+	/**
+	 * 提交事务
+	 * 
+	 * 赵玉柱
+	 */
 	public void commit()
 	{
 		try
@@ -367,11 +476,62 @@ public class Database
 		}
 	}
 
+	/**
+	 * 创建事务
+	 * 
+	 * 赵玉柱
+	 */
+	public void beginTrans()
+	{
+		if (connIsOpen())
+		{
+			try
+			{
+				getConn().setAutoCommit(false);
+			} catch (SQLException e)
+			{
+				throw new RuntimeException("创建DB连接失败，无法开启事务:", e);
+			}
+		}
+	}
+
+	/**
+	 * 获取db是否在事务中
+	 * @return
+	 * 赵玉柱
+	 */
+	public boolean inTrans()
+	{
+		boolean inTrans = false;
+		if (connIsOpen())
+		{
+			try
+			{
+				inTrans = getConn().getAutoCommit();
+			} catch (SQLException e)
+			{
+				throw new RuntimeException("获取DB是否在事务中失败:", e);
+			}
+		}
+		return inTrans;
+	}
+
+	/**
+	 * 回滚
+	 * @param rollback
+	 * 赵玉柱
+	 */
 	public void rollback(boolean rollback)
 	{
 		rollback(rollback, true);
 	}
 
+	/**
+	 * 回滚并是否关闭DB
+	 * @param rollback
+	 * @param closeDB
+	 * 赵玉柱
+	 */
 	public void rollback(boolean rollback, boolean closeDB)
 	{
 		try
@@ -396,7 +556,7 @@ public class Database
 		return databaseName;
 	}
 
-	public void setDatabaseName(String databaseName)
+	protected void setDatabaseName(String databaseName)
 	{
 		this.databaseName = databaseName;
 	}
@@ -406,7 +566,7 @@ public class Database
 		return url;
 	}
 
-	public void setUrl(String url)
+	protected void setUrl(String url)
 	{
 		this.url = url;
 	}
@@ -416,7 +576,7 @@ public class Database
 		return driver;
 	}
 
-	public void setDriver(String driver)
+	protected void setDriver(String driver)
 	{
 		this.driver = driver;
 	}
@@ -444,6 +604,106 @@ public class Database
 	public Connection getConn()
 	{
 		return conn;
+	}
+
+	public int getMinConnects()
+	{
+		return minConnects;
+	}
+
+	public int getMaxConnects()
+	{
+		return maxConnects;
+	}
+
+	public long getConnTimeOut()
+	{
+		return connTimeOut;
+	}
+
+	public int getMaxActiveConnections()
+	{
+		return maxActiveConnections;
+	}
+
+	public long getConnectionTimeOut()
+	{
+		return connectionTimeOut;
+	}
+
+	public boolean isCurrentConnection()
+	{
+		return isCurrentConnection;
+	}
+
+	public boolean isCheckPool()
+	{
+		return isCheckPool;
+	}
+
+	public long getLazyCheck()
+	{
+		return lazyCheck;
+	}
+
+	public long getPeriodCheck()
+	{
+		return periodCheck;
+	}
+
+	public int getInitConnections()
+	{
+		return initConnections;
+	}
+
+	public void setInitConnections(int initConnections)
+	{
+		this.initConnections = initConnections;
+	}
+
+	public void setMinConnects(int minConnects)
+	{
+		this.minConnects = minConnects;
+	}
+
+	public void setMaxConnects(int maxConnects)
+	{
+		this.maxConnects = maxConnects;
+	}
+
+	public void setConnTimeOut(long connTimeOut)
+	{
+		this.connTimeOut = connTimeOut;
+	}
+
+	public void setMaxActiveConnections(int maxActiveConnections)
+	{
+		this.maxActiveConnections = maxActiveConnections;
+	}
+
+	public void setConnectionTimeOut(long connectionTimeOut)
+	{
+		this.connectionTimeOut = connectionTimeOut;
+	}
+
+	public void setCurrentConnection(boolean isCurrentConnection)
+	{
+		this.isCurrentConnection = isCurrentConnection;
+	}
+
+	public void setCheckPool(boolean isCheckPool)
+	{
+		this.isCheckPool = isCheckPool;
+	}
+
+	public void setLazyCheck(long lazyCheck)
+	{
+		this.lazyCheck = lazyCheck;
+	}
+
+	public void setPeriodCheck(long periodCheck)
+	{
+		this.periodCheck = periodCheck;
 	}
 
 	public static void main(String[] args)
