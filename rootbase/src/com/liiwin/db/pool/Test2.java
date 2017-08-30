@@ -34,7 +34,7 @@ public class Test2 extends Thread
 		{
 			throw new RuntimeException("报错内容", e);
 		}
-		int times = 3;
+		int times = 10;
 		Database[] dbs = new Database[times];
 		for (int i = 0; i < times; i++)
 		{
@@ -80,5 +80,6 @@ public class Test2 extends Thread
 				System.out.println("关闭DB时长" + (System.currentTimeMillis() - start) + "ms");
 			}
 		}
+		System.out.println("test2执行完毕");
 	}
 }

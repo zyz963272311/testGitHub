@@ -137,29 +137,47 @@ public class DatabasePool implements IDatabasePool
 	 */
 	private Database newDatabase()
 	{
-		Database database = null;
-		try
+		if (getConnectionCount() < db.getMaxConnects())
 		{
-			if (db == null)
+			Database database = null;
+			try
 			{
-				throw new RuntimeException("ConnectionPool.newDatabase的db不可为空");
-			}
-			if (!isValid(db))
+				if (db == null)
+				{
+					throw new RuntimeException("ConnectionPool.newDatabase的db不可为空");
+				}
+				if (!isValid(db))
+				{
+					database = new Database(db.getDatabaseName());
+					db = database;
+				} else
+				{
+					database = new Database(db.getDatabaseName());
+				}
+				if (!isValid(db))
+				{
+					throw new RuntimeException("数据库连接失败" + db.getDatabaseName());
+				}
+				database = new Database(db.getDatabaseName());
+				activeDatabase.add(database);
+				activeCount++;
+			} catch (Exception e)
 			{
-				db = new Database(db.getDatabaseName());
+				e.printStackTrace();
+				throw new RuntimeException("创建新数据库失败" + e.getMessage());
 			}
-			wait(db.getConnTimeOut());
-			if (!isValid(db))
-			{
-				throw new RuntimeException("数据库连接失败" + db.getDatabaseName());
-			}
-			database = db;
-		} catch (Exception e)
+			return database;
+		} else
 		{
-			e.printStackTrace();
-			throw new RuntimeException("创建新数据库失败" + e.getMessage());
+			try
+			{
+				wait(db.getConnTimeOut());
+				return newDatabase();
+			} catch (InterruptedException e)
+			{
+				throw new RuntimeException("报错内容", e);
+			}
 		}
-		return database;
 	}
 
 	@Override
@@ -262,5 +280,10 @@ public class DatabasePool implements IDatabasePool
 			throw new RuntimeException("报错信息：" + e.getMessage());
 		}
 		return true;
+	}
+
+	private int getConnectionCount()
+	{
+		return activeDatabase.size() + freeDatabase.size();
 	}
 }

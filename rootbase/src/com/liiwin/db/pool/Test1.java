@@ -80,5 +80,6 @@ public class Test1 extends Thread
 				System.out.println("关闭DB时长" + (System.currentTimeMillis() - start) + "ms");
 			}
 		}
+		System.out.println("test1执行完毕");
 	}
 }
