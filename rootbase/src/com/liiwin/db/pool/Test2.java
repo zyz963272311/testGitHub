@@ -2,9 +2,9 @@ package com.liiwin.db.pool;
 
 import com.liiwin.db.Database;
 /**
- * <p>标题： TODO</p>
+ * <p>标题： 数据库连接池的测试类</p>
  * <p>功能： </p>
- * <p>所属模块： TODO</p>
+ * <p>所属模块： rootbase</p>
  * <p>版权： Copyright © 2017 zyzhu</p>
  * <p>公司: xyz.zyzhu</p>
  * <p>创建日期：2017年8月29日 下午10:45:13</p>
@@ -22,7 +22,7 @@ public class Test2 extends Thread
 	{
 		DatabasePoolManager poolManager = DatabasePoolManager.getNewInstance();
 		System.out.println("poolManager=" + poolManager);
-		System.out.println("poolManager.pools" + poolManager.pools);
+		System.out.println("poolManager.pools" + DatabasePoolManager.pools);
 		long start = System.currentTimeMillis();
 		Database database = poolManager.getDatabase("ssm-test");
 		System.out.println("初始化连接时长" + (System.currentTimeMillis() - start) + "ms");

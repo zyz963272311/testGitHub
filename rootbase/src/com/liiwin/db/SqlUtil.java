@@ -15,7 +15,7 @@ import com.liiwin.utils.Validator;
 /**
  * <p>标题： SQL工具类</p>
  * <p>功能： </p>
- * <p>所属模块： TODO</p>
+ * <p>所属模块： rootbase</p>
  * <p>版权： Copyright © 2017 SNSOFT</p>
  * <p>公司: 北京南北天地科技股份有限公司</p>
  * <p>创建日期：2017年5月17日 上午10:39:14</p>

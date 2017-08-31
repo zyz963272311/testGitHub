@@ -6,34 +6,23 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
-
 /**
- * <p>
- * 标题： TODO
- * </p>
- * <p>
- * 功能：
- * </p>
- * <p>
- * 所属模块： TODO
- * </p>
- * <p>
- * 版权： Copyright © 2017 SNSOFT
- * </p>
- * <p>
- * 公司: 北京南北天地科技股份有限公司
- * </p>
- * <p>
- * 创建日期：2017年5月16日 下午2:28:12
- * </p>
- * <p>
- * 类全名：db.ResultSetUtil
- * </p>
- * 作者：赵玉柱 初审： 复审： 监听使用界面:
  * 
+ * <p>标题： resultset工具类</p>
+ * <p>功能： </p>
+ * <p>所属模块： rootbase</p>
+ * <p>版权： Copyright © 2017 zyzhu</p>
+ * <p>公司: xyz.zyzhu</p>
+ * <p>创建日期：2017年8月31日 下午4:03:43</p>
+ * <p>类全名：com.liiwin.db.ResultSetUtil</p>
+ * 作者：赵玉柱
+ * 初审：
+ * 复审：
+ * 监听使用界面:
  * @version 8.0
  */
-public class ResultSetUtil {
+public class ResultSetUtil
+{
 	/**
 	 * 根据数据库类型和sql获取查询结果集
 	 * 
@@ -41,12 +30,13 @@ public class ResultSetUtil {
 	 * @param sql
 	 * @return 赵玉柱
 	 */
-	public static ResultSet getResultSet(Database db, String sql) {
+	public static ResultSet getResultSet(Database db, String sql)
+	{
 		return db.getResultSet(sql);
 	}
 
-	public static ResultSet select(Database db, String sql,
-			Map<String, Object> params) {
+	public static ResultSet select(Database db, String sql, Map<String,Object> params)
+	{
 		String sqlTemp = SqlUtil.sqlBindParams(db, sql, params);
 		return getResultSet(db, sqlTemp);
 	}
@@ -60,43 +50,47 @@ public class ResultSetUtil {
 	 * @see #getResultSet(Database, String)
 	 */
 	@Deprecated
-	public static ResultSet getResultSet(Connection conn, String sql) {
+	public static ResultSet getResultSet(Connection conn, String sql)
+	{
 		ResultSet rs = null;
-		try {
-			Statement statement = conn.createStatement(
-					ResultSet.TYPE_SCROLL_INSENSITIVE,
-					ResultSet.CONCUR_UPDATABLE);
+		try
+		{
+			Statement statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			rs = statement.executeQuery(sql);
-		} catch (SQLException e) {
+		} catch (SQLException e)
+		{
 			throw new RuntimeException("报错内容", e);
 		}
 		return rs;
 	}
 
-	public static List<Map<String, Object>> getListMapFromSql(Database db,
-			String sql, Map<String, Object> params) {
+	public static List<Map<String,Object>> getListMapFromSql(Database db, String sql, Map<String,Object> params)
+	{
 		String sqlTemp = SqlUtil.sqlBindParams(db, sql, params);
 		return getListMapFromSql(db, sqlTemp);
 	}
 
-	public static List<Map<String, Object>> getListMapFromSql(Database db,
-			String sql) {
-		if (db != null) {
+	public static List<Map<String,Object>> getListMapFromSql(Database db, String sql)
+	{
+		if (db != null)
+		{
 			return db.getListMapFromSql(sql);
 		}
 		return null;
 	}
 
-	public static Map<String, Object> getMapFromSql(Database db, String sql,
-			Map<String, Object> params) {
+	public static Map<String,Object> getMapFromSql(Database db, String sql, Map<String,Object> params)
+	{
 		String sqlTemp = SqlUtil.sqlBindParams(db, sql, params);
 		return getMapFromSql(db, sqlTemp);
 	}
 
-	public static Map<String, Object> getMapFromSql(Database db, String sql) {
-		Map<String, Object> resultMap = null;
-		List<Map<String, Object>> resultList = getListMapFromSql(db, sql);
-		if (resultList != null && !resultList.isEmpty()) {
+	public static Map<String,Object> getMapFromSql(Database db, String sql)
+	{
+		Map<String,Object> resultMap = null;
+		List<Map<String,Object>> resultList = getListMapFromSql(db, sql);
+		if (resultList != null && !resultList.isEmpty())
+		{
 			resultMap = resultList.get(0);
 		}
 		return resultMap;
@@ -108,13 +102,16 @@ public class ResultSetUtil {
 	 * @param args
 	 *            赵玉柱
 	 */
-	public static void main(String[] args) {
-		ResultSet rs = getResultSet(new Database("zyztest"),
-				"select * from testtable a, testtable2 b where a.id = b.id");
-		if (rs != null) {
-			try {
+	public static void main(String[] args)
+	{
+		ResultSet rs = getResultSet(new Database("zyztest"), "select * from testtable a, testtable2 b where a.id = b.id");
+		if (rs != null)
+		{
+			try
+			{
 				rs.close();
-			} catch (Exception e) {
+			} catch (Exception e)
+			{
 				throw new RuntimeException("报错内容", e);
 			}
 		}

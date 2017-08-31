@@ -20,7 +20,13 @@ import java.io.IOException;
  */
 public class FileUtil
 {
-	public static String readFile(String filePath)
+	/**
+	 * 将文件读取成字符串形式
+	 * @param filePath
+	 * @return
+	 * 赵玉柱
+	 */
+	public static String readFileStr(String filePath)
 	{
 		try
 		{
@@ -30,7 +36,7 @@ public class FileUtil
 			String temp = "";
 			while ((temp = br.readLine()) != null)
 			{
-				result += "\r\t" + temp;
+				result += "\r\n" + temp;
 			}
 			return result;
 		} catch (FileNotFoundException e)

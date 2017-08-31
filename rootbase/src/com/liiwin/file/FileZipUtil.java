@@ -181,6 +181,13 @@ public class FileZipUtil
 		return flag;
 	}
 
+	/**
+	 * 将zip文件解压缩为文件或目录
+	 * @param zipName
+	 * @param dirName
+	 * @return
+	 * 赵玉柱
+	 */
 	public static boolean zip2Dir(String zipName, String dirName)
 	{
 		boolean flag = false;

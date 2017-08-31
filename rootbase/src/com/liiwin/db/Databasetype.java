@@ -3,7 +3,7 @@ package com.liiwin.db;
 /**
  * <p>标题： 数据库类型</p>
  * <p>功能： </p>
- * <p>所属模块： TODO</p>
+ * <p>所属模块： rootbase</p>
  * <p>版权： Copyright © 2017 SNSOFT</p>
  * <p>公司: 北京南北天地科技股份有限公司</p>
  * <p>创建日期：2017年5月27日 下午3:25:05</p>
