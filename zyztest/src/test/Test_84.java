@@ -1,5 +1,6 @@
 package test;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -35,10 +37,133 @@ public class Test_84
 
 	public static void main(String[] args) throws NoSuchMethodException, SecurityException
 	{
-		StringBuffer sb = new StringBuffer("abc\n");
-		System.out.println(sb);
-		sb.setLength(sb.length() - 1);
-		System.out.println(sb);
+		LinkedList<Integer> lk = new LinkedList<>();
+		for (int i = 0; i < 50; i++)
+		{
+			lk.add(i);
+		}
+		System.out.println(lk);
+		int step = 9;
+		int start = 1;
+		remove(lk, start, step, -1);
+		FileErgodic fileErgodic = new FileErgodic();
+		fileList(fileErgodic, "D:/TEST", 0);
+		System.out.println(fileErgodic);
+	}
+
+	/**
+	 * 文件列表：遍历一个文件夹下所有的文件以及子文件夹
+	 * @param ergodic
+	 * @param url
+	 * @param parents
+	 * 赵玉柱
+	 */
+	private static void fileList(FileErgodic ergodic, String url, int parents)
+	{
+		File file = new File(url);
+		ergodic.setUrl(url);
+		if (file.isFile())
+		{
+			ergodic.setFile(true);
+			return;
+		}
+		if (file.isDirectory())
+		{
+			ergodic.setDir(true);
+			List<FileErgodic> subFileErgodicList = new ArrayList<>();
+			File[] fileArray = file.listFiles();
+			if (fileArray != null && fileArray.length > 0)
+			{
+				List<File> dirs = new ArrayList<>();
+				List<File> files = new ArrayList<>();
+				for (File f : fileArray)
+				{
+					if (f.isFile())
+					{
+						files.add(f);
+					}
+					if (f.isDirectory())
+					{
+						dirs.add(f);
+					}
+					FileErgodic subFileErgodic = new FileErgodic();
+					subFileErgodic.setParents(parents + 1);
+					fileList(subFileErgodic, url + "/" + f.getName(), parents + 1);
+					subFileErgodicList.add(subFileErgodic);
+				}
+				ergodic.setFiles(files);
+				ergodic.setDirs(dirs);
+			}
+			ergodic.setSubFileErgodic(subFileErgodicList);
+		}
+	}
+
+	/**
+	 * 报数算法
+	 * @param lk List类型的链状队列
+	 * @param start  开始位置
+	 * @param step 每一次前进的步数
+	 * @param MaxTimes 最多次数
+	 * 赵玉柱
+	 */
+	private static void remove(LinkedList<Integer> lk, int start, int step, int MaxTimes)
+	{
+		if (lk == null || lk.isEmpty())
+		{
+			System.out.println("LinkedList中无数据");
+			return;
+		}
+		int size = lk.size();
+		if (step <= 0)
+		{
+			step = 1;
+		}
+		if (step > size)
+		{
+			step = step % size;
+		}
+		if (MaxTimes > size || MaxTimes <= 0)
+		{
+			MaxTimes = size;
+		}
+		remove(lk, start, step, 0, MaxTimes);
+	}
+
+	/**
+	 * 
+	 * 报数算法
+	 * @param lk List类型的链状队列
+	 * @param start  开始位置
+	 * @param step 每一次前进的步数
+	 * @param times 当前次数
+	 * @param MaxTimes 最多次数
+	 * 赵玉柱
+	 */
+	private static void remove(LinkedList<Integer> lk, int start, int step, int times, int MaxTimes)
+	{
+		if (lk.isEmpty())
+		{
+			System.out.println("LinkedList已遍历完成");
+			return;
+		}
+		if (times >= MaxTimes)
+		{
+			System.out.println("已经执行" + MaxTimes + "次，即将退出");
+			return;
+		}
+		int size = lk.size();
+		if (start <= 0)
+		{
+			start = 0;
+		}
+		if (start >= size)
+		{
+			start = start % size;
+		}
+		Integer rm = lk.remove(start);
+		System.out.println("第" + (++times) + "次执行移除操作，移除的对象是" + rm);
+		start += step - 1;//下一个人已经取代了当前人的位置
+		remove(lk, start, step, times, MaxTimes);
 	}
 
 	/**

@@ -15,10 +15,42 @@
 	    <version>5.1.22</version>
 	  </dependency>
 	  <dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>fastjson</artifactId>
-			<version>1.2.24</version>
-		</dependency>
+		<groupId>com.alibaba</groupId>
+		<artifactId>fastjson</artifactId>
+		<version>1.2.24</version>
+	  </dependency>
+	  <!-- 以下配置MQ -->
+	  <dependency>
+  		<groupId>org.apache.activemq</groupId>
+ 		<artifactId>activemq-all</artifactId>
+  	    <version>5.10.0</version>
+	  </dependency>
+	  <dependency>
+  		<groupId>org.apache.activemq</groupId>
+ 		<artifactId>activemq-broker</artifactId>
+  	    <version>5.10.0</version>
+	  </dependency>
+	  <dependency>
+  		<groupId>org.apache.activemq</groupId>
+ 		<artifactId>activemq-client</artifactId>
+  	    <version>5.10.0</version>
+	  </dependency>
+	  <dependency>
+    	<groupId>org.apache.geronimo.specs</groupId>
+    	<artifactId>geronimo-j2ee-management_1.1_spec</artifactId>
+    	<version>1.0.1</version>
+	  </dependency>
+	  <dependency>
+    	<groupId>org.apache.geronimo.specs</groupId>
+    	<artifactId>geronimo-jms_1.1_spec</artifactId>
+    	<version>1.1.1</version>
+	  </dependency>
+	  <dependency>
+    	<groupId>org.slf4j</groupId>
+    	<artifactId>slf4j-api</artifactId>
+    	<version>1.7.13</version>
+	  </dependency>
+	  <!-- MQ配置完成 -->
   </dependencies>
   
   <build>
