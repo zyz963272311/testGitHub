@@ -38,7 +38,7 @@ public class TestFuture
 			Future f = pool.submit(c);
 			list.add(f);
 		}
-		//pool.shutdown();
+		pool.shutdown();
 		for (Future f : list)
 		{
 			System.out.println(">>>" + f.get().toString());
