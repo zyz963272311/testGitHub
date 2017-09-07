@@ -15,11 +15,26 @@ import java.util.TimerTask;
  * 监听使用界面:
  * @version 8.0
  */
-public class AppTimerTask extends TimerTask
+public abstract class AppTimerTask extends TimerTask
 {
+	private boolean	isFinish	= false;
+
 	@Override
 	public void run()
 	{
-		System.out.println("调用了run方法");
+		runTask();
+		isFinish = true;
+	}
+
+	/**
+	 * 子类需要重写此方法
+	 * 
+	 * 赵玉柱
+	 */
+	protected abstract void runTask();
+
+	public boolean isFinish()
+	{
+		return isFinish;
 	}
 }

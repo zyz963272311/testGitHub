@@ -1,6 +1,8 @@
 package com.liiwin.test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.liiwin.timertask.AppTimer;
 import com.liiwin.timertask.AppTimerTask;
@@ -23,6 +25,26 @@ public class TimerTaskTest
 	public static void main(String[] args)
 	{
 		Map<String,Object> params = new HashMap<>();
-		AppTimer<AppTimerTask> timer = new AppTimer<>(params);
+		new AppTimer<AppTimerTask>(params)
+		{
+			@Override
+			public List<AppTimerTask> loadTimerTask()
+			{
+				List<AppTimerTask> tasks = new ArrayList<>();
+				for (int i = 0; i < 5; i++)
+				{
+					AppTimerTask task = new AppTimerTask()
+					{
+						@Override
+						protected void runTask()
+						{
+							System.out.println("执行了task");
+						}
+					};
+					tasks.add(task);
+				}
+				return tasks;
+			}
+		};
 	}
 }

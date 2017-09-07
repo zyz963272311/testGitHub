@@ -1,6 +1,5 @@
 package com.liiwin.timertask;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
@@ -18,7 +17,7 @@ import java.util.Timer;
  * 监听使用界面:
  * @version 8.0
  */
-public class AppTimer<t extends AppTimerTask> extends Timer
+public abstract class AppTimer<t extends AppTimerTask> extends Timer
 {
 	/**
 	 *初始化参数 
@@ -35,7 +34,7 @@ public class AppTimer<t extends AppTimerTask> extends Timer
 	 */
 	private void init(Map<String,Object> params)
 	{
-		checpParams(params);
+		checkParams(params);
 		execute();
 	}
 
@@ -46,7 +45,7 @@ public class AppTimer<t extends AppTimerTask> extends Timer
 	 * 
 	 * 赵玉柱
 	 */
-	protected void checpParams(Map<String,Object> params)
+	protected void checkParams(Map<String,Object> params)
 	{
 	}
 
@@ -65,16 +64,7 @@ public class AppTimer<t extends AppTimerTask> extends Timer
 	 * @return
 	 * 赵玉柱
 	 */
-	public List<AppTimerTask> loadTimerTask()
-	{
-		List<AppTimerTask> tasks = new ArrayList<>();
-		for (int i = 0; i < 5; i++)
-		{
-			AppTimerTask task = new AppTimerTask();
-			tasks.add(task);
-		}
-		return tasks;
-	}
+	public abstract List<AppTimerTask> loadTimerTask();
 
 	/**
 	 * 运行定时任务
@@ -91,5 +81,41 @@ public class AppTimer<t extends AppTimerTask> extends Timer
 		{
 			schedule(task, 1 * 1000);
 		}
+		stopTask(tasks);
+	}
+
+	public void stopTask(List<AppTimerTask> tasks)
+	{
+		while (true)
+		{
+			if (isFinish(tasks))
+			{
+				System.out.println("任务执行完成了");
+				cancel();
+				break;
+			}
+			try
+			{
+				System.out.println("任务没有执行完成，需要等待3秒");
+				Thread.sleep(3000);
+			} catch (InterruptedException e)
+			{
+				throw new RuntimeException("报错内容", e);
+			}
+		}
+	}
+
+	public boolean isFinish(List<AppTimerTask> tasks)
+	{
+		boolean isFinish = true;
+		for (AppTimerTask task : tasks)
+		{
+			isFinish = isFinish & task.isFinish();
+			if (!isFinish)
+			{
+				break;
+			}
+		}
+		return isFinish;
 	}
 }

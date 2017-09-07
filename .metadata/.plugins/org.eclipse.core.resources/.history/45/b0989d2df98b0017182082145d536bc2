@@ -1,5 +1,0 @@
-	webservice	servicename	服务名称	varchar	128,0	0b00000011
-	webservice	serviceinterface	接口名称	varchar	256,0	0b000000
-	webservice	newadd	测试添加	varchar	256,0	0b00000000
-	webservice1	newadd1	测试添加1	varchar	64,0	0b00000011
-	webservice1	newadd2	测试添加2	varchar	64,0	0b00000010
