@@ -18,9 +18,6 @@ public class Test_84
 {
 	public static void main(String[] args)
 	{
-		System.out.println(Integer.parseInt("0b00000000".substring(2), 2));
-		System.out.println(Integer.parseInt("0b00000001".substring(2), 2));
-		System.out.println(Integer.parseInt("0b00000010".substring(2), 2));
-		System.out.println(Integer.parseInt("0b00000011".substring(2), 2));
+		System.out.println("abc".equalsIgnoreCase("abc"));
 	}
 }

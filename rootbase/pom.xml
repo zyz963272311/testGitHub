@@ -51,6 +51,11 @@
     	<version>1.7.13</version>
 	  </dependency>
 	  <!-- MQ配置完成 -->
+	  <dependency>
+    	<groupId>commons-net</groupId>
+    	<artifactId>commons-net</artifactId>
+    	<version>3.5</version>
+	  </dependency>
   </dependencies>
   
   <build>
