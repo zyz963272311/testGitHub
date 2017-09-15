@@ -1,0 +1,11 @@
+XMLFile.xml
+
+element
+	<name>
+	<value>
+	<attr>
+	children_elements
+	
+根据字符串生成一个XML文件
+根据字符串生成一个XSD文件
+根据XSD文件校验XML文件

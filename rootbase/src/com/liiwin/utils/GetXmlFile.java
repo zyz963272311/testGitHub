@@ -1,5 +1,7 @@
 package com.liiwin.utils;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -128,6 +130,30 @@ public class GetXmlFile
 			InputStream in = GetXmlFile.class.getResourceAsStream(filePath);
 			document = reader.read(in);
 		} catch (DocumentException e)
+		{
+			throw new RuntimeException("报错内容", e);
+		}
+		return document;
+	}
+
+	/**
+	 * 获取路径为filePath的xml配置Document
+	 * @param filePath
+	 * @return
+	 * 赵玉柱
+	 */
+	public static Document getXmlDocumentByAbsulatePath(String filePath)
+	{
+		Document document = null;
+		try
+		{
+			SAXReader reader = new SAXReader();
+			InputStream in = new FileInputStream(filePath);
+			document = reader.read(in);
+		} catch (DocumentException e)
+		{
+			throw new RuntimeException("报错内容", e);
+		} catch (FileNotFoundException e)
 		{
 			throw new RuntimeException("报错内容", e);
 		}
