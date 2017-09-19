@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import javax.activation.DataHandler;
+import javax.activation.DataSource;
 import javax.activation.FileDataSource;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -123,19 +124,24 @@ public class MailUtil
 	}
 
 	/**
-	 * 
-	 * @param userAddress
-	 * @param password
-	 * @param addressFrom
-	 * @param addressTos
-	 * @param subject
-	 * @param abbressToCC
-	 * @param abbressToBCC
-	 * @param contexts
-	 * @param sendDate
+	 * 用QQ邮箱发送邮件
+	 * @param userAddress 用户名
+	 * @param password 密码（授权码）
+	 * @param addressFrom 发送方 必须是当前用户名
+	 * @param addressTos 接收方，支持多个，不可为空
+	 * @param subject 主题
+	 * @param abbressToCC 抄送，支持多个，可以为空
+	 * @param abbressToBCC 密送 可以为空
+	 * @param contexts 内容的List 暂时分为
+	 * {
+	 * 		{"type":"image","context":"图片地址","html":"html格式的文本,可以为空"}
+	 * 		,{"type":"text","context":"显示的文本"}
+	 * 		,{"type":"attach","context":"附件地址"}
+	 * }
+	 * @param sendDate 发送时间
 	 * 赵玉柱
 	 */
-	public static void SendQQEMail(String userAddress, String password, InternetAddress addressFrom, List<InternetAddress> addressTos, String subject, List<InternetAddress> abbressToCC,
+	public static void sendQQEMail(String userAddress, String password, InternetAddress addressFrom, List<InternetAddress> addressTos, String subject, List<InternetAddress> abbressToCC,
 			List<InternetAddress> abbressToBCC, List<Map<String,Object>> contexts, Date sendDate)
 	{
 		Properties props = new Properties();
@@ -173,30 +179,35 @@ public class MailUtil
 		}
 		if (userAddress.endsWith("163.com"))
 		{
-			Send163EMail(userAddress, password, addressFrom, addressTos, subject, abbressToCC, abbressToBCC, contexts, sendDate);
+			send163EMail(userAddress, password, addressFrom, addressTos, subject, abbressToCC, abbressToBCC, contexts, sendDate);
 		} else if (userAddress.endsWith("qq.com"))
 		{
-			SendQQEMail(userAddress, password, addressFrom, addressTos, subject, abbressToCC, abbressToBCC, contexts, sendDate);
+			sendQQEMail(userAddress, password, addressFrom, addressTos, subject, abbressToCC, abbressToBCC, contexts, sendDate);
 		} else if (userAddress.endsWith("126.com"))
 		{
-			Send126EMail(userAddress, password, addressFrom, addressTos, subject, abbressToCC, abbressToBCC, contexts, sendDate);
+			send126EMail(userAddress, password, addressFrom, addressTos, subject, abbressToCC, abbressToBCC, contexts, sendDate);
 		}
 	}
 
 	/**
-	 * 
-	 * @param userAddress
-	 * @param password
-	 * @param addressFrom
-	 * @param addressTos
-	 * @param subject
-	 * @param abbressToCC
-	 * @param abbressToBCC
-	 * @param contexts
-	 * @param sendDate
+	 * 用163邮箱发送邮件
+	 * @param userAddress 用户名
+	 * @param password 密码（授权码）
+	 * @param addressFrom 发送方 必须是当前用户名
+	 * @param addressTos 接收方，支持多个，不可为空
+	 * @param subject 主题
+	 * @param abbressToCC 抄送，支持多个，可以为空
+	 * @param abbressToBCC 密送 可以为空
+	 * @param contexts 内容的List 暂时分为
+	 * {
+	 * 		{"type":"image","context":"图片地址","html":"html格式的文本,可以为空"}
+	 * 		,{"type":"text","context":"显示的文本"}
+	 * 		,{"type":"attach","context":"附件地址"}
+	 * }
+	 * @param sendDate 发送时间
 	 * 赵玉柱
 	 */
-	public static void Send163EMail(String userAddress, String password, InternetAddress addressFrom, List<InternetAddress> addressTos, String subject, List<InternetAddress> abbressToCC,
+	public static void send163EMail(String userAddress, String password, InternetAddress addressFrom, List<InternetAddress> addressTos, String subject, List<InternetAddress> abbressToCC,
 			List<InternetAddress> abbressToBCC, List<Map<String,Object>> contexts, Date sendDate)
 	{
 		Properties props = new Properties();
@@ -225,7 +236,25 @@ public class MailUtil
 		}
 	}
 
-	public static void Send126EMail(String userAddress, String password, InternetAddress addressFrom, List<InternetAddress> addressTos, String subject, List<InternetAddress> abbressToCC,
+	/**
+	 * 用QQ邮箱发送邮件
+	 * @param userAddress 用户名
+	 * @param password 密码（授权码）
+	 * @param addressFrom 发送方 必须是当前用户名
+	 * @param addressTos 接收方，支持多个，不可为空
+	 * @param subject 主题
+	 * @param abbressToCC 抄送，支持多个，可以为空
+	 * @param abbressToBCC 密送 可以为空
+	 * @param contexts 内容的List 暂时分为
+	 * {
+	 * 		{"type":"image","context":"图片地址","html":"html格式的文本,可以为空"}
+	 * 		,{"type":"text","context":"显示的文本"}
+	 * 		,{"type":"attach","context":"附件地址"}
+	 * }
+	 * @param sendDate 发送时间
+	 * 赵玉柱
+	 */
+	public static void send126EMail(String userAddress, String password, InternetAddress addressFrom, List<InternetAddress> addressTos, String subject, List<InternetAddress> abbressToCC,
 			List<InternetAddress> abbressToBCC, List<Map<String,Object>> contexts, Date sendDate)
 	{
 		Properties props = new Properties();
@@ -254,6 +283,19 @@ public class MailUtil
 		}
 	}
 
+	/**
+	 * 创建一个邮件Message
+	 * @param session
+	 * @param addressFrom
+	 * @param addressTos
+	 * @param subject
+	 * @param abbressToCC
+	 * @param abbressToBCC
+	 * @param contexts
+	 * @param sendDate
+	 * @return
+	 * 赵玉柱
+	 */
 	private static MimeMessage createMailMessage(Session session, InternetAddress addressFrom, List<InternetAddress> addressTos, String subject, List<InternetAddress> abbressToCC,
 			List<InternetAddress> abbressToBCC, List<Map<String,Object>> contexts, Date sendDate)
 	{
@@ -309,26 +351,35 @@ public class MailUtil
 						if ("text".equals(type))
 						{
 							//普通文本
+							MimeMultipart mimeMultipart = new MimeMultipart();
 							MimeBodyPart text = new MimeBodyPart();
-							text.setContent(ctx, "text/html;charset=UTF-8");
-							multipart.addBodyPart(text);
+							text.setContent(ctx + "<br/>", "text/html; charset=utf-8");
+							mimeMultipart.addBodyPart(text);
+							MimeBodyPart textPart = new MimeBodyPart();
+							mimeMultipart.setSubType("related");
+							textPart.setContent(mimeMultipart);
+							multipart.addBodyPart(textPart);
 						} else if ("image".equals(type))
 						{
 							//添加图片
 							MimeBodyPart image = new MimeBodyPart();
-							DataHandler dh = null;
+							DataSource ds = null;
 							if (File.class.isAssignableFrom(ctx.getClass()))
 							{
-								dh = new DataHandler(new FileDataSource((File) ctx));
+								ds = new FileDataSource((File) ctx);
 							} else if (String.class.equals(ctx.getClass()))
 							{
-								dh = new DataHandler(new FileDataSource(new File(StrUtil.obj2str(ctx))));
+								ds = new FileDataSource(new File(StrUtil.obj2str(ctx)));
 							}
+							DataHandler dh = new DataHandler(ds);
+							image.setContent("我是图片解释", "text/html; charset=utf-8");
 							image.setDataHandler(dh);
 							image.setContentID("image_" + i);
 							MimeBodyPart text = new MimeBodyPart();
-							text.setContent("<img src='cid:" + "image_" + i + "'/>", "text/html;charset=UTF-8");
-							MimeMultipart mm_text_image = new MimeMultipart();
+							//			
+							String report = StrUtil.obj2str(context.get("html"));
+							text.setContent((StrUtil.isStrTrimNull(report) ? "" : report) + "<img src='cid:" + "image_" + i + "'/><br/>", "text/html; charset=utf-8");
+							MimeMultipart mm_text_image = new MimeMultipart("related");
 							mm_text_image.addBodyPart(text);
 							mm_text_image.addBodyPart(image);
 							mm_text_image.setSubType("related");
@@ -339,15 +390,18 @@ public class MailUtil
 						{
 							// 添加附件
 							MimeBodyPart attach = new MimeBodyPart();
-							DataHandler dh = null;
+							attach.setContent("", "text/html;charset=UTF-8");
+							DataSource ds = null;
 							if (File.class.isAssignableFrom(ctx.getClass()))
 							{
-								dh = new DataHandler(new FileDataSource((File) ctx));
+								ds = new FileDataSource((File) ctx);
 							} else if (String.class.equals(ctx.getClass()))
 							{
-								dh = new DataHandler(new FileDataSource(new File(StrUtil.obj2str(ctx))));
+								ds = new FileDataSource(new File(StrUtil.obj2str(ctx)));
 							}
-							attach.setFileName(MimeUtility.encodeText(dh.getName()));
+							DataHandler dh = new DataHandler(ds);
+							attach.setDataHandler(dh);
+							attach.setFileName(MimeUtility.encodeText(ds.getName()));
 							multipart.addBodyPart(attach);
 						}
 						//message.setContent(context.get("context"), StrUtil.obj2str(context.get("type")));
@@ -388,20 +442,30 @@ public class MailUtil
 			abbressToCCs.add(abbressToBCC);
 			List<Map<String,Object>> contexts = new ArrayList<>();
 			Map<String,Object> contextMap = new HashMap<String,Object>();
-			contextMap.put("context", "context");
+			contextMap.put("context", "测试看一下中文看看可不可以");
 			contextMap.put("type", "text");
 			contexts.add(contextMap);
 			Map<String,Object> contextMap1 = new HashMap<String,Object>();
-			contextMap1.put("context", "D://textQRCode.png");
+			contextMap1.put("context", "D:\\textQRCode.png");
 			contextMap1.put("type", "image");
+			contextMap1.put("html", "<a href='http://www.baidu.com'>我看一下这个</a>");
 			contexts.add(contextMap1);
+			Map<String,Object> contextMap3 = new HashMap<String,Object>();
+			contextMap3.put("context", "D:\\2.jpg");
+			contextMap3.put("type", "image");
+			contexts.add(contextMap3);
+			Map<String,Object> contextMap4 = new HashMap<String,Object>();
+			contextMap4.put("html", "<a href='http://www.baidu.com'>嗯的图片</a>");
+			contextMap4.put("context", "D:\\TestDrawingString.jpg");
+			contextMap4.put("type", "image");
+			contexts.add(contextMap4);
 			Map<String,Object> contextMap2 = new HashMap<String,Object>();
-			contextMap2.put("context", "D://test0000001.pdf");
+			contextMap2.put("context", "D:\\1.jpg");
 			contextMap2.put("type", "attach");
 			contexts.add(contextMap2);
 			Date sendDate = new Date();
 			//SendMailDemo(addressFrom, addressTos, subject, abbressToCCs, abbressToBCCs, contexts, sendDate);
-			SendQQEMail("963272311@qq.com", "irowtqpmmsjubeee", addressFrom, addressTos, subject, abbressToCCs, abbressToBCCs, contexts, sendDate);
+			sendEMail("963272311@qq.com", "irowtqpmmsjubeee", addressFrom, addressTos, subject, abbressToCCs, abbressToBCCs, contexts, sendDate);
 			//			Send163EMail("18513455445@163.com", "521419521419zyz", addressFrom163, addressTos, subject, abbressToCCs, abbressToBCCs, contexts, sendDate);
 			//Send126EMail("18513455445@163.com", "521419521419zyz", addressFrom163, addressTos, subject, abbressToCCs, abbressToBCCs, contexts, sendDate);
 		} catch (UnsupportedEncodingException e)

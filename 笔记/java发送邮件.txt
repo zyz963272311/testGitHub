@@ -1,0 +1,3 @@
+javax.mail.MessagingException: Can't send command to SMTP host;
+  nested exception is:
+	java.net.SocketException: Connection closed by remote host
