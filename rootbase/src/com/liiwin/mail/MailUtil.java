@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Random;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
@@ -156,7 +157,7 @@ public class MailUtil
 		props.setProperty("mail.smtp.socketFactory.fallback", "false");
 		props.setProperty("mail.smtp.socketFactory.port", BasConfig.getPropertie("E-MAIL-QQ-PORT"));
 		Session session = Session.getDefaultInstance(props);
-		session.setDebug(true);
+		session.setDebug(StrUtil.obj2bool(BasConfig.getPropertie("debug")));
 		try
 		{
 			Transport transport = session.getTransport();
@@ -350,59 +351,15 @@ public class MailUtil
 						Object ctx = context.get("context");
 						if ("text".equals(type))
 						{
-							//普通文本
-							MimeMultipart mimeMultipart = new MimeMultipart();
-							MimeBodyPart text = new MimeBodyPart();
-							text.setContent(ctx + "<br/>", "text/html; charset=utf-8");
-							mimeMultipart.addBodyPart(text);
-							MimeBodyPart textPart = new MimeBodyPart();
-							mimeMultipart.setSubType("related");
-							textPart.setContent(mimeMultipart);
-							multipart.addBodyPart(textPart);
+							createTextContext(multipart, ctx);
 						} else if ("image".equals(type))
 						{
 							//添加图片
-							MimeBodyPart image = new MimeBodyPart();
-							DataSource ds = null;
-							if (File.class.isAssignableFrom(ctx.getClass()))
-							{
-								ds = new FileDataSource((File) ctx);
-							} else if (String.class.equals(ctx.getClass()))
-							{
-								ds = new FileDataSource(new File(StrUtil.obj2str(ctx)));
-							}
-							DataHandler dh = new DataHandler(ds);
-							image.setContent("我是图片解释", "text/html; charset=utf-8");
-							image.setDataHandler(dh);
-							image.setContentID("image_" + i);
-							MimeBodyPart text = new MimeBodyPart();
-							//			
-							String report = StrUtil.obj2str(context.get("html"));
-							text.setContent((StrUtil.isStrTrimNull(report) ? "" : report) + "<img src='cid:" + "image_" + i + "'/><br/>", "text/html; charset=utf-8");
-							MimeMultipart mm_text_image = new MimeMultipart("related");
-							mm_text_image.addBodyPart(text);
-							mm_text_image.addBodyPart(image);
-							mm_text_image.setSubType("related");
-							MimeBodyPart text_image = new MimeBodyPart();
-							text_image.setContent(mm_text_image);
-							multipart.addBodyPart(text_image);
+							createImageContext(i, multipart, context, ctx);
 						} else if ("attach".equals(type))
 						{
 							// 添加附件
-							MimeBodyPart attach = new MimeBodyPart();
-							attach.setContent("", "text/html;charset=UTF-8");
-							DataSource ds = null;
-							if (File.class.isAssignableFrom(ctx.getClass()))
-							{
-								ds = new FileDataSource((File) ctx);
-							} else if (String.class.equals(ctx.getClass()))
-							{
-								ds = new FileDataSource(new File(StrUtil.obj2str(ctx)));
-							}
-							DataHandler dh = new DataHandler(ds);
-							attach.setDataHandler(dh);
-							attach.setFileName(MimeUtility.encodeText(ds.getName()));
-							multipart.addBodyPart(attach);
+							createAttachContext(multipart, ctx);
 						}
 						//message.setContent(context.get("context"), StrUtil.obj2str(context.get("type")));
 					}
@@ -423,6 +380,89 @@ public class MailUtil
 		return message;
 	}
 
+	/**
+	 * 创建一个附件类型的
+	 * @param multipart
+	 * @param ctx
+	 * @throws MessagingException
+	 * @throws UnsupportedEncodingException
+	 * 赵玉柱
+	 */
+	private static void createAttachContext(MimeMultipart multipart, Object ctx) throws MessagingException, UnsupportedEncodingException
+	{
+		MimeBodyPart attach = new MimeBodyPart();
+		//							attach.setContent("", "text/html;charset=UTF-8");
+		DataSource ds = null;
+		if (File.class.isAssignableFrom(ctx.getClass()))
+		{
+			ds = new FileDataSource((File) ctx);
+		} else if (String.class.equals(ctx.getClass()))
+		{
+			ds = new FileDataSource(new File(StrUtil.obj2str(ctx)));
+		}
+		DataHandler dh = new DataHandler(ds);
+		attach.setDataHandler(dh);
+		attach.setFileName(MimeUtility.encodeText(ds.getName()));
+		multipart.addBodyPart(attach);
+	}
+
+	/**
+	 * 创建一个 图片类型的 part
+	 * @param i
+	 * @param multipart
+	 * @param context
+	 * @param ctx
+	 * @throws MessagingException
+	 * 赵玉柱
+	 */
+	private static void createImageContext(int i, MimeMultipart multipart, Map<String,Object> context, Object ctx) throws MessagingException
+	{
+		MimeBodyPart image = new MimeBodyPart();
+		DataSource ds = null;
+		if (File.class.isAssignableFrom(ctx.getClass()))
+		{
+			ds = new FileDataSource((File) ctx);
+		} else if (String.class.equals(ctx.getClass()))
+		{
+			ds = new FileDataSource(new File(StrUtil.obj2str(ctx)));
+		}
+		DataHandler dh = new DataHandler(ds);
+		//							image.setContent("我是图片解释", "text/html; charset=utf-8");
+		image.setDataHandler(dh);
+		image.setContentID("image_" + i);
+		MimeBodyPart text = new MimeBodyPart();
+		//			
+		String html = StrUtil.obj2str(context.get("html"));
+		text.setContent((StrUtil.isStrTrimNull(html) ? "" : html) + "<img src='cid:" + "image_" + i + "'/><br/>", "text/html; charset=utf-8");
+		MimeMultipart mm_text_image = new MimeMultipart("related");
+		mm_text_image.addBodyPart(text);
+		mm_text_image.addBodyPart(image);
+		mm_text_image.setSubType("related");
+		MimeBodyPart text_image = new MimeBodyPart();
+		text_image.setContent(mm_text_image);
+		multipart.addBodyPart(text_image);
+	}
+
+	/**
+	 * 创建一个普通文本类型的bodypart
+	 * @param multipart
+	 * @param ctx
+	 * @throws MessagingException
+	 * 赵玉柱
+	 */
+	private static void createTextContext(MimeMultipart multipart, Object ctx) throws MessagingException
+	{
+		//普通文本
+		MimeMultipart mimeMultipart = new MimeMultipart();
+		MimeBodyPart text = new MimeBodyPart();
+		text.setContent(ctx + "<br/>", "text/html; charset=utf-8");
+		mimeMultipart.addBodyPart(text);
+		MimeBodyPart textPart = new MimeBodyPart();
+		mimeMultipart.setSubType("related");
+		textPart.setContent(mimeMultipart);
+		multipart.addBodyPart(textPart);
+	}
+
 	public static void main(String[] args)
 	{
 		try
@@ -431,9 +471,11 @@ public class MailUtil
 			InternetAddress addressFrom163 = new InternetAddress("18513455445@163.com", "赵玉柱", "UTF-8");
 			InternetAddress addressFrom126 = new InternetAddress("18513455445@163.com", "zyz-test", "UTF-8");
 			List<InternetAddress> addressTos = new ArrayList<>();
-			InternetAddress addressTo = new InternetAddress("963272311@qq.com", "赵玉柱", "UTF-8");
-			addressTos.add(addressTo);
-			String subject = "测试发送邮箱";
+			//			InternetAddress addressTo = new InternetAddress("1121646970@qq.com", "我不是小丑皇", "UTF-8");
+			//			addressTos.add(addressTo);
+			InternetAddress addressTo1 = new InternetAddress("963272311@qq.com", "赵玉柱", "UTF-8");
+			addressTos.add(addressTo1);
+			String subject = "激活邮箱";
 			List<InternetAddress> abbressToCCs = new ArrayList<>();
 			InternetAddress abbressToCC = new InternetAddress("963272311@qq.com", "赵玉柱", "UTF-8");
 			abbressToCCs.add(abbressToCC);
@@ -442,11 +484,11 @@ public class MailUtil
 			abbressToCCs.add(abbressToBCC);
 			List<Map<String,Object>> contexts = new ArrayList<>();
 			Map<String,Object> contextMap = new HashMap<String,Object>();
-			contextMap.put("context", "测试看一下中文看看可不可以");
+			contextMap.put("context", "验证码:" + new Random().nextInt(9999) + "，请在12小时之内完成注册,<a href='http://www.liiwin.com'>注册地址</a>");
 			contextMap.put("type", "text");
 			contexts.add(contextMap);
 			Map<String,Object> contextMap1 = new HashMap<String,Object>();
-			contextMap1.put("context", "D:\\textQRCode.png");
+			contextMap1.put("context", "D:\\1.jpg");
 			contextMap1.put("type", "image");
 			contextMap1.put("html", "<a href='http://www.baidu.com'>我看一下这个</a>");
 			contexts.add(contextMap1);
@@ -460,13 +502,13 @@ public class MailUtil
 			contextMap4.put("type", "image");
 			contexts.add(contextMap4);
 			Map<String,Object> contextMap2 = new HashMap<String,Object>();
-			contextMap2.put("context", "D:\\1.jpg");
+			contextMap2.put("context", "D:\\阿里巴巴Java开发手册.pdf");
 			contextMap2.put("type", "attach");
 			contexts.add(contextMap2);
 			Date sendDate = new Date();
 			//SendMailDemo(addressFrom, addressTos, subject, abbressToCCs, abbressToBCCs, contexts, sendDate);
-			sendEMail("963272311@qq.com", "irowtqpmmsjubeee", addressFrom, addressTos, subject, abbressToCCs, abbressToBCCs, contexts, sendDate);
-			//			Send163EMail("18513455445@163.com", "521419521419zyz", addressFrom163, addressTos, subject, abbressToCCs, abbressToBCCs, contexts, sendDate);
+			sendEMail(BasConfig.getPropertie("E-MAIL-QQ-USER"), BasConfig.getPropertie("E-MAIL-QQ-PWD"), addressFrom, addressTos, subject, abbressToCCs, abbressToBCCs, contexts, sendDate);
+			//			send163EMail(BasConfig.getPropertie("E-MAIL-163-USER"), BasConfig.getPropertie("E-MAIL-163-PWD"), addressFrom163, addressTos, subject, null, null, contexts, sendDate);
 			//Send126EMail("18513455445@163.com", "521419521419zyz", addressFrom163, addressTos, subject, abbressToCCs, abbressToBCCs, contexts, sendDate);
 		} catch (UnsupportedEncodingException e)
 		{
