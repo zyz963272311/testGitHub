@@ -303,6 +303,7 @@ public class ScriptEngineUtil
 
 	public static void main(String[] args) throws FileNotFoundException
 	{
+		test1();
 		ScriptEngine script = getEngineByExtension("js");
 		Bindings bindings = script.createBindings();
 		bindings.put("a", 3);
@@ -342,11 +343,24 @@ public class ScriptEngineUtil
 		ScriptEngine engine1 = getEngineByMime("text/javascript");
 		ScriptEngine engine2 = getEngineByExtension("js");
 		ScriptEngine engine3 = getEngineByName("JavaScript");
+		StringBuffer sb = new StringBuffer();
 		try
 		{
-			engine1.eval("print(1)");
-			engine2.eval("println(1)");
-			engine3.eval("println(1)");
+			sb.append("var a = 10;\n");
+			sb.append("var b = 20;\n");
+			sb.append("var c = a*b+20;\n");
+			sb.append("println(c)\n");
+			//engine1.eval(sb.toString());
+			StringBuffer sb2 = new StringBuffer();
+			sb2.append("import java.text.SimpleDateFormat;\n");
+			sb2.append("var fmt = new java.text.SimpleDateFormat(\"yyyy-MM-dd hh:mm:ss\");\n");
+			sb2.append("var d = new java.util.Date());\n");
+			//			sb2.append("var d = formate.formate(d);\n");
+			sb2.append("println(1)\n");
+			engine2.eval(sb2.toString());
+			//engine1.eval("print(1)");
+			//engine2.eval("println(1)");
+			//engine3.eval("println(1)");
 		} catch (ScriptException e)
 		{
 			throw new RuntimeException("报错内容", e);

@@ -37,18 +37,7 @@ public class Test_84
 
 	public static void main(String[] args) throws NoSuchMethodException, SecurityException
 	{
-		LinkedList<Integer> lk = new LinkedList<>();
-		for (int i = 0; i < 50; i++)
-		{
-			lk.add(i);
-		}
-		System.out.println(lk);
-		int step = 9;
-		int start = 1;
-		remove(lk, start, step, -1);
-		FileErgodic fileErgodic = new FileErgodic();
-		fileList(fileErgodic, "D:/TEST", 0);
-		System.out.println(fileErgodic);
+		System.out.println((192 & 64) > 0);
 	}
 
 	/**

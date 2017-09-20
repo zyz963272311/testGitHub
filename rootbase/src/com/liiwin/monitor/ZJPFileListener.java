@@ -25,37 +25,37 @@ public class ZJPFileListener implements FileAlterationListener
 	@Override
 	public void onDirectoryChange(File directory)
 	{
-		System.out.println("onDirectoryChange\t" + directory.getName());
+		System.out.println("onDirectoryChange\t" + directory.getPath());
 	}
 
 	@Override
 	public void onDirectoryCreate(File directory)
 	{
-		System.out.println("onDirectoryCreate\t" + directory.getName());
+		System.out.println("onDirectoryCreate\t" + directory.getPath());
 	}
 
 	@Override
 	public void onDirectoryDelete(File directory)
 	{
-		System.out.println("onDirectoryDelete\t" + directory.getName());
+		System.out.println("onDirectoryDelete\t" + directory.getPath());
 	}
 
 	@Override
 	public void onFileChange(File directory)
 	{
-		System.out.println("onFileChange\t" + directory.getName());
+		System.out.println("onFileChange\t" + directory.getPath());
 	}
 
 	@Override
 	public void onFileCreate(File directory)
 	{
-		System.out.println("onFileCreate\t" + directory.getName());
+		System.out.println("onFileCreate\t" + directory.getPath());
 	}
 
 	@Override
 	public void onFileDelete(File directory)
 	{
-		System.out.println("onFileDelete\t" + directory.getName());
+		System.out.println("onFileDelete\t" + directory.getPath());
 	}
 
 	@Override
