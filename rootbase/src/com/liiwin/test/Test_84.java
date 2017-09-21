@@ -18,6 +18,11 @@ public class Test_84
 {
 	public static void main(String[] args)
 	{
-		System.out.println("abc".equalsIgnoreCase("abc"));
+		String s = "dsajkdjsakljdksajdklsaIOPIOPIOP./\123123  12310-=0=-0-=0-0-";
+		int l = s.length();
+		for (int i = 0; i < l; i++)
+		{
+			System.out.println("字符\t" + s.charAt(i) + "\t标志\t" + Character.isJavaIdentifierStart(s.charAt(i)) + "\tpath\t" + Character.isJavaIdentifierPart(s.charAt(i)));
+		}
 	}
 }
