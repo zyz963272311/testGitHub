@@ -1,5 +1,6 @@
 package com.liiwin.test;
 
+import java.io.File;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -18,11 +19,10 @@ public class Test_84
 {
 	public static void main(String[] args)
 	{
-		String s = "dsajkdjsakljdksajdklsaIOPIOPIOP./\123123  12310-=0=-0-=0-0-";
-		int l = s.length();
-		for (int i = 0; i < l; i++)
+		File f = new File("d:\\1.jpg");
+		if (f != null)
 		{
-			System.out.println("字符\t" + s.charAt(i) + "\t标志\t" + Character.isJavaIdentifierStart(s.charAt(i)) + "\tpath\t" + Character.isJavaIdentifierPart(s.charAt(i)));
+			System.out.println(f.getPath());
 		}
 	}
 }
