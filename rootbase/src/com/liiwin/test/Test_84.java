@@ -1,6 +1,9 @@
 package com.liiwin.test;
 
-import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -19,10 +22,15 @@ public class Test_84
 {
 	public static void main(String[] args)
 	{
-		File f = new File("d:\\1.jpg");
-		if (f != null)
+		Map<String,String> a = new HashMap<String,String>();
+		List<Map<String,String>> b = new ArrayList<>();
+		a.put("a", "a");
+		b.add(a);
+		for (Map<String,String> e : b)
 		{
-			System.out.println(f.getPath());
+			e.put("b", "b");
 		}
+		System.out.println(a);
+		System.out.println(b);
 	}
 }
