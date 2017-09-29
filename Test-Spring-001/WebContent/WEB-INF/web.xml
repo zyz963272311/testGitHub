@@ -4,6 +4,17 @@
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
+  
+  <!-- 配置filter -->
+  <filter>
+  	<description>shiro权限拦截</description>
+  	<filter-name>shiroFilter</filter-name>
+  	<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+  	<init-param>
+  		<param-name>targetFilterLifecycle</param-name>
+  		<param-value>true</param-value>
+  	</init-param>
+  </filter>
   <!-- 加载webservice -->
   <listener>
 	<listener-class>xyz.zyzhu.initlistener.LoadWebServiceImpl</listener-class>

@@ -5,6 +5,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import com.liiwin.test.Test;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -29,15 +31,10 @@ public class SerializableUtils
 	 */
 	public static byte[] serializable(Object obj)
 	{
-		ObjectOutputStream obi = null;
-		ByteArrayOutputStream bai = null;
-		try
+		try (ByteArrayOutputStream bai = new ByteArrayOutputStream(); ObjectOutputStream obi = new ObjectOutputStream(bai);)
 		{
-			bai = new ByteArrayOutputStream();
-			obi = new ObjectOutputStream(bai);
 			obi.writeObject(obj);
-			byte[] byt = bai.toByteArray();
-			return byt;
+			return bai.toByteArray();
 		} catch (IOException e)
 		{
 			e.printStackTrace();
@@ -53,12 +50,8 @@ public class SerializableUtils
 	 */
 	public static Object unSerializable(byte[] bytes)
 	{
-		ObjectInputStream oii = null;
-		ByteArrayInputStream bis = null;
-		bis = new ByteArrayInputStream(bytes);
-		try
+		try (ByteArrayInputStream bis = new ByteArrayInputStream(bytes); ObjectInputStream oii = new ObjectInputStream(bis);)
 		{
-			oii = new ObjectInputStream(bis);
 			Object obj = oii.readObject();
 			return obj;
 		} catch (Exception e)
@@ -66,5 +59,43 @@ public class SerializableUtils
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	/**
+	 * 克隆
+	 * @param t
+	 * @return
+	 * 赵玉柱
+	 */
+	public static <T extends Serializable> T clone(T t)
+	{
+		byte[] objBytes = serializable(t);
+		return (T) unSerializable(objBytes);
+	}
+
+	public static void main(String[] args)
+	{
+		com.liiwin.test.Test t = new com.liiwin.test.Test();
+		t.setA(1);
+		t.setE(1);
+		System.out.println(t);
+		com.liiwin.test.Test b = null;
+		byte[] byt = null;
+		try (ByteArrayOutputStream bai = new ByteArrayOutputStream(); ObjectOutputStream obi = new ObjectOutputStream(bai);)
+		{
+			obi.writeObject(t);
+			byt = bai.toByteArray();
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		try (ByteArrayInputStream bis = new ByteArrayInputStream(byt); ObjectInputStream oii = new ObjectInputStream(bis);)
+		{
+			b = (Test) oii.readObject();
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		System.out.println(b);
 	}
 }

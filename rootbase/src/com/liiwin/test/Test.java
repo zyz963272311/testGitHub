@@ -1,5 +1,7 @@
 package com.liiwin.test;
 
+import java.io.Serializable;
+import java.util.Arrays;
 /**
  * <p>标题： 测试</p>
  * <p>功能： </p>
@@ -14,12 +16,13 @@ package com.liiwin.test;
  * 监听使用界面:
  * @version 8.0
  */
-public class Test
+public class Test implements Serializable
 {
-	private Integer		a;
-	private Boolean		b;
-	private String		c;
-	private String[]	d;
+	private Integer				a;
+	private Boolean				b;
+	private String				c;
+	private String[]			d;
+	private transient Integer	e;
 
 	public Integer getA()
 	{
@@ -63,5 +66,21 @@ public class Test
 	{
 		//setValue("d", d);
 		this.d = d;
+	}
+
+	public Integer getE()
+	{
+		return e;
+	}
+
+	public void setE(Integer e)
+	{
+		this.e = e;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Test [a=" + a + ", b=" + b + ", c=" + c + ", d=" + Arrays.toString(d) + ", e=" + e + "]";
 	}
 }
