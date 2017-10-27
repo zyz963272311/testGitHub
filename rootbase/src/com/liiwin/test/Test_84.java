@@ -1,9 +1,5 @@
 package com.liiwin.test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -22,15 +18,6 @@ public class Test_84
 {
 	public static void main(String[] args)
 	{
-		Map<String,String> a = new HashMap<String,String>();
-		List<Map<String,String>> b = new ArrayList<>();
-		a.put("a", "a");
-		b.add(a);
-		for (Map<String,String> e : b)
-		{
-			e.put("b", "b");
-		}
-		System.out.println(a);
-		System.out.println(b);
+		System.out.println(Math.round(13.1));
 	}
 }
