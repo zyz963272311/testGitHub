@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>.org.eclipse.jdt.core.external.folders</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+	</buildSpec>
+	<natures>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>.link0</name>
+			<type>2</type>
+			<location>E:/MyTools/hibernate-release-4.2.4.Final/hibernate-release-4.2.4.Final/project/hibernate-core</location>
+		</link>
+	</linkedResources>
+</projectDescription>

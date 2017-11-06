@@ -1,0 +1,82 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>base-maven</groupId>
+	<artifactId>spring-mvc-study</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <name>spring-mvc-study Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+  
+  <!-- 添加一些用来控制jar包版本的变量 -->
+  <properties>
+   <commons-long.version>2.6</commons-long.version>
+   <slf4j.version>1.7.6</slf4j.version>
+   <spring.version>4.1.3.RELEASE</spring.version>
+  </properties>
+  <!-- 添加变量完成 -->
+  
+  
+  <!-- 添加spring的版本控制 -->
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-framework-bom</artifactId>
+        <version>${spring.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  
+  <dependencies>
+   <!-- 添加springmvc依赖包 -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+    </dependency>
+    <!-- 添加springmvc依赖包完成 -->
+    
+    <!-- 添加commons-lang包依赖 ，用来打印日志信息-->
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>${commons-long.version}</version>
+    </dependency>
+    <!-- 添加commons-lang包依赖完成 -->
+    
+    <!-- 添加slf4j包的依赖 -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>${slf4j.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>slf4j-api</artifactId>
+          <groupId>org.slf4j</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <!-- 添加slf4j包依赖完成 -->
+    <dependency>
+      <groupId>org.apache.tomcat</groupId>
+      <artifactId>tomcat-catalina</artifactId>
+      <version>7.0.47</version>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+  <plugin>
+		<groupId>org.apache.tomcat.maven</groupId>
+		<artifactId>tomcat7-maven-plugin</artifactId>
+		<version>2.2</version>
+		<configuration>
+			<url>http://localhost:8080/manager/text</url>
+			<server>TomcatServer</server>
+			<path>/yiibaiWebApp</path>
+		</configuration>
+	</plugin>
+   </plugins>
+  </build>
+  <packaging>war</packaging>
+</project>

@@ -502,7 +502,7 @@ public class MailUtil
 			contextMap4.put("type", "image");
 			contexts.add(contextMap4);
 			Map<String,Object> contextMap2 = new HashMap<String,Object>();
-			contextMap2.put("context", "D:\\阿里巴巴Java开发手册.pdf");
+			contextMap2.put("context", "D:\\aaa.pdf");
 			contextMap2.put("type", "attach");
 			contexts.add(contextMap2);
 			Date sendDate = new Date();

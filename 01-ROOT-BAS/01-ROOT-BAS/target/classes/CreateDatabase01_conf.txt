@@ -1,0 +1,6 @@
+//tabdef(tabid,	tabname,		tabname_cn,		rdatareseroce,wdataseurce,catch,other)
+		010001	test			测试				read		write			1	0b0000
+		
+	//coldef(tabname,colid,colname,colname_cn,dataType,Length,other)
+		//	010001	test			测试				read		write			1	0b0000
+test		0010	testid			测试id	varchar		INNERCODE	0b0011

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link
+	href="/Maven-Extjs-001/resource/js/ext-4.2.1/resources/css/ext-all.css"
+	rel="stylesheet" type="text/css" />
+<!-- ext 4以后版本没有这个js文件
+ <script type="text/javascript" src="/ExtJS/js/ext-3.4.1/adapter/ext/ext-base.js"></script> -->
+<script type="text/javascript"
+	src="/Maven-Extjs-001/resource/js/ext-4.2.1/bootstrap.js"></script>
+<!--  extjs 4以后版本不用
+<script type="text/javascript"
+	src="/Maven-Extjs-001/resource/js/ext-4.2.1/ext-all.js"></script>
+	 -->
+<script type="text/javascript"
+	src="/Maven-Extjs-001/resource/js/ext-4.2.1/locale/ext-lang-zh_CN.js"></script>
+<title>extjs的第一个网页</title>
+</head>
+<body>
+	<script type="text/javascript">
+	/*这是一个弹出框  */
+	function alertBox(message)
+	{
+		Ext.MessageBox.alert("hello",message);
+	}
+	function aPanel()
+	{
+		var myPanel = new Ext.panel.Panel({
+			renderTo:Ext.getBody(),
+			title:"我的第一个面板",
+			width:400,
+			bodyPadding:50,
+			height:400,
+			html:"测试面板",
+			items:
+				[
+					{
+						xtype:"datefield",
+						fieldLabel:"Start Date"	
+					},
+					{
+						xtype:"datefield",
+						fieldLabel:"End Date"	
+					},
+				],
+			tools:
+				[
+					{
+						type:"help",
+						callback:alertBox("help me")
+					},
+					{
+						itemId:"refresh",
+						type:"refresh",
+						hidden:false,
+						callback:alertBox("refresh")
+					}
+				]
+		});
+	}
+	Ext.onReady(aPanel);
+</script>
+</body>
+</html>

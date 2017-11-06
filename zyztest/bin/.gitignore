@@ -1,4 +1,3 @@
-/test
 /_db
 /annotation
 /code
@@ -33,5 +32,6 @@
 /singleton
 /sort
 /str
+/test
 /thread
 /util
