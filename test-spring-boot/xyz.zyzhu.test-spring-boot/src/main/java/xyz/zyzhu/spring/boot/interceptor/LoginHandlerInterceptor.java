@@ -1,5 +1,6 @@
 package xyz.zyzhu.spring.boot.interceptor;
 
+import java.net.InetAddress;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -25,6 +26,12 @@ public class LoginHandlerInterceptor implements HandlerInterceptor
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception
 	{
 		HttpSession session = request.getSession();
+		InetAddress.getLocalHost().getHostAddress();
+		request.getHeader("x-forwarded-for");
+		request.getHeaderNames();
+		request.getHeader("Proxy-Client-IP");
+		request.getRemoteAddr();
+		request.getHeader("host");
 		if (session.getAttribute("users") != null)
 		{
 			return true;

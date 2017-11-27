@@ -1,5 +1,0 @@
-##不执行得语句
-no-exec=if;while;for;try
-##这些语句需要加上end
-with-end=if;while;for;try
-complex-grammar=if,else;try,catch,finally

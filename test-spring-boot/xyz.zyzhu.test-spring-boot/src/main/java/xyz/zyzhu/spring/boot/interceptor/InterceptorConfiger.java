@@ -24,6 +24,7 @@ public class InterceptorConfiger extends WebMvcConfigurerAdapter
 	public void addInterceptors(InterceptorRegistry registry)
 	{
 		registry.addInterceptor(new LoginHandlerInterceptor()).addPathPatterns("/*/*");
+		registry.addInterceptor(new IPHandlerInterceptor()).addPathPatterns("/*");
 		super.addInterceptors(registry);
 	}
 }
