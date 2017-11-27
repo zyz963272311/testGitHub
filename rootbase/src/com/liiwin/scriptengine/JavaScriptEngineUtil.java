@@ -143,6 +143,8 @@ public class JavaScriptEngineUtil
 		Bindings bindings = getScriptEngine().createBindings();
 		bindings.put("a", 3);
 		bindings.put("b", 4);
+		String a = "a = com.liiwin.utils.StrUtil.isStrIn(\"12345\", \"12\")";
+		execute(Object.class, a);
 		System.out.println(executeByFile(Double.class, new File("D:/MyProject/OnGithub/testEngine.js"), bindings));
 	}
 }

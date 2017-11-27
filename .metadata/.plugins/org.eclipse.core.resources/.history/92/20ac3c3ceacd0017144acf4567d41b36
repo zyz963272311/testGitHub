@@ -1,0 +1,10 @@
+##不执行得语句
+no_exec=if;while;for;try
+##这些语句需要加上end
+with_end=if;while;for;try
+##复杂语句
+complex_grammar=if,else;try,catch,finally
+##不可拆分得语法
+no_split=try,catch|finally
+##出现以下语法，必须存在此前缀
+must_pre=

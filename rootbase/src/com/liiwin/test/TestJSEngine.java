@@ -23,7 +23,7 @@ public class TestJSEngine
 	{
 		ScriptEngineManager engineManager = new ScriptEngineManager();
 		ScriptEngine engine = engineManager.getEngineByExtension("js");
-		String js = "a=3+4*5-6/8;\ncom.liiwin.test.TestJSEngine.testA(a+2);";
+		String js = "a=3+4*5-6/8\ncom.liiwin.test.TestJSEngine.testA(a+2)";
 		try
 		{
 			System.out.println(engine.eval(js));

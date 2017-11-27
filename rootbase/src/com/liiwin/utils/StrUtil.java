@@ -1140,6 +1140,29 @@ public class StrUtil
 		return src.substring(from, to);
 	}
 
+	public static boolean startWith(String src, String pre)
+	{
+		return startWith(src, pre, 0);
+	}
+
+	public static boolean startWith(String src, String pre, int fromIdx)
+	{
+		return startWith(src, pre, fromIdx, false);
+	}
+
+	public static boolean startWith(String src, String pre, int fromIdx, boolean bothNullReturn)
+	{
+		if (src == null || pre == null)
+		{
+			if (src == null && pre == null)
+			{
+				return bothNullReturn;
+			}
+			return false;
+		}
+		return src.startsWith(pre, fromIdx);
+	}
+
 	public static boolean equals(Object a, Object b)
 	{
 		if (a == null && b == null)
@@ -1155,6 +1178,15 @@ public class StrUtil
 			return true;
 		}
 		return false;
+	}
+
+	public static String trim(String str)
+	{
+		if (isNull(str))
+		{
+			return null;
+		}
+		return str.trim();
 	}
 
 	/**

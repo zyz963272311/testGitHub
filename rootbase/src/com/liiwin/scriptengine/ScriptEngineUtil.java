@@ -126,7 +126,7 @@ public class ScriptEngineUtil
 			t = (T) engine.eval(scriptStr, bindings);
 		} catch (ScriptException e)
 		{
-			throw new RuntimeException("报错内容", e);
+			throw new RuntimeException(e);
 		}
 		return t;
 	}

@@ -19,25 +19,32 @@ import com.liiwin.utils.StrUtil;
  */
 public class BasConfig
 {
-	private static Properties	properties;
+	protected static Properties	properties;
 
 	/**
 	 * 加载配置文件 userdir + "/resources/config.properties"
 	 * 
 	 * 赵玉柱
 	 */
-	public synchronized static void LoadConfig()
+	public static void LoadConfig()
 	{
 		if (properties == null)
 		{
 			properties = new Properties();
-			String configFilePath = "/resources/config.properties";
+			String configFilePath1 = "/resources/config.properties";
 			try
 			{
-				properties.load(BasConfig.class.getResourceAsStream(configFilePath));
+				properties.load(BasConfig.class.getResourceAsStream(configFilePath1));
 			} catch (IOException e)
 			{
-				throw new RuntimeException("报错内容", e);
+				String configFilePath2 = "/config.properties";
+				try
+				{
+					properties.load(BasConfig.class.getResourceAsStream(configFilePath2));
+				} catch (IOException e1)
+				{
+					throw new RuntimeException("报错内容", e1);
+				}
 			}
 		}
 	}
@@ -83,5 +90,10 @@ public class BasConfig
 	public static void main(String[] args)
 	{
 		LoadConfig();
+	}
+
+	protected static String getConfigFilePath()
+	{
+		return "/resources/config.properties";
 	}
 }
