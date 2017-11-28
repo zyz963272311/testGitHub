@@ -9,9 +9,9 @@ import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
 import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
 /**
- * <p>标题： TODO</p>
+ * <p>标题： 拼音工具类</p>
  * <p>功能： </p>
- * <p>所属模块： TODO</p>
+ * <p>所属模块： rootbas</p>
  * <p>版权： Copyright © 2017 zyzhu</p>
  * <p>公司: xyz.zyzhu</p>
  * <p>创建日期：2017年11月27日 下午8:41:15</p>
@@ -35,7 +35,7 @@ public class PinYinUtils
 	{
 		HanyuPinyinOutputFormat format = new HanyuPinyinOutputFormat();
 		format.setCaseType(HanyuPinyinCaseType.LOWERCASE);
-		format.setToneType(HanyuPinyinToneType.WITH_TONE_MARK);
+		format.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
 		format.setVCharType(HanyuPinyinVCharType.WITH_U_UNICODE);
 		String separate = "";
 		boolean retain = true;
@@ -61,7 +61,7 @@ public class PinYinUtils
 	{
 		HanyuPinyinOutputFormat format = new HanyuPinyinOutputFormat();
 		format.setCaseType(HanyuPinyinCaseType.LOWERCASE);
-		format.setToneType(HanyuPinyinToneType.WITH_TONE_MARK);
+		format.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
 		format.setVCharType(HanyuPinyinVCharType.WITH_U_UNICODE);
 		return getHanYuPinYinArray(c, format);
 	}
@@ -69,6 +69,18 @@ public class PinYinUtils
 	public static String[] getHanYuPinYinArray(char c, HanyuPinyinOutputFormat format) throws BadHanyuPinyinOutputFormatCombination
 	{
 		return PinyinHelper.toHanyuPinyinStringArray(c, format);
+	}
+
+	/**
+	 * 获取首字母并大写
+	 * @param str
+	 * @return
+	 * @throws BadHanyuPinyinOutputFormatCombination
+	 * 赵玉柱
+	 */
+	public static String getFirstUpperChar(String str) throws BadHanyuPinyinOutputFormatCombination
+	{
+		return getFirstChar(str).toUpperCase();
 	}
 
 	/**
@@ -85,31 +97,53 @@ public class PinYinUtils
 		//获取汉字单字拼音
 		Map<Character,String[]> pinyinArrayMap = getHanYuPinYinArrayMap(str);
 		StringBuffer result = new StringBuffer();
-		return getFirstChar(result, pinyin, pinyinArrayMap, charArray, 0, 0, 0);
+		return getFirstChar(result, pinyin, pinyinArrayMap, charArray, 0, 0, 0, 0, 0);
 	}
 
-	public static String getFirstChar(StringBuffer result, String pinyin, Map<Character,String[]> pinyinArrayMap, char[] charArray, int h, int v, int offset)
+	public static String getFirstChar(StringBuffer result, String pinyin, Map<Character,String[]> pinyinArrayMap, char[] charArray, int h, int v, int _h, int _v, int offset)
 	{
-		String py = pinyinArrayMap.get(charArray[h])[v];
+		String py = null;
+		String[] pyA = pinyinArrayMap.get(charArray[h]);
+		//支持字符与数字
+		if (pyA.length == 0)
+		{
+			py = new String(new char[] { charArray[h] });
+		} else
+		{
+			py = pyA[v];
+		}
 		if (pinyin.startsWith(py, offset))
 		{
 			result.append(py.charAt(0));
-			if (h + 1 == charArray.length && offset == pinyin.length())
+			if (h + 1 == charArray.length && offset + py.length() == pinyin.length())
 			{
 				return result.toString();
 			}
-			getFirstChar(result, pinyin, pinyinArrayMap, charArray, h + 1, v, offset + py.length());
+			return getFirstChar(result, pinyin, pinyinArrayMap, charArray, h + 1, 0, h, v, offset + py.length());
 		} else
 		{
+			if (v + 1 == pinyinArrayMap.get(charArray[h]).length)
+			{
+				result.setLength(result.length() - (h - _h));
+				offset -= pinyinArrayMap.get(charArray[_h])[_v].length();
+				if (_v + 1 == pinyinArrayMap.get(charArray[_h]).length)
+				{
+					return getFirstChar(result, pinyin, pinyinArrayMap, charArray, _h + 1, 0, _h, _v, offset);
+				} else
+				{
+					return getFirstChar(result, pinyin, pinyinArrayMap, charArray, _h, _v + 1, _h, _v, offset);
+				}
+			}
+			return getFirstChar(result, pinyin, pinyinArrayMap, charArray, h, v + 1, _h, _v, offset);
 		}
-		return null;
+		//		return result.toString();
 	}
 
 	public static Map<Character,String[]> getHanYuPinYinArrayMap(String str) throws BadHanyuPinyinOutputFormatCombination
 	{
 		HanyuPinyinOutputFormat format = new HanyuPinyinOutputFormat();
 		format.setCaseType(HanyuPinyinCaseType.LOWERCASE);
-		format.setToneType(HanyuPinyinToneType.WITH_TONE_MARK);
+		format.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
 		format.setVCharType(HanyuPinyinVCharType.WITH_U_UNICODE);
 		return getHanYuPinYinArrayMap(str, format);
 	}
@@ -127,5 +161,13 @@ public class PinYinUtils
 			resultMap.put(c, pinyin);
 		}
 		return resultMap;
+	}
+
+	public static void main(String[] args) throws BadHanyuPinyinOutputFormatCombination
+	{
+		String str = "西安。 2s、/";
+		System.out.println(toHanYuPinYin(str));
+		System.out.println(getFirstChar(str));
+		System.out.println(getFirstUpperChar(str));
 	}
 }

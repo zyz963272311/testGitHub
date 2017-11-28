@@ -2,20 +2,20 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="" key="selection"/>
+		<item value="string" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="String"/>
+			<item value="string"/>
 			<item value="json"/>
 			<item value="spring.datasource.driverClassName"/>
 			<item value="Template"/>
 			<item value="template"/>
 			<item value="getEngineByExtension"/>
 			<item value="wait"/>
-			<item value="prec"/>
-			<item value="alert"/>
 		</list>
 		<list key="replacehistory">
 			<item value="3.2.8"/>

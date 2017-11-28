@@ -55,9 +55,9 @@
 <fullyQualifiedTypeName name="net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat"/>
 <fullyQualifiedTypeName name="com.sun.jna.platform.win32.WinDef.CHAR"/>
 <fullyQualifiedTypeName name="java.util.HashMap"/>
-<fullyQualifiedTypeName name="com.liiwin.utils.StrUtil"/>
 <fullyQualifiedTypeName name="java.util.Map"/>
 <fullyQualifiedTypeName name="java.lang.Character"/>
 <fullyQualifiedTypeName name="com.liiwin.utils.PinYinUtils"/>
 <fullyQualifiedTypeName name="java.lang.StringBuffer"/>
+<fullyQualifiedTypeName name="com.liiwin.utils.StrUtil"/>
 </qualifiedTypeNameHistroy>
