@@ -126,11 +126,11 @@
 			<artifactId>shiro-ehcache</artifactId>
 			<version>${shiro.version}</version>
 		</dependency>
-<!-- 		<dependency> -->
-<!-- 			<groupId>xyz.zyzhu.rootbase</groupId> -->
-<!-- 			<artifactId>rootbas-web</artifactId> -->
-<!-- 			<version>0.0.1-SNAPSHOT</version> -->
-<!-- 		</dependency> -->
+		<dependency>
+			<groupId>xyz.zyzhu.rootbase</groupId>
+			<artifactId>rootbas-web</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 <!-- 		<dependency> -->
 <!-- 			<groupId>xyz.zyzhu.Test-Spring-001-API</groupId> -->
 <!-- 			<artifactId>Test-Spring-001-API</artifactId> -->
