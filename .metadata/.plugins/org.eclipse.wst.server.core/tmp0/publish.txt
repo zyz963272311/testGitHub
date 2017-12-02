@@ -1,5 +1,0 @@
-#Tomcat publish data
-#Thu Aug 24 23:17:09 CST 2017
-org.eclipse.jst.j2ee.server\:Test-Spring-001-API=WEB-INF/lib/Test-Spring-001-API-0.0.1-SNAPSHOT.jar
-org.eclipse.jst.jee.server\:/binary\:E\:\\MyMaven\\location\\org\\springframework\\spring-web\\3.2.8.RELEASE\\spring-web-3.2.8.RELEASE.jar=WEB-INF/lib/spring-web-3.2.8.RELEASE.jar
-org.eclipse.jst.j2ee.server\:rootbase=WEB-INF/lib/rootbase-0.0.1-SNAPSHOT.jar

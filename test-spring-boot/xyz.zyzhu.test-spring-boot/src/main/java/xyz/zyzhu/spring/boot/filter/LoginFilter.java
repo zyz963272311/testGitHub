@@ -57,7 +57,7 @@ public class LoginFilter implements Filter
 			resp.sendRedirect(req.getContextPath() + "/login.jsp");
 			return;
 		}
-		Object users = session.getAttribute("users");
+		Object users = session.getAttribute("user");
 		UserInfo info = com.alibaba.fastjson.util.TypeUtils.cast(users, UserInfo.class, ParserConfig.getGlobalInstance());
 		if (info == null)
 		{

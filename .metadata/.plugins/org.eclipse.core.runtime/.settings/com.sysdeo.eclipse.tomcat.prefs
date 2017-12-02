@@ -1,9 +1,0 @@
-contextsDir=E\:\\Program Files\\Apache Software Foundation\\Tomcat 7.0\\conf\\Catalina\\localhost
-eclipse.preferences.version=1
-fixTomcatHomeBug=fixed
-managerUrl=http\://localhost\:8080/manager
-projectsInSourcePath=jxj;jxjServerImpl;jxjService;rootbase;testGitHub;testWeb;
-tomcatConfigFile=E\:\\Program Files\\Apache Software Foundation\\Tomcat 7.0\\conf\\server.xml
-tomcatDir=E\:\\Program Files\\Apache Software Foundation\\Tomcat 7.0
-tomcatJRE=1495028472770
-tomcatVersion=tomcatV7

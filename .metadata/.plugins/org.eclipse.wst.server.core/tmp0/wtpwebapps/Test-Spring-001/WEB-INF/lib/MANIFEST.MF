@@ -1,6 +1,0 @@
-Manifest-Version: 1.1
-Archiver-Version: Plexus Archiver
-Created-By: Apache Maven
-Built-By: wenshao
-Build-Jdk: 1.8.0_112
-

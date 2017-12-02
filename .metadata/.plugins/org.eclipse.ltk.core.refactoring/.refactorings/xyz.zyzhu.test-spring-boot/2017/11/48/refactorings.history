@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename resource &apos;xyz.zyzhu.test-spring-boot/src/main/webapp/loginNewFile.jsp&apos; to &apos;login.jsp&apos;" description="Rename resource &apos;loginNewFile.jsp&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/main/webapp/loginNewFile.jsp" name="login.jsp" stamp="1511684093356" updateReferences="true"/>
-</session>

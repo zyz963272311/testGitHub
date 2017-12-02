@@ -36,10 +36,12 @@ public class Main
 	 * 赵玉柱
 	 */
 	@Bean
-	public FilterRegistrationBean registrationBean()
+	public FilterRegistrationBean loginFilterRegister()
 	{
 		FilterRegistrationBean registration = new FilterRegistrationBean();
 		registration.setFilter(new LoginFilter());
+		registration.addInitParameter("urlPatterns", "/*");
+		registration.addInitParameter("exclusions", "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/user/login,/login*,/login.jsp*,/index.jsp*");
 		return registration;
 	}
 }
