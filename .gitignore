@@ -1,0 +1,5 @@
+#过滤文件夹
+#.metadata文件夹下文件不上传
+.metadata
+#target 文件夹下不上传
+*.class

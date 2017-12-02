@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- id:数据库名称 url:数据库链接字符串 name:name pass:password read:可读	write:可写	type:数据库类型-1:mysql/2:oracle/4:sqlserver/8:mongodb -->
-<workspaces>
-	<workspace id="conf" url="jdbc:mysql://localhost:3306" name="root" pass="root" read="true" write="true" type="1" min="10" max="20" overtime="10*60*1000"></workspace>
-</workspaces>
