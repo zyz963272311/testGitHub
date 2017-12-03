@@ -70,6 +70,33 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 		</dependency>
+		<!-- jpa -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<!-- hibernate -->
+		<dependency>  
+        <groupId>org.hibernate</groupId>  
+        <artifactId>hibernate-core</artifactId>  
+        <version>4.2.1.Final</version>  
+    </dependency>  
+        <dependency>  
+        <groupId>org.hibernate</groupId>  
+        <artifactId>hibernate-entitymanager</artifactId>  
+        <version>4.2.1.Final</version>  
+    </dependency>  
+    <dependency>  
+        <groupId>org.hibernate.common</groupId>  
+        <artifactId>hibernate-commons-annotations</artifactId>  
+        <version>4.0.1.Final</version>  
+    </dependency>  
+    <dependency>  
+        <groupId>org.hibernate</groupId>  
+        <artifactId>hibernate-validator</artifactId>  
+        <version>5.0.0.Final</version>  
+    </dependency>  
+
 		<!-- 热加载 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -81,7 +108,14 @@
 			<artifactId>fastjson</artifactId>
 			<version>1.2.41</version>
 		</dependency>
-		
+		<!-- 分页 -->
+		<dependency>
+			<groupId>com.github.pagehelper</groupId>
+			<artifactId>pagehelper</artifactId>
+			<version>5.1.2</version>
+		</dependency>
+
+
 
 	</dependencies>
 	<build>
