@@ -2,15 +2,16 @@ package xyz.zyzhu;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import xyz.zyzhu.serv.HelloWorld;
+
+import zyz.zyzhu.serv.HelloWorld;
 
 /**
- * <p>±êÌâ£º Client</p>
- * <p>ÄÚÈÝ£º Client</p>
- * <p>´´½¨Ê±¼ä£º 2017Äê3ÔÂ22ÈÕ</p>
+ * <p>ï¿½ï¿½ï¿½â£º Client</p>
+ * <p>ï¿½ï¿½ï¿½Ý£ï¿½ Client</p>
+ * <p>ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ä£º 2017ï¿½ï¿½3ï¿½ï¿½22ï¿½ï¿½</p>
  * <p>copyRight @ zyzhu.xyz 2017</p>
- * <p>ÀàÈ«Ãû£º xyz.zyzhu.Client</p>
- * <p>×÷Õß£º Administrator</p>
+ * <p>ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½ xyz.zyzhu.Client</p>
+ * <p>ï¿½ï¿½ï¿½ß£ï¿½ Administrator</p>
  */
 public class Client
 {
@@ -21,7 +22,7 @@ public class Client
 		try
 		{
 		ApplicationContext ctx = new ClassPathXmlApplicationContext("cfg/spring-client.xml");
-		HelloWorld helloWorld = (HelloWorld) ctx.getBean("client");
+		HelloWorld helloWorld =ctx.getBean("client", HelloWorld.class);
 		String result = helloWorld.sayHello();
 		System.out.println(result);
 		} catch (Exception e)

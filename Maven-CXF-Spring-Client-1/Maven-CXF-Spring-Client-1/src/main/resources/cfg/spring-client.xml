@@ -9,11 +9,11 @@
     http://cxf.apache.org/jaxws   
     http://cxf.apache.org/schema/jaxws.xsd">  
   
-    <bean id="client" class="zyz.xyzhu.serv.HelloWorld" factory-bean="clientFactory"  
+    <bean id="client" class="zyz.zyzhu.serv.HelloWorld" factory-bean="clientFactory"  
         factory-method="create" />  
           
     <bean id="clientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">  
-        <property name="serviceClass" value="xyz.zyzhu.serv.HelloWorld" />  
-        <property name="address" value="http://localhost:80890/Maven-CXF-Spring-1/HelloWorld" />      
+        <property name="serviceClass" value="zyz.zyzhu.serv.HelloWorld" />  
+        <property name="address" value="http://localhost:8090/Maven-CXF-Spring-1/ws/HelloWorld" />      
     </bean>  
 </beans>  
