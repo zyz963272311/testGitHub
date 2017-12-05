@@ -2,6 +2,10 @@ package xyz.zyzhu.spring.boot.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
+import xyz.zyzhu.spring.boot.model.Menu;
+
 
 /**
  * <p>标题： TODO</p>
@@ -18,5 +22,21 @@ import java.util.List;
  * @version 8.0
  */
 public interface MenuService {
-	public List<Object> listMenu();
+	public List<Menu> listMenu();
+	public void insert(Menu menu);
+	/**
+	 * @param page
+	 * @param size
+	 * @return
+	 * 赵玉柱
+	 */
+	Page<Menu> listPage(int page, int size);
+	/**
+	 * @param page
+	 * @param size
+	 * @param params
+	 * @return
+	 * 赵玉柱
+	 */
+	public Page<Menu> listPage(int page, int size, Menu menu);
 }

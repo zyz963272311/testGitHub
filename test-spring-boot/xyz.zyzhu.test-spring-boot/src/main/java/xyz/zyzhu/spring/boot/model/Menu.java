@@ -34,10 +34,10 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "menu")
-public class Menu {
+public class Menu extends BasModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	String mid;
+	Integer mid;
 	String mname;
 	Integer offlags;
 	String url;
@@ -64,11 +64,11 @@ public class Menu {
 		super();
 	}
 
-	public String getMid() {
+	public Integer getMid() {
 		return mid;
 	}
 
-	public void setMid(String mid) {
+	public void setMid(Integer mid) {
 		this.mid = mid;
 	}
 

@@ -2,7 +2,7 @@ package xyz.zyzhu.spring.boot.dao;
 
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.domain.Page;
 
 import xyz.zyzhu.spring.boot.model.Menu;
 
@@ -20,6 +20,22 @@ import xyz.zyzhu.spring.boot.model.Menu;
  * 监听使用界面:
  * @version 8.0
  */
-public interface MenuDao extends JpaRepository<Menu, Long> {
-	public List<Object> listMenu();
+public interface MenuDao  {
+	public List<Menu> listAll();
+	public void insert(Menu menu);
+	/**
+	 * @param page
+	 * @param size
+	 * @return
+	 * 赵玉柱
+	 */
+	Page<Menu> listPage(int page, int size);
+	/**
+	 * @param page
+	 * @param size
+	 * @param menu
+	 * @return
+	 * 赵玉柱
+	 */
+	public Page<Menu> listPage(int page, int size, Menu menu);
 }
