@@ -1,6 +1,7 @@
 package xyz.zyzhu.spring.boot.dao.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import xyz.zyzhu.spring.boot.dao.MenuDao;
 import xyz.zyzhu.spring.boot.model.Menu;
+import xyz.zyzhu.spring.boot.params.QueryParams;
 import xyz.zyzhu.spring.boot.repository.MenuRepository;
 
 /**
@@ -55,6 +57,21 @@ public class MenuDaoImpl implements MenuDao {
 		}
 		Example<Menu> example = Example.of(menu);
 		return menuRepository.findAll(example , pageable);
+	}
+	@Override
+	public Page<Menu> listPageParams(int page, int size, Menu menu,Map<String, Object> params) {
+		Pageable pageable = new PageRequest(page, size);
+		if(menu == null)
+		{
+			return menuRepository.findAll( pageable);
+		}
+		QueryParams<Menu> qoeryParams = new QueryParams<Menu>(menu, params);
+		Example<Menu> example = qoeryParams.buildExample();
+		return  menuRepository.findAll(example , pageable);
+	}
+	@Override
+	public Page<Menu> listPageParams(int page, int size, Menu menu) {
+		return null;
 	}
 
 }

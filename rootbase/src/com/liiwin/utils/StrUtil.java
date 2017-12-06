@@ -1188,6 +1188,19 @@ public class StrUtil
 		}
 		return str.trim();
 	}
+	public static List<String> toList(String str,char limit)
+	{
+		List<String> list = new ArrayList<>();
+		String[] split = split(str, limit);
+		if(split!=null &&split.length>0)
+		{
+			for(String s:split)
+			{
+				list.add(s);
+			}
+		}
+		return list;
+	}
 
 	/**
 	 * 快速交换两个值
