@@ -5,10 +5,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 /**
  * <p>
  * 标题： TODO
@@ -35,32 +33,26 @@ import org.springframework.security.core.userdetails.UserDetails;
  * 
  * @version 8.0
  */
-public class AppUserDetails implements UserDetails {
-
+public class AppUserDetails implements UserDetails
+{
 	/** */
-	private static final long serialVersionUID = -4777124807325532850L;
+	private static final long						serialVersionUID	= -4777124807325532850L;
+	private String									username;
+	private String									password;
+	private boolean									accountNonExpired;
+	private boolean									accountNonLocked;
+	private boolean									credentialsNonExpired;
+	private boolean									enabled;
+	private Collection<? extends GrantedAuthority>	authorities;
+	private List<String>							roles;
 
-	private String username;
-
-	private String password;
-
-	private boolean accountNonExpired;
-
-	private boolean accountNonLocked;
-
-	private boolean credentialsNonExpired;
-
-	private boolean enabled;
-
-	private Collection<? extends GrantedAuthority> authorities;
-
-	private List<String> roles;
-
-	public AppUserDetails() {
+	public AppUserDetails()
+	{
 		super();
 	}
 
-	public AppUserDetails(String username, Collection<? extends GrantedAuthority> authorities) {
+	public AppUserDetails(String username, Collection<? extends GrantedAuthority> authorities)
+	{
 		super();
 		this.username = username;
 		this.password = "";
@@ -69,13 +61,13 @@ public class AppUserDetails implements UserDetails {
 		this.credentialsNonExpired = true;
 		this.enabled = true;
 		this.authorities = authorities;
-		this.roles = new ArrayList<>();
-		this.roles.addAll(authorities.stream().map((Function<GrantedAuthority, String>) GrantedAuthority::getAuthority)
-				.collect(Collectors.toList()));
+		this.roles = new ArrayList<String>();
+		this.roles.addAll(authorities.stream().map((Function<GrantedAuthority,String>) GrantedAuthority::getAuthority).collect(Collectors.toList()));
 	}
 
 	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
+	public Collection<? extends GrantedAuthority> getAuthorities()
+	{
 		/*
 		 * List<GrantedAuthority> l = new ArrayList<GrantedAuthority>(); l.add(new
 		 * GrantedAuthority() { private static final long serialVersionUID = 1L;
@@ -87,33 +79,38 @@ public class AppUserDetails implements UserDetails {
 	}
 
 	@Override
-	public String getPassword() {
+	public String getPassword()
+	{
 		return password;
 	}
 
 	@Override
-	public String getUsername() {
+	public String getUsername()
+	{
 		return username;
 	}
 
 	@Override
-	public boolean isAccountNonExpired() {
+	public boolean isAccountNonExpired()
+	{
 		return accountNonExpired;
 	}
 
 	@Override
-	public boolean isAccountNonLocked() {
+	public boolean isAccountNonLocked()
+	{
 		return accountNonLocked;
 	}
 
 	@Override
-	public boolean isCredentialsNonExpired() {
+	public boolean isCredentialsNonExpired()
+	{
 		return credentialsNonExpired;
 	}
 
 	@Override
-	public boolean isEnabled() {
+	public boolean isEnabled()
+	{
 		return enabled;
 	}
-
 }
