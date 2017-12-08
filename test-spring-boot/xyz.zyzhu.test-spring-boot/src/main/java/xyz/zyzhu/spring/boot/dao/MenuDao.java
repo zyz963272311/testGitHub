@@ -1,6 +1,7 @@
 package xyz.zyzhu.spring.boot.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Page;
 
@@ -38,4 +39,22 @@ public interface MenuDao  {
 	 * 赵玉柱
 	 */
 	public Page<Menu> listPage(int page, int size, Menu menu);
+	/**
+	 * @param page
+	 * @param size
+	 * @param menu
+	 * @return
+	 * 赵玉柱
+	 */
+	public Page<Menu> listPageParams(int page, int size, Menu menu);
+	/**
+	 * @param page
+	 * @param size
+	 * @param menu
+	 * @param params
+	 * @return
+	 * 赵玉柱
+	 */
+	Page<Menu> listPageParams(int page, int size, Menu menu,
+			Map<String, Object> params);
 }

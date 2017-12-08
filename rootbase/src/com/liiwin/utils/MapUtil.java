@@ -3,8 +3,10 @@ package com.liiwin.utils;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import com.liiwin.test.Test;
 /**
  * <p>标题： Map工具类</p>
@@ -85,7 +87,48 @@ public class MapUtil
 		}
 		return t;
 	}
-
+	public static boolean constansKey(Map<String, Object> map,String keys)
+	{
+		return constainsKey(map, keys, ',');
+	}
+	public static boolean constainsKey(Map<String, Object> map,String keys,char limit)
+	{
+		List<String> keyList = StrUtil.toList(keys, limit);
+		return constainsKey(map, keyList);
+	}
+	public static boolean constainsAllKey(Map<String, Object> map,String keys,char limit)
+	{
+		List<String> keyList = StrUtil.toList(keys, limit);
+		return constainsAllKey(map, keyList);
+	}
+	public static <K extends Object,V extends Object> boolean constainsAllKey(Map<K, V> map,List<K> keys)
+	{
+		return constainsKeys(map, keys, true);
+	}
+	public static <K extends Object,V extends Object> boolean constainsKey(Map<K, V> map,List<K> keys)
+	{
+		return constainsKeys(map, keys, false);
+	}
+	public static <K extends Object,V extends Object> boolean constainsKeys(Map<K, V> map,List<K> keys,boolean isAll)
+	{
+		if(map == null || map.isEmpty()||keys == null ||keys.size() == 0)
+		{
+			return false;
+		}
+		for(K key:keys)
+		{
+			boolean constans =map.containsKey(key); 
+			if(constans&&!isAll)
+			{
+				return true;
+			}
+			if(!constans&&isAll)
+			{
+				return false;
+			}
+		}
+		return isAll;
+	}
 	public static Map<String,Object> toMap(Object o)
 	{
 		if (o == null)
