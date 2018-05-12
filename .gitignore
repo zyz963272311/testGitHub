@@ -1,6 +1,7 @@
 # system ignore
 .DS_Store
 Thumbs.db
+.gitignore
 
 # maven/gradle ignore
 target
@@ -11,7 +12,7 @@ target
 
 # eclipse ignore
 .settings/
-.metadata/
+/.metadata/
 .project
 .classpath
 .myeclipse/

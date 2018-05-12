@@ -4,7 +4,7 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,7 +30,7 @@ import com.liiwin.date.DateUtil;
 public class RedisController
 {
 	@Autowired
-	StringRedisTemplate	template;
+	RedisTemplate<String,String> template;
 
 	@Primary
 	@RequestMapping(value = "set", method = { RequestMethod.GET, RequestMethod.POST })

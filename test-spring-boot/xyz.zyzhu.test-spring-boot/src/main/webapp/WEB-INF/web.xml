@@ -4,5 +4,4 @@
 
 <web-app>
   <display-name>test</display-name>
-  <welcome-file-list>index.html</welcome-file-list>
 </web-app>

@@ -1,20 +1,18 @@
 package xyz.zyzhu.spring.boot.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-
 import xyz.zyzhu.spring.boot.dao.MenuDao;
 import xyz.zyzhu.spring.boot.model.Menu;
 import xyz.zyzhu.spring.boot.params.QueryParams;
 import xyz.zyzhu.spring.boot.repository.MenuRepository;
-
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -30,48 +28,60 @@ import xyz.zyzhu.spring.boot.repository.MenuRepository;
  * @version 8.0
  */
 @Repository
-public class MenuDaoImpl implements MenuDao {
-
+public class MenuDaoImpl implements MenuDao
+{
 	@Autowired
 	MenuRepository menuRepository;
+
 	@Override
-	public List<Menu> listAll() {
+	public List<Menu> listAll()
+	{
 		return menuRepository.findAll();
 	}
+
 	@Override
-	public void insert(Menu menu) {
+	public void insert(Menu menu)
+	{
 		menuRepository.save(menu);
 	}
+
 	@Override
-	public Page<Menu> listPage(int page,int size)
+	public Page<Menu> listPage(int page, int size)
 	{
 		Pageable pageable = new PageRequest(page, size);
-		return  menuRepository.findAll(pageable);
-	}
-	@Override
-	public Page<Menu> listPage(int page, int size, Menu menu) {
-		Pageable pageable = new PageRequest(page, size);
-		if(menu == null)
-		{
-			return menuRepository.findAll( pageable);
-		}
-		Example<Menu> example = Example.of(menu);
-		return menuRepository.findAll(example , pageable);
-	}
-	@Override
-	public Page<Menu> listPageParams(int page, int size, Menu menu,Map<String, Object> params) {
-		Pageable pageable = new PageRequest(page, size);
-		if(menu == null)
-		{
-			return menuRepository.findAll( pageable);
-		}
-		QueryParams<Menu> qoeryParams = new QueryParams<Menu>(menu, params);
-		Example<Menu> example = qoeryParams.buildExample();
-		return  menuRepository.findAll(example , pageable);
-	}
-	@Override
-	public Page<Menu> listPageParams(int page, int size, Menu menu) {
-		return null;
+		return menuRepository.findAll(pageable);
 	}
 
+	@Override
+	public Page<Menu> listPage(int page, int size, Menu menu)
+	{
+		Pageable pageable = new PageRequest(page, size);
+		if (menu == null)
+		{
+			return menuRepository.findAll(pageable);
+		}
+		Example<Menu> example = Example.of(menu);
+		return menuRepository.findAll(example, pageable);
+	}
+
+	@Override
+	public Page<Menu> listPageParams(int page, int size, Menu menu, Map<String,Object> params)
+	{
+		Pageable pageable = new PageRequest(page, size);
+		if (menu == null)
+		{
+			return menuRepository.findAll(pageable);
+		}
+		Map<Object,Object> copyParams = new HashMap<>();
+		copyParams.putAll(params);
+		QueryParams<Menu> qoeryParams = new QueryParams<Menu>(menu, copyParams);
+		Example<Menu> example = qoeryParams.buildExample();
+		return menuRepository.findAll(example, pageable);
+	}
+
+	@Override
+	public Page<Menu> listPageParams(int page, int size, Menu menu)
+	{
+		return null;
+	}
 }

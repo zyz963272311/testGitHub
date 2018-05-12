@@ -35,6 +35,7 @@ public class MVCController
 			result = "登陆失败";
 		}
 		view.addObject("loginMessage", result);
+		view.addObject("loginMessage", result);
 		return view;
 	}
 }
