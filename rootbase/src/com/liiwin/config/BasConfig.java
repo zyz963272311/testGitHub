@@ -1,11 +1,7 @@
 package com.liiwin.config;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 import java.util.Properties;
-import com.liiwin.db.Database;
-import com.liiwin.db.pool.DatabasePoolManager;
 import com.liiwin.utils.StrUtil;
 /**
  * <p>标题： 获取config中的配置</p>
@@ -23,104 +19,60 @@ import com.liiwin.utils.StrUtil;
  */
 public class BasConfig
 {
-	protected static Properties properties;
-
-	public static void LoadConfig()
-	{
-		LoadConfig(null);
-	}
+	protected static Properties	properties;
 
 	/**
 	 * 加载配置文件 userdir + "/resources/config.properties"
 	 * 
 	 * 赵玉柱
 	 */
-	synchronized public static void LoadConfig(String dbName)
+	public static void loadConfig()
 	{
-		if (properties == null)
+		synchronized (BasConfig.class)
 		{
-			if (StrUtil.isStrTrimNull(dbName))
+			if (properties == null)
 			{
-				dbName = "zyztest";
+				forceLoadConfig();
 			}
-			properties = new Properties();
-			String configFilePath1 = "/resources/config.properties";
-			try
-			{
-				properties.load(BasConfig.class.getResourceAsStream(configFilePath1));
-			} catch (IOException e)
-			{
-				String configFilePath2 = "/config.properties";
-				try
-				{
-					properties.load(BasConfig.class.getResourceAsStream(configFilePath2));
-				} catch (IOException e1)
-				{
-					throw new RuntimeException("报错内容", e1);
-				}
-			}
-			//获取db中的config配置信息
-			List<Map<String,Object>> dbConfigList = getDBConfig("zyztest");
-			//将db中的配置插入到config中
-			rebuildProperties(properties, dbConfigList);
 		}
 	}
 
 	/**
-	 * config配置重新装载
+	 * 强制加载config文件，不对外使用
 	 * 
 	 * 赵玉柱
 	 */
-	public static void reLoadConfig()
+	private static void forceLoadConfig()
 	{
-		reLoadConfig(null);
-	}
-
-	/**
-	 * config配置重新装载
-	 * @param dbName
-	 * 赵玉柱
-	 */
-	public static void reLoadConfig(String dbName)
-	{
-		properties = null;
-		LoadConfig(dbName);
-	}
-
-	/**
-	 * 将db中的config插入到properties中
-	 * @param properties
-	 * @param dbConfigList
-	 * 赵玉柱
-	 */
-	private static void rebuildProperties(Properties properties, List<Map<String,Object>> dbConfigList)
-	{
-		for (Map<String,Object> dbConfig : dbConfigList)
+		properties = new Properties();
+		String configFilePath1 = "/resources/config.properties";
+		try
 		{
-			boolean useflags = StrUtil.obj2bool(dbConfig.get("useflags"));
-			if (useflags)
+			properties.load(BasConfig.class.getResourceAsStream(configFilePath1));
+		} catch (IOException e)
+		{
+			String configFilePath2 = "/config.properties";
+			try
 			{
-				String key = StrUtil.obj2str(dbConfig.get("key"));
-				if (StrUtil.isNoStrTrimNull(key))
-				{
-					String value = StrUtil.obj2str(dbConfig.get("value"));
-					properties.put(key, value);
-				}
+				properties.load(BasConfig.class.getResourceAsStream(configFilePath2));
+			} catch (IOException e1)
+			{
+				throw new RuntimeException("报错内容", e1);
 			}
 		}
 	}
 
 	/**
-	 * 获取DB中的config信息
-	 * @return
+	 * 重新加载配置文件
+	 * 
 	 * 赵玉柱
 	 */
-	public static List<Map<String,Object>> getDBConfig(String dbName)
+	public void reloadConfig()
 	{
-		DatabasePoolManager poolManager = DatabasePoolManager.getNewInstance();
-		Database database = poolManager.getDatabase(dbName);
-		String sql = "select * from dbconfig";
-		return database.getListMapFromSql(sql, null);
+		synchronized (BasConfig.class)
+		{
+			forceLoadConfig();
+		}
 	}
 
 	/**
@@ -137,7 +89,7 @@ public class BasConfig
 		}
 		if (properties == null)
 		{
-			LoadConfig();
+			loadConfig();
 		}
 		return properties.getProperty(key);
 	}
@@ -151,7 +103,7 @@ public class BasConfig
 	{
 		if (properties == null)
 		{
-			LoadConfig();
+			loadConfig();
 		}
 		return properties;
 	}
@@ -163,7 +115,7 @@ public class BasConfig
 	 */
 	public static void main(String[] args)
 	{
-		LoadConfig();
+		loadConfig();
 	}
 
 	protected static String getConfigFilePath()
