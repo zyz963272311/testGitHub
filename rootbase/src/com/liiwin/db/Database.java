@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.dom4j.Element;
+import com.liiwin.createdb.Table;
 import com.liiwin.utils.GetXmlFile;
 import com.liiwin.utils.StrUtil;
 /**
@@ -129,12 +130,17 @@ public class Database
 				{
 					throw new RuntimeException("参数【databaseName,url,driver,user,password】不可为空");
 				}
-				Class.forName(driver);
+				if (!DriverClassCache.loadDriver(driver))
+				{
+					throw new RuntimeException("加载驱动：" + driver + "失败");
+				}
+				//				Class.forName(driver);
 				if (!url.endsWith("/"))
 				{
 					url += "/";
 				}
 				this.conn = DriverManager.getConnection(url + databaseName, user, password);
+				//				this.conn = DriverManager.getConnection(url + "/" + databaseName + "?user=" + user + "&pasword=" + password + "&useUnicode=true&characterEncoding=utf-8");
 				if (this.conn != null)
 				{
 					conn.setAutoCommit(false);
@@ -309,6 +315,42 @@ public class Database
 	public int insert(String sql)
 	{
 		return update(sql);
+	}
+
+	/**
+	 * 表是否存在
+	 * @param table
+	 * @return
+	 * 赵玉柱
+	 */
+	public boolean tableExist(String table)
+	{
+		String sql = null;
+		Map<String,Object> params = new HashMap<>();
+		params.put("tablename", table);
+		switch (type)
+		{
+		case Databasetype.MYSQL:
+			//mysql
+			sql = "select * from information_schema.ROUTINES a where a.SPECIFIC_NAME=:tablename ";
+			break;
+		default:
+			break;
+		}
+		Map<String,Object> existTable = getMapFromSql(sql, params);
+		if (existTable != null && !existTable.isEmpty())
+		{
+			return true;
+		}
+		return false;
+	}
+
+	public void createTableIfNotExist(Table table)
+	{
+		if (!tableExist(table.getTableName()))
+		{
+			//如果表不存在，则创建表
+		}
 	}
 
 	/**

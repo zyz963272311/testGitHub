@@ -1,5 +1,9 @@
 package com.liiwin.image;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -140,6 +144,120 @@ public class ImageUtil
 		{
 			throw new RuntimeException("报错内容", e);
 		}
+	}
+
+	/**
+	 * 在图片中间添加一个红色水印
+	 * @param resImagePath
+	 * @param newImagePath
+	 * @param waterText
+	 * 赵玉柱
+	 */
+	public static void watermarkText(String resImagePath, String newImagePath, String waterText)
+	{
+		Color waterColor = Color.red;
+		watermarkText(resImagePath, newImagePath, waterText, waterColor);
+	}
+
+	/**
+	 * 在图片中间添加一个宋体字号50水印
+	 * @param resImagePath
+	 * @param newImagePath
+	 * @param waterText
+	 * @param waterColor
+	 * 赵玉柱
+	 */
+	public static void watermarkText(String resImagePath, String newImagePath, String waterText, Color waterColor)
+	{
+		Font font = new Font("宋体", Font.PLAIN, 50);
+		watermarkText(resImagePath, newImagePath, waterText, waterColor, font);
+	}
+
+	/**
+	 * 在图片中间添加一个文字水印
+	 * @param resImagePath
+	 * @param newImagePath
+	 * @param waterText
+	 * @param waterColor
+	 * @param font
+	 * 赵玉柱
+	 */
+	public static void watermarkText(String resImagePath, String newImagePath, String waterText, Color waterColor, Font font)
+	{
+		watermarkText(resImagePath, newImagePath, waterText, waterColor, font, -1, -1);
+	}
+
+	/**
+	 * 在图片得某一位置添加水印
+	 * @param resImagePath
+	 * @param newImagePath
+	 * @param watermarkImagePath
+	 * 赵玉柱
+	 */
+	public static void watermarkText(String resImagePath, String newImagePath, String waterText, Color waterColor, Font font, int posX, int posY)
+	{
+		try (FileOutputStream outImgStream = new FileOutputStream(newImagePath);)
+		{
+			// 读取原图片信息  
+			File srcImgFile = new File(resImagePath);
+			Image srcImg = ImageIO.read(srcImgFile);
+			int srcImgWidth = srcImg.getWidth(null);
+			int srcImgHeight = srcImg.getHeight(null);
+			// 加水印  
+			BufferedImage bufImg = new BufferedImage(srcImgWidth, srcImgHeight, BufferedImage.TYPE_INT_RGB);
+			Graphics2D g = bufImg.createGraphics();
+			g.drawImage(srcImg, 0, 0, srcImgWidth, srcImgHeight, null);
+			//Font font = new Font("Courier New", Font.PLAIN, 12);  
+			//			Font font = new Font("宋体", Font.PLAIN, 50);
+			g.setColor(waterColor); //根据图片的背景设置水印颜色  
+			g.setFont(font);
+			//			int x = srcImgWidth - getWatermarkLength(waterText, g) - 3;
+			//			int y = srcImgHeight - 3;
+			//int x = (srcImgWidth - getWatermarkLength(watermarkStr, g)) / 2;  
+			//int y = srcImgHeight / 2;  
+			if (posX < 0)
+			{
+				int waterLength = getWatermarkLength(waterText, g);
+				posX = (srcImgWidth - waterLength) / 2;
+			}
+			if (posY <= 0)
+			{
+				int waterHeight = getWatermarkHeight(waterText, g);
+				posY = (srcImgHeight + waterHeight) / 2;
+			}
+			g.drawString(waterText, posX, posY);
+			g.dispose();
+			// 输出图片  
+			ImageIO.write(bufImg, "jpg", outImgStream);
+			outImgStream.flush();
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+			throw new RuntimeException("生成水印图片失败");
+		}
+	}
+
+	/** 
+	* 获取水印文字总长度 
+	* @param waterMarkContent 水印的文字 
+	* @param g 
+	* @return 水印文字总长度 
+	*/
+	public static int getWatermarkLength(String waterMarkContent, Graphics2D g)
+	{
+		return g.getFontMetrics(g.getFont()).charsWidth(waterMarkContent.toCharArray(), 0, waterMarkContent.length());
+	}
+
+	/**
+	 * 获取水印文字高度
+	 * @param waterMarkContent
+	 * @param g
+	 * @return
+	 * 赵玉柱
+	 */
+	public static int getWatermarkHeight(String waterMarkContent, Graphics2D g)
+	{
+		return g.getFontMetrics(g.getFont()).getDescent();
 	}
 
 	/**
@@ -436,11 +554,17 @@ public class ImageUtil
 
 	public static void main(String[] args)
 	{
-		//		String resImagePath = "D://1.jpg";
-		//		String newImagePath = "D://_1.jpg";
-		//		int sizeX = 100;
-		//		int sizeY = 100;
-		//		double scale = 4;
+		String resImagePath = "D://1.jpg";
+		String newImagePath = "D://_1.jpg";
+		int sizeX = 100;
+		int sizeY = 100;
+		double scale = 4;
+		String waterText = "测试水印";
+		Color waterColor = Color.red;
+		Font waterFont = new Font("宋体", Font.PLAIN, 50);
+		int posX = 100;
+		int posY = 100;
+		watermarkText(resImagePath, newImagePath, waterText, waterColor, waterFont, -1, -1);
 		//		compressBySize(resImagePath, newImagePath, sizeX, sizeY, false);
 		//		compressByScale(resImagePath, newImagePath, scale);
 		//		double rotate = 700;

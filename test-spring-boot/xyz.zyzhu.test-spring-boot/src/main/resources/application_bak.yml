@@ -1,0 +1,62 @@
+spring:
+  datasource:
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    minIdle: 5
+    useGlobalDataSourceStat: true
+    validationQuery: SELECT 1 FROM DUAL
+    initialSize: 5
+    maxWait: 60000
+    poolPreparedStatements: true
+    filters: stat,wall,log4j
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://127.0.0.1:3306/zyztest?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    maxPoolPreparedStatementPerConnectionSize: 20
+    password: root
+    testOnBorrow: false
+    testWhileIdle: true
+    druid:
+      sec:
+        connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+        minIdle: 5
+        useGlobalDataSourceStat: true
+        validationQuery: SELECT 1 FROM DUAL
+        initialSize: 5
+        maxWait: 60000
+        filters: stat,wall,log4j
+        poolPreparedStatements: true
+        type: com.alibaba.druid.pool.DruidDataSource
+        url: jdbc:mysql://127.0.0.1:3306/zyztest?useUnicode=true&characterEncoding=utf-8&useSSL=false
+        maxPoolPreparedStatementPerConnectionSize: 20
+        password: root
+        testWhileIdle: true
+        testOnBorrow: false
+        timeBetweenEvictionRunsMillis: 60000
+        minEvictableIdleTimeMillis: 300000
+        testOnReturn: false
+        driverClassName: com.mysql.jdbc.Driver
+        username: root
+        maxActive: 20
+    minEvictableIdleTimeMillis: 300000
+    timeBetweenEvictionRunsMillis: 60000
+    testOnReturn: false
+    driverClassName: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.jdbc.Driver
+    maxActive: 20
+    username: root
+  profiles:
+    active: @env@
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+  thymeleaf:
+    mode: HTML5
+    cache: false
+    content-type: text/html
+    encoding: UTF-8
+server:
+  port: 8081

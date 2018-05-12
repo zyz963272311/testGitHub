@@ -2,6 +2,7 @@ package com.liiwin.createdb;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import com.liiwin.db.Database;
 import com.liiwin.db.Databasetype;
+import com.liiwin.db.pool.DatabasePoolManager;
 import com.liiwin.utils.StrUtil;
 /**
  * <p>标题： 生成表结构类</p>
@@ -63,6 +65,12 @@ public class CreateDatabase
 		}
 	}
 
+	/**
+	 * 生成数据库
+	 * @param dbList
+	 * @param dbFile
+	 * 赵玉柱
+	 */
 	private static void createDatabase(List<Database> dbList, List<BufferedReader> dbFile)
 	{
 		Map<Database,List<Map<String,Object>>> selectDBMessage = getSelectDBMessage(dbList);
@@ -71,9 +79,15 @@ public class CreateDatabase
 		Map<Database,List<String>> sqlDbMap = compareDBAndDBFile(dbMessage2Table, selectDBFileMessage, dbList);
 		System.out.println(dbMessage2Table);
 		System.out.println(selectDBFileMessage);
-		execUpdateSql(sqlDbMap);
+		execUpdateSql(sqlDbMap, selectDBFileMessage);
 	}
 
+	/**
+	 * 获取选择的db信息
+	 * @param dbList
+	 * @return
+	 * 赵玉柱
+	 */
 	private static Map<Database,List<Map<String,Object>>> getSelectDBMessage(List<Database> dbList)
 	{
 		Map<Database,List<Map<String,Object>>> selectDBMessage = new HashMap<>();
@@ -87,6 +101,12 @@ public class CreateDatabase
 		return selectDBMessage;
 	}
 
+	/**
+	 * 获取DB信息
+	 * @param db
+	 * @return
+	 * 赵玉柱
+	 */
 	private static List<Map<String,Object>> getDBMessage(Database db)
 	{
 		int dbType = db.getType();
@@ -108,6 +128,12 @@ public class CreateDatabase
 		return null;
 	}
 
+	/**
+	 * db信息转table
+	 * @param selectDBMessage
+	 * @return
+	 * 赵玉柱
+	 */
 	private static Map<String,Map<String,Table>> dbMessage2Table(Map<Database,List<Map<String,Object>>> selectDBMessage)
 	{
 		Map<String,Map<String,Table>> dbTableMap = new HashMap<>();
@@ -182,6 +208,13 @@ public class CreateDatabase
 		return dbTableMap;
 	}
 
+	/**
+	 * 获取db文件信息
+	 * @param dbList
+	 * @param dbFile
+	 * @return
+	 * 赵玉柱
+	 */
 	private static Map<String,Map<String,Table>> getSelectDBFileMessage(List<Database> dbList, List<BufferedReader> dbFile)
 	{
 		if (dbFile == null || dbFile.isEmpty())
@@ -211,12 +244,19 @@ public class CreateDatabase
 								//这个开头表示注释，这种数据不进行处理
 								continue;
 							}
+							//空行不处理
+							if (StrUtil.isStrTrimNull(row))
+							{
+								System.out.println("空行不处理");
+								continue;
+							}
 							System.out.println(row);
 							row = row.replaceAll("\\s{1,}", "#");
 							String[] colMsg = StrUtil.split(row, '#');
 							if (colMsg == null || colMsg.length < 6)
 							{
-								throw new RuntimeException("dbFile配置错误,行信息[" + srcRow + "]");
+								System.out.println("表结构格式不正确");
+								continue;
 							}
 							String tablename = colMsg[0];
 							Table table = dbFileMessage.get(tablename);
@@ -280,6 +320,14 @@ public class CreateDatabase
 		return selectDBFileMessage;
 	}
 
+	/**
+	 * 比较DB与DBfile
+	 * @param dbMessage2Table
+	 * @param selectDBFileMessage
+	 * @param dbList
+	 * @return
+	 * 赵玉柱
+	 */
 	private static Map<Database,List<String>> compareDBAndDBFile(Map<String,Map<String,Table>> dbMessage2Table, Map<String,Map<String,Table>> selectDBFileMessage, List<Database> dbList)
 	{
 		if (dbMessage2Table == null || dbMessage2Table.size() == 0 || selectDBFileMessage == null || selectDBFileMessage.size() == 0)
@@ -311,6 +359,13 @@ public class CreateDatabase
 		return returnSql;
 	}
 
+	/**
+	 * 比较table与tablefile
+	 * @param fileTable
+	 * @param dbTable
+	 * @return
+	 * 赵玉柱
+	 */
 	private static List<String> compareTableAndTableFile(Table fileTable, Table dbTable)
 	{
 		List<String> returnSql = new ArrayList<>();
@@ -446,10 +501,17 @@ public class CreateDatabase
 		return returnSql;
 	}
 
-	private static void execUpdateSql(Map<Database,List<String>> sqlDBMap)
+	/**
+	 * 执行sql
+	 * @param sqlDBMap
+	 * 赵玉柱
+	 */
+	private static void execUpdateSql(Map<Database,List<String>> sqlDBMap, Map<String,Map<String,Table>> selectDBFileMessage)
 	{
 		if (sqlDBMap != null)
 		{
+			DatabasePoolManager poolManager = DatabasePoolManager.getNewInstance();
+			Database cfgDB = poolManager.getConfigDatabase();
 			Set<Entry<Database,List<String>>> sqlSet = sqlDBMap.entrySet();
 			for (Entry<Database,List<String>> sqlEntry : sqlSet)
 			{
@@ -465,32 +527,96 @@ public class CreateDatabase
 						{
 							if (!StrUtil.isStrTrimNull(sql))
 							{
+								//								sql = new String(sql.getBytes(Charset.defaultCharset()), Charset.forName("UTF-8"));
+								//执行sql，生成表结构
 								db.execSqlForWrite(sql);
 							}
 						}
 					}
+					Map<String,Table> tables = selectDBFileMessage.get(db.getDatabaseName());
+					updateCFGTable(cfgDB, db, tables);
+					cfgDB.commit();
 					db.commit();
 					rollback = false;
 				} catch (Exception e)
 				{
 					System.out.println("createDatabase异常" + e.getMessage());
-					throw e;
+					throw new RuntimeException(e);
 				} finally
 				{
 					if (db != null)
 					{
-						if (rollback)
-						{
-							db.rollback(rollback, true);
-						}
+						db.rollback(rollback, true);
 					}
 				}
+			}
+			poolManager.close(cfgDB);
+		}
+	}
+
+	/**
+	 * 更新库表信息到config库中
+	 * @param cfgDB
+	 * @param db
+	 * @param tables
+	 * 赵玉柱
+	 */
+	private static void updateCFGTable(Database cfgDB, Database db, Map<String,Table> tables)
+	{
+		if (!(cfgDB.tableExist("DB") && cfgDB.tableExist("TB")))
+		{
+			return;
+		}
+		Map<String,Object> params = new HashMap<>();
+		params.put("dbname", db.getDatabaseName());
+		String sqlQueryDB = "select * from db where dbname=:dbname ";
+		Map<String,Object> resultMap = cfgDB.getMapFromSql(sqlQueryDB, params);
+		Map<String,Object> updateDBParams = new HashMap<>();
+		updateDBParams.put("url", db.getUrl());
+		updateDBParams.put("username", db.getUser());
+		updateDBParams.put("password", db.getPassword());
+		updateDBParams.put("initcount", db.getInitConnections());
+		updateDBParams.put("maxcount", db.getMaxConnects());
+		updateDBParams.put("dbname", db.getDatabaseName());
+		String dbSql = null;
+		if (resultMap != null && !resultMap.isEmpty())
+		{
+			dbSql = "update db set url=:url ,username=:username ,password=:password ,initcount=:initcount ,maxcount=:maxcount  where dbname=:dbname  ";
+		} else
+		{
+			dbSql = "insert into db(dbname,url,username,password,initcount,maxcount) values (:dbname ,:url ,:username ,:password ,:initcount ,:maxcount ) ";
+		}
+		//更新库信息到config库中
+		cfgDB.execSqlForWrite(dbSql, updateDBParams);
+		if (tables != null && !tables.isEmpty())
+		{
+			for (Entry<String,Table> tableEntry : tables.entrySet())
+			{
+				Table table = tableEntry.getValue();
+				String sqlTab = "select * from tb where tbname=:tbname ";
+				Map<String,Object> tableParams = new HashMap<>();
+				tableParams.put("tbname", table.getTableName());
+				Map<String,Object> tableMap = cfgDB.getMapFromSql(sqlTab, tableParams);
+				String tbSql = null;
+				Map<String,Object> updateTBParams = new HashMap<>();
+				updateTBParams.put("dbname", table.getDbName());
+				updateTBParams.put("tbname", table.getTableName());
+				updateTBParams.put("tblang1name", table.getTableName());
+				if (tableMap != null && !tableMap.isEmpty())
+				{
+					tbSql = "update tb set dbname=:dbname , tblang1name=:tblang1name ";
+				} else
+				{
+					tbSql = "insert into tb(tbname,dbname,tblang1name) values(:tbname ,:dbname ,:tblang1name )";
+				}
+				cfgDB.execSqlForWrite(tbSql, updateTBParams);
 			}
 		}
 	}
 
 	public static void main(String[] args)
 	{
-		createDatabase(new String[] { "project01", "ssm-test" });
+		System.out.println("默认编码格式" + Charset.defaultCharset());
+		createDatabase(new String[] { "zyztest", "config", "project01" });
 	}
 }

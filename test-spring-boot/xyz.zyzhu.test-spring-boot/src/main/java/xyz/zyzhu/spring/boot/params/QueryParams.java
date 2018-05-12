@@ -1,17 +1,10 @@
 package xyz.zyzhu.spring.boot.params;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-
 import xyz.zyzhu.spring.boot.model.BasModel;
-
-import com.liiwin.utils.MapUtil;
-
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -26,19 +19,23 @@ import com.liiwin.utils.MapUtil;
  * 监听使用界面:
  * @version 8.0
  */
-public class QueryParams<M extends BasModel> {
-	protected M model;
-	protected Map<String, Object> params;
-	protected List<String> keys = new ArrayList<String>();
+public class QueryParams<M extends BasModel>
+{
+	protected M						model;
+	protected Map<Object,Object>	params;
+	protected List<Object>			keys	= new ArrayList<>();
+
 	/**
 	 * @param model
 	 * @param params
 	 */
-	public QueryParams(M model, Map<String, Object> params) {
+	public QueryParams(M model, Map<Object,Object> params)
+	{
 		super();
 		this.model = model;
 		this.params = params;
 	}
+
 	protected void init()
 	{
 		keys.add("start");//左匹配
@@ -47,22 +44,22 @@ public class QueryParams<M extends BasModel> {
 		keys.add("ignored");//忽略属性列表
 	}
 
-	public  Example<M> buildExample()
+	public Example<M> buildExample()
 	{
-		ExampleMatcher matcher = ExampleMatcher.matching();
-		if(model == null)
+		if (model == null)
 		{
 			return null;
 		}
 		Example<M> example = null;
-		if(MapUtil.constainsKey(params, keys))
-		{
-			example = Example.of(model, matcher);
-		}
-		else
-		{
-			example = Example.of(model);
-		}
+		//		if (MapUtil.constainsKey(params, keys))
+		//		{
+		//		ExampleMatcher matcher = ExampleMatcher.matching();
+		//			example = Example.of(model, matcher);
+		//		} else
+		//		{
+		//			example = Example.of(model);
+		//		}
+		example = Example.of(model);
 		return example;
 	}
 }

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhu.ssm.dao.GoodsDao">
+	<sql id = "inc_whereGoods">
+		where 1=1 
+		<if test="goodsid!=null">
+			and goodsid=#{goodsid}
+		</if>
+		<if test="goodsname!=null">
+			and goodsname=#{goodsname}
+		</if>
+		<if test="price!=null">
+			and price=#{price}
+		</if>
+	</sql>
+	<insert id="createGoods">
+		INSERT INTO goods(goodsid,goodsname,price) VALUES(#{goodsid, jdbcType=VARCHAR},#{goodsname, jdbcType=VARCHAR},#{price, jdbcType=DOUBLE})
+	</insert>
+	<delete id="deleteGoods">
+		DELETE from goods 
+		<include refid="inc_whereGoods"/>
+	</delete>
+	<update id="updateGoods">
+      UPDATE goods
+		<set>  
+			<if test="goodsname!=null">  
+              goodsname = #{goodsname, jdbcType=VARCHAR}
+			</if>  
+			<if test="price!=null">  
+              price = #{price, jdbcType=DOUBLE}
+			</if>  
+		</set>  
+      where goodsid = #{goodsid}
+	</update> 
+	<select id="findGoodsByParams" resultType="com.zhu.ssm.model.Goods">  
+		SELECT goodsid , goodsname , price  
+        from goods 
+		<include refid="inc_whereGoods"/>  
+	</select>   
+</mapper>

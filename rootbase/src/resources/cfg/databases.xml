@@ -5,12 +5,14 @@
 			url="jdbc:mysql://127.0.0.1:3309" driver="com.mysql.jdbc.Driver"
 			user="root" password="root"></database>
 	</db>
-	<database name="project01" type="1" url="jdbc:mysql://127.0.0.1:3306"
+	<database name="project01" type="1" url="jdbc:mysql://127.0.0.1:3309"
 		driver="com.mysql.jdbc.Driver" user="root" password="root"></database>
 	<database name="zyztest2" type="2" url="jdbc:mysql://127.0.0.1:3309"
 		driver="com.mysql.jdbc.Driver" user="root" password="root"></database>
 	<database name="zyztest3" type="4" url="jdbc:mysql://127.0.0.1:3309"
 		driver="com.mysql.jdbc.Driver" user="root" password="root"></database>
 	<database name="ssm-test" type="1" url="jdbc:mysql://127.0.0.1:3306"
+		driver="com.mysql.jdbc.Driver" user="root" password="root"></database>
+	<database name="config" type="1" url="jdbc:mysql://127.0.0.1:3309"
 		driver="com.mysql.jdbc.Driver" user="root" password="root"></database>
 </databases>

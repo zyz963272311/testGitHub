@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.springframework.core.annotation.Order;
-import xyz.zyzhu.spring.boot.model.UserInfo;
 import com.alibaba.fastjson.parser.ParserConfig;
+import xyz.zyzhu.spring.boot.model.UserInfo;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -45,24 +45,35 @@ public class LoginFilter implements Filter
 		req.getRequestURI();
 		HttpServletResponse resp = (HttpServletResponse) response;
 		HttpSession session = req.getSession();
-		String url = req.getRequestURI().substring(req.getContextPath().length());
-		if (url.startsWith("login") || url.startsWith("/login") || url.startsWith("/user/login"))
+		if (true)
 		{
 			chain.doFilter(req, resp);
 			return;
 		}
-		if (session == null)
+		String url = req.getRequestURI().substring(req.getContextPath().length());
+		System.out.println(url);
+		if (url == null || url.equals("/") || url.startsWith("/wx") || url.startsWith("login") || url.startsWith("/login") || url.startsWith("/user/login") || url.endsWith(".html")
+				|| url.endsWith(".woff2") || url.endsWith(".woff") || url.endsWith("ttf"))
 		{
-			//异常
-			resp.sendRedirect(req.getContextPath() + "/login.jsp");
+			chain.doFilter(req, resp);
 			return;
 		}
-		Object users = session.getAttribute("user");
-		UserInfo info = com.alibaba.fastjson.util.TypeUtils.cast(users, UserInfo.class, ParserConfig.getGlobalInstance());
-		if (info == null)
+		if (url != null && !url.endsWith(".html") && !url.endsWith(".js") && !url.endsWith(".css") && !url.endsWith(".jpg") && !url.endsWith(".gif") && !url.endsWith(".ico") && !url.endsWith(".bmp")
+				&& !url.endsWith(".png"))
 		{
-			resp.sendRedirect(req.getContextPath() + "/login.jsp");
-			return;
+			if (session == null)
+			{
+				//异常
+				resp.sendRedirect(req.getContextPath() + "/login.jsp");
+				return;
+			}
+			Object users = session.getAttribute("user");
+			UserInfo info = com.alibaba.fastjson.util.TypeUtils.cast(users, UserInfo.class, ParserConfig.getGlobalInstance());
+			if (info == null)
+			{
+				resp.sendRedirect(req.getContextPath() + "/login.jsp");
+				return;
+			}
 		}
 		chain.doFilter(req, resp);
 	}

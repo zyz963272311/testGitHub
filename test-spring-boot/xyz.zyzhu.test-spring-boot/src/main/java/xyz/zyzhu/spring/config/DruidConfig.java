@@ -28,7 +28,7 @@ import com.alibaba.druid.support.http.WebStatFilter;
 @Configuration
 public class DruidConfig
 {
-	private Logger	logger	= LoggerFactory.getLogger(DruidConfig.class);
+	private Logger logger = LoggerFactory.getLogger(DruidConfig.class);
 
 	@Bean
 	public ServletRegistrationBean druidStatViewServlet()
@@ -51,16 +51,22 @@ public class DruidConfig
 		return registrationBean;
 	}
 
+	//	@Bean
+	//	@ConfigurationProperties(prefix = "spring.datasource")
+	//	public DataSource dataSourceOne()
+	//	{
+	//		return DruidDataSourceBuilder.create().build();
+	//	}
 	@Bean
-	public DataSource druidDataSource(@Value("${spring.datasource.bas.url}") String url, @Value("${spring.datasource.bas.driverClassName}") String driver,
-			@Value("${spring.datasource.bas.username}") String userName, @Value("${spring.datasource.bas.password}") String password, @Value("${spring.datasource.bas.maxActive}") int maxActive,
-			@Value("${spring.datasource.bas.filters}") String filters, @Value("${spring.datasource.bas.initialSize}") int initialSize, @Value("${spring.datasource.bas.minIdle}") int minIdle,
-			@Value("${spring.datasource.bas.maxWait}") int maxWait, @Value("${spring.datasource.bas.timeBetweenEvictionRunsMillis}") int timeBetweenEvictionRunsMillis,
-			@Value("${spring.datasource.bas.minEvictableIdleTimeMillis}") int minEvictableIdleTimeMillis, @Value("${spring.datasource.bas.validationQuery}") String validationQuery,
-			@Value("${spring.datasource.bas.testWhileIdle}") boolean testWhileIdle, @Value("${spring.datasource.bas.testOnBorrow}") boolean testOnBorrow,
-			@Value("${spring.datasource.bas.testOnReturn}") boolean testOnReturn, @Value("${spring.datasource.bas.poolPreparedStatements}") boolean poolPreparedStatements,
-			@Value("${spring.datasource.bas.maxPoolPreparedStatementPerConnectionSize}") int maxPoolPreparedStatementPerConnectionSize,
-			@Value("${spring.datasource.bas.connectionProperties}") String connectionProperties, @Value("${spring.datasource.bas.useGlobalDataSourceStat}") boolean useGlobalDataSourceStat)
+	public DataSource druidDataSource(@Value("${spring.datasource.url}") String url, @Value("${spring.datasource.driverClassName}") String driver,
+			@Value("${spring.datasource.username}") String userName, @Value("${spring.datasource.password}") String password, @Value("${spring.datasource.maxActive}") int maxActive,
+			@Value("${spring.datasource.filters}") String filters, @Value("${spring.datasource.initialSize}") int initialSize, @Value("${spring.datasource.minIdle}") int minIdle,
+			@Value("${spring.datasource.maxWait}") int maxWait, @Value("${spring.datasource.timeBetweenEvictionRunsMillis}") int timeBetweenEvictionRunsMillis,
+			@Value("${spring.datasource.minEvictableIdleTimeMillis}") int minEvictableIdleTimeMillis, @Value("${spring.datasource.validationQuery}") String validationQuery,
+			@Value("${spring.datasource.testWhileIdle}") boolean testWhileIdle, @Value("${spring.datasource.testOnBorrow}") boolean testOnBorrow,
+			@Value("${spring.datasource.testOnReturn}") boolean testOnReturn, @Value("${spring.datasource.poolPreparedStatements}") boolean poolPreparedStatements,
+			@Value("${spring.datasource.maxPoolPreparedStatementPerConnectionSize}") int maxPoolPreparedStatementPerConnectionSize,
+			@Value("${spring.datasource.connectionProperties}") String connectionProperties, @Value("${spring.datasource.useGlobalDataSourceStat}") boolean useGlobalDataSourceStat)
 	{
 		DruidDataSource dataSource = new DruidDataSource();
 		/*数据源主要配置*/

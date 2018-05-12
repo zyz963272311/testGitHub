@@ -1,8 +1,8 @@
 package xyz.zyzhu.spring.boot.model;
 
+import java.io.Serializable;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -17,10 +17,13 @@ import org.apache.commons.lang.builder.ToStringStyle;
  * 监听使用界面:
  * @version 8.0
  */
-public class BasModel {
+public class BasModel implements Serializable
+{
+	private static final long serialVersionUID = 1L;
+
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
-
 }

@@ -668,7 +668,7 @@ public class StrUtil
 			result = data1BigThanData2(data1, data2);
 		} else
 		{
-			result = data1BigThanData2(data1, data2);
+			result = data1BigThanData2(data2, data1);
 		}
 		return result;
 	}
@@ -1188,13 +1188,14 @@ public class StrUtil
 		}
 		return str.trim();
 	}
-	public static List<String> toList(String str,char limit)
+
+	public static List<String> toList(String str, char limit)
 	{
 		List<String> list = new ArrayList<>();
 		String[] split = split(str, limit);
-		if(split!=null &&split.length>0)
+		if (split != null && split.length > 0)
 		{
-			for(String s:split)
+			for (String s : split)
 			{
 				list.add(s);
 			}

@@ -37,6 +37,11 @@ public class DatabasePoolManager
 		return maneger;
 	}
 
+	public Database getConfigDatabase()
+	{
+		return getDatabase("config");
+	}
+
 	public Database getDatabase(String dbName)
 	{
 		if (StrUtil.isStrTrimNull(dbName))

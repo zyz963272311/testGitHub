@@ -1,3 +1,15 @@
 eclipse.preferences.version=1
+encoding//src/com/liiwin/config/BasConfig.java=UTF-8
+encoding//src/com/liiwin/createdb/CreateDatabase.java=UTF-8
+encoding//src/com/liiwin/createdb/DriverClassCache.java=UTF-8
+encoding//src/com/liiwin/db/Database.java=UTF-8
+encoding//src/com/liiwin/db/DriverClassCache.java=UTF-8
+encoding//src/com/liiwin/db/pool/DatabasePoolManager.java=UTF-8
+encoding//src/com/liiwin/image/ImageUtil.java=UTF-8
+encoding//src/com/liiwin/timer/AppTimer.java=UTF-8
+encoding//src/com/liiwin/timer/TestAppTimer.java=UTF-8
+encoding//src/com/liiwin/timer/constant/TimerConstant.java=UTF-8
+encoding//src/com/liiwin/timer/task/AppTimerTask.java=UTF-8
 encoding//src/com/liiwin/utils/tac/tac.properties=UTF-8
 encoding//src/resources/config.properties=UTF-8
+encoding/<project>=UTF-8

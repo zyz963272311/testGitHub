@@ -14,7 +14,10 @@ package xyz.zyzhu.spring.boot.redis;
  * 监听使用界面:
  * @version 8.0
  */
-public class RedisConfig
+//@Configuration
+//@EnableCaching
+@Deprecated
+public class RedisConfig //extends CachingConfigurerSupport
 {
 	//	@Bean
 	//	@Override
@@ -36,12 +39,14 @@ public class RedisConfig
 	//		};
 	//	}
 	//
+	//	@SuppressWarnings("rawtypes")
 	//	public CacheManager cacheManager(RedisTemplate template)
 	//	{
 	//		RedisCacheManager cacheManager = new RedisCacheManager(template);
 	//		return cacheManager;
 	//	}
 	//
+	//	@SuppressWarnings("rawtypes")
 	//	public RedisTemplate<String,String> redisTemplete(RedisConnectionFactory factory)
 	//	{
 	//		StringRedisTemplate template = new StringRedisTemplate(factory);

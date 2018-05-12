@@ -1,11 +1,7 @@
 package xyz.zyzhu.spring.boot.test;
 
-import net.sourceforge.pinyin4j.PinyinHelper;
-import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
-import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
-import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
-import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
-import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
+import java.text.ParseException;
+import com.liiwin.utils.StrUtil;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -22,20 +18,24 @@ import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombi
  */
 public class Test
 {
-	public static void main(String[] args)
+	public static void main(String[] args) throws ParseException
 	{
-		HanyuPinyinOutputFormat format = new HanyuPinyinOutputFormat();
-		format.setToneType(HanyuPinyinToneType.WITH_TONE_MARK);
-		format.setVCharType(HanyuPinyinVCharType.WITH_U_UNICODE);
-		format.setCaseType(HanyuPinyinCaseType.LOWERCASE);
-		try
+		String content = "1221";
+		String[] constellationArr = { "魔羯座", "水瓶座", "双鱼座", "牡羊座", "金牛座", "双子座", "巨蟹座", "狮子座", "处女座", "天秤座", "天蝎座", "射手座" };
+		int[] constellationEdgeDay = { 20, 18, 20, 20, 20, 21, 22, 22, 22, 22, 21, 21 };
+		String[] substring = StrUtil.getSubstring(content, new int[] { 0, 2 }, new int[] { 2, 4 });
+		//月份
+		int month = StrUtil.obj2int(substring[0]);
+		//日
+		int day = StrUtil.obj2int(substring[1]);
+		String constellation = null;
+		if (day >= constellationEdgeDay[month - 1])
 		{
-			System.out.println(PinyinHelper.toHanYuPinyinString("赵玉柱", format, "", false));
-		} catch (BadHanyuPinyinOutputFormatCombination e)
+			constellation = constellationArr[month == 12 ? 0 : month];
+		} else
 		{
-			// TODO Auto-generated catch block
-			throw new RuntimeException("报错内容", e);
+			constellation = constellationArr[month - 1];
 		}
-		//		System.out.println(PinyinHelper.toHanyuPinyinStringArray('赵'));
+		System.out.println(constellation);
 	}
 }
