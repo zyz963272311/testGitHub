@@ -6,7 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import com.liiwin.config.BasConfig;
 import com.liiwin.encryption.MD5;
+import com.liiwin.file.types.FileTypeEnum;
 import com.liiwin.utils.StrUtil;
 /**
  * <p>标题： 文件工具类</p>
@@ -268,5 +270,73 @@ public class FileUtil
 		{
 			throw new RuntimeException("报错内容", e);
 		}
+	}
+
+	/**
+	 * 根据文件拓展名获取文件上传路径
+	 * @param filename
+	 * @return
+	 * 赵玉柱
+	 */
+	public static String getUploadPathByFileName(String filename)
+	{
+		FileTypeEnum fileType = FileTypeEnum.getFileTypeEnum(filename);
+		return getUploadPathByFileTypeEnum(fileType);
+	}
+
+	/**
+	 * 根据文件类型枚举获取文件上传路径
+	 * @param typeEnum
+	 * @return
+	 * 赵玉柱
+	 */
+	public static String getUploadPathByFileTypeEnum(FileTypeEnum typeEnum)
+	{
+		if (typeEnum == null)
+		{
+			return BasConfig.getPropertie("rootPath");
+		}
+		String path = BasConfig.getPropertie("update-" + typeEnum.getTypename() + "-path");
+		return StrUtil.isNoStrTrimNull(path) ? path : BasConfig.getPropertie("rootPath");
+	}
+
+	/**
+	 * 根据文件类型编码获取文件上传路径
+	 * @param fileType
+	 * @return
+	 * 赵玉柱
+	 */
+	public static String getUploadPathByFileType(int fileType)
+	{
+		FileTypeEnum typeEnum = FileTypeEnum.getFileTypeEnumByFileType(fileType);
+		return getUploadPathByFileTypeEnum(typeEnum);
+	}
+
+	/**
+	 * 根据文件名称获取文件的上传MD5路径
+	 * @param filename
+	 * @return
+	 * 赵玉柱
+	 */
+	public static String getUploadMD5FilePathByFileName(String filename)
+	{
+		String md5Path = getMD5Path(filename);
+		String uploadPath = getUploadPathByFileName(filename);
+		return uploadPath + File.separator + md5Path + File.separator + filename;
+	}
+
+	/**
+	 * 根据文件获取文件的上传MD5路径
+	 * @param file
+	 * @return
+	 * 赵玉柱
+	 */
+	public static String getUploadMD5FilePathByFile(File file)
+	{
+		if (file == null || !file.isFile())
+		{
+			return null;
+		}
+		return getUploadMD5FilePathByFileName(file.getName());
 	}
 }

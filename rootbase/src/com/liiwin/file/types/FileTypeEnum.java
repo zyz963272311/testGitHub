@@ -56,6 +56,47 @@ public enum FileTypeEnum
 		return getTypename().equals(extName.toLowerCase());
 	}
 
+	/**
+	 * 获取文件类型的枚举
+	 * @param filename
+	 * @return
+	 * 赵玉柱
+	 */
+	public static FileTypeEnum getFileTypeEnum(String filename)
+	{
+		String extName = FileUtil.getExtNameByFileName(filename);
+		if (StrUtil.isStrTrimNull(extName))
+		{
+			return null;
+		}
+		for (FileTypeEnum typeEnum : FileTypeEnum.values())
+		{
+			if (typeEnum.getTypename().equals(extName.toLowerCase()))
+			{
+				return typeEnum;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * 根据文件类型码获取文件类型枚举
+	 * @param type
+	 * @return
+	 * 赵玉柱
+	 */
+	public static FileTypeEnum getFileTypeEnumByFileType(int type)
+	{
+		for (FileTypeEnum typeEnum : FileTypeEnum.values())
+		{
+			if (type == typeEnum.getType())
+			{
+				return typeEnum;
+			}
+		}
+		return null;
+	}
+
 	public int getType()
 	{
 		return type;
