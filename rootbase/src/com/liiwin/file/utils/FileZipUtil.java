@@ -1,4 +1,4 @@
-package com.liiwin.file;
+package com.liiwin.file.utils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
