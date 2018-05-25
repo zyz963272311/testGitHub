@@ -3,6 +3,7 @@ package com.liiwin.office.docx.utils;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import org.apache.log4j.PropertyConfigurator;
 import org.docx4j.Docx4J;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
@@ -128,6 +129,7 @@ public class DocxUtils
 
 	public static void main(String[] args)
 	{
+		PropertyConfigurator.configure(DocxUtils.class.getResource("/resources/log4j.properties"));
 		long start = System.currentTimeMillis();
 		String docxPath = "C:/Users/x250-2/Desktop/git学习.docx";
 		String docxPath2HtmlPath = docxPath2HtmlPath(docxPath);
