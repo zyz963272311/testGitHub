@@ -1,5 +1,12 @@
 package com.liiwin.test;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.util.EntityUtils;
+import com.liiwin.http.HttpClientUtil;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -20,6 +27,55 @@ public class Test_84
 	 * @param args
 	 */
 	public static void main(String[] args)
+	{
+		String url = "https://biz.trace.ickd.cn/auto/540368551819?mailNo=540368551819&spellName=&exp-textName=&tk=f28276a4&tm=1527218753102&callback=_jqjsp&_1527218753103=";
+		HttpPost request = new HttpPost(url);
+		request.addHeader("Cookie", "Hm_lvt_39418dcb8e053c84230016438f4ac86c=1527216285");
+		request.addHeader("Cookie", "Hm_lpvt_39418dcb8e053c84230016438f4ac86c=1527216285");
+		request.addHeader("Content-Type", "text/javascript;charset=utf-8");
+		request.addHeader("Accept", "*/*");
+		request.addHeader("Accept-Encoding", "gzip, deflate, br");
+		request.addHeader("Accept-Language", "zh-CN,zh;q=0.9");
+		request.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36");
+		String execute = execute(request);
+		System.out.println(execute);
+	}
+
+	private static String execute(HttpUriRequest request)
+	{
+		try
+		{
+			HttpResponse response = HttpClientUtil.getHttpClient().execute(request);
+			StatusLine statusLine = response.getStatusLine();
+			if (null == statusLine)
+			{
+				throw new RuntimeException("http request fail, no status line");
+			}
+			if (statusLine.getStatusCode() != HttpStatus.SC_OK)
+			{
+				throw new RuntimeException(String.format("http request fail[status=%d|message=%s]", statusLine.getStatusCode(), EntityUtils.toString(response.getEntity(), "utf-8")));
+			}
+			return EntityUtils.toString(response.getEntity(), "utf-8");
+		} catch (RuntimeException ex)
+		{
+			throw ex;
+		} catch (Exception ex)
+		{
+			throw new RuntimeException("http request fail");
+		} finally
+		{
+			if (null != request && !request.isAborted())
+			{
+				request.abort();
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * 赵玉柱
+	 */
+	private static void testaaa()
 	{
 		double[] CL = new double[8];
 		CL[0] = 152757.80;
