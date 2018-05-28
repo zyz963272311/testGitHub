@@ -6,7 +6,10 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.util.EntityUtils;
+import com.liiwin.encryption.AES;
 import com.liiwin.http.HttpClientUtil;
+import com.liiwin.random.RandomString;
+import com.liiwin.random.RandomStringImpl;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -27,6 +30,33 @@ public class Test_84
 	 * @param args
 	 */
 	public static void main(String[] args)
+	{
+		testAes();
+	}
+
+	/**
+	 * 
+	 * 赵玉柱
+	 */
+	private static void testAes()
+	{
+		String key = "abc";
+		RandomString randomString = new RandomStringImpl();
+		String rdm = randomString.getRandomString(10, 'a', 'z') + randomString.getRandomString(10, 'A', 'Z') + randomString.getRandomString(10, '0', '9');
+		byte[] encrypt = AES.encrypt(rdm, key);
+		String str = AES.parseByte2HexStr(encrypt);
+		byte[] oByte = AES.parseHexStr2Byte(str);
+		byte[] decrypt = AES.decrypt(oByte, key);
+		String dstr = new String(decrypt);
+		System.out.println(str);
+		System.out.println(dstr);
+	}
+
+	/**
+	 * 
+	 * 赵玉柱
+	 */
+	private static void testHttp()
 	{
 		String url = "https://biz.trace.ickd.cn/auto/540368551819?mailNo=540368551819&spellName=&exp-textName=&tk=f28276a4&tm=1527218753102&callback=_jqjsp&_1527218753103=";
 		HttpPost request = new HttpPost(url);

@@ -1,15 +1,18 @@
  <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
- <head>
-   <title>aplex Bootstrap</title>
-   <meta charset="utf-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1">
-   <link rel="stylesheet" href="/css/bootstrap.min.css">
-   <script src="/js/jquery.js"></script>
-   <script src="/js/bootstrap.min.js"></script>
+<!--  <head> -->
+<!--    <title>aplex Bootstrap</title> -->
+<!--    <meta charset="utf-8"> -->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+<!--    <link rel="stylesheet" href="/css/bootstrap.min.css"> -->
+<!--    <script src="/js/jquery.js"></script> -->
+<!--    <script src="/js/bootstrap.min.js"></script> -->
+<!--  </head> -->
+ <head th:include="common_head :: commandHeader('测试标题')">
  </head>
  
  <body>
+ <div th:include="common_js :: onloadJS"></div>
  <small>本行内容是在标签内</small><br>
  <strong>本行内容是在标签内</strong><br>
  <em>本行内容是在标签内，并呈现为斜体</em><br>
