@@ -91,4 +91,8 @@ public class XlsxUtils
 		}
 		return docx2HtmlRootPath;
 	}
+
+	public static void main(String[] args)
+	{
+	}
 }
