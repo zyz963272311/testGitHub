@@ -1204,6 +1204,54 @@ public class StrUtil
 	}
 
 	/**
+	 * 替换字符串中的指定字符的占位符
+	 * @param str
+	 * @param params
+	 * @return
+	 * 赵玉柱
+	 */
+	public static String replaceMacro(String str, Map<String,Object> params)
+	{
+		if (isStrTrimNull(str) || params == null || params.isEmpty())
+		{
+			return str;
+		}
+		int length = str.length();
+		boolean hasEnd = false;
+		int end = -1;
+		for (int i = length - 1; i >= 0; i--)
+		{
+			if ('}' == str.charAt(i))
+			{
+				hasEnd = true;
+				end = i;
+			}
+			if ('{' == str.charAt(i) && hasEnd)
+			{
+				hasEnd = false;
+				String key = str.substring(i + 1, end);
+				if (key != null && params.containsKey(key))
+				{
+					String value = StrUtil.obj2str(params.get(key));
+					str = str.substring(0, i) + value + str.substring(end + 1);
+				}
+			}
+		}
+		//		while (matcher.find())
+		//		{
+		//			matcherSet.add(matcher.group());
+		//		}
+		//		if (!matcherSet.isEmpty())
+		//		{
+		//			for (String key : matcherSet)
+		//			{
+		//				str = str.replace("{" + key + "}", StrUtil.obj2str(params.get(key)));
+		//			}
+		//		}
+		return str;
+	}
+
+	/**
 	 * 快速交换两个值
 	 * @param a
 	 * @param b

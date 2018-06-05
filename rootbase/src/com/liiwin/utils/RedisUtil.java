@@ -1,11 +1,11 @@
 package com.liiwin.utils;
 
-import redis.clients.jedis.Jedis;
 import com.liiwin.date.Redis;
+import redis.clients.jedis.Jedis;
 /**
- * <p>标题： TODO</p>
+ * <p>标题： RedisUtil</p>
  * <p>功能： </p>
- * <p>所属模块： TODO</p>
+ * <p>所属模块： rootbas</p>
  * <p>版权： Copyright © 2017 SNSOFT</p>
  * <p>公司: 北京南北天地科技股份有限公司</p>
  * <p>创建日期：2017年6月7日 下午5:07:18</p>
@@ -18,24 +18,32 @@ import com.liiwin.date.Redis;
  */
 public class RedisUtil
 {
+	/**秒 1秒*/
 	public static final int	SECOND	= 1;
+	/**分 60秒*/
 	public static final int	MINUTE	= 2;
+	/**时 60*60秒*/
 	public static final int	HOUR	= 3;
+	/**日 60*60*24秒*/
 	public static final int	DAY		= 4;
+	/**周 60*60*24*7秒*/
 	public static final int	WEEK	= 5;
+	/**月 60*60*24*30秒*/
 	public static final int	MONTH	= 6;
+	/**季 60*60*24*30*3秒*/
 	public static final int	SEASON	= 7;
+	/**年 60*60*24*365秒 */
 	public static final int	YEAR	= 8;
 
 	/**
-	 * 在redis缓存中添加数据，并设置默认的超时时间为10分钟，认为10分钟之后，这个数据将不在有用
+	 * 在redis缓存中添加数据，此处不设置默认的超时时间，按照不删除的原则插入
 	 * @param key
 	 * @param value
 	 * 赵玉柱
 	 */
 	public static void set(String key, Object value)
 	{
-		set(key, value, 600);
+		set(key, value, -1);
 	}
 
 	/**
@@ -72,11 +80,11 @@ public class RedisUtil
 			}
 			if (timeType == SEASON)
 			{
-				time = time * 60 * 60 * 24 * 30 * 4;
+				time = time * 60 * 60 * 24 * 30 * 3;
 			}
 			if (timeType == YEAR)
 			{
-				time = time * 60 * 60 * 24 * 360;
+				time = time * 60 * 60 * 24 * 365;
 			}
 		} else
 		{
@@ -100,7 +108,10 @@ public class RedisUtil
 		Jedis jedis = redis.getJedis();
 		byte[] valueByte = SerializableUtils.serializable(value);
 		jedis.set(key.getBytes(), valueByte);
-		jedis.expire(key.getBytes(), seconds);
+		if (seconds >= 0)
+		{
+			jedis.expire(key.getBytes(), seconds);
+		}
 	}
 
 	public static Object get(String key)

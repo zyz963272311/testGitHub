@@ -1,8 +1,8 @@
 package com.liiwin.date;
 
-import redis.clients.jedis.Jedis;
 import com.liiwin.config.BasConfig;
 import com.liiwin.utils.StrUtil;
+import redis.clients.jedis.Jedis;
 /**
  * <p>标题： Redis数据库</p>
  * <p>功能： </p>
@@ -19,7 +19,7 @@ import com.liiwin.utils.StrUtil;
  */
 public class Redis
 {
-	private static Jedis	jedis;
+	private static Jedis jedis;
 
 	public Redis()
 	{

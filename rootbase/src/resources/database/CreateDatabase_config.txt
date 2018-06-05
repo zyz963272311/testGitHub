@@ -1,10 +1,14 @@
-	db			dbname				数据库名称				varchar		128,0			0b00000011
-	db 			url						数据库url					varchar		256,0			0b00000000
-	db			username			用户名						varchar		64,0			0b00000000
-	db			password			密码							varchar		64,0			0b00000000
+	db			dbname				数据库名称				varchar			128,0			0b00000011
+	db 			url					数据库url				varchar			256,0			0b00000000
+	db			username			用户名				varchar			64,0			0b00000000
+	db			password			密码					varchar			64,0			0b00000000
 	db			initcount			初始化连接数			int				4,0				0b00000000
 	db			maxcount			最大连接数				int				4,0				0b00000000
 	
-	tb			tbname				表名							varchar		128,0			0b00000011
-	tb			dbname				数据库名称				varchar		128,0			0b00000000
-	tb			tblang1name		数据库中文名			varchar		128,0			0b00000000
+	tb			tbname				表名					varchar			128,0			0b00000011
+	tb			dbname				数据库名称				varchar			128,0			0b00000000
+	tb			tblang1name			数据库中文名			varchar			128,0			0b00000000
+	
+	properties pkey					属性名				varchar			128,0			0b00000011
+	properties pvalue				属性值				varchar			128,0			0b00000000
+	properties premark				属性备注				varchar			128,0			0b00000000

@@ -1,7 +1,11 @@
 package com.liiwin.config;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
+import com.liiwin.db.Database;
+import com.liiwin.db.pool.DatabasePoolManager;
 import com.liiwin.utils.StrUtil;
 /**
  * <p>标题： 获取config中的配置</p>
@@ -19,7 +23,7 @@ import com.liiwin.utils.StrUtil;
  */
 public class BasConfig
 {
-	protected static Properties	properties;
+	protected static Properties properties;
 
 	/**
 	 * 加载配置文件 userdir + "/resources/config.properties"
@@ -58,6 +62,35 @@ public class BasConfig
 			} catch (IOException e1)
 			{
 				throw new RuntimeException("报错内容", e1);
+			}
+		}
+		//获取数据库中的配置
+		Database db = null;
+		try
+		{
+			db = DatabasePoolManager.getNewInstance().getConfigDatabase();
+			String sql = "select * from properties where pvalue is not null ";
+			List<Map<String,Object>> propertiesFromDB = db.getListMapFromSql(sql);
+			if (!propertiesFromDB.isEmpty())
+			{
+				for (Map<String,Object> propertiesMap : propertiesFromDB)
+				{
+					String key = StrUtil.obj2str(propertiesMap.get("pkey"));
+					String value = StrUtil.obj2str(propertiesMap.get("pvalue"));
+					if (!StrUtil.isNullIn(key, value))
+					{
+						properties.put(key, value);
+					}
+				}
+			}
+		} catch (Exception e)
+		{
+			System.out.println("查询数据库失败");
+		} finally
+		{
+			if (db != null)
+			{
+				DatabasePoolManager.getNewInstance().close(db);
 			}
 		}
 	}
