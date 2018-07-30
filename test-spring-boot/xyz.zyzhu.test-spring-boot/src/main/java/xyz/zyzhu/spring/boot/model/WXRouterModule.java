@@ -20,7 +20,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "wxroutermodule")
-public class WXRouterModule implements Serializable
+public class WXRouterModule extends BasModel
 {
 	private static final long	serialVersionUID	= 1411879407786673442L;
 	@Id

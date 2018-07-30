@@ -1,7 +1,13 @@
 package xyz.zyzhu.spring.boot.test;
 
 import java.text.ParseException;
+
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+
 import com.liiwin.utils.StrUtil;
+
+import xyz.zyzhu.spring.boot.dao.impl.MenuDaoImpl;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -20,18 +26,7 @@ public class Test
 {
 	public static void main(String[] args) throws ParseException
 	{
-		Class objClass = getObjClass(1);
-		System.out.println(objClass);
-		System.out.println(objClass.isPrimitive());
-		Class objClass1 = getObjClass(new Integer(2));
-		System.out.println(objClass1);
-		System.out.println(objClass1.isPrimitive());
-		Class objClass2 = getObjClass(new String("321"));
-		System.out.println(objClass2);
-		System.out.println(objClass2.isPrimitive());
-		Class objClass3 = getObjClass(null);
-		System.out.println(objClass3);
-		System.out.println(objClass3.isPrimitive());
+		System.out.println(int.class);
 	}
 
 	private static Class getObjClass(Object o)

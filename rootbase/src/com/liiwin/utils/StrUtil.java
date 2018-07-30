@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
+import org.docx4j.model.datastorage.XPathEnhancerParser.expr_return;
 /**
  * <p>标题：StringUtil工具 </p>
  * <p>功能：StringUtil工具 </p>
@@ -988,10 +990,22 @@ public class StrUtil
 		try
 		{
 			//Boolean.class == field.getClass() || boolean.class == field.getClass() ||
+			Method method = null;
 			if (Boolean.class.isAssignableFrom(field.getClass()) || boolean.class.isAssignableFrom(field.getClass()))
 			{
+				try
+				{
+				 method= clazz.getMethod("is" + setFirstUpperOrLower(fieldName, true), field.getClass());
+				}
+				catch(Exception e)
+				{
+				}
 			}
-			return clazz.getMethod("set" + setFirstUpperOrLower(fieldName, true), field.getClass());
+			if(method != null)
+			{
+				return method;
+			}
+			return clazz.getMethod("get" + setFirstUpperOrLower(fieldName, true), field.getClass());
 		} catch (NoSuchMethodException e)
 		{
 			throw new RuntimeException("报错内容", e);
