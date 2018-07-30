@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  * <p>版权： Copyright © 2017 SNSOFT</p>
  * <p>公司: 赵玉柱练习</p>
  * <p>创建日期：2017年11月26日 下午5:22:51</p>
- * <p>类全名：xyz.zyzhu.spring.boot.annotation.Column</p>
+ * <p>类全名：xyz.zyzhu.spring.boot.annotation.DefaultValue</p>
  * 作者：赵玉柱
  * 初审：
  * 复审：
@@ -20,9 +20,19 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Column
+public @interface DefaultValue
 {
-	String name() default "";
+	/**
+	 * 默认值
+	 * @return
+	 * 赵玉柱
+	 */
+	String defaultValue() default "";
 
-	boolean prim() default false;
+	/**
+	 * 默认值
+	 * @return
+	 * 赵玉柱
+	 */
+	String[] defaultValues() default {};
 }

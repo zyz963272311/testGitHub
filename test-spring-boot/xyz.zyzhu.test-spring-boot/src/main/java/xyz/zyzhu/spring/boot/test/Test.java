@@ -20,6 +20,35 @@ public class Test
 {
 	public static void main(String[] args) throws ParseException
 	{
+		Class objClass = getObjClass(1);
+		System.out.println(objClass);
+		System.out.println(objClass.isPrimitive());
+		Class objClass1 = getObjClass(new Integer(2));
+		System.out.println(objClass1);
+		System.out.println(objClass1.isPrimitive());
+		Class objClass2 = getObjClass(new String("321"));
+		System.out.println(objClass2);
+		System.out.println(objClass2.isPrimitive());
+		Class objClass3 = getObjClass(null);
+		System.out.println(objClass3);
+		System.out.println(objClass3.isPrimitive());
+	}
+
+	private static Class getObjClass(Object o)
+	{
+		if (o != null)
+		{
+			return o.getClass();
+		}
+		return null;
+	}
+
+	/**
+	 * 
+	 * 赵玉柱
+	 */
+	private static void constTest()
+	{
 		String content = "1221";
 		String[] constellationArr = { "魔羯座", "水瓶座", "双鱼座", "牡羊座", "金牛座", "双子座", "巨蟹座", "狮子座", "处女座", "天秤座", "天蝎座", "射手座" };
 		int[] constellationEdgeDay = { 20, 18, 20, 20, 20, 21, 22, 22, 22, 22, 21, 21 };
