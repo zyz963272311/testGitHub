@@ -1,7 +1,7 @@
 package xyz.zyzhu.spring.boot.utils;
 
 import java.util.List;
-import xyz.zyzhu.spring.boot.model.WXRouterModule;
+import xyz.zyzhu.spring.boot.model.WXRouter;
 /**
  * <p>标题： 微信开发工具类</p>
  * <p>功能： </p>
@@ -23,7 +23,7 @@ public class WXUtils
 	 * @return
 	 * 赵玉柱
 	 */
-	public static List<WXRouterModule> getWXRouters()
+	public static List<WXRouter> getWXRouters()
 	{
 		return null;
 	}

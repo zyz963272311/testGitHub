@@ -17,6 +17,7 @@ package com.liiwin.code;
  */
 public class CodePart
 {
+	private String	code;
 	/** 一个字符串，指定这部分码的样式 */
 	private String	codePartFormate;
 	/** 指定码的长度，取length和codePartFormate.length()的最小值*/
@@ -34,6 +35,14 @@ public class CodePart
 
 	public CodePart(String codePartFormate, int length, int type)
 	{
+		this.codePartFormate = codePartFormate;
+		this.length = length;
+		this.type = type;
+	}
+
+	public CodePart(String code, String codePartFormate, int length, int type)
+	{
+		this.code = code;
 		this.codePartFormate = codePartFormate;
 		this.length = length;
 		this.type = type;
@@ -69,9 +78,19 @@ public class CodePart
 		this.type = type;
 	}
 
+	public String getCode()
+	{
+		return code;
+	}
+
+	public void setCode(String code)
+	{
+		this.code = code;
+	}
+
 	@Override
 	public String toString()
 	{
-		return "codePartFormate=" + codePartFormate + ",length=" + length + ",type=" + type;
+		return "code=" + code + "codePartFormate=" + codePartFormate + ",length=" + length + ",type=" + type;
 	}
 }

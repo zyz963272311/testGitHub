@@ -19,7 +19,7 @@ import com.liiwin.utils.StrUtil;
  */
 public class MakeCodeUtil
 {
-	private static final int	DEFAULT_LENGTH	= 10;
+	private static final int DEFAULT_LENGTH = 10;
 
 	public static String makeOuttercode(String prefix, int codeLength, String key)
 	{
@@ -39,7 +39,7 @@ public class MakeCodeUtil
 		{
 			codeLength = DEFAULT_LENGTH;
 		}
-		if (StrUtil.isStrTrimNull(prefix))
+		if (prefix == null)
 		{
 			Calendar calendar = Calendar.getInstance();
 			String year = StrUtil.obj2str(calendar.get(Calendar.YEAR)).substring(2);

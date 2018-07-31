@@ -8,8 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
-import org.docx4j.model.datastorage.XPathEnhancerParser.expr_return;
+import java.util.Stack;
 /**
  * <p>标题：StringUtil工具 </p>
  * <p>功能：StringUtil工具 </p>
@@ -995,13 +994,12 @@ public class StrUtil
 			{
 				try
 				{
-				 method= clazz.getMethod("is" + setFirstUpperOrLower(fieldName, true), field.getClass());
-				}
-				catch(Exception e)
+					method = clazz.getMethod("is" + setFirstUpperOrLower(fieldName, true), field.getClass());
+				} catch (Exception e)
 				{
 				}
 			}
-			if(method != null)
+			if (method != null)
 			{
 				return method;
 			}
@@ -1263,6 +1261,72 @@ public class StrUtil
 		//			}
 		//		}
 		return str;
+	}
+
+	/**
+	 * 对称比较，常用与判定当前字符串是否是合法的方法上使用，即比较大于号小于号【泛型】，括号【方法体】
+	 * @param str
+	 * @return
+	 * 赵玉柱
+	 */
+	public static boolean symmetricCompare(String str)
+	{
+		if (isStrTrimNull(str))
+		{
+			return true;
+		}
+		int length = str.length();
+		Stack<Character> stack = new Stack<>();
+		try
+		{
+			for (int i = 0; i < length; i++)
+			{
+				char c = str.charAt(i);
+				if (isLeft(c))
+				{
+					stack.push(c);
+				} else if (isRight(c))
+				{
+					stack.pop();
+				}
+			}
+			if (stack.isEmpty())
+			{
+				return true;
+			} else
+			{
+				return false;
+			}
+		} catch (Exception e)
+		{
+			return false;
+		}
+	}
+
+	private static boolean isLeft(char c)
+	{
+		switch (c)
+		{
+		case '<':
+		case '(':
+		case '{':
+		case '[':
+			return true;
+		}
+		return false;
+	}
+
+	private static boolean isRight(char c)
+	{
+		switch (c)
+		{
+		case '>':
+		case ')':
+		case '}':
+		case ']':
+			return true;
+		}
+		return false;
 	}
 
 	/**

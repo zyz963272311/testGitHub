@@ -108,7 +108,7 @@ public class RedisUtil
 		Jedis jedis = redis.getJedis();
 		byte[] valueByte = SerializableUtils.serializable(value);
 		jedis.set(key.getBytes(), valueByte);
-		if (seconds >= 0)
+		if (seconds > 0)
 		{
 			jedis.expire(key.getBytes(), seconds);
 		}

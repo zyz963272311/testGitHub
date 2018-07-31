@@ -21,7 +21,7 @@ import com.liiwin.utils.StrUtil;
  */
 public class Code
 {
-	private List<CodePart>	code;
+	private List<CodePart> code;
 
 	public Code()
 	{
@@ -49,16 +49,6 @@ public class Code
 
 	public synchronized String makeCode()
 	{
-		Random random = new Random();
-		try
-		{
-			int l = 1 + random.nextInt(3);
-			Thread.sleep(l);
-			System.out.println(l);
-		} catch (InterruptedException e)
-		{
-			throw new RuntimeException("报错内容", e);
-		}
 		if (code == null || code.isEmpty())
 		{
 			return null;
@@ -80,6 +70,10 @@ public class Code
 			{
 				String codePartFormate = codePart.getCodePartFormate();
 				int length = codePart.getLength();
+				if (length <= 0)
+				{
+					length = codePartFormate != null ? codePartFormate.length() : 0;
+				}
 				int type = codePart.getType();
 				int[] comp = new int[] { CodeType.FIX_LENGTH, CodeType.RANDOM_NUMBER, CodeType.TIME };
 				if (!StrUtil.isIntIn(type, comp))
@@ -107,6 +101,10 @@ public class Code
 						//获取一个固定长度的字符串
 						String fixLengthString = (length < codePartFormate.length() ? codePartFormate.substring(0, length) : codePartFormate);
 						codePartString = fixLengthString;
+					} else if ((type & CodeType.AUTO_INCR) >= 1)
+					{
+						//自增长
+						codePartString = MakeCodeUtil.makeOuttercode("", length, codePart.getCode() + codePartFormate);
 					}
 				}
 			} catch (Exception e)
@@ -119,6 +117,16 @@ public class Code
 
 	private String getRandomNum(CodePart codePart)
 	{
+		Random random = new Random();
+		try
+		{
+			int l = 1 + random.nextInt(3);
+			Thread.sleep(l);
+			System.out.println(l);
+		} catch (InterruptedException e)
+		{
+			throw new RuntimeException("报错内容", e);
+		}
 		int length = codePart.getLength();
 		//随机数
 		long randomNum = DateUtil.getCurMillisecondOnToday();
@@ -128,7 +136,6 @@ public class Code
 		{
 			final StringBuffer tempSB = new StringBuffer();
 			final int diff = randomLength - length;
-			Random random = new Random();
 			for (int i = 0; i < diff; i++)
 			{
 				tempSB.append(random.nextInt(10));

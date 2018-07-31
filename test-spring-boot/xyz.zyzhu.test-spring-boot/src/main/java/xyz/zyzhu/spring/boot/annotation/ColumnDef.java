@@ -20,7 +20,7 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DefaultValue
+public @interface ColumnDef
 {
 	/**
 	 * 默认值
@@ -28,11 +28,4 @@ public @interface DefaultValue
 	 * 赵玉柱
 	 */
 	String defaultValue() default "";
-
-	/**
-	 * 默认值
-	 * @return
-	 * 赵玉柱
-	 */
-	String[] defaultValues() default {};
 }

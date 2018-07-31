@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import xyz.zyzhu.spring.boot.dao.WXRouterDao;
-import xyz.zyzhu.spring.boot.model.WXRouterModule;
+import xyz.zyzhu.spring.boot.model.WXRouter;
 import xyz.zyzhu.spring.boot.service.WXRouterService;
 /**
  * <p>标题： WX路由实现类</p>
@@ -26,19 +26,19 @@ public class WXRouterServiceImpl implements WXRouterService
 	WXRouterDao wxRouterDao;
 
 	@Override
-	public WXRouterModule queryById(String id)
+	public WXRouter queryById(String id)
 	{
 		return wxRouterDao.queryById(id);
 	}
 
 	@Override
-	public void add(WXRouterModule m)
+	public void add(WXRouter m)
 	{
 		wxRouterDao.add(m);
 	}
 
 	@Override
-	public void delete(WXRouterModule m)
+	public void delete(WXRouter m)
 	{
 		wxRouterDao.delete(m);
 	}
@@ -50,25 +50,25 @@ public class WXRouterServiceImpl implements WXRouterService
 	}
 
 	@Override
-	public void update(WXRouterModule m)
+	public void update(WXRouter m)
 	{
 		wxRouterDao.update(m);
 	}
 
 	@Override
-	public List<WXRouterModule> queryList()
+	public List<WXRouter> queryList()
 	{
 		return wxRouterDao.queryList();
 	}
 
 	@Override
-	public List<WXRouterModule> queryListByModule(WXRouterModule m)
+	public List<WXRouter> queryListByModule(WXRouter m)
 	{
 		return wxRouterDao.queryListByModule(m);
 	}
 
 	@Override
-	public List<WXRouterModule> queryListByFilter(WXRouterModule m, Map<String,Object> params)
+	public List<WXRouter> queryListByFilter(WXRouter m, Map<String,Object> params)
 	{
 		return wxRouterDao.queryListByFilter(m, params);
 	}

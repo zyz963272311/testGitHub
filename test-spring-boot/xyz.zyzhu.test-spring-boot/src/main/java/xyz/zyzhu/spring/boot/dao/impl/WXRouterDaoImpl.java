@@ -8,7 +8,7 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 import xyz.zyzhu.spring.boot.dao.WXRouterDao;
-import xyz.zyzhu.spring.boot.model.WXRouterModule;
+import xyz.zyzhu.spring.boot.model.WXRouter;
 import xyz.zyzhu.spring.boot.repository.WXRouterRepository;
 /**
  * <p>标题： 微信路由dao实现类</p>
@@ -32,21 +32,21 @@ public class WXRouterDaoImpl implements WXRouterDao
 
 	@Cacheable(value = "WXRouterModule", key = "#id")
 	@Override
-	public WXRouterModule queryById(String id)
+	public WXRouter queryById(String id)
 	{
 		return wxRouterRepository.findOne(id);
 	}
 
 	@CachePut(value = "WXRouterModule", key = "#m.id")
 	@Override
-	public void add(WXRouterModule m)
+	public void add(WXRouter m)
 	{
 		wxRouterRepository.save(m);
 	}
 
 	@CacheEvict(value = "WXRouterModule")
 	@Override
-	public void delete(WXRouterModule m)
+	public void delete(WXRouter m)
 	{
 		wxRouterRepository.delete(m);
 	}
@@ -60,28 +60,28 @@ public class WXRouterDaoImpl implements WXRouterDao
 
 	@CachePut(value = "WXRouterModule", key = "#m.id")
 	@Override
-	public void update(WXRouterModule m)
+	public void update(WXRouter m)
 	{
 		wxRouterRepository.save(m);
 	}
 
 	@Cacheable(value = "WXRouterModule")
 	@Override
-	public List<WXRouterModule> queryList()
+	public List<WXRouter> queryList()
 	{
 		return wxRouterRepository.findAll();
 	}
 
 	@Cacheable(value = "WXRouterModule")
 	@Override
-	public List<WXRouterModule> queryListByModule(WXRouterModule m)
+	public List<WXRouter> queryListByModule(WXRouter m)
 	{
 		return null;
 	}
 
 	@Cacheable(value = "WXRouterModule")
 	@Override
-	public List<WXRouterModule> queryListByFilter(WXRouterModule m, Map<String,Object> params)
+	public List<WXRouter> queryListByFilter(WXRouter m, Map<String,Object> params)
 	{
 		return null;
 	}

@@ -22,4 +22,6 @@ public class CodeType
 	public static int	TIME			= 2;
 	/**按照给定长度的字符串，直接扔上去*/
 	public static int	FIX_LENGTH		= 4;
+	//自增长
+	public static int	AUTO_INCR		= 8;
 }

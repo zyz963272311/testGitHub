@@ -2,7 +2,7 @@ package xyz.zyzhu.spring.boot.dao;
 
 import java.util.List;
 import java.util.Map;
-import xyz.zyzhu.spring.boot.model.WXRouterModule;
+import xyz.zyzhu.spring.boot.model.WXRouter;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -25,21 +25,21 @@ public interface WXRouterDao
 	 * @return
 	 * 赵玉柱
 	 */
-	WXRouterModule queryById(String id);
+	WXRouter queryById(String id);
 
 	/**
 	 * 添加
 	 * @param m
 	 * 赵玉柱
 	 */
-	void add(WXRouterModule m);
+	void add(WXRouter m);
 
 	/**
 	 * 删除
 	 * @param m
 	 * 赵玉柱
 	 */
-	void delete(WXRouterModule m);
+	void delete(WXRouter m);
 
 	/**
 	 * 根据ID删除
@@ -53,14 +53,14 @@ public interface WXRouterDao
 	 * @param m
 	 * 赵玉柱
 	 */
-	void update(WXRouterModule m);
+	void update(WXRouter m);
 
 	/**
 	 * 数据查询
 	 * @return
 	 * 赵玉柱
 	 */
-	List<WXRouterModule> queryList();
+	List<WXRouter> queryList();
 
 	/**
 	 * 根据Module查询List
@@ -68,7 +68,7 @@ public interface WXRouterDao
 	 * @return
 	 * 赵玉柱
 	 */
-	List<WXRouterModule> queryListByModule(WXRouterModule m);
+	List<WXRouter> queryListByModule(WXRouter m);
 
 	/**
 	 * 根据查询条件查询list
@@ -76,5 +76,5 @@ public interface WXRouterDao
 	 * @return
 	 * 赵玉柱
 	 */
-	List<WXRouterModule> queryListByFilter(WXRouterModule m, Map<String,Object> params);
+	List<WXRouter> queryListByFilter(WXRouter m, Map<String,Object> params);
 }

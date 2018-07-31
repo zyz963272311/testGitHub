@@ -53,6 +53,42 @@ public class Test_84
 	}
 
 	/**
+	 * 测试静态内部类
+	 * <p>标题： TODO</p>
+	 * <p>功能： </p>
+	 * <p>所属模块： TODO</p>
+	 * <p>版权： Copyright © 2018 zyzhu</p>
+	 * <p>公司: xyz.zyzhu</p>
+	 * <p>创建日期：2018年7月31日 下午4:33:23</p>
+	 * <p>类全名：com.liiwin.test.TTT</p>
+	 * 作者：赵玉柱
+	 * 初审：
+	 * 复审：
+	 * 监听使用界面:
+	 * @version 8.0
+	 */
+	public static class TTTStatic
+	{
+		public static String getA()
+		{
+			return "aaa";
+		}
+
+		public String getB()
+		{
+			return "bbb";
+		}
+	}
+
+	public class TTTNoStatic
+	{
+		public String getC()
+		{
+			return "ccc";
+		}
+	}
+
+	/**
 	 * 
 	 * 赵玉柱
 	 */

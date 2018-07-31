@@ -1,6 +1,5 @@
 package xyz.zyzhu.spring.boot.model;
 
-import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -19,8 +18,8 @@ import javax.persistence.Table;
  * @version 8.0
  */
 @Entity
-@Table(name = "wxroutermodule")
-public class WXRouterModule extends BasModel
+@Table(name = "wxrouter")
+public class WXRouter extends BasModel
 {
 	private static final long	serialVersionUID	= 1411879407786673442L;
 	@Id
