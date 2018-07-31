@@ -247,39 +247,44 @@ public class ObjectUtils
 	@SuppressWarnings("unchecked")
 	public static Object executeMethod(String str, Object... args)
 	{
-		Map<String,Object> buildExecParams = buildExecParams(str, true);
-		Constructor<?> constructor = (Constructor<?>) buildExecParams.get(CONSTRUCTOR);
-		Method method = (Method) buildExecParams.get(METHOD);
-		List<Class<?>> classArgs = (List<Class<?>>) buildExecParams.get(CONSTRUCTOR_PARAMS);
-		List<Class<?>> methodArgs = (List<Class<?>>) buildExecParams.get(METHOD_PARAMS);
-		int classArgsSize = classArgs.size();
-		int methodArgsSize = methodArgs.size();
-		int argsSize = classArgsSize + methodArgsSize;
-		if (!(argsSize == 0 && args == null || args.length == 0))
+		try
 		{
-			throw new RuntimeException("参数个数不比配");
-		}
-		Object[] classParams = new Object[classArgsSize];
-		int i = 0;
-		for (; i < classArgsSize; i++)
-		{
-			classParams[i] = args[i];
-		}
-		Object[] methodParams = new Object[methodArgsSize];
-		for (i = 0; i < methodArgsSize; i++)
-		{
-			methodParams[i] = args[classArgsSize + i];
-		}
-		if (constructor == null)
-		{
-			//静态方法
-			if (argsSize > 0)
-			{
+			Map<String, Object> buildExecParams = buildExecParams(str, true);
+			Constructor<?> constructor = (Constructor<?>) buildExecParams.get(CONSTRUCTOR);
+			Method method = (Method) buildExecParams.get(METHOD);
+			List<Class<?>> classArgs = (List<Class<?>>) buildExecParams.get(CONSTRUCTOR_PARAMS);
+			List<Class<?>> methodArgs = (List<Class<?>>) buildExecParams.get(METHOD_PARAMS);
+			int classArgsSize = classArgs.size();
+			int methodArgsSize = methodArgs.size();
+			Object[] classParams = new Object[classArgsSize];
+			int i = 0;
+			for (; i < classArgsSize; i++) {
+				Object arg = null;
+				if (args != null && args.length > i) {
+					arg = args[i];
+				}
+				classParams[i] = arg;
 			}
-		} else
-		{
+			Object[] methodParams = new Object[methodArgsSize];
+			for (i = 0; i < methodArgsSize; i++) {
+				Object arg = null;
+				if (args != null && args.length > i + classArgsSize) {
+					arg = args[i + classArgsSize];
+				}
+				methodParams[i] = arg;
+			}
+			Object result = null;
+			Object instance = null;
+			if (constructor != null) {
+				instance = constructor.newInstance(classParams);
+			}
+			result = method.invoke(instance, methodParams);
+			return result;
 		}
-		return null;
+		catch(Exception e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 
 	private static Map<String,Object> buildExecParams(String str, boolean isThrow)
