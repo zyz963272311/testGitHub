@@ -1,5 +1,7 @@
 package com.liiwin.test;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
@@ -31,7 +33,33 @@ public class Test_84
 	 */
 	public static void main(String[] args)
 	{
-		testAes();
+		String a = "aaa_bbb_ccc";
+		System.out.println(a.length());
+		System.out.println(a.replace("_", "").length());
+		System.out.println(Number.class.isAssignableFrom(Integer.class));
+		System.out.println(Integer.class.isAssignableFrom(Number.class));
+		Test1 test1 = new Test1();
+		Class<?> clazz = test1.getClass();
+		System.out.println(clazz);
+		Field[] declaredFields = clazz.getDeclaredFields();
+		for (Field f : declaredFields)
+		{
+			System.out.println(f);
+		}
+		Method[] declaredMethods = clazz.getDeclaredMethods();
+		for (Method m : declaredMethods)
+		{
+			System.out.println(m);
+		}
+		System.out.println("===================");
+		Field[] fields = clazz.getFields();
+		for (Field f : fields)
+		{
+			System.out.println(f);
+		}
+		Class<?> superclass = clazz.getSuperclass();
+		System.out.println(superclass);
+		System.out.println(Object.class.getSuperclass());
 	}
 
 	/**

@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import com.liiwin.code.CodePart;
+import xyz.zyzhu.spring.boot.annotation.FieldDef;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -24,12 +25,14 @@ public class AutoCodeG extends BasModel
 {
 	private static final long	serialVersionUID	= 8480040917605629855L;
 	@Id
+	@FieldDef(defaultValue = "AutoCode:autogid__________")
 	private String				id;											//内码
 	private String				mid;										//主表内码
 	private String				num;										//序号
 	private String				formate;									//格式
 	private Integer				length;										//长度
 	/**@see CodePart*/
+	@FieldDef(defaultValue = "4")
 	private String				type;										//类型
 
 	public String getMid()

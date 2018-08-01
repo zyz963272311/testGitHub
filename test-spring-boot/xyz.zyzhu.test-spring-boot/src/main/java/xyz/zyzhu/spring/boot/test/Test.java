@@ -1,13 +1,8 @@
 package xyz.zyzhu.spring.boot.test;
 
 import java.text.ParseException;
-
-import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
-
+import com.liiwin.code.MakeCodeUtil;
 import com.liiwin.utils.StrUtil;
-
-import xyz.zyzhu.spring.boot.dao.impl.MenuDaoImpl;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -27,6 +22,16 @@ public class Test
 	public static void main(String[] args) throws ParseException
 	{
 		System.out.println(int.class);
+	}
+
+	public static String getName()
+	{
+		return "name" + 33321;
+	}
+
+	public String getCode()
+	{
+		return "code" + MakeCodeUtil.makeOuttercode("", 5, "code");
 	}
 
 	private static Class getObjClass(Object o)

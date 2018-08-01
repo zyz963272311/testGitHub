@@ -1,6 +1,6 @@
 package com.liiwin.test;
 
-import com.liiwin.test.Test_84.TTTStatic;
+import java.io.Serializable;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -15,16 +15,17 @@ import com.liiwin.test.Test_84.TTTStatic;
  * 监听使用界面:
  * @version 8.0
  */
-public class Test1
+public class Test1 implements Serializable
 {
-	public static void main(String[] args)
+	private String kkkk;
+
+	public String getKkkk()
 	{
-		Test_84 t84 = new Test_84();
-		String a = TTTStatic.getA();
-		System.out.println(a);
-		String c = t84.new TTTNoStatic().getC();
-		System.out.println(c);
-		String b = new com.liiwin.test.Test_84.TTTStatic().getB();
-		System.out.println(b);
+		return kkkk;
+	}
+
+	public void setKkkk(String kkkk)
+	{
+		this.kkkk = kkkk;
 	}
 }

@@ -5,16 +5,18 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import javax.persistence.OneToMany;
+import java.util.Map.Entry;
 import com.liiwin.code.Code;
 import com.liiwin.code.CodePart;
+import com.liiwin.code.MakeCodeUtil;
 import com.liiwin.date.DateUtil;
 import com.liiwin.utils.BigUtils;
 import com.liiwin.utils.StrUtil;
-import xyz.zyzhu.spring.boot.annotation.ColumnDef;
+import xyz.zyzhu.spring.boot.annotation.FieldDef;
 import xyz.zyzhu.spring.boot.model.AutoCode;
 import xyz.zyzhu.spring.boot.model.AutoCodeG;
 import xyz.zyzhu.spring.boot.service.AutoCodeService;
@@ -41,6 +43,7 @@ public class DefaultValueUtils
 	 * @return
 	 * 赵玉柱
 	 */
+	@SuppressWarnings("unchecked")
 	public static <E extends Object> E buildDefaultValueByClass(Class<E> clazz, boolean recursion)
 	{
 		if (clazz == null)
@@ -50,24 +53,22 @@ public class DefaultValueUtils
 		E instance = null;
 		try
 		{
-			instance = clazz.newInstance();
+			instance = (E) ObjectUtils.newInstance(clazz);
 			buildDefaultValue(instance, recursion);
-		} catch (InstantiationException e1)
+		} catch (InstantiationException | IllegalAccessException | NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException e)
 		{
-			throw new RuntimeException("报错内容", e1);
-		} catch (IllegalAccessException e1)
-		{
-			throw new RuntimeException("报错内容", e1);
+			throw new RuntimeException("设置默认值异常", e);
 		}
 		return instance;
 	}
 
 	/**
-	 * 
+	 * 补充默认值
 	 * @param o
 	 * @param recursion
 	 * 赵玉柱
 	 */
+	@SuppressWarnings("unchecked")
 	public static void buildDefaultValue(Object o, boolean recursion)
 	{
 		if (o == null)
@@ -75,8 +76,8 @@ public class DefaultValueUtils
 			return;
 		}
 		Class<?> clazz = o.getClass();
-		Field[] fields = clazz.getDeclaredFields();
-		if (fields == null || fields.length == 0)
+		List<Field> fields = ObjectUtils.getClassFields(clazz, 2);
+		if (fields == null || fields.size() == 0)
 		{
 			return;
 		}
@@ -84,149 +85,191 @@ public class DefaultValueUtils
 		Map<String,Method> setterMethods = ObjectUtils.getClassSetterMethods(clazz);
 		for (Field field : fields)
 		{
-			Class<?> fieldClazz = field.getClass();
+			Class<?> fieldClazz = field.getType();
 			boolean simpleType = ObjectUtils.isSimpleType(fieldClazz);
 			try
 			{
 				Method getterMethod = getterMethods.get(field.getName());
 				Method setterMethod = setterMethods.get(field.getName());
-				if (simpleType)
+				if (getterMethod != null && setterMethod != null)
 				{
-					Object invoke = getterMethod.invoke(o);
-					if (invoke == null)
+					if (simpleType)
 					{
-						ColumnDef annotation = field.getAnnotation(ColumnDef.class);
-						if (annotation != null)
+						Object invoke = getterMethod.invoke(o);
+						if (invoke == null)
 						{
-							String defaultValueAnno = null;
-							String defaultValue = annotation.defaultValue();
-							if (StrUtil.isNoStrTrimNull(defaultValue))
+							FieldDef annotation = field.getAnnotation(FieldDef.class);
+							if (annotation != null)
 							{
-								if (defaultValue.startsWith("AutoCode:"))
+								String defaultValueAnno = null;
+								String defaultValue = annotation.defaultValue();
+								if (StrUtil.isNoStrTrimNull(defaultValue))
 								{
-									String autoCode = defaultValue.substring("AutoCode:".length());
-									if (StrUtil.isStrTrimNull(autoCode))
+									if (defaultValue.startsWith("AutoCode:"))
 									{
-										throw new RuntimeException("编码格式错误");
-									}
-									AutoCodeService autoCodeService = SpringBeanUtils.getBean(AutoCodeService.class);
-									if (autoCodeService == null)
-									{
-										throw new RuntimeException("获取Service失败");
-									}
-									AutoCode autoCodeQuery = new AutoCode();
-									autoCodeQuery.setCode(autoCode);
-									List<AutoCode> autoCodeList = autoCodeService.queryListMByFilter(autoCodeQuery, null);
-									if (autoCodeList != null && !autoCodeList.isEmpty())
-									{
-										AutoCode codeEnable = null;
-										for (AutoCode code : autoCodeList)
+										String autoCode = defaultValue.substring("AutoCode:".length());
+										if (StrUtil.isStrTrimNull(autoCode))
 										{
-											if (code.isEnabled())
-											{
-												codeEnable = code;
-												break;
-											}
+											throw new RuntimeException("编码格式错误");
 										}
-										List<AutoCodeG> autoCodeGs = codeEnable.getAutoCodeGs();
-										if (autoCodeGs != null && autoCodeGs.size() > 0)
+										AutoCodeService autoCodeService = SpringBeanUtils.getBean(AutoCodeService.class);
+										if (autoCodeService == null)
 										{
-											List<CodePart> parts = new ArrayList<>();
-											for (AutoCodeG codeG : autoCodeGs)
-											{
-												CodePart part = new CodePart(autoCode, codeG.getFormate(), StrUtil.obj2int(codeG.getLength()), StrUtil.obj2int(codeG.getType()));
-												parts.add(part);
-											}
-											if (!parts.isEmpty())
-											{
-												Code code = new Code(parts);
-												String makeCode = code.makeCode();
-												setterMethod.invoke(o, makeCode);
-											}
+											throw new RuntimeException("获取编码格式Service" + AutoCodeService.class + "失败");
 										}
+										AutoCode autoCodeQuery = new AutoCode();
+										autoCodeQuery.setCode(autoCode);
+										List<AutoCode> autoCodeList = autoCodeService.queryListMByFilter(autoCodeQuery, null);
+										if (autoCodeList != null && !autoCodeList.isEmpty())
+										{
+											AutoCode codeEnable = null;
+											for (AutoCode code : autoCodeList)
+											{
+												if (code.isEnabled())
+												{
+													codeEnable = code;
+													break;
+												}
+											}
+											List<AutoCodeG> autoCodeGs = codeEnable.getAutoCodeGs();
+											if (autoCodeGs != null && autoCodeGs.size() > 0)
+											{
+												List<CodePart> parts = new ArrayList<>();
+												for (AutoCodeG codeG : autoCodeGs)
+												{
+													CodePart part = new CodePart(autoCode, codeG.getFormate(), StrUtil.obj2int(codeG.getLength()), StrUtil.obj2int(codeG.getType()));
+													parts.add(part);
+												}
+												if (!parts.isEmpty())
+												{
+													Code code = new Code(parts);
+													String makeCode = code.makeCode();
+													setterMethod.invoke(o, makeCode);
+												}
+											}
+										} else
+										{
+											String tableName = ObjectUtils.getTableName(o);
+											if (tableName == null)
+											{
+												tableName = clazz.getName();
+											}
+											int allLength = autoCode.length();
+											int defLength = autoCode.replace("_", "").length();
+											String code = autoCode;
+											if (allLength > defLength)
+											{
+												String autoCodePart = MakeCodeUtil.makeOuttercode("", allLength - defLength, tableName + "|" + field.getName());
+												code = StrUtil.strReplaceBit(autoCode, autoCodePart, '_', '_', true);
+											}
+											setterMethod.invoke(o, code);
+										}
+									} else if (defaultValue.startsWith("ExecMethod:"))
+									{
+										String substring = defaultValue.substring("ExecMethod:".length());
+										if (StrUtil.isStrTrimNull(substring))
+										{
+											throw new RuntimeException("编码格式错误" + defaultValue);
+										}
+										Object executeMethodValue = ObjectUtils.executeMethod(substring);
+										setterMethod.invoke(o, executeMethodValue);
 									} else
 									{
-										String tableName = ObjectUtils.getTableName(o);
+										defaultValueAnno = defaultValue;
 									}
 								}
+								if (StrUtil.isNoStrTrimNull(defaultValueAnno))
+								{
+									Object value = null;
+									if (Integer.class.equals(fieldClazz) || int.class.equals(fieldClazz))
+									{
+										value = StrUtil.obj2int(defaultValueAnno);
+									}
+									if (long.class.equals(fieldClazz) || Long.class.equals(fieldClazz))
+									{
+										value = StrUtil.obj2long(defaultValueAnno);
+									}
+									if (short.class.equals(fieldClazz) || Short.class.equals(fieldClazz))
+									{
+										value = (short) StrUtil.obj2int(defaultValueAnno);
+									}
+									if (byte.class.equals(fieldClazz) || Byte.class.equals(fieldClazz))
+									{
+										value = (byte) StrUtil.obj2int(defaultValueAnno);
+									}
+									if (char.class.equals(fieldClazz) || Character.class.equals(fieldClazz))
+									{
+										value = StrUtil.trim(defaultValueAnno).charAt(0);
+									}
+									if (Boolean.class.equals(fieldClazz) || boolean.class.equals(fieldClazz))
+									{
+										value = StrUtil.obj2bool(defaultValueAnno);
+									}
+									if (float.class.equals(fieldClazz) || Float.class.equals(fieldClazz))
+									{
+										value = (float) StrUtil.obj2double(defaultValueAnno);
+									}
+									if (double.class.equals(fieldClazz) || Double.class.equals(fieldClazz))
+									{
+										value = StrUtil.obj2double(defaultValueAnno);
+									}
+									if (Date.class.equals(fieldClazz))
+									{
+										value = DateUtil.formateDate(defaultValueAnno);
+									}
+									if (BigDecimal.class.equals(fieldClazz))
+									{
+										value = BigUtils.obj2big(defaultValueAnno);
+									}
+									if (String.class.equals(fieldClazz))
+									{
+										value = defaultValueAnno;
+									}
+									setterMethod.invoke(o, value);
+								}
 							}
-							if (StrUtil.isNoStrTrimNull(defaultValueAnno))
+						}
+					} else
+					{
+						if (Map.class.isAssignableFrom(fieldClazz))
+						{
+							//Map
+							Map<Object,Object> value = (Map<Object,Object>) getterMethod.invoke(o);
+							if (value != null)
 							{
-								Object value = null;
-								if (Integer.class.equals(fieldClazz) || int.class.equals(fieldClazz))
+								for (Entry<Object,Object> valEntry : value.entrySet())
 								{
-									value = StrUtil.obj2int(defaultValueAnno);
+									buildDefaultValue(valEntry.getValue(), recursion);
 								}
-								if (long.class.equals(fieldClazz) || Long.class.equals(fieldClazz))
+							}
+						} else if (Collection.class.isAssignableFrom(fieldClazz))
+						{
+							//集合
+							Collection<Object> value = (Collection<Object>) getterMethod.invoke(o);
+							if (value != null)
+							{
+								for (Object coll : value)
 								{
-									value = StrUtil.obj2long(defaultValueAnno);
+									buildDefaultValue(coll, recursion);
 								}
-								if (short.class.equals(fieldClazz) || Short.class.equals(fieldClazz))
-								{
-									value = (short) StrUtil.obj2int(defaultValueAnno);
-								}
-								if (byte.class.equals(fieldClazz) || Byte.class.equals(fieldClazz))
-								{
-									value = (byte) StrUtil.obj2int(defaultValueAnno);
-								}
-								if (char.class.equals(fieldClazz) || Character.class.equals(fieldClazz))
-								{
-									value = StrUtil.trim(defaultValueAnno).charAt(0);
-								}
-								if (Boolean.class.equals(fieldClazz) || boolean.class.equals(fieldClazz))
-								{
-									value = StrUtil.obj2bool(defaultValueAnno);
-								}
-								if (float.class.equals(fieldClazz) || Float.class.equals(fieldClazz))
-								{
-									value = (float) StrUtil.obj2double(defaultValueAnno);
-								}
-								if (double.class.equals(fieldClazz) || Double.class.equals(fieldClazz))
-								{
-									value = StrUtil.obj2double(defaultValueAnno);
-								}
-								if (Date.class.equals(fieldClazz))
-								{
-									value = DateUtil.formateDate(defaultValueAnno);
-								}
-								if (BigDecimal.class.equals(fieldClazz))
-								{
-									value = BigUtils.obj2big(defaultValueAnno);
-								}
-								if (String.class.equals(fieldClazz))
-								{
-									value = defaultValueAnno;
-								}
+							}
+						} else
+						{
+							Object value = getterMethod.invoke(o);
+							if (value != null)
+							{
+								buildDefaultValue(value, recursion);
+							} else
+							{
+								value = buildDefaultValueByClass(fieldClazz, true);
 								setterMethod.invoke(o, value);
 							}
 						}
 					}
-				} else
-				{
-					OneToMany tableAnnotation = field.getDeclaredAnnotation(OneToMany.class);
-					if (tableAnnotation != null)
-					{
-						Object value = null;
-						value = getterMethod.invoke(o);
-						if (value == null)
-						{
-							value = buildDefaultValueByClass(fieldClazz, recursion);
-						} else
-						{
-							buildDefaultValue(value, recursion);
-						}
-						setterMethod.invoke(o, value);
-					}
 				}
-			} catch (IllegalAccessException e)
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
 			{
-				throw new RuntimeException("报错内容", e);
-			} catch (IllegalArgumentException e)
-			{
-				throw new RuntimeException("报错内容", e);
-			} catch (InvocationTargetException e)
-			{
-				throw new RuntimeException("报错内容", e);
+				throw new RuntimeException("设置默认值异常", e);
 			}
 		}
 	}

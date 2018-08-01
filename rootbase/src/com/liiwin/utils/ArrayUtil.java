@@ -1,6 +1,10 @@
 package com.liiwin.utils;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -24,5 +28,57 @@ public class ArrayUtil
 			return null;
 		}
 		return list.toArray((T[]) java.lang.reflect.Array.newInstance(clazz, list.size()));
+	}
+
+	/**
+	 * 数组转Set
+	 * @param tArr
+	 * @return
+	 * 赵玉柱
+	 */
+	public static <T extends Object> Set<T> toSet(T[] tArr)
+	{
+		Set<T> result = new HashSet<>();
+		if (tArr == null || tArr.length == 0)
+		{
+			return result;
+		}
+		addToColl(result, tArr);
+		return result;
+	}
+
+	/**
+	 * 数组转List
+	 * @param tArr
+	 * @return
+	 * 赵玉柱
+	 */
+	public static <T extends Object> List<T> toList(T[] tArr)
+	{
+		List<T> result = new ArrayList<>();
+		if (tArr == null || tArr.length == 0)
+		{
+			return result;
+		}
+		addToColl(result, tArr);
+		return result;
+	}
+
+	/**
+	 * 数组中添加到集合中
+	 * @param coll
+	 * @param tArr
+	 * 赵玉柱
+	 */
+	public static <T extends Object> void addToColl(Collection<T> coll, T[] tArr)
+	{
+		if (tArr == null || tArr.length == 0 || coll == null)
+		{
+			return;
+		}
+		for (T t : tArr)
+		{
+			coll.add(t);
+		}
 	}
 }

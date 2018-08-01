@@ -127,6 +127,114 @@ public class StrUtil
 	}
 
 	/**
+	 * 将str1中的字符替换到str的指定字符
+	 * @param str 被替换的字符串
+	 * @param str1 替换的字符串
+	 * @param replaceChar str中被替换的字符
+	 * @param nullReplace 为空的情况下被替换的字符
+	 * @param fromEnd 从后往前
+	 * @return
+	 * 赵玉柱
+	 */
+	public static String strReplaceBit(String str, String str1, char replaceChar, char nullReplace, boolean fromEnd)
+	{
+		if (isNullIn(str, str1))
+		{
+			return null;
+		}
+		StringBuffer sb = new StringBuffer();
+		if (fromEnd)
+		{
+			int _i = 0;
+			int length = str1.length();
+			for (int i = str.length() - 1; i >= 0; i--)
+			{
+				char c = str.charAt(i);
+				if (c == replaceChar)
+				{
+					c = nullReplace;
+					if (str1.length() > _i)
+					{
+						c = str1.charAt(length - _i - 1);
+					}
+					_i++;
+				}
+				sb.append(c);
+			}
+			sb = sb.reverse();
+		} else
+		{
+			int _i = 0;
+			for (int i = 0; i < str.length(); i++)
+			{
+				char c = str.charAt(i);
+				if (c == replaceChar)
+				{
+					c = nullReplace;
+					if (str1.length() > _i)
+					{
+						c = str1.charAt(_i);
+					}
+					_i++;
+				}
+				sb.append(c);
+			}
+		}
+		return sb.toString();
+	}
+
+	/**
+	 * 获取对称标签的位置
+	 * @param str
+	 * @return
+	 * 赵玉柱
+	 */
+	public static Map<Character,Map<Integer,Integer>> getSymmetricIndex(String str)
+	{
+		if (isStrTrimNull(str))
+		{
+			return null;
+		}
+		Map<Character,Map<Integer,Integer>> result = new HashMap<>();
+		int length = str.length();
+		Stack<Character> stack = new Stack<>();
+		Stack<Integer> fromPos = new Stack<>();
+		try
+		{
+			for (int i = 0; i < length; i++)
+			{
+				char c = str.charAt(i);
+				if (isLeft(c))
+				{
+					stack.push(c);
+					fromPos.push(i);
+				} else if (isRight(c))
+				{
+					Character popChar = stack.pop();
+					Integer popFromIdx = fromPos.pop();
+					Map<Integer,Integer> map = result.get(popChar);
+					if (map == null)
+					{
+						map = new HashMap<>();
+						result.put(popChar, map);
+					}
+					map.put(popFromIdx, i);
+				}
+			}
+			if (stack.isEmpty())
+			{
+				return result;
+			} else
+			{
+				return null;
+			}
+		} catch (Exception e)
+		{
+			return null;
+		}
+	}
+
+	/**
 	 * 将字符串进行拼接
 	 * @param src
 	 * @param s
@@ -958,17 +1066,24 @@ public class StrUtil
 		return resultMap;
 	}
 
-	@SuppressWarnings("unchecked")
-	public static Method dealSetMethod(Field field, Class clazz)
+	public static Method dealSetMethod(Field field, Class<?> clazz)
 	{
 		if (field == null)
 		{
 			return null;
 		}
-		String fieldName = field.getName();
+		return dealSetMethodByName(field.getName(), clazz, field.getType());
+	}
+
+	public static Method dealSetMethodByName(String fieldName, Class<?> clazz, Class<?> fldClazz)
+	{
+		if (StrUtil.isNull(fieldName) || clazz == null || fldClazz == null)
+		{
+			return null;
+		}
 		try
 		{
-			return clazz.getMethod("set" + setFirstUpperOrLower(fieldName, true), field.getClass());
+			return clazz.getMethod("set" + setFirstUpperOrLower(fieldName, true), fldClazz);
 		} catch (NoSuchMethodException e)
 		{
 			throw new RuntimeException("报错内容", e);
@@ -978,32 +1093,32 @@ public class StrUtil
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public static Method dealGetMethod(Field field, Class clazz)
+	public static Method dealGetMethod(Field field, Class<?> clazz)
 	{
 		if (field == null)
 		{
 			return null;
 		}
-		String fieldName = field.getName();
+		return dealGetMethodByName(field.getName(), clazz);
+	}
+
+	public static Method dealGetMethodByName(String fieldName, Class<?> clazz)
+	{
+		if (StrUtil.isNull(fieldName) || clazz == null)
+		{
+			return null;
+		}
 		try
 		{
-			//Boolean.class == field.getClass() || boolean.class == field.getClass() ||
 			Method method = null;
-			if (Boolean.class.isAssignableFrom(field.getClass()) || boolean.class.isAssignableFrom(field.getClass()))
+			try
 			{
-				try
-				{
-					method = clazz.getMethod("is" + setFirstUpperOrLower(fieldName, true), field.getClass());
-				} catch (Exception e)
-				{
-				}
-			}
-			if (method != null)
+				method = clazz.getMethod("is" + setFirstUpperOrLower(fieldName, true));
+			} catch (Exception e)
 			{
-				return method;
+				method = clazz.getMethod("get" + setFirstUpperOrLower(fieldName, true));
 			}
-			return clazz.getMethod("get" + setFirstUpperOrLower(fieldName, true), field.getClass());
+			return method;
 		} catch (NoSuchMethodException e)
 		{
 			throw new RuntimeException("报错内容", e);
@@ -1271,36 +1386,12 @@ public class StrUtil
 	 */
 	public static boolean symmetricCompare(String str)
 	{
-		if (isStrTrimNull(str))
+		Map<Character,Map<Integer,Integer>> symmetricIndex = getSymmetricIndex(str);
+		if (symmetricIndex != null)
 		{
 			return true;
 		}
-		int length = str.length();
-		Stack<Character> stack = new Stack<>();
-		try
-		{
-			for (int i = 0; i < length; i++)
-			{
-				char c = str.charAt(i);
-				if (isLeft(c))
-				{
-					stack.push(c);
-				} else if (isRight(c))
-				{
-					stack.pop();
-				}
-			}
-			if (stack.isEmpty())
-			{
-				return true;
-			} else
-			{
-				return false;
-			}
-		} catch (Exception e)
-		{
-			return false;
-		}
+		return false;
 	}
 
 	private static boolean isLeft(char c)

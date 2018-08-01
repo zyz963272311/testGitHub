@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @EnableAutoConfiguration
 @RestController
-@RequestMapping("autocode")
+@RequestMapping("/autocode")
 public class AotoCodeController
 {
 }

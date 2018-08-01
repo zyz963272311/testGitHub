@@ -2,6 +2,7 @@ package xyz.zyzhu.spring.boot.service.impl;
 
 import java.util.List;
 import java.util.Map;
+import org.springframework.stereotype.Service;
 import xyz.zyzhu.spring.boot.model.AutoCode;
 import xyz.zyzhu.spring.boot.model.AutoCodeG;
 import xyz.zyzhu.spring.boot.service.AutoCodeService;
@@ -19,6 +20,7 @@ import xyz.zyzhu.spring.boot.service.AutoCodeService;
  * 监听使用界面:
  * @version 8.0
  */
+@Service
 public class AutoCodeServiceImpl implements AutoCodeService
 {
 	@Override
