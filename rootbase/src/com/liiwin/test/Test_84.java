@@ -1,13 +1,12 @@
 package com.liiwin.test;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.util.EntityUtils;
+import com.liiwin.constant.RegExpConstant;
 import com.liiwin.encryption.AES;
 import com.liiwin.http.HttpClientUtil;
 import com.liiwin.random.RandomString;
@@ -33,33 +32,23 @@ public class Test_84
 	 */
 	public static void main(String[] args)
 	{
-		String a = "aaa_bbb_ccc";
-		System.out.println(a.length());
-		System.out.println(a.replace("_", "").length());
-		System.out.println(Number.class.isAssignableFrom(Integer.class));
-		System.out.println(Integer.class.isAssignableFrom(Number.class));
-		Test1 test1 = new Test1();
-		Class<?> clazz = test1.getClass();
-		System.out.println(clazz);
-		Field[] declaredFields = clazz.getDeclaredFields();
-		for (Field f : declaredFields)
-		{
-			System.out.println(f);
-		}
-		Method[] declaredMethods = clazz.getDeclaredMethods();
-		for (Method m : declaredMethods)
-		{
-			System.out.println(m);
-		}
-		System.out.println("===================");
-		Field[] fields = clazz.getFields();
-		for (Field f : fields)
-		{
-			System.out.println(f);
-		}
-		Class<?> superclass = clazz.getSuperclass();
-		System.out.println(superclass);
-		System.out.println(Object.class.getSuperclass());
+		String id1 = "123123123123123";
+		String id2 = "12312312312312X";
+		String id3 = "12312312312312x";
+		String id4 = "1231231231231x3";
+		String id5 = "123123123123123123";
+		String id6 = "12312312312312312x";
+		String id7 = "12312312312312312X";
+		String id8 = "1231231231231231x2";
+		boolean m1 = id1.matches(RegExpConstant.ID_CARD);
+		boolean m2 = id2.matches(RegExpConstant.ID_CARD);
+		boolean m3 = id3.matches(RegExpConstant.ID_CARD);
+		boolean m4 = id4.matches(RegExpConstant.ID_CARD);
+		boolean m5 = id5.matches(RegExpConstant.ID_CARD);
+		boolean m6 = id6.matches(RegExpConstant.ID_CARD);
+		boolean m7 = id7.matches(RegExpConstant.ID_CARD);
+		boolean m8 = id8.matches(RegExpConstant.ID_CARD);
+		System.out.println();
 	}
 
 	/**
