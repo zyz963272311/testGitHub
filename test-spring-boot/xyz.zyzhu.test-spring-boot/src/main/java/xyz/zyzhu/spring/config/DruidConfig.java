@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
+import xyz.zyzhu.spring.boot.utils.PropertiesUtils;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -27,7 +28,7 @@ import com.alibaba.druid.support.http.WebStatFilter;
 @Configuration
 public class DruidConfig
 {
-	@Value("${mysql.datasource.type}")
+	@Value("${spring.datasource.type}")
 	private Class<? extends DataSource> dataSourceType;
 
 	@Bean
@@ -68,18 +69,23 @@ public class DruidConfig
 	//			@Value("${spring.datasource.connectionProperties}") String connectionProperties, @Value("${spring.datasource.useGlobalDataSourceStat}") boolean useGlobalDataSourceStat)
 	@Bean(name = "defaultDatasource")
 	@ConfigurationProperties(prefix = "spring.datasource")
-	public DataSource defaultDataSource(String i)
+	public DataSource defaultDataSource()
 	{
 		DataSource dataSource = DataSourceBuilder.create().type(dataSourceType).build();
 		return dataSource;
 	}
 
 	@Bean(name = "readDatasource")
-	@ConfigurationProperties(prefix = "spring.datasource.read")
 	public DataSource readDataSource()
 	{
-		DataSource dataSource = DataSourceBuilder.create().type(dataSourceType).build();
-		return dataSource;
+		int readSize = PropertiesUtils.getPropIntValue("spring.datasource.read.size", 1);
+		if (readSize > 0)
+		{
+			for (int i = 0; i < readSize; i++)
+			{
+			}
+		}
+		return null;
 	}
 
 	@Bean(name = "writeDatasource")

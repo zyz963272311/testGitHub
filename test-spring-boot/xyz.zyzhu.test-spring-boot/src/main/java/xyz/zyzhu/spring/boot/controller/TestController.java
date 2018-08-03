@@ -2,6 +2,7 @@ package xyz.zyzhu.spring.boot.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +22,7 @@ import xyz.zyzhu.spring.boot.model.AutoCode;
  * @version 8.0
  */
 import xyz.zyzhu.spring.boot.service.TestService;
+import xyz.zyzhu.spring.boot.utils.SpringBeanUtils;
 @EnableAutoConfiguration
 @RestController
 @RequestMapping("/test")
@@ -32,6 +34,8 @@ public class TestController
 	@RequestMapping(path = "/test", method = { RequestMethod.GET, RequestMethod.POST })
 	public String test()
 	{
+		Environment bean = SpringBeanUtils.getBean(Environment.class);
+		System.out.println(bean.getProperty("spring.datasource.type"));
 		AutoCode test = testService.test();
 		return test.toString();
 	}
