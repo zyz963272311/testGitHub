@@ -69,7 +69,7 @@ public class BasConfig
 		try
 		{
 			db = DatabasePoolManager.getNewInstance().getConfigDatabase();
-			String sql = "select * from properties where pvalue is not null ";
+			String sql = "select * from properties  ";
 			List<Map<String,Object>> propertiesFromDB = db.getListMapFromSql(sql);
 			if (!propertiesFromDB.isEmpty())
 			{

@@ -23,6 +23,16 @@ public class LoadBalance implements Serializable
 	private String				name;						//名
 	private Integer				weight;						//权重
 	private Integer				flags;						//标志
+	private Integer index;//下标
+	/**
+	 * 获取权重的int值
+	 * @return
+	 * 赵玉柱
+	 */
+	public int getIntWeight()
+	{
+		return StrUtil.obj2int(getWeight(), 1);
+	}
 
 	/**
 	 * 是否不在线
@@ -117,4 +127,13 @@ public class LoadBalance implements Serializable
 	{
 		this.name = name;
 	}
+
+	public Integer getIndex() {
+		return index;
+	}
+
+	public void setIndex(Integer index) {
+		this.index = index;
+	}
+	
 }
