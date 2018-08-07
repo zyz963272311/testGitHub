@@ -22,5 +22,17 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Table
 {
+	/**表名*/
 	String name() default "";
+
+	/**使用缓存*/
+	boolean useCache() default false;
+
+	/**
+	 * 缓存的sql，将其存入redis中
+	 * 配置形式为field1=${field1}&field2=${field2}&field3=${field}
+	 * 最后的转换形式为 getClass().getName()+cacheSql宏替换
+	 * 缓存时间1天
+	 */
+	String cacheSql() default "";
 }

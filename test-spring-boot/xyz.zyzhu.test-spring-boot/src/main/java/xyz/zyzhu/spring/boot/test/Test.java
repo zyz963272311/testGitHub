@@ -1,8 +1,7 @@
 package xyz.zyzhu.spring.boot.test;
 
-import java.text.ParseException;
-import com.liiwin.code.MakeCodeUtil;
-import com.liiwin.utils.StrUtil;
+import java.lang.reflect.Field;
+import java.util.List;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -19,52 +18,24 @@ import com.liiwin.utils.StrUtil;
  */
 public class Test
 {
-	public static void main(String[] args) throws ParseException
-	{
-		System.out.println(int.class);
-	}
+	private String					f1;
+	private String					f2;
+	protected static List<Field>	fields;
 
-	public static String getName()
+	public static final <T extends Test> List<Field> getFields(Class<T> t)
 	{
-		return "name" + 33321;
-	}
-
-	public String getCode()
-	{
-		return "code" + MakeCodeUtil.makeOuttercode("", 5, "code");
-	}
-
-	private static Class getObjClass(Object o)
-	{
-		if (o != null)
+		if (fields == null)
 		{
-			return o.getClass();
 		}
 		return null;
 	}
 
-	/**
-	 * 
-	 * 赵玉柱
-	 */
-	private static void constTest()
+	public static void main(String[] args)
 	{
-		String content = "1221";
-		String[] constellationArr = { "魔羯座", "水瓶座", "双鱼座", "牡羊座", "金牛座", "双子座", "巨蟹座", "狮子座", "处女座", "天秤座", "天蝎座", "射手座" };
-		int[] constellationEdgeDay = { 20, 18, 20, 20, 20, 21, 22, 22, 22, 22, 21, 21 };
-		String[] substring = StrUtil.getSubstring(content, new int[] { 0, 2 }, new int[] { 2, 4 });
-		//月份
-		int month = StrUtil.obj2int(substring[0]);
-		//日
-		int day = StrUtil.obj2int(substring[1]);
-		String constellation = null;
-		if (day >= constellationEdgeDay[month - 1])
-		{
-			constellation = constellationArr[month == 12 ? 0 : month];
-		} else
-		{
-			constellation = constellationArr[month - 1];
-		}
-		System.out.println(constellation);
 	}
+}
+class TestC extends Test
+{
+	private String	f3;
+	private String	f4;
 }

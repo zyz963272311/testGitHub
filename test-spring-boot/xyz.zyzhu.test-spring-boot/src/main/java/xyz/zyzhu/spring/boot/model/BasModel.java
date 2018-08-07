@@ -1,8 +1,13 @@
 package xyz.zyzhu.spring.boot.model;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import xyz.zyzhu.spring.boot.annotation.FieldDef;
+import xyz.zyzhu.spring.boot.utils.ModelUtils;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -19,7 +24,87 @@ import org.apache.commons.lang.builder.ToStringStyle;
  */
 public class BasModel implements Serializable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long	serialVersionUID	= 1L;
+	/**
+	 * 当前数据的原数据
+	 */
+	@FieldDef(notColumn = true)
+	private Map<String,Object>	oldValues;
+	/**
+	 * 当前数据的新数据，用于数据更新
+	 */
+	@FieldDef(notColumn = true)
+	private Map<String,Object>	newValues;
+	/**
+	 * 存盘类型  0:调用save方法;1:调用issert方法;2:调用delete方法;4:调用update方法;8:删除更新[删除空字段];16:级联更新子表
+	 */
+	@FieldDef(notColumn = true)
+	private Integer				saveMode;
+
+	/**
+	 * 获取所有与数据库有关的字段
+	 * @return
+	 * 赵玉柱
+	 */
+	public List<Field> getFields()
+	{
+		return BasModel.getFields(getClass());
+	}
+
+	/**
+	 * 获取所有与数据库有关的字段
+	 * @param t
+	 * @return
+	 * 赵玉柱
+	 */
+	public static <T extends BasModel> List<Field> getFields(Class<T> t)
+	{
+		return ModelUtils.getClassFields(t);
+	}
+
+	/**
+	 * 获取所有的字段对应的数据库列名
+	 * @return
+	 * 赵玉柱
+	 */
+	public Map<Field,String> getColumns()
+	{
+		return BasModel.getColumns(getClass());
+	}
+
+	/**
+	 * 获取所有的字段对应的数据库列名
+	 * @param t
+	 * @return
+	 * 赵玉柱
+	 */
+	public static <T extends BasModel> Map<Field,String> getColumns(Class<T> t)
+	{
+		return ModelUtils.getClassColumns(t);
+	}
+
+	/**
+	 * 设置值
+	 * @param key
+	 * @param value
+	 * @return
+	 * 赵玉柱
+	 */
+	public BasModel setValue(String key, Object value)
+	{
+		newValues.put(key, value);
+		return this;
+	}
+
+	public List<String> getPrimaryKsys()
+	{
+		return null;
+	}
+
+	public static <T extends BasModel> List<String> getPrimaryKeys(Class<T> t)
+	{
+		return null;
+	}
 
 	@Override
 	public String toString()

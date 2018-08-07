@@ -22,6 +22,12 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface FieldDef
 {
+	/**数据库列名*/
+	String column() default "";
+
+	/**当前列非数据库列*/
+	boolean notColumn() default false;
+
 	/**
 	 * 默认值
 	 * <p>

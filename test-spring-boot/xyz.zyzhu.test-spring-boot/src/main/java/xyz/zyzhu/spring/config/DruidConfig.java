@@ -3,10 +3,8 @@ package xyz.zyzhu.spring.config;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
-
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +19,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
 import com.liiwin.utils.StrUtil;
-
 import xyz.zyzhu.spring.boot.model.LoadBalance;
 import xyz.zyzhu.spring.boot.utils.LoadBalanceUtils;
 import xyz.zyzhu.spring.boot.utils.PropertiesUtils;
@@ -48,17 +44,18 @@ import xyz.zyzhu.spring.boot.utils.PropertiesUtils;
 public class DruidConfig
 {
 	@Autowired
-	JpaProperties jpaProperties;
-	private static Logger logger = LoggerFactory.getLogger(DruidConfig.class);
+	JpaProperties						jpaProperties;
+	private static Logger				logger		= LoggerFactory.getLogger(DruidConfig.class);
 	@Value("${spring.datasource.type}")
-	private Class<? extends DataSource> dataSourceType;
-	private static AtomicBoolean loadedRds = new AtomicBoolean(false);
-	private static List<LoadBalance> rdsBalances = new CopyOnWriteArrayList<>();
-	private static AtomicBoolean loadedWds = new AtomicBoolean(false);
-	private static List<LoadBalance> wdsBalances = new CopyOnWriteArrayList<>();
+	private Class<? extends DataSource>	dataSourceType;
+	private static AtomicBoolean		loadedRds	= new AtomicBoolean(false);
+	private static List<LoadBalance>	rdsBalances	= new CopyOnWriteArrayList<>();
+	private static AtomicBoolean		loadedWds	= new AtomicBoolean(false);
+	private static List<LoadBalance>	wdsBalances	= new CopyOnWriteArrayList<>();
 
 	@Bean
-	public ServletRegistrationBean druidStatViewServlet() {
+	public ServletRegistrationBean druidStatViewServlet()
+	{
 		ServletRegistrationBean registrationBean = new ServletRegistrationBean(new StatViewServlet(), "/druid/*");
 		registrationBean.addInitParameter("allow", "127.0.0.1");
 		registrationBean.addInitParameter("deny", "192.168.0.152");
@@ -69,17 +66,18 @@ public class DruidConfig
 	}
 
 	@Bean
-	public FilterRegistrationBean druidWebStatViewFilter() {
+	public FilterRegistrationBean druidWebStatViewFilter()
+	{
 		FilterRegistrationBean registrationBean = new FilterRegistrationBean(new WebStatFilter());
 		registrationBean.addInitParameter("urlPatterns", "/*");
 		registrationBean.addInitParameter("exclusions", "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*");
 		return registrationBean;
 	}
-	
 
 	@Bean(name = "writeEntityManagerFactory")
 	@Primary
-	public EntityManagerFactory writeEntityManagerFactory() {
+	public EntityManagerFactory writeEntityManagerFactory()
+	{
 		HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
 		factory.setJpaVendorAdapter(vendorAdapter);
@@ -92,7 +90,8 @@ public class DruidConfig
 
 	@Bean(name = "readEntityManagerFactory")
 	@Primary
-	public EntityManagerFactory readEntityManagerFactory() {
+	public EntityManagerFactory readEntityManagerFactory()
+	{
 		HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
 		factory.setJpaVendorAdapter(vendorAdapter);
@@ -136,7 +135,8 @@ public class DruidConfig
 	@Bean(name = "defaultDatasource")
 	@Primary
 	@ConfigurationProperties(prefix = "spring.datasource")
-	public DataSource defaultDataSource() {
+	public DataSource defaultDataSource()
+	{
 		DataSource dataSource = DataSourceBuilder.create().type(dataSourceType).build();
 		return dataSource;
 	}
@@ -147,18 +147,22 @@ public class DruidConfig
 	 * @return 赵玉柱
 	 */
 	@Bean(name = "readDatasource")
-	public DataSource readDataSource() {
+	public DataSource readDataSource()
+	{
 		String key = "spring.datasource.read";
 		int readSize = PropertiesUtils.getPropIntValue(key + ".size", 1);
 		int options = PropertiesUtils.getPropIntValue(key + ".blance", 0);
-		if (!loadedRds.get() && rdsBalances.isEmpty()) {
+		if (!loadedRds.get() && rdsBalances.isEmpty())
+		{
 			loadBalances(key, readSize, true);
 		}
 		LoadBalance balance = LoadBalanceUtils.balance(key, rdsBalances, options);
 		DataSource dataSource = null;
-		if (balance != null) {
+		if (balance != null)
+		{
 			dataSource = getDataSource(key + "." + StrUtil.obj2int(balance.getIndex()));
-		} else {
+		} else
+		{
 			dataSource = defaultDataSource();
 		}
 		return dataSource;
@@ -170,18 +174,22 @@ public class DruidConfig
 	 * @return 赵玉柱
 	 */
 	@Bean(name = "writeDatasource")
-	public DataSource writeDataSource() {
+	public DataSource writeDataSource()
+	{
 		String key = "spring.datasource.write";
 		int readSize = PropertiesUtils.getPropIntValue(key + ".size", 1);
 		int options = PropertiesUtils.getPropIntValue(key + ".blance", 0);
-		if (!loadedWds.get() && wdsBalances.isEmpty()) {
+		if (!loadedWds.get() && wdsBalances.isEmpty())
+		{
 			loadBalances(key, readSize, false);
 		}
 		LoadBalance balance = LoadBalanceUtils.balance(key, wdsBalances, options);
 		DataSource dataSource = null;
-		if (balance != null) {
+		if (balance != null)
+		{
 			dataSource = getDataSource(key + "." + StrUtil.obj2int(balance.getIndex()));
-		} else {
+		} else
+		{
 			dataSource = defaultDataSource();
 		}
 		return dataSource;
@@ -195,13 +203,17 @@ public class DruidConfig
 	 * @param isRead
 	 *            赵玉柱
 	 */
-	private void loadBalances(String prefix, int size, boolean isRead) {
-		if (isRead) {
+	private void loadBalances(String prefix, int size, boolean isRead)
+	{
+		if (isRead)
+		{
 			loadedRds.set(true);
-		} else {
+		} else
+		{
 			loadedWds.set(true);
 		}
-		for (int i = 0; i < size; i++) {
+		for (int i = 0; i < size; i++)
+		{
 			String name = prefix + PropertiesUtils.getPropValue(prefix + "." + i + ".name");
 			String key = prefix + PropertiesUtils.getPropValue(prefix + "." + i + ".key", name);
 			int flags = PropertiesUtils.getPropIntValue(prefix + "." + i + ".flags");
@@ -212,9 +224,11 @@ public class DruidConfig
 			balance.setFlags(flags);
 			balance.setWeight(weight);
 			balance.setIndex(i);
-			if (isRead) {
+			if (isRead)
+			{
 				rdsBalances.add(balance);
-			} else {
+			} else
+			{
 				wdsBalances.add(balance);
 			}
 		}
@@ -226,7 +240,8 @@ public class DruidConfig
 	 * @param prefix
 	 * @return 赵玉柱
 	 */
-	private DataSource getDataSource(String prefix) {
+	private DataSource getDataSource(String prefix)
+	{
 		String url = PropertiesUtils.getPropValue(prefix + ".url");
 		String username = PropertiesUtils.getPropValue(prefix + ".username");
 		String password = PropertiesUtils.getPropValue(prefix + ".password");
@@ -245,8 +260,7 @@ public class DruidConfig
 		boolean removeAbandoned = PropertiesUtils.getPropBoolValue(prefix + ".removeAbandoned", true);
 		boolean logAbandoned = PropertiesUtils.getPropBoolValue(prefix + ".logAbandoned", true);
 		int removeAbandonedTimeout = PropertiesUtils.getPropIntValue(prefix + ".removeAbandonedTimeout", 600);
-		int maxPoolPreparedStatementPerConnectionSize = PropertiesUtils
-				.getPropIntValue(prefix + ".maxPoolPreparedStatementPerConnectionSize");
+		int maxPoolPreparedStatementPerConnectionSize = PropertiesUtils.getPropIntValue(prefix + ".maxPoolPreparedStatementPerConnectionSize");
 		String connectionProperties = PropertiesUtils.getPropValue(prefix + ".connectionProperties");
 		boolean useGlobalDataSourceStat = PropertiesUtils.getPropBoolValue(prefix + ".useGlobalDataSourceStat");
 		String filters = PropertiesUtils.getPropValue(prefix + ".filters");
@@ -276,10 +290,12 @@ public class DruidConfig
 		dataSource.setMaxPoolPreparedStatementPerConnectionSize(maxPoolPreparedStatementPerConnectionSize);
 		dataSource.setConnectionProperties(connectionProperties);
 		dataSource.setUseGlobalDataSourceStat(useGlobalDataSourceStat);
-		try {
+		try
+		{
 			dataSource.setFilters(filters);
 			logger.info("Druid数据源初始化设置成功......");
-		} catch (Exception e) {
+		} catch (Exception e)
+		{
 			e.printStackTrace();
 			logger.info("Druid数据源filters设置失败......");
 		}
