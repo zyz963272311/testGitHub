@@ -9,9 +9,9 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import xyz.zyzhu.spring.boot.annotation.FieldDef;
 import xyz.zyzhu.spring.boot.utils.ModelUtils;
 /**
- * <p>标题： TODO</p>
+ * <p>标题： 基础Model</p>
  * <p>功能： </p>
- * <p>所属模块： TODO</p>
+ * <p>所属模块： boot</p>
  * <p>版权： Copyright © 2017 SNSOFT</p>
  * <p>公司: 赵玉柱练习</p>
  * <p>创建日期：2017年12月5日 下午9:33:44</p>
@@ -69,7 +69,7 @@ public class BasModel implements Serializable
 	 */
 	public Map<Field,String> getColumns()
 	{
-		return BasModel.getColumns(getClass());
+		return getColumns(getClass());
 	}
 
 	/**
@@ -96,14 +96,46 @@ public class BasModel implements Serializable
 		return this;
 	}
 
+	/**
+	 * 获取内码
+	 * @return
+	 * 赵玉柱
+	 */
 	public List<String> getPrimaryKsys()
+	{
+		return getPrimaryKeys(getClass());
+	}
+
+	/**
+	 * 获取内码字段
+	 * @param t
+	 * @return
+	 * 赵玉柱
+	 */
+	public static <T extends BasModel> List<String> getPrimaryKeys(Class<T> t)
 	{
 		return null;
 	}
 
-	public static <T extends BasModel> List<String> getPrimaryKeys(Class<T> t)
+	/**
+	 * 获取表名
+	 * @return
+	 * 赵玉柱
+	 */
+	public String getTableName()
 	{
-		return null;
+		return getTableName(getClass());
+	}
+
+	/**
+	 * 获取表名
+	 * @param t
+	 * @return
+	 * 赵玉柱
+	 */
+	public static <T extends BasModel> String getTableName(Class<T> t)
+	{
+		return ModelUtils.getModelTable(t);
 	}
 
 	@Override
