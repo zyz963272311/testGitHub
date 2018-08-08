@@ -292,6 +292,52 @@ public class Database
 			throw new RuntimeException("表名不可为空且要插入的数据不可为空");
 		}
 	}
+	/**
+	 * 更新表
+	 * @param table
+	 * @param oldValues
+	 * @param newValues
+	 * @return
+	 * 赵玉柱
+	 */
+	public int updateTable(String table,Map<String, Object> oldValues,Map<String, Object> newValues)
+	{
+
+		if (StrUtil.isNoStrTrimNull(table) && oldValues != null && !oldValues.isEmpty()&& newValues != null && !newValues.isEmpty())
+		{
+			StringBuffer sb = new StringBuffer("update ").append(table).append(" set ");
+			Set<String> keys = newValues.keySet();
+			int length = keys.size();
+			int i = 0;
+			for (String key : keys)
+			{
+				sb.append(key).append("=").append(newValues.get(key));
+				if(i!=length-1)
+				{
+					sb.append(",");
+				}
+				i++;
+			}
+			sb.append(" where ");
+			Set<String> wKeys = oldValues.keySet();
+			length = wKeys.size();
+			i = 0;
+			for(String wKey:wKeys)
+			{
+				sb.append(wKey).append(" = ").append(oldValues.get(wKey));
+				if(i!=length-1)
+				{
+					sb.append(" and ");
+				}
+			}
+			String sql = sb.toString();
+			return update(sql);
+		} else
+		{
+			throw new RuntimeException("表名不可为空且要插入的数据不可为空");
+		}
+	
+	}
 
 	/**
 	 * 插入表

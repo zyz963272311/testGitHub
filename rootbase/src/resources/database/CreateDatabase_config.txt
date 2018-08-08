@@ -7,8 +7,15 @@
 	
 	tb			tbname				表名					varchar			128,0			0b00000011
 	tb			dbname				数据库名称				varchar			128,0			0b00000000
-	tb			tblang1name			数据库中文名			varchar			128,0			0b00000000
+	tb			tblang1name			表中文名			varchar			128,0			0b00000000
 	
+	tbcolumn	colname				列名					varchar			128,0			0b00000011
+	tbcolumn	tbname				表名					varchar			128,0			0b00000000
+	tbcolumn	comment				说明					varchar			128,0			0b00000000
+	tbcolumn	datatype			列类型				varchar			64,0			0b00000000
+	tbcolumn	dataLength			列长度				int				8,0			0b00000000
+	tbcolumn	decimal				列精度				int				8,0			0b00000000
+
 	properties pkey					属性名				varchar			128,0			0b00000011
-	properties pvalue				属性值				varchar			128,0			0b00000000
+	properties pvalue				属性值				varchar			128,0			0b00000000                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
 	properties premark				属性备注				varchar			128,0			0b00000000
