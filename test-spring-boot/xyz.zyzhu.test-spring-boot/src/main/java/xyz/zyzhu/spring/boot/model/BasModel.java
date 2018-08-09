@@ -2,6 +2,8 @@ package xyz.zyzhu.spring.boot.model;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -17,6 +19,8 @@ import xyz.zyzhu.spring.boot.utils.ModelUtils;
  * <p>创建日期：2017年12月5日 下午9:33:44</p>
  * <p>类全名：xyz.zyzhu.spring.boot.model.BasModel</p>
  * 作者：赵玉柱
+ * <p>顺序：
+ * <p>1、
  * 初审：
  * 复审：
  * 监听使用界面:
@@ -25,18 +29,19 @@ import xyz.zyzhu.spring.boot.utils.ModelUtils;
 public class BasModel implements Serializable
 {
 	private static final long	serialVersionUID	= 1L;
+	private Map<String,Field>	classFields;
 	/**
 	 * 当前数据的原数据
 	 */
 	@FieldDef(notColumn = true)
-	private Map<String,Object>	oldValues;
+	private Map<String,Object>	oldValues			= new HashMap<>();
 	/**
 	 * 当前数据的新数据，用于数据更新
 	 */
 	@FieldDef(notColumn = true)
-	private Map<String,Object>	newValues;
+	private Map<String,Object>	newValues			= new HashMap<>();
 	/**
-	 * 存盘类型  0:调用save方法;1:调用issert方法;2:调用delete方法;4:调用update方法;8:删除更新[删除空字段];16:级联更新子表
+	 * 存盘类型  0:调用save方法;1:调用issert方法;2:调用delete方法;4:调用update方法;8:删除更新[删除空字段];
 	 */
 	@FieldDef(notColumn = true)
 	private Integer				saveMode;
@@ -90,9 +95,54 @@ public class BasModel implements Serializable
 	 * @return
 	 * 赵玉柱
 	 */
-	public BasModel setValue(String key, Object value)
+	protected void setValue(String key, Object value)
 	{
 		newValues.put(key, value);
+		if (classFields == null)
+		{
+			classFields = new HashMap<>();
+			List<Field> fields = ModelUtils.getClassFields(getClass());
+			if (fields != null)
+			{
+				for (Field field : fields)
+				{
+					classFields.put(field.getName(), field);
+				}
+			}
+		}
+		Field field = classFields.get(key);
+		if (field != null)
+		{
+			try
+			{
+				field.set(this, value);
+			} catch (Exception e)
+			{
+				throw new RuntimeException("设置属性值失败key=" + key + "value=" + value);
+			}
+		}
+	}
+
+	/**
+	 * 获取所有的值，新值覆盖旧值
+	 * @return
+	 * 赵玉柱
+	 */
+	public Map<String,Object> getMapValues()
+	{
+		Map<String,Object> result = new HashMap<>();
+		result.putAll(oldValues);
+		result.putAll(newValues);
+		return result;
+	}
+
+	public BasModel buildOldValues(Map<String,Object> oldValue)
+	{
+		if (oldValue.isEmpty())
+		{
+			oldValues.clear();
+		}
+		oldValues.putAll(oldValue);
 		return this;
 	}
 
@@ -114,7 +164,68 @@ public class BasModel implements Serializable
 	 */
 	public static <T extends BasModel> List<String> getPrimaryKeys(Class<T> t)
 	{
-		return null;
+		return ModelUtils.getPrimaryKeyCols(t);
+	}
+
+	/**
+	 * 获取当前类的主键字段
+	 * @return
+	 * 赵玉柱
+	 */
+	public List<Field> getPrimaryFields()
+	{
+		return getPrimaryFields(getClass());
+	}
+
+	/**
+	 * 获取当前类的主键字段
+	 * @param t
+	 * @return
+	 * 赵玉柱
+	 */
+	public static <T extends BasModel> List<Field> getPrimaryFields(Class<T> t)
+	{
+		return ModelUtils.getPrimaryFields(t);
+	}
+
+	/**
+	 * 获取新主键值
+	 * @return
+	 * 赵玉柱
+	 */
+	public List<Object> getOldPrimaryValues()
+	{
+		return getPrimaryValues(true);
+	}
+
+	/**
+	 * 获取原主键值
+	 * @return
+	 * 赵玉柱
+	 */
+	public List<Object> getNewPrimaryValues()
+	{
+		return getPrimaryValues(false);
+	}
+
+	/**
+	 * 获取主键值
+	 * @param getOld
+	 * @return
+	 * 赵玉柱
+	 */
+	public List<Object> getPrimaryValues(boolean getOld)
+	{
+		List<Object> result = new ArrayList<>();
+		List<Field> primaryFields = getPrimaryFields();
+		if (primaryFields != null)
+		{
+			for (Field field : primaryFields)
+			{
+				result.add((getOld ? oldValues : newValues).get(field.getName()));
+			}
+		}
+		return result;
 	}
 
 	/**

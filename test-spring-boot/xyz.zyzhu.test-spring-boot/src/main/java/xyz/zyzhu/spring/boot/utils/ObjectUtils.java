@@ -703,6 +703,22 @@ public class ObjectUtils
 	}
 
 	/**
+	 * 将value转换成type类型的value
+	 * @param value
+	 * @param type
+	 * @return
+	 * 赵玉柱
+	 */
+	public static Object getValueByType(Object value, Class<?> type)
+	{
+		if (value == null || type == null)
+		{
+			return null;
+		}
+		return null;
+	}
+
+	/**
 	 * 构造执行参数
 	 * @param str
 	 * @param isThrow 是否抛出异常

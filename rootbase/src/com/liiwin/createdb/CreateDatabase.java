@@ -76,10 +76,14 @@ public class CreateDatabase
 		Map<Database,List<Map<String,Object>>> selectDBMessage = getSelectDBMessage(dbList);
 		Map<String,Map<String,Table>> dbMessage2Table = dbMessage2Table(selectDBMessage);
 		Map<String,Map<String,Table>> selectDBFileMessage = getSelectDBFileMessage(dbList, dbFile);
-		Map<Database,List<String>> sqlDbMap = compareDBAndDBFile(dbMessage2Table, selectDBFileMessage, dbList);
+		//config tb表需要执行的sql
+		Map<String,List<String>> tableExecSql = new HashMap<>();
+		//config tbcol需要执行的sql
+		Map<String,List<String>> tbcolExecSql = new HashMap<>();
+		Map<Database,List<String>> sqlDbMap = compareDBAndDBFile(dbMessage2Table, selectDBFileMessage, dbList, tableExecSql, tbcolExecSql);
 		System.out.println(dbMessage2Table);
 		System.out.println(selectDBFileMessage);
-		execUpdateSql(sqlDbMap, selectDBFileMessage);
+		execUpdateSql(sqlDbMap, selectDBFileMessage, tableExecSql, tbcolExecSql);
 	}
 
 	/**
@@ -94,7 +98,6 @@ public class CreateDatabase
 		for (Database db : dbList)
 		{
 			List<Map<String,Object>> dbMessage = getDBMessage(db);
-			System.out.println("dbMessage");
 			System.out.println(dbMessage);
 			selectDBMessage.put(db, dbMessage);
 		}
@@ -124,7 +127,6 @@ public class CreateDatabase
 		{
 			//sqlserver
 		}
-		System.out.println("不支持的数据库类型[" + db.getType() + "]");
 		return null;
 	}
 
@@ -235,7 +237,6 @@ public class CreateDatabase
 					while (reader.read() != -1)
 					{
 						String row = reader.readLine();
-						String srcRow = row;
 						if (row != null)
 						{
 							row = StrUtil.removeSub(row, new char[] { ' ', '\t', '\n' }, 3, 0);
@@ -325,10 +326,13 @@ public class CreateDatabase
 	 * @param dbMessage2Table
 	 * @param selectDBFileMessage
 	 * @param dbList
+	 * @param tbcolExecSql 
+	 * @param tableExecSql 
 	 * @return
 	 * 赵玉柱
 	 */
-	private static Map<Database,List<String>> compareDBAndDBFile(Map<String,Map<String,Table>> dbMessage2Table, Map<String,Map<String,Table>> selectDBFileMessage, List<Database> dbList)
+	private static Map<Database,List<String>> compareDBAndDBFile(Map<String,Map<String,Table>> dbMessage2Table, Map<String,Map<String,Table>> selectDBFileMessage, List<Database> dbList,
+			Map<String,List<String>> tableExecSql, Map<String,List<String>> tbcolExecSql)
 	{
 		if (dbMessage2Table == null || dbMessage2Table.size() == 0 || selectDBFileMessage == null || selectDBFileMessage.size() == 0)
 		{
@@ -345,6 +349,10 @@ public class CreateDatabase
 			Map<String,Table> dbFileMessage = selectDBFileMessage.get(dbName);
 			Map<String,Table> dbMessage = dbMessage2Table.get(dbName);
 			Set<Entry<String,Table>> tableFileMessage = dbFileMessage.entrySet();
+			List<String> tableExecSqlList = new ArrayList<>();
+			tableExecSql.put(dbName, tableExecSqlList);
+			List<String> tbcolExecSqlList = new ArrayList<>();
+			tableExecSql.put(dbName, tbcolExecSqlList);
 			if (tableFileMessage != null)
 			{
 				for (Entry<String,Table> tableFileEntry : tableFileMessage)
@@ -352,7 +360,7 @@ public class CreateDatabase
 					String fileTableName = tableFileEntry.getKey();
 					Table fileTable = tableFileEntry.getValue();
 					Table dbTable = dbMessage.get(fileTableName);
-					returnSql.put(db, compareTableAndTableFile(fileTable, dbTable));
+					returnSql.put(db, compareTableAndTableFile(fileTable, dbTable, tableExecSqlList, tbcolExecSqlList));
 				}
 			}
 		}
@@ -363,10 +371,12 @@ public class CreateDatabase
 	 * 比较table与tablefile
 	 * @param fileTable
 	 * @param dbTable
+	 * @param tbcolExecSql 
+	 * @param tableExecSql 
 	 * @return
 	 * 赵玉柱
 	 */
-	private static List<String> compareTableAndTableFile(Table fileTable, Table dbTable)
+	private static List<String> compareTableAndTableFile(Table fileTable, Table dbTable, List<String> tableExecSql, List<String> tbcolExecSql)
 	{
 		List<String> returnSql = new ArrayList<>();
 		int dbType = fileTable.getDbType();
@@ -382,8 +392,12 @@ public class CreateDatabase
 				int srcPriLength = primarySB.length();
 				sql.append("create table `" + fileTable.getTableName() + "`\n(\n");
 				Set<Entry<String,Column>> columnEntrySet = columns.entrySet();
+				String tableName = fileTable.getTableName();
+				String tableExecSqlStr = "insert into `tb` (tbname,dbname,tblang1name) value('" + tableName + "','" + fileTable.getDbName() + "','" + fileTable.getTableName() + "')";
+				tableExecSql.add(tableExecSqlStr);
 				for (Entry<String,Column> columnEntry : columnEntrySet)
 				{
+					int flags = 0;
 					Column column = columnEntry.getValue();
 					sql.append(column.getColumnName() + " " + column.getDataType() + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "") + ")");
 					String comment = column.getComment();
@@ -395,10 +409,12 @@ public class CreateDatabase
 					if ((constraint & 1) == 1)
 					{
 						primarySB.append(column.getColumnName() + ",");
+						flags += 1;
 					}
 					if ((constraint & 2) == 2)
 					{
 						sql.append(" not null ");
+						flags += 2;
 					}
 					String defaultValue = column.getDefaultValue();
 					if (!StrUtil.asNull(defaultValue))
@@ -406,6 +422,9 @@ public class CreateDatabase
 						sql.append(" default " + defaultValue + "");
 					}
 					sql.append(",\n");
+					String tbcolExecSqlStr = "insert into `tbcolumn` (colname,tbname,comment,defaultvalue,datatype,dataLength,decimal,flags) value('" + column.getColumnName() + "','" + tableName
+							+ "','" + comment + "','" + defaultValue + "','" + column.getDataType() + "'," + column.getDataLength() + "," + column.getDecimal() + "," + flags + ")";
+					tbcolExecSql.add(tbcolExecSqlStr);
 				}
 				if (primarySB.length() > srcPriLength)
 				{
@@ -505,8 +524,11 @@ public class CreateDatabase
 	 * 执行sql
 	 * @param sqlDBMap
 	 * 赵玉柱
+	 * @param tbcolExecSql 
+	 * @param tableExecSql 
 	 */
-	private static void execUpdateSql(Map<Database,List<String>> sqlDBMap, Map<String,Map<String,Table>> selectDBFileMessage)
+	private static void execUpdateSql(Map<Database,List<String>> sqlDBMap, Map<String,Map<String,Table>> selectDBFileMessage, Map<String,List<String>> tableExecSql,
+			Map<String,List<String>> tbcolExecSql)
 	{
 		if (sqlDBMap != null)
 		{
@@ -534,7 +556,9 @@ public class CreateDatabase
 						}
 					}
 					Map<String,Table> tables = selectDBFileMessage.get(db.getDatabaseName());
-					updateCFGTable(cfgDB, db, tables);
+					List<String> tableExecSqlList = tableExecSql.get(db.getDatabaseName());
+					List<String> tbcolExecSqlList = tbcolExecSql.get(db.getDatabaseName());
+					updateCFGTable(cfgDB, db, tables, tableExecSqlList, tbcolExecSqlList);
 					cfgDB.commit();
 					db.commit();
 					rollback = false;
@@ -544,9 +568,20 @@ public class CreateDatabase
 					throw new RuntimeException(e);
 				} finally
 				{
-					if (db != null)
+					try
 					{
-						db.rollback(rollback, true);
+						if (db != null)
+						{
+							db.rollback(rollback, true);
+						}
+					} catch (Exception e)
+					{
+					}
+					try
+					{
+						cfgDB.rollback(rollback, true);
+					} catch (Exception e)
+					{
 					}
 				}
 			}
@@ -560,8 +595,10 @@ public class CreateDatabase
 	 * @param db
 	 * @param tables
 	 * 赵玉柱
+	 * @param tbcolExecSqlList 
+	 * @param tableExecSql 
 	 */
-	private static void updateCFGTable(Database cfgDB, Database db, Map<String,Table> tables)
+	private static void updateCFGTable(Database cfgDB, Database db, Map<String,Table> tables, List<String> tableExecSql, List<String> tbcolExecSqlList)
 	{
 		if (!(cfgDB.tableExist("DB") && cfgDB.tableExist("TB")))
 		{
@@ -588,30 +625,40 @@ public class CreateDatabase
 		}
 		//更新库信息到config库中
 		cfgDB.execSqlForWrite(dbSql, updateDBParams);
-		if (tables != null && !tables.isEmpty())
+		//更新表信息
+		for (String tableExecSqlStr : tableExecSql)
 		{
-			for (Entry<String,Table> tableEntry : tables.entrySet())
-			{
-				Table table = tableEntry.getValue();
-				String sqlTab = "select * from tb where tbname=:tbname ";
-				Map<String,Object> tableParams = new HashMap<>();
-				tableParams.put("tbname", table.getTableName());
-				Map<String,Object> tableMap = cfgDB.getMapFromSql(sqlTab, tableParams);
-				String tbSql = null;
-				Map<String,Object> updateTBParams = new HashMap<>();
-				updateTBParams.put("dbname", table.getDbName());
-				updateTBParams.put("tbname", table.getTableName());
-				updateTBParams.put("tblang1name", table.getTableName());
-				if (tableMap != null && !tableMap.isEmpty())
-				{
-					tbSql = "update tb set dbname=:dbname , tblang1name=:tblang1name ";
-				} else
-				{
-					tbSql = "insert into tb(tbname,dbname,tblang1name) values(:tbname ,:dbname ,:tblang1name )";
-				}
-				cfgDB.execSqlForWrite(tbSql, updateTBParams);
-			}
+			cfgDB.execSqlForWrite(tableExecSqlStr);
 		}
+		//更新表结构信息
+		for (String tbcolExecSqlStr : tbcolExecSqlList)
+		{
+			cfgDB.execSqlForWrite(tbcolExecSqlStr);
+		}
+		//		if (tables != null && !tables.isEmpty())
+		//		{
+		//			for (Entry<String,Table> tableEntry : tables.entrySet())
+		//			{
+		//				Table table = tableEntry.getValue();
+		//				String sqlTab = "select * from tb where tbname=:tbname ";
+		//				Map<String,Object> tableParams = new HashMap<>();
+		//				tableParams.put("tbname", table.getTableName());
+		//				Map<String,Object> tableMap = cfgDB.getMapFromSql(sqlTab, tableParams);
+		//				String tbSql = null;
+		//				Map<String,Object> updateTBParams = new HashMap<>();
+		//				updateTBParams.put("dbname", table.getDbName());
+		//				updateTBParams.put("tbname", table.getTableName());
+		//				updateTBParams.put("tblang1name", table.getTableName());
+		//				if (tableMap != null && !tableMap.isEmpty())
+		//				{
+		//					tbSql = "update tb set dbname=:dbname , tblang1name=:tblang1name ";
+		//				} else
+		//				{
+		//					tbSql = "insert into tb(tbname,dbname,tblang1name) values(:tbname ,:dbname ,:tblang1name )";
+		//				}
+		//				cfgDB.execSqlForWrite(tbSql, updateTBParams);
+		//			}
+		//		}
 	}
 
 	public static void main(String[] args)

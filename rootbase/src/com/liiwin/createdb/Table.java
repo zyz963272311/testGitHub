@@ -19,9 +19,10 @@ import java.util.Map;
 public class Table implements Serializable
 {
 	private static final long	serialVersionUID	= -413582564961721606L;
-	private String				dbName;									//数据库名
-	private int					dbType;									//数据库类型
+	private String				dbName;										//数据库名
+	private int					dbType;										//数据库类型
 	private String				tableName;									//表名
+	private String				lang1name;									//表中文名
 	private Map<String,Column>	columns;									//列名集合
 
 	public String getDbName()
@@ -62,5 +63,15 @@ public class Table implements Serializable
 	public void setColumns(Map<String,Column> columns)
 	{
 		this.columns = columns;
+	}
+
+	public String getLang1name()
+	{
+		return lang1name;
+	}
+
+	public void setLang1name(String lang1name)
+	{
+		this.lang1name = lang1name;
 	}
 }

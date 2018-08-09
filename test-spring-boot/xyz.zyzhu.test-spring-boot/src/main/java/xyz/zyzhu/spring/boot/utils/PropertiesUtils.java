@@ -4,13 +4,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Map.Entry;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
-
 import org.apache.activemq.util.ByteArrayInputStream;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.WatchedEvent;
@@ -19,7 +17,6 @@ import org.apache.zookeeper.ZooDefs.Ids;
 import org.apache.zookeeper.ZooKeeper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.liiwin.config.BasConfig;
 import com.liiwin.db.Database;
 import com.liiwin.db.pool.DatabasePoolManager;
@@ -40,21 +37,22 @@ import com.liiwin.utils.StrUtil;
  */
 public class PropertiesUtils
 {
-	private static AtomicBoolean zkLoaded = new AtomicBoolean(false);
-	private static Logger logger = LoggerFactory.getLogger(PropertiesUtils.class);
-	private static Properties properties;
+	private static AtomicBoolean	zkLoaded	= new AtomicBoolean(false);
+	private static Logger			logger		= LoggerFactory.getLogger(PropertiesUtils.class);
+	private static Properties		properties;
+
 	/**
 	 * 加载ZK配置
 	 * @param isForceLoad
 	 * 赵玉柱
 	 */
-	public static void  loadZKProperties(boolean isForceLoad)
+	public static void loadZKProperties(boolean isForceLoad)
 	{
-		if((properties == null&&!zkLoaded.get())||isForceLoad)
+		if ((properties == null && !zkLoaded.get()) || isForceLoad)
 		{
 			properties = new Properties();
 			Properties localProperties = loadLoaclProperties();
-			for(Entry<Object, Object> sysEntry:localProperties.entrySet())
+			for (Entry<Object,Object> sysEntry : localProperties.entrySet())
 			{
 				Object key = sysEntry.getKey();
 				Object value = sysEntry.getValue();
@@ -63,7 +61,7 @@ public class PropertiesUtils
 			forceLoadZKProperties();
 			loadSystemProperties(localProperties);
 			loadDBProperties(localProperties);
-			for(Entry<Object, Object> sysEntry:localProperties.entrySet())
+			for (Entry<Object,Object> sysEntry : localProperties.entrySet())
 			{
 				Object key = sysEntry.getKey();
 				Object value = sysEntry.getValue();
@@ -71,6 +69,7 @@ public class PropertiesUtils
 			}
 		}
 	}
+
 	/**
 	 * 将本地配置装载到ZK
 	 * 仅仅包括系统配置和数据库配置
@@ -79,59 +78,65 @@ public class PropertiesUtils
 	 */
 	public static void putLocalPropertiesToZK()
 	{
-		synchronized(PropertiesUtils.class)
+		synchronized (PropertiesUtils.class)
 		{
 			Properties loadLoaclProperties = loadLoaclProperties();
-			String sysPropPath  =loadLoaclProperties.getProperty("SystemPropertyesPath", "D://MyProject/OnGithub/system.properties");
+			String sysPropPath = loadLoaclProperties.getProperty("SystemPropertyesPath", "D://MyProject/OnGithub/system.properties");
 			loadLoaclProperties.clear();
 			loadLoaclProperties.put("SystemPropertyesPath", sysPropPath);
 			loadSystemProperties(loadLoaclProperties);
 			loadDBProperties(loadLoaclProperties);
 			loadLoaclProperties.remove("SystemPropertyesPath");
-			Watcher watcher = new Watcher() {
-				
+			Watcher watcher = new Watcher()
+			{
 				@Override
-				public void process(WatchedEvent arg0) {
-					logger.info("WatchedEvent={}",arg0);
+				public void process(WatchedEvent arg0)
+				{
+					logger.info("WatchedEvent={}", arg0);
 				}
 			};
 			ByteArrayOutputStream bio = new ByteArrayOutputStream();
 			ZooKeeper zk = null;
-			try {
-				zk = new ZooKeeper(getPropValue("zooKeeperUrl","127.0.0.1:2181"), 9999, watcher);
+			try
+			{
+				zk = new ZooKeeper(getPropValue("zooKeeperUrl", "127.0.0.1:2181"), 9999, watcher);
 				loadLoaclProperties.store(bio, "备份");
 				try
 				{
-				zk.setData("/properties", bio.toByteArray(), 1);
-				}
-				catch(Exception e)
+					zk.setData("/properties", bio.toByteArray(), 1);
+				} catch (Exception e)
 				{
 					zk.create("/properties", bio.toByteArray(), Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
 				}
-			} catch (Exception e) {
-				logger.info("写入本地配置到ZK失败："+e);
-			}
-			finally
+			} catch (Exception e)
 			{
-				if(zk!=null)
+				logger.info("写入本地配置到ZK失败：" + e);
+			} finally
+			{
+				if (zk != null)
 				{
-					try {
+					try
+					{
 						zk.close();
-					} catch (InterruptedException e) {
-						logger.info("关闭ZK失败{}",e);
+					} catch (InterruptedException e)
+					{
+						logger.info("关闭ZK失败{}", e);
 					}
 				}
-				if(bio!=null)
+				if (bio != null)
 				{
-					try {
+					try
+					{
 						bio.close();
-					} catch (IOException e) {
-						logger.info("关闭流失败{}",e);
+					} catch (IOException e)
+					{
+						logger.info("关闭流失败{}", e);
 					}
 				}
 			}
 		}
 	}
+
 	/**
 	 * 加载本地properties配置
 	 * 
@@ -141,75 +146,83 @@ public class PropertiesUtils
 	{
 		String localPropertiePath = "./resources/application.properties";
 		Properties localProperties = new Properties();
-		FileInputStream fis =null;
-		try {
+		FileInputStream fis = null;
+		try
+		{
 			fis = new FileInputStream(new File(localPropertiePath));
-			if(fis!=null)
+			if (fis != null)
 			{
 				localProperties.load(fis);
 			}
-		} catch (Exception e) {
-			logger.info("加载本地配置{}失败，失败原因{}",localPropertiePath,e);
+		} catch (Exception e)
+		{
+			logger.info("加载本地配置{}失败，失败原因{}", localPropertiePath, e);
 			localPropertiePath = "./resources/config.properties";
-			try {
-				fis = new FileInputStream(new File(localPropertiePath));
-			if(fis!=null)
+			try
 			{
-				localProperties.load(fis);
-			}
-			} catch (Exception e1) {
-				logger.info("加载本地配置{}失败，失败原因{}",localPropertiePath,e);
+				fis = new FileInputStream(new File(localPropertiePath));
+				if (fis != null)
+				{
+					localProperties.load(fis);
+				}
+			} catch (Exception e1)
+			{
+				logger.info("加载本地配置{}失败，失败原因{}", localPropertiePath, e);
 				localPropertiePath = "./config.properties";
 				try
 				{
 					fis = new FileInputStream(new File(localPropertiePath));
-				}
-				catch(Exception e2)
+				} catch (Exception e2)
 				{
-					logger.info("加载本地配置{}失败,失败原因{}",localPropertiePath,e);
+					logger.info("加载本地配置{}失败,失败原因{}", localPropertiePath, e);
 				}
 			}
-		}
-		finally
+		} finally
 		{
-			if(fis!=null)
+			if (fis != null)
 			{
-				try {
+				try
+				{
 					fis.close();
-				} catch (IOException e) {
-					logger.info("关闭流失败{}",e);
-					throw new RuntimeException("报错内容",e);
+				} catch (IOException e)
+				{
+					logger.info("关闭流失败{}", e);
+					throw new RuntimeException("报错内容", e);
 				}
 			}
 		}
 		return localProperties;
 	}
+
 	/**
 	 * 加载系统配置
 	 * @param localProperties
 	 * 赵玉柱
 	 */
-	private static void  loadSystemProperties(Properties localProperties)
+	private static void loadSystemProperties(Properties localProperties)
 	{
 		String systemPropertiesPath = StrUtil.obj2str(localProperties.getProperty("SystemPropertyesPath", "D://MyProject/OnGithub/system.properties"));
 		Properties ststemPropertyes = new Properties();
-		FileInputStream fis =null;
-		try {
+		FileInputStream fis = null;
+		try
+		{
 			fis = new FileInputStream(new File(systemPropertiesPath));
-			if(fis!=null)
+			if (fis != null)
 			{
 				ststemPropertyes.load(fis);
 			}
-		} catch (Exception e) {
-			logger.info("获取系统配置{}失败,失败原因{}",systemPropertiesPath,e);
+		} catch (Exception e)
+		{
+			logger.info("获取系统配置{}失败,失败原因{}", systemPropertiesPath, e);
 		}
-		for(Entry<Object, Object> sysEntry:ststemPropertyes.entrySet())
+		for (Entry<Object,Object> sysEntry : ststemPropertyes.entrySet())
 		{
 			Object key = sysEntry.getKey();
 			String value = StrUtil.obj2str(sysEntry.getValue());
 			localProperties.put(sysEntry.getKey(), StrUtil.obj2str(localProperties.get(key), value));
 		}
 	}
+
 	/**
 	 * 加载数据库中的配置
 	 * @param properties
@@ -237,7 +250,7 @@ public class PropertiesUtils
 			}
 		} catch (Exception e)
 		{
-			logger.info("查询数据库配置失败{}",e);
+			logger.info("查询数据库配置失败{}", e);
 		} finally
 		{
 			if (db != null)
@@ -246,54 +259,60 @@ public class PropertiesUtils
 			}
 		}
 	}
+
 	/**
 	 * 强制加载ZK配置
 	 * @param key
 	 * 赵玉柱
 	 */
-	private static void  forceLoadZKProperties()
+	private static void forceLoadZKProperties()
 	{
-		synchronized(PropertiesUtils.class)
+		synchronized (PropertiesUtils.class)
 		{
 			zkLoaded.set(true);
-			Watcher watcher = new Watcher() {
-			
-			@Override
-			public void process(WatchedEvent arg0) {
-				logger.info("WatchedEvent={}",arg0);
-			}
+			Watcher watcher = new Watcher()
+			{
+				@Override
+				public void process(WatchedEvent arg0)
+				{
+					logger.info("WatchedEvent={}", arg0);
+				}
 			};
 			ZooKeeper zk = null;
-			try {
-				String ZKUrl = StrUtil.obj2str(BasConfig.getPropertie("zooKeeperUrl"),"127.0.0.1:2181");
-				zk= new ZooKeeper(ZKUrl, 9999, watcher);
+			try
+			{
+				String ZKUrl = StrUtil.obj2str(BasConfig.getPropertie("zooKeeperUrl"), "127.0.0.1:2181");
+				zk = new ZooKeeper(ZKUrl, 9999, watcher);
 				byte[] data = zk.getData("/properties", watcher, null);
-				if(data!=null)
+				if (data != null)
 				{
 					properties.load(new ByteArrayInputStream(data));
 				}
-			} catch (Exception e) {
-				logger.info("加载ZK配置失败{}",e);
-			}
-			finally
+			} catch (Exception e)
 			{
-				if(zk!=null)
+				logger.info("加载ZK配置失败{}", e);
+			} finally
+			{
+				if (zk != null)
 				{
-					try {
+					try
+					{
 						zk.close();
-					} catch (InterruptedException e) {
-						logger.info("关闭ZK客户端失败{}",e);
-						throw new RuntimeException("报错内容",e);
+					} catch (InterruptedException e)
+					{
+						logger.info("关闭ZK客户端失败{}", e);
+						throw new RuntimeException("报错内容", e);
 					}
 				}
 			}
 		}
 		//如果获取失败，则重新将数据加载到Config配置
-		if(properties.isEmpty())
+		if (properties.isEmpty())
 		{
 			putLocalPropertiesToZK();
 		}
 	}
+
 	public static String getPropValue(String key)
 	{
 		return getPropValue(key, null);
@@ -312,7 +331,7 @@ public class PropertiesUtils
 
 	public static int getPropIntValue(String key, int defaultValue)
 	{
-		return StrUtil.obj2int(getPropValue(key),defaultValue);
+		return StrUtil.obj2int(getPropValue(key), defaultValue);
 	}
 
 	public static boolean getPropBoolValue(String key)

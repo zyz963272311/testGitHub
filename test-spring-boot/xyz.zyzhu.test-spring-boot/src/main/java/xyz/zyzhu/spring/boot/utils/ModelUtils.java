@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.persistence.Table;
 import com.liiwin.db.Database;
@@ -31,19 +32,23 @@ public class ModelUtils
 	/**
 	 * 类字段缓存
 	 */
-	private static Map<Class<?>,List<Field>>		classFieldsCache	= new ConcurrentHashMap<>();
+	private static Map<Class<?>,List<Field>>		classFieldsCache		= new ConcurrentHashMap<>();
 	/**
 	 * 表与class缓存
 	 */
-	private static Map<Class<?>,String>				classTableCache		= new ConcurrentHashMap<>();
+	private static Map<Class<?>,String>				classTableCache			= new ConcurrentHashMap<>();
 	/**
 	 * 类字段与表对应缓存
 	 */
-	private static Map<Class<?>,Map<Field,String>>	classColumnCache	= new ConcurrentHashMap<>();
+	private static Map<Class<?>,Map<Field,String>>	classColumnCache		= new ConcurrentHashMap<>();
 	/**
 	 * 类的主键字段缓存
 	 */
-	private static Map<Class<?>,List<String>>		classPrimarysCache	= new ConcurrentHashMap<>();
+	private static Map<Class<?>,List<String>>		classPrimaryColsCache	= new ConcurrentHashMap<>();
+	/**
+	 * 类上的主键 field缓存
+	 */
+	private static Map<Class<?>,List<Field>>		classPrimaryFieldsCache	= new ConcurrentHashMap<>();
 
 	/**
 	 * 获取model的field缓存
@@ -108,12 +113,15 @@ public class ModelUtils
 			for (Field field : classFields)
 			{
 				FieldDef annotation = field.getAnnotation(FieldDef.class);
-				String column = annotation.column();
-				if (column == null)
+				if (annotation != null)
 				{
-					column = field.getName();
+					String column = annotation.column();
+					if (column == null)
+					{
+						column = field.getName();
+					}
+					map.put(field, column);
 				}
-				map.put(field, column);
 			}
 			classColumnCache.put(t, map);
 			return map;
@@ -121,31 +129,113 @@ public class ModelUtils
 	}
 
 	/**
-	 * 获取所有的主键字段
+	 * 获取所有的主键字段,为数据库字段
 	 * @param t
 	 * @return
 	 * 赵玉柱
 	 */
-	public static <T extends BasModel> List<String> getPrimaryKeys(Class<T> t)
+	public static <T extends BasModel> List<String> getPrimaryKeyCols(Class<T> t)
 	{
 		if (t == null)
 		{
 			return null;
 		}
-		if (classPrimarysCache.containsKey(t))
+		if (classPrimaryColsCache.containsKey(t))
 		{
-			return classPrimarysCache.get(t);
+			return classPrimaryColsCache.get(t);
 		}
 		String modelTable = getModelTable(t);
-		if (modelTable != null)
+		List<Field> classFields = getClassFields(t);
+		List<String> primaryKeys = new ArrayList<>();
+		if (modelTable != null && classFields != null && !classFields.isEmpty())
 		{
+			Database configDatabase = DatabasePoolManager.getNewInstance().getConfigDatabase();
+			String sql = "select colname,flags from tbcol where tbname=:tbname";
+			Map<String,Object> params = new HashMap<>();
+			params.put("tbname", modelTable);
+			List<Map<String,Object>> listMapFromSql = configDatabase.getListMapFromSql(sql, params);
+			if (listMapFromSql != null && !listMapFromSql.isEmpty())
+			{
+				for (Map<String,Object> map : listMapFromSql)
+				{
+					String colname = StrUtil.obj2str(map.get("column"));
+					int flags = StrUtil.obj2int(map.get("flags"));
+					if (StrUtil.isNoStrTrimNull(colname) && (flags & 1) == 1)
+					{
+						for (Field field : classFields)
+						{
+							FieldDef annotation = field.getAnnotation(FieldDef.class);
+							if (annotation != null)
+							{
+								String column = annotation.column();
+								String colName = StrUtil.obj2str(column, field.getName());
+								if (StrUtil.equals(colName, colname))
+								{
+									primaryKeys.add(colName);
+								}
+							}
+						}
+					}
+				}
+			}
 		}
-		Database configDatabase = DatabasePoolManager.getNewInstance().getConfigDatabase();
-		String sql = "select * from table where table=:table";
-		Map<String,Object> params = new HashMap<>();
-		params.put("table", modelTable);
-		List<Map<String,Object>> listMapFromSql = configDatabase.getListMapFromSql(sql, params);
-		return null;
+		classPrimaryColsCache.put(t, primaryKeys);
+		return primaryKeys;
+	}
+
+	/**
+	 * 获取所有的主键字段,为数据库字段
+	 * @param t
+	 * @return
+	 * 赵玉柱
+	 */
+	public static <T extends BasModel> List<Field> getPrimaryFields(Class<T> t)
+	{
+		if (t == null)
+		{
+			return null;
+		}
+		if (classPrimaryFieldsCache.containsKey(t))
+		{
+			return classPrimaryFieldsCache.get(t);
+		}
+		String modelTable = getModelTable(t);
+		List<Field> classFields = getClassFields(t);
+		List<Field> primaryKeys = new ArrayList<>();
+		if (modelTable != null && classFields != null && !classFields.isEmpty())
+		{
+			Database configDatabase = DatabasePoolManager.getNewInstance().getConfigDatabase();
+			String sql = "select colname,flags from tbcol where tbname=:tbname";
+			Map<String,Object> params = new HashMap<>();
+			params.put("tbname", modelTable);
+			List<Map<String,Object>> listMapFromSql = configDatabase.getListMapFromSql(sql, params);
+			if (listMapFromSql != null && !listMapFromSql.isEmpty())
+			{
+				for (Map<String,Object> map : listMapFromSql)
+				{
+					String colname = StrUtil.obj2str(map.get("column"));
+					int flags = StrUtil.obj2int(map.get("flags"));
+					if (StrUtil.isNoStrTrimNull(colname) && (flags & 1) == 1)
+					{
+						for (Field field : classFields)
+						{
+							FieldDef annotation = field.getAnnotation(FieldDef.class);
+							if (annotation != null)
+							{
+								String column = annotation.column();
+								String colName = StrUtil.obj2str(column, field.getName());
+								if (StrUtil.equals(colName, colname))
+								{
+									primaryKeys.add(field);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		classPrimaryFieldsCache.put(t, primaryKeys);
+		return primaryKeys;
 	}
 
 	/**
@@ -175,6 +265,60 @@ public class ModelUtils
 			}
 		}
 		classTableCache.put(t, null);
+		return null;
+	}
+
+	public static <T extends BasModel> T query1(Database db, T t)
+	{
+		return null;
+	}
+
+	public static <T extends BasModel> T query(Database db, T t)
+	{
+		return null;
+	}
+
+	/**
+	 * 根据filter组装sql
+	 * @param db
+	 * @param clazz
+	 * @param filter
+	 * @return
+	 * 赵玉柱
+	 */
+	public static <T extends BasModel> T query(Database db, Class<T> clazz, Map<String,Object> params, String filter)
+	{
+		if (clazz == null)
+		{
+			return null;
+		}
+		if (db == null)
+		{
+			String table = getModelTable(clazz);
+			if (StrUtil.isStrTrimNull(table))
+			{
+				throw new RuntimeException("对象不存在对应表名");
+			}
+			db = DatabasePoolManager.getNewInstance().getDatabaseByTable(table);
+		}
+		StringBuffer sb = new StringBuffer("select ");
+		Map<Field,String> classColumns = getClassColumns(clazz);
+		if (classColumns != null)
+		{
+			int length = classColumns.size();
+			int i = 0;
+			for (Entry<Field,String> fldEntry : classColumns.entrySet())
+			{
+				sb.append(fldEntry.getValue());
+				if (i != length - 1)
+				{
+					sb.append(",");
+				}
+				i++;
+			}
+		}
+		String sql = sb.toString() + " " + filter;
+		List<Map<String,Object>> listMapFromSql = db.getListMapFromSql(sql, params);
 		return null;
 	}
 

@@ -292,6 +292,7 @@ public class Database
 			throw new RuntimeException("表名不可为空且要插入的数据不可为空");
 		}
 	}
+
 	/**
 	 * 更新表
 	 * @param table
@@ -300,10 +301,9 @@ public class Database
 	 * @return
 	 * 赵玉柱
 	 */
-	public int updateTable(String table,Map<String, Object> oldValues,Map<String, Object> newValues)
+	public int updateTable(String table, Map<String,Object> oldValues, Map<String,Object> newValues)
 	{
-
-		if (StrUtil.isNoStrTrimNull(table) && oldValues != null && !oldValues.isEmpty()&& newValues != null && !newValues.isEmpty())
+		if (StrUtil.isNoStrTrimNull(table) && oldValues != null && !oldValues.isEmpty() && newValues != null && !newValues.isEmpty())
 		{
 			StringBuffer sb = new StringBuffer("update ").append(table).append(" set ");
 			Set<String> keys = newValues.keySet();
@@ -312,7 +312,7 @@ public class Database
 			for (String key : keys)
 			{
 				sb.append(key).append("=").append(newValues.get(key));
-				if(i!=length-1)
+				if (i != length - 1)
 				{
 					sb.append(",");
 				}
@@ -322,10 +322,10 @@ public class Database
 			Set<String> wKeys = oldValues.keySet();
 			length = wKeys.size();
 			i = 0;
-			for(String wKey:wKeys)
+			for (String wKey : wKeys)
 			{
 				sb.append(wKey).append(" = ").append(oldValues.get(wKey));
-				if(i!=length-1)
+				if (i != length - 1)
 				{
 					sb.append(" and ");
 				}
@@ -336,7 +336,6 @@ public class Database
 		{
 			throw new RuntimeException("表名不可为空且要插入的数据不可为空");
 		}
-	
 	}
 
 	/**
@@ -638,14 +637,16 @@ public class Database
 			{
 				getConn().rollback();
 			}
-			if (closeDB)
-			{
-				close();
-			}
 		} catch (SQLException e)
 		{
 			e.printStackTrace();
 			throw new RuntimeException("回滚失败" + e.getMessage());
+		} finally
+		{
+			if (closeDB)
+			{
+				close();
+			}
 		}
 	}
 
@@ -810,7 +811,7 @@ public class Database
 		Database db = new Database("project01");
 		//公司电脑
 		//		Database db = new Database("zyztest");
-		List<Map<String,Object>> listMapFromSql = db.getListMapFromSql("select * from information_schema.COLUMNS where table_schema='project01'");
+		List<Map<String,Object>> listMapFromSql = db.getListMapFromSql("select * from information_schema.COLUMNS where table_schema='" + db.getDatabaseName() + "'");
 		for (Map<String,Object> map : listMapFromSql)
 		{
 			System.out.println(map);

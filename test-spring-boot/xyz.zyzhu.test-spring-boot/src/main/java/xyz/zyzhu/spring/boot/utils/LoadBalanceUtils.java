@@ -4,13 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import org.apache.commons.lang3.RandomUtils;
-
 import com.liiwin.utils.StrUtil;
-
 import xyz.zyzhu.spring.boot.model.LoadBalance;
-
 /**
  * <p>标题： 负载均衡工具类</p>
  * <p>功能： </p>
@@ -28,9 +24,10 @@ import xyz.zyzhu.spring.boot.model.LoadBalance;
 public class LoadBalanceUtils
 {
 	/**轮训方式对应的key与当前坐标*/
-	private static ConcurrentHashMap<String, AtomicInteger> rrMap = new ConcurrentHashMap<>();
+	private static ConcurrentHashMap<String,AtomicInteger>	rrMap	= new ConcurrentHashMap<>();
 	/**加权轮训方式对应的key与当前的坐标*/
-	private static ConcurrentHashMap<String, AtomicInteger> wrrMap = new ConcurrentHashMap<>();
+	private static ConcurrentHashMap<String,AtomicInteger>	wrrMap	= new ConcurrentHashMap<>();
+
 	/**
 	 * 
 	 * @param key 用于轮询与加权轮训情况下的当前左边缓存
@@ -39,27 +36,25 @@ public class LoadBalanceUtils
 	 * @return
 	 * 赵玉柱
 	 */
-	public static LoadBalance balance(String key,List<LoadBalance> balances,int options)
+	public static LoadBalance balance(String key, List<LoadBalance> balances, int options)
 	{
 		LoadBalance balance = null;
-		if((options&1) >0)
+		if ((options & 1) > 0)
 		{
 			balance = roundRobinBalance(key, balances);
-		}
-		else if((options&2) >0)
+		} else if ((options & 2) > 0)
 		{
 			balance = weightRoundRobinBalance(key, balances);
-		}
-		else if((options&4) >0)
+		} else if ((options & 4) > 0)
 		{
-			balance =weightRandomBalance(balances);
-		}
-		else
+			balance = weightRandomBalance(balances);
+		} else
 		{
 			balance = randomBalance(balances);
 		}
 		return balance;
 	}
+
 	/**
 	 * 轮训方式负载
 	 * @param key
@@ -67,26 +62,28 @@ public class LoadBalanceUtils
 	 * @return
 	 * 赵玉柱
 	 */
-	public  static LoadBalance roundRobinBalance(String key,List<LoadBalance> balances)
+	public static LoadBalance roundRobinBalance(String key, List<LoadBalance> balances)
 	{
-		if (StrUtil.isStrTrimNull(key)) {
+		if (StrUtil.isStrTrimNull(key))
+		{
 			return null;
 		}
 		List<LoadBalance> onLineBalances = getOnLineBalances(balances);
-		if(onLineBalances == null||onLineBalances.isEmpty()) 
+		if (onLineBalances == null || onLineBalances.isEmpty())
 		{
 			return null;
 		}
 		AtomicInteger pos = rrMap.get(key);
-		if(pos == null)
+		if (pos == null)
 		{
 			pos = new AtomicInteger(0);
 			rrMap.put(key, pos);
 		}
-		LoadBalance balance = onLineBalances.get((pos.intValue()%(onLineBalances.size())));
-		pos.set(pos.incrementAndGet()%onLineBalances.size());
+		LoadBalance balance = onLineBalances.get((pos.intValue() % (onLineBalances.size())));
+		pos.set(pos.incrementAndGet() % onLineBalances.size());
 		return balance;
 	}
+
 	/**
 	 * 随机方式负载
 	 * @param key
@@ -97,18 +94,19 @@ public class LoadBalanceUtils
 	public static LoadBalance randomBalance(List<LoadBalance> balances)
 	{
 		List<LoadBalance> onLineBalances = getOnLineBalances(balances);
-		if(onLineBalances==null||onLineBalances.isEmpty())
+		if (onLineBalances == null || onLineBalances.isEmpty())
 		{
 			return null;
 		}
 		//当仅有一个负载，直接取数
-		if(onLineBalances.size() == 1)
+		if (onLineBalances.size() == 1)
 		{
 			return onLineBalances.get(0);
 		}
 		int nextInt = RandomUtils.nextInt(0, onLineBalances.size());
 		return onLineBalances.get(nextInt);
 	}
+
 	/**
 	 * 加权轮训方式
 	 * @param key
@@ -116,38 +114,39 @@ public class LoadBalanceUtils
 	 * @return
 	 * 赵玉柱
 	 */
-	public static LoadBalance weightRoundRobinBalance(String key,List<LoadBalance> balances)
+	public static LoadBalance weightRoundRobinBalance(String key, List<LoadBalance> balances)
 	{
-		if(StrUtil.isStrTrimNull(key))
+		if (StrUtil.isStrTrimNull(key))
 		{
 			return null;
 		}
 		List<LoadBalance> onLineBalances = getOnLineBalances(balances);
-		if(onLineBalances == null||onLineBalances.isEmpty())
+		if (onLineBalances == null || onLineBalances.isEmpty())
 		{
 			return null;
 		}
-		if(onLineBalances.size() == 1)
+		if (onLineBalances.size() == 1)
 		{
 			return onLineBalances.get(0);
 		}
 		List<LoadBalance> tempList = new ArrayList<>();
-		for(LoadBalance balance:onLineBalances)
+		for (LoadBalance balance : onLineBalances)
 		{
-			for(int i = 0;i<balance.getIntWeight();i++)
+			for (int i = 0; i < balance.getIntWeight(); i++)
 			{
 				tempList.add(balance);
 			}
 		}
-		if(tempList.isEmpty())
+		if (tempList.isEmpty())
 		{
 			return null;
 		}
 		AtomicInteger pos = wrrMap.get(key);
-		LoadBalance balance = tempList.get(pos.get()%tempList.size());
-		pos.set(pos.incrementAndGet()%tempList.size());
+		LoadBalance balance = tempList.get(pos.get() % tempList.size());
+		pos.set(pos.incrementAndGet() % tempList.size());
 		return balance;
 	}
+
 	/**
 	 * 加权随机方式
 	 * @param balances
@@ -157,28 +156,29 @@ public class LoadBalanceUtils
 	public static LoadBalance weightRandomBalance(List<LoadBalance> balances)
 	{
 		List<LoadBalance> onLineBalances = getOnLineBalances(balances);
-		if(onLineBalances == null||onLineBalances.isEmpty())
+		if (onLineBalances == null || onLineBalances.isEmpty())
 		{
 			return null;
 		}
-		if(onLineBalances.size() == 1)
+		if (onLineBalances.size() == 1)
 		{
 			return onLineBalances.get(0);
 		}
 		List<LoadBalance> tempList = new ArrayList<>();
-		for(LoadBalance balance:onLineBalances)
+		for (LoadBalance balance : onLineBalances)
 		{
-			for(int i = 0;i<balance.getIntWeight();i++)
+			for (int i = 0; i < balance.getIntWeight(); i++)
 			{
 				tempList.add(balance);
 			}
 		}
-		if(tempList.isEmpty())
+		if (tempList.isEmpty())
 		{
 			return null;
 		}
 		return tempList.get(RandomUtils.nextInt(0, tempList.size()));
 	}
+
 	/**
 	 * 获取在线的负载集合
 	 * @param balances
@@ -189,6 +189,7 @@ public class LoadBalanceUtils
 	{
 		return getFlagsBalances(balances, true);
 	}
+
 	/**
 	 * 获取不在线的负载均衡集合
 	 * @param balances
@@ -199,28 +200,30 @@ public class LoadBalanceUtils
 	{
 		return getFlagsBalances(balances, false);
 	}
+
 	/**
 	 * 获取在线或离线的负载均衡对象集合
 	 * @param balances
 	 * @return
 	 * 赵玉柱
 	 */
-	public static List<LoadBalance> getFlagsBalances(List<LoadBalance> balances,boolean isOnline)
+	public static List<LoadBalance> getFlagsBalances(List<LoadBalance> balances, boolean isOnline)
 	{
-		synchronized (LoadBalanceUtils.class) {
+		synchronized (LoadBalanceUtils.class)
+		{
 			List<LoadBalance> result = new ArrayList<>();
-			if(balances==null||balances.isEmpty())
+			if (balances == null || balances.isEmpty())
 			{
 				return result;
 			}
-			for(LoadBalance balance:balances)
+			for (LoadBalance balance : balances)
 			{
-				if(balance!=null)
+				if (balance != null)
 				{
 					//异或，相反为一
-					if(balance.isOffLine()^isOnline)
+					if (balance.isOffLine() ^ isOnline)
 					{
-					result.add(balance);
+						result.add(balance);
 					}
 				}
 			}

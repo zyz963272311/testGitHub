@@ -3,6 +3,7 @@ package xyz.zyzhu.spring.boot.model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import com.liiwin.utils.StrUtil;
 /**
  * <p>标题： 微信路由Module</p>
  * <p>功能： </p>
@@ -29,6 +30,130 @@ public class WXRouter extends BasModel
 	private String				matcherClassPath;							//匹配器路径
 	private String				interClassPath;								//拦截器路径
 	private String				handlerClassPath;							//处理器路径
+	private Integer				flags;										//1:启用;2:end;default:启用，next
+
+	/**
+	 * 后缀加End
+	 * @return
+	 * 赵玉柱
+	 */
+	public boolean isEnd()
+	{
+		boolean isEnd = false;
+		if (flags != null)
+		{
+			isEnd = (flags & 2) > 0;
+		}
+		return isEnd;
+	}
+
+	/**
+	 * 后缀加next
+	 * @return
+	 * 赵玉柱
+	 */
+	public boolean isNext()
+	{
+		return !isEnd();
+	}
+
+	/**
+	 * 是否已经启用
+	 * @return
+	 * 赵玉柱
+	 */
+	public boolean isEnable()
+	{
+		boolean isEnable = true;
+		if (flags != null)
+		{
+			isEnable = (flags & 1) == 0;
+		}
+		return isEnable;
+	}
+
+	/**
+	 * 是否已经停用
+	 * @return
+	 * 赵玉柱
+	 */
+	public boolean isDisable()
+	{
+		return !isEnable();
+	}
+
+	/**
+	 * 设置启用并返回
+	 * @return
+	 * 赵玉柱
+	 */
+	public WXRouter setEnable()
+	{
+		if (isDisable())
+		{
+			int flags = StrUtil.obj2int(getFlags());
+			flags = flags ^ 1;
+			setFlags(flags);
+		}
+		return this;
+	}
+
+	/**
+	 * 设置停用并返回
+	 * @return
+	 * 赵玉柱
+	 */
+	public WXRouter setDisable()
+	{
+		if (isEnable())
+		{
+			int flags = StrUtil.obj2int(getFlags());
+			if (flags != 0)
+			{
+				flags = flags - 1;
+			}
+			setFlags(flags);
+		}
+		return this;
+	}
+
+	/**
+	 * 设置结尾为end
+	 * @return
+	 * 赵玉柱
+	 */
+	public WXRouter setEnd()
+	{
+		if (isNext())
+		{
+			int flags = StrUtil.obj2int(getFlags());
+			if (flags != 0)
+			{
+				flags = flags ^ 2;
+			}
+			setFlags(flags);
+		}
+		return this;
+	}
+
+	/**
+	 * 设置next结尾
+	 * @return
+	 * 赵玉柱
+	 */
+	public WXRouter setNext()
+	{
+		if (isEnd())
+		{
+			int flags = StrUtil.obj2int(getFlags());
+			if (flags != 0)
+			{
+				flags = flags - 2;
+			}
+			setFlags(flags);
+		}
+		return this;
+	}
 
 	public String getId()
 	{
@@ -88,5 +213,15 @@ public class WXRouter extends BasModel
 	public void setHandlerClassPath(String handlerClassPath)
 	{
 		this.handlerClassPath = handlerClassPath;
+	}
+
+	public Integer getFlags()
+	{
+		return flags;
+	}
+
+	public void setFlags(Integer flags)
+	{
+		this.flags = flags;
 	}
 }

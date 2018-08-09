@@ -3,6 +3,7 @@ package com.liiwin.db.pool;
 import java.sql.SQLException;
 import java.util.Hashtable;
 import com.liiwin.db.Database;
+import com.liiwin.db.DatabaseCacheUtils;
 import com.liiwin.utils.StrUtil;
 /**
  * <p>标题： 数据库连接池管理类</p>
@@ -59,6 +60,22 @@ public class DatabasePoolManager
 			pools.put(dbName, pool);
 		}
 		return database;
+	}
+
+	/**
+	 * 根据表名获取数据库名称
+	 * @param tableName
+	 * @return
+	 * 赵玉柱
+	 */
+	public Database getDatabaseByTable(String tableName)
+	{
+		String dbName = DatabaseCacheUtils.getDbNameByTableName(tableName);
+		if (StrUtil.isStrTrimNull(dbName))
+		{
+			throw new RuntimeException("根据表名" + tableName + "获取数据库名称失败");
+		}
+		return getDatabase(dbName);
 	}
 
 	public IDatabasePool getPool(String dbName)

@@ -5,43 +5,29 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 /**
- * <p>
- * 标题： TODO
- * </p>
- * <p>
- * 功能：
- * </p>
- * <p>
- * 所属模块： TODO
- * </p>
- * <p>
- * 版权： Copyright © 2017 SNSOFT
- * </p>
- * <p>
- * 公司: 赵玉柱练习
- * </p>
- * <p>
- * 创建日期：2017年12月3日 上午12:04:12
- * </p>
- * <p>
- * 类全名：xyz.zyzhu.spring.boot.model.Menu
- * </p>
+ * <p>标题： TODO</p>
+ * <p>功能：</p>
+ * <p>所属模块： TODO</p>
+ * <p>版权： Copyright © 2017 SNSOFT</p>
+ * <p>公司: 赵玉柱练习</p>
+ * <p>创建日期：2017年12月3日 上午12:04:12</p>
+ * <p>类全名：xyz.zyzhu.spring.boot.model.Menu</p>
  * 作者：赵玉柱 初审： 复审： 监听使用界面:
  * 
  * @version 8.0
  */
 @Entity
 @Table(name = "menu")
-public class Menu extends BasModel {
+public class Menu extends BasModel
+{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	Integer mid;
-	String mname;
-	Integer offlags;
-	String url;
-	String limits;
+	Integer	mid;
+	String	mname;
+	Integer	offlags;
+	String	url;
+	String	limits;
 
 	/**
 	 * @param mname
@@ -49,7 +35,8 @@ public class Menu extends BasModel {
 	 * @param url
 	 * @param limits
 	 */
-	public Menu(String mname, Integer offlags, String url, String limits) {
+	public Menu(String mname, Integer offlags, String url, String limits)
+	{
 		super();
 		this.mname = mname;
 		this.offlags = offlags;
@@ -60,48 +47,58 @@ public class Menu extends BasModel {
 	/**
 	 * 
 	 */
-	public Menu() {
+	public Menu()
+	{
 		super();
 	}
 
-	public Integer getMid() {
+	public Integer getMid()
+	{
 		return mid;
 	}
 
-	public void setMid(Integer mid) {
+	public void setMid(Integer mid)
+	{
 		this.mid = mid;
 	}
 
-	public String getMname() {
+	public String getMname()
+	{
 		return mname;
 	}
 
-	public void setMname(String mname) {
+	public void setMname(String mname)
+	{
 		this.mname = mname;
 	}
 
-	public Integer getOfflags() {
+	public Integer getOfflags()
+	{
 		return offlags;
 	}
 
-	public void setOfflags(Integer offlags) {
+	public void setOfflags(Integer offlags)
+	{
 		this.offlags = offlags;
 	}
 
-	public String getUrl() {
+	public String getUrl()
+	{
 		return url;
 	}
 
-	public void setUrl(String url) {
+	public void setUrl(String url)
+	{
 		this.url = url;
 	}
 
-	public String getLimits() {
+	public String getLimits()
+	{
 		return limits;
 	}
 
-	public void setLimits(String limits) {
+	public void setLimits(String limits)
+	{
 		this.limits = limits;
 	}
-
 }
