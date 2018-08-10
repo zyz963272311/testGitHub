@@ -1,10 +1,7 @@
 package xyz.zyzhu.spring.boot.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
+import xyz.zyzhu.spring.boot.annotation.FieldDef;
 /**
  * <p>标题： TODO</p>
  * <p>功能：</p>
@@ -17,17 +14,18 @@ import javax.persistence.Table;
  * 
  * @version 8.0
  */
-@Entity
-@Table(name = "menu")
-public class Menu extends BasModel
+@Table(name = "menu1")
+public class Menu1 extends BasModel
 {
 	private static final long	serialVersionUID	= 8548831581997780285L;
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	Integer						mid;
+	@FieldDef(defaultValue = "AutoCode:mid______")
+	String						mid;
+	@FieldDef()
 	String						mname;
 	Integer						offlags;
+	@FieldDef()
 	String						url;
+	@FieldDef()
 	String						limits;
 
 	/**
@@ -36,7 +34,7 @@ public class Menu extends BasModel
 	 * @param url
 	 * @param limits
 	 */
-	public Menu(String mname, Integer offlags, String url, String limits)
+	public Menu1(String mname, Integer offlags, String url, String limits)
 	{
 		super();
 		this.mname = mname;
@@ -48,17 +46,17 @@ public class Menu extends BasModel
 	/**
 	 * 
 	 */
-	public Menu()
+	public Menu1()
 	{
 		super();
 	}
 
-	public Integer getMid()
+	public String getMid()
 	{
 		return mid;
 	}
 
-	public void setMid(Integer mid)
+	public void setMid(String mid)
 	{
 		setValue("mid", mid);
 	}

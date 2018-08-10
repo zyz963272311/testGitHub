@@ -116,7 +116,7 @@ public class ModelUtils
 				if (annotation != null)
 				{
 					String column = annotation.column();
-					if (column == null)
+					if (StrUtil.isStrTrimNull(column))
 					{
 						column = field.getName();
 					}
@@ -181,6 +181,29 @@ public class ModelUtils
 		}
 		classPrimaryColsCache.put(t, primaryKeys);
 		return primaryKeys;
+	}
+
+	public static <T extends BasModel> String getQueryFilter(T t)
+	{
+		if (t == null)
+		{
+			return null;
+		}
+		StringBuffer filter = new StringBuffer(" where ");
+		Map<String,Object> values = t.getValues();
+		int i = 0;
+		int length = values.size();
+		for (Entry<String,Object> entry : values.entrySet())
+		{
+			String key = entry.getKey();
+			filter.append(key).append("=:").append(key);
+			if (i != length - 1)
+			{
+				filter.append(" and ");
+			}
+		}
+		filter.append(" ");
+		return filter.toString();
 	}
 
 	/**
@@ -265,60 +288,6 @@ public class ModelUtils
 			}
 		}
 		classTableCache.put(t, null);
-		return null;
-	}
-
-	public static <T extends BasModel> T query1(Database db, T t)
-	{
-		return null;
-	}
-
-	public static <T extends BasModel> T query(Database db, T t)
-	{
-		return null;
-	}
-
-	/**
-	 * 根据filter组装sql
-	 * @param db
-	 * @param clazz
-	 * @param filter
-	 * @return
-	 * 赵玉柱
-	 */
-	public static <T extends BasModel> T query(Database db, Class<T> clazz, Map<String,Object> params, String filter)
-	{
-		if (clazz == null)
-		{
-			return null;
-		}
-		if (db == null)
-		{
-			String table = getModelTable(clazz);
-			if (StrUtil.isStrTrimNull(table))
-			{
-				throw new RuntimeException("对象不存在对应表名");
-			}
-			db = DatabasePoolManager.getNewInstance().getDatabaseByTable(table);
-		}
-		StringBuffer sb = new StringBuffer("select ");
-		Map<Field,String> classColumns = getClassColumns(clazz);
-		if (classColumns != null)
-		{
-			int length = classColumns.size();
-			int i = 0;
-			for (Entry<Field,String> fldEntry : classColumns.entrySet())
-			{
-				sb.append(fldEntry.getValue());
-				if (i != length - 1)
-				{
-					sb.append(",");
-				}
-				i++;
-			}
-		}
-		String sql = sb.toString() + " " + filter;
-		List<Map<String,Object>> listMapFromSql = db.getListMapFromSql(sql, params);
 		return null;
 	}
 

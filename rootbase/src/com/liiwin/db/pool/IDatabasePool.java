@@ -38,7 +38,7 @@ public interface IDatabasePool
 	 * @throws SQLException
 	 * 赵玉柱
 	 */
-	public void releaseDatabase(Database db) throws SQLException;
+	public <T extends Database> void releaseDatabase(T db) throws SQLException;
 
 	/**
 	 * 销毁db

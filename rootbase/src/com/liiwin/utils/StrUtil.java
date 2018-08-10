@@ -1290,6 +1290,40 @@ public class StrUtil
 		return src.startsWith(pre, fromIdx);
 	}
 
+	public static boolean trimStartWith(String src, String pre)
+	{
+		return trimStartWith(src, pre, 0);
+	}
+
+	public static boolean trimStartWith(String src, String pre, int fromIdx)
+	{
+		return trimStartWith(src, pre, fromIdx, false);
+	}
+
+	public static boolean trimStartWith(String src, String pre, int fromIdx, boolean bothNullRetuen)
+	{
+		if (src == null || pre == null)
+		{
+			if (src == null && pre == null)
+			{
+				return bothNullRetuen;
+			}
+			return false;
+		}
+		char[] charArray = src.toCharArray();
+		int i = 0;
+		for (; i < charArray.length; i++)
+		{
+			char c = charArray[i];
+			if (c != ' ')
+			{
+				break;
+			}
+		}
+		String tempSrc = src.substring(i);
+		return startWith(tempSrc, pre, fromIdx, bothNullRetuen);
+	}
+
 	public static boolean equals(Object a, Object b)
 	{
 		if (a == null && b == null)

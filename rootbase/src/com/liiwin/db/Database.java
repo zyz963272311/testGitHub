@@ -30,24 +30,28 @@ import com.liiwin.utils.StrUtil;
 public class Database
 {
 	//基础属性
-	private String		databaseName;
-	private String		url;
-	private String		driver;
-	private String		user;
-	private String		password;
-	private final int	type;
+	private String			databaseName;
+	private String			url;
+	private String			driver;
+	private String			user;
+	private String			password;
+	private int				type;
 	//连接属性
-	private Connection	conn;
-	private int			minConnects;			//最小连接数
-	private int			maxConnects;			//最大连接数
-	private int			initConnections;		//初始化线程个数
-	private long		connTimeOut;			//重复获得连接的频率
-	private int			maxActiveConnections;	//允许的最大连接数
-	private long		connectionTimeOut;		//最大超时时间默认20分钟
-	private boolean		isCurrentConnection;	//是否获取当前的链接
-	private boolean		isCheckPool;			//是否检查连接池
-	private long		lazyCheck;				//延迟多长时间开始检查
-	private long		periodCheck;			//检查频率
+	protected Connection	conn;
+	private int				minConnects;			//最小连接数
+	private int				maxConnects;			//最大连接数
+	private int				initConnections;		//初始化线程个数
+	private long			connTimeOut;			//重复获得连接的频率
+	private int				maxActiveConnections;	//允许的最大连接数
+	private long			connectionTimeOut;		//最大超时时间默认20分钟
+	private boolean			isCurrentConnection;	//是否获取当前的链接
+	private boolean			isCheckPool;			//是否检查连接池
+	private long			lazyCheck;				//延迟多长时间开始检查
+	private long			periodCheck;			//检查频率
+
+	protected Database()
+	{
+	}
 
 	/**
 	 * 根据DBname获取DB，此DB需要在下面的XML文件中进行配置
@@ -122,7 +126,7 @@ public class Database
 	 */
 	public void getConnection(String databaseName, String url, String driver, String user, String password)
 	{
-		if (this.conn == null)
+		if (getConn() == null)
 		{
 			try
 			{
@@ -450,7 +454,7 @@ public class Database
 		{
 			if (connIsOpen())
 			{
-				Statement statement = this.conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+				Statement statement = getConn().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
 				rs = statement.executeQuery(sql);
 			} else
 			{
@@ -519,7 +523,8 @@ public class Database
 		{
 			try
 			{
-				if (this.conn != null && !this.conn.isClosed())
+				Connection conn = getConn();
+				if (conn != null && !conn.isClosed())
 				{
 					isOpen = true;
 				}
@@ -542,9 +547,9 @@ public class Database
 		{
 			try
 			{
-				if (this.conn != null && !this.conn.isClosed())
+				if (connIsOpen())
 				{
-					this.conn.close();
+					getConn().close();
 				}
 			} catch (SQLException e)
 			{

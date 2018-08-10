@@ -1,24 +1,21 @@
 package xyz.zyzhu.spring.config;
 
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
-import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
-import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
@@ -43,15 +40,13 @@ import xyz.zyzhu.spring.boot.utils.PropertiesUtils;
 @Configuration
 public class DruidConfig
 {
-	@Autowired
-	JpaProperties						jpaProperties;
-	private static Logger				logger		= LoggerFactory.getLogger(DruidConfig.class);
+	private static Logger							logger			= LoggerFactory.getLogger(DruidConfig.class);
 	@Value("${spring.datasource.type}")
-	private Class<? extends DataSource>	dataSourceType;
-	private static AtomicBoolean		loadedRds	= new AtomicBoolean(false);
-	private static List<LoadBalance>	rdsBalances	= new CopyOnWriteArrayList<>();
-	private static AtomicBoolean		loadedWds	= new AtomicBoolean(false);
-	private static List<LoadBalance>	wdsBalances	= new CopyOnWriteArrayList<>();
+	private Class<? extends DataSource>				dataSourceType;
+	private static Map<String,AtomicBoolean>		rdsLoaded		= new ConcurrentHashMap<>();
+	private static Map<String,List<LoadBalance>>	rdsBalancesMap	= new ConcurrentHashMap<>();
+	private static Map<String,AtomicBoolean>		wdsLoaded		= new ConcurrentHashMap<>();
+	private static Map<String,List<LoadBalance>>	wdsBalancesMap	= new ConcurrentHashMap<>();
 
 	@Bean
 	public ServletRegistrationBean druidStatViewServlet()
@@ -72,34 +67,6 @@ public class DruidConfig
 		registrationBean.addInitParameter("urlPatterns", "/*");
 		registrationBean.addInitParameter("exclusions", "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*");
 		return registrationBean;
-	}
-
-	@Bean(name = "writeEntityManagerFactory")
-	@Primary
-	public EntityManagerFactory writeEntityManagerFactory()
-	{
-		HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
-		factory.setJpaVendorAdapter(vendorAdapter);
-		factory.setPackagesToScan("xyz.zyzhu.spring.boot.model");
-		factory.setDataSource(writeDataSource());// 数据源
-		factory.setJpaPropertyMap(jpaProperties.getProperties());
-		factory.afterPropertiesSet();// 在完成了其它所有相关的配置加载以及属性设置后,才初始化
-		return factory.getObject();
-	}
-
-	@Bean(name = "readEntityManagerFactory")
-	@Primary
-	public EntityManagerFactory readEntityManagerFactory()
-	{
-		HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
-		factory.setJpaVendorAdapter(vendorAdapter);
-		factory.setPackagesToScan("com.lc.springBoot.jpa.entity");
-		factory.setDataSource(readDataSource());// 数据源
-		factory.setJpaPropertyMap(jpaProperties.getProperties());
-		factory.afterPropertiesSet();// 在完成了其它所有相关的配置加载以及属性设置后,才初始化
-		return factory.getObject();
 	}
 
 	// @Bean
@@ -143,25 +110,107 @@ public class DruidConfig
 
 	/**
 	 * 获取一个ReadDataSource
-	 * 
+	 * 顺序：
+	 * <p>
+	 * 1、取spring.datasource.default.read配置的db
+	 * <p>
+	 * 2、取spring.datasource.default配置的db
+	 * <p>
+	 * 3、spring.datasource配置的db
 	 * @return 赵玉柱
 	 */
 	@Bean(name = "readDatasource")
 	public DataSource readDataSource()
 	{
-		String key = "spring.datasource.read";
+		return readDatasourceByDbName("default");
+	}
+
+	/**
+	 * 获取一个WriteDataSource
+	 * 顺序：
+	 * <p>
+	 * 1、取spring.datasource.default.write配置的db
+	 * <p>
+	 * 2、取spring.datasource.default配置的db
+	 * <p>
+	 * 3、spring.datasource配置的db
+	 * @return 赵玉柱
+	 */
+	@Bean(name = "writeDatasource")
+	public DataSource writeDataSource()
+	{
+		return writeDataSourceByDbName("default");
+	}
+
+	/**
+	 * 获取一个根据db名称获取的写Datasource
+	 * 顺序：
+	 * <p>
+	 * 1、取spring.datasource.{dbname}.read配置的db
+	 * <p>
+	 * 2、取spring.datasource.{dbname}配置的db
+	 * <p>
+	 * 3、spring.datasource配置的db
+	 * @param dbname
+	 * @return
+	 * 赵玉柱
+	 */
+	public DataSource writeDataSourceByDbName(String dbname)
+	{
+		return dataSourceByDbName(dbname, true);
+	}
+
+	public DataSource dataSourceByDbName(String dbName, boolean isWrite)
+	{
+		if (dbName == null)
+		{
+			throw new RuntimeException("dbname不可为空");
+		}
+		String key = "spring.datasource." + dbName + "." + (isWrite ? "write" : "read");
 		int readSize = PropertiesUtils.getPropIntValue(key + ".size", 1);
 		int options = PropertiesUtils.getPropIntValue(key + ".blance", 0);
-		if (!loadedRds.get() && rdsBalances.isEmpty())
-		{
-			loadBalances(key, readSize, true);
-		}
-		LoadBalance balance = LoadBalanceUtils.balance(key, rdsBalances, options);
+		loadBalances(key, readSize, false);
+		LoadBalance balance = LoadBalanceUtils.balance(key, wdsBalancesMap.get(key), options);
 		DataSource dataSource = null;
 		if (balance != null)
 		{
-			dataSource = getDataSource(key + "." + StrUtil.obj2int(balance.getIndex()));
-		} else
+			dataSource = getDataSource(key + "." + StrUtil.obj2int(balance.getName()));
+		}
+		if (dataSource == null)
+		{
+			dataSource = defaultDatasourceByDbName(dbName);
+		}
+		return dataSource;
+	}
+
+	/**
+	 * 根据数据库名获取datasource
+	 * 顺序：
+	 * <p>
+	 * 2、取spring.datasource.{dbname}配置的db
+	 * <p>
+	 * 3、spring.datasource配置的db
+	 * @param dbname
+	 * @return
+	 * 赵玉柱
+	 */
+	public DataSource defaultDatasourceByDbName(String dbname)
+	{
+		if (dbname == null)
+		{
+			throw new RuntimeException("dbname不可为空");
+		}
+		String key = "spring.datasource." + dbname;
+		int readSize = PropertiesUtils.getPropIntValue(key + ".size", 1);
+		int options = PropertiesUtils.getPropIntValue(key + ".blance", 0);
+		loadBalances(key, readSize, false);
+		LoadBalance balance = LoadBalanceUtils.balance(key, wdsBalancesMap.get(key), options);
+		DataSource dataSource = null;
+		if (balance != null)
+		{
+			dataSource = getDataSource(key + "." + StrUtil.obj2int(balance.getName()));
+		}
+		if (dataSource == null)
 		{
 			dataSource = defaultDataSource();
 		}
@@ -169,30 +218,14 @@ public class DruidConfig
 	}
 
 	/**
-	 * 获取一个WriteDataSource
-	 * 
-	 * @return 赵玉柱
+	 * 获取一个写库
+	 * @param dbname
+	 * @return
+	 * 赵玉柱
 	 */
-	@Bean(name = "writeDatasource")
-	public DataSource writeDataSource()
+	public DataSource readDatasourceByDbName(String dbname)
 	{
-		String key = "spring.datasource.write";
-		int readSize = PropertiesUtils.getPropIntValue(key + ".size", 1);
-		int options = PropertiesUtils.getPropIntValue(key + ".blance", 0);
-		if (!loadedWds.get() && wdsBalances.isEmpty())
-		{
-			loadBalances(key, readSize, false);
-		}
-		LoadBalance balance = LoadBalanceUtils.balance(key, wdsBalances, options);
-		DataSource dataSource = null;
-		if (balance != null)
-		{
-			dataSource = getDataSource(key + "." + StrUtil.obj2int(balance.getIndex()));
-		} else
-		{
-			dataSource = defaultDataSource();
-		}
-		return dataSource;
+		return dataSourceByDbName(dbname, false);
 	}
 
 	/**
@@ -205,31 +238,54 @@ public class DruidConfig
 	 */
 	private void loadBalances(String prefix, int size, boolean isRead)
 	{
+		AtomicBoolean atomicBoolean = null;
 		if (isRead)
 		{
-			loadedRds.set(true);
+			atomicBoolean = rdsLoaded.get(prefix);
 		} else
 		{
-			loadedWds.set(true);
+			atomicBoolean = wdsLoaded.get(prefix);
 		}
-		for (int i = 0; i < size; i++)
+		if (atomicBoolean == null)
 		{
-			String name = prefix + PropertiesUtils.getPropValue(prefix + "." + i + ".name");
-			String key = prefix + PropertiesUtils.getPropValue(prefix + "." + i + ".key", name);
-			int flags = PropertiesUtils.getPropIntValue(prefix + "." + i + ".flags");
-			int weight = PropertiesUtils.getPropIntValue(prefix + "." + i + ".weight");
-			LoadBalance balance = new LoadBalance();
-			balance.setKey(key);
-			balance.setName(name);
-			balance.setFlags(flags);
-			balance.setWeight(weight);
-			balance.setIndex(i);
+			atomicBoolean = new AtomicBoolean();
 			if (isRead)
 			{
-				rdsBalances.add(balance);
+				rdsLoaded.put(prefix, atomicBoolean);
 			} else
 			{
-				wdsBalances.add(balance);
+				wdsLoaded.put(prefix, atomicBoolean);
+			}
+		}
+		if (!atomicBoolean.getAndSet(true))
+		{
+			List<LoadBalance> balances = new CopyOnWriteArrayList<>();
+			for (int i = 0; i < size; i++)
+			{
+				String name = prefix + PropertiesUtils.getPropValue(prefix + "." + i + ".name");
+				String key = prefix + PropertiesUtils.getPropValue(prefix + "." + i + ".key", name);
+				int flags = PropertiesUtils.getPropIntValue(prefix + "." + i + ".flags");
+				int weight = PropertiesUtils.getPropIntValue(prefix + "." + i + ".weight");
+				LoadBalance balance = new LoadBalance();
+				balance.setKey(key);
+				balance.setName(name);
+				balance.setFlags(flags);
+				balance.setWeight(weight);
+				balance.setIndex(i);
+				if (isRead)
+				{
+					balances.add(balance);
+				} else
+				{
+					balances.add(balance);
+				}
+			}
+			if (isRead)
+			{
+				rdsBalancesMap.put(prefix, balances);
+			} else
+			{
+				wdsBalancesMap.put(prefix, balances);
 			}
 		}
 	}

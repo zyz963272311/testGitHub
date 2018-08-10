@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import xyz.zyzhu.spring.boot.annotation.FieldDef;
@@ -88,6 +89,16 @@ public class BasModel implements Serializable
 		return ModelUtils.getClassColumns(t);
 	}
 
+	public BasModel setValues(Map<String,Object> values)
+	{
+		buildOldValues(values, false);
+		for (Entry<String,Object> entry : values.entrySet())
+		{
+			setValue(entry.getKey(), entry.getValue());
+		}
+		return this;
+	}
+
 	/**
 	 * 设置值
 	 * @param key
@@ -123,6 +134,14 @@ public class BasModel implements Serializable
 		}
 	}
 
+	public Map<String,Object> getValues()
+	{
+		Map<String,Object> values = new HashMap<>();
+		values.putAll(oldValues);
+		values.putAll(newValues);
+		return values;
+	}
+
 	/**
 	 * 获取所有的值，新值覆盖旧值
 	 * @return
@@ -138,7 +157,12 @@ public class BasModel implements Serializable
 
 	public BasModel buildOldValues(Map<String,Object> oldValue)
 	{
-		if (oldValue.isEmpty())
+		return buildOldValues(oldValue, true);
+	}
+
+	public BasModel buildOldValues(Map<String,Object> oldValue, boolean clear)
+	{
+		if (clear)
 		{
 			oldValues.clear();
 		}
@@ -247,6 +271,36 @@ public class BasModel implements Serializable
 	public static <T extends BasModel> String getTableName(Class<T> t)
 	{
 		return ModelUtils.getModelTable(t);
+	}
+
+	public Map<String,Object> getNewValues()
+	{
+		return newValues;
+	}
+
+	public void setNewValues(Map<String,Object> newValues)
+	{
+		this.newValues = newValues;
+	}
+
+	public Integer getSaveMode()
+	{
+		return saveMode;
+	}
+
+	public void setSaveMode(Integer saveMode)
+	{
+		this.saveMode = saveMode;
+	}
+
+	public Map<String,Field> getClassFields()
+	{
+		return classFields;
+	}
+
+	public Map<String,Object> getOldValues()
+	{
+		return oldValues;
 	}
 
 	@Override

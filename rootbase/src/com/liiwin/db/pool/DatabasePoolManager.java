@@ -24,7 +24,7 @@ public class DatabasePoolManager
 	public static Hashtable<String,IDatabasePool>	pools	= new Hashtable<>();
 	private static DatabasePoolManager				maneger;
 
-	private DatabasePoolManager()
+	protected DatabasePoolManager()
 	{
 	}
 

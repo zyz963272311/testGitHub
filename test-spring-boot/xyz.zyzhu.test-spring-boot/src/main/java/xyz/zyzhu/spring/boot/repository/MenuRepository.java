@@ -1,9 +1,7 @@
 package xyz.zyzhu.spring.boot.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-
 import xyz.zyzhu.spring.boot.model.Menu;
-
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -18,5 +16,6 @@ import xyz.zyzhu.spring.boot.model.Menu;
  * 监听使用界面:
  * @version 8.0
  */
-public interface MenuRepository extends JpaRepository<Menu,Integer>  {
+public interface MenuRepository extends JpaRepository<Menu,Integer>
+{
 }
