@@ -22,6 +22,7 @@ import javax.persistence.Table;
 import com.liiwin.utils.ArrayUtil;
 import com.liiwin.utils.StrUtil;
 import xyz.zyzhu.spring.boot.annotation.FieldDef;
+import xyz.zyzhu.spring.boot.model.BasModel;
 /**
  * <p>标题： 对象工具类</p>
  * <p>功能： </p>
@@ -132,11 +133,15 @@ public class ObjectUtils
 	 * @return
 	 * 赵玉柱
 	 */
-	public static Map<String,Method> getClassGetterMethods(Class<?> clazz)
+	public static Map<String,Method> getClassGetterMethods(Class<?> clazz,Class<?> superClassType)
 	{
 		if (clazz == null)
 		{
 			return null;
+		}
+		if(superClassType == null)
+		{
+			superClassType = Object.class;
 		}
 		String name = clazz.getName();
 		if (classGetterMethodCache.containsKey(name))
@@ -146,9 +151,9 @@ public class ObjectUtils
 		Map<String,Method> getMethodMap = new ConcurrentHashMap<>();
 		Class<?> superclass = clazz.getSuperclass();
 		Map<String,Method> supperGetterMethods = null;
-		if (superclass != null)
+		if (superclass != null&&superClassType.isAssignableFrom(superclass))
 		{
-			supperGetterMethods = getClassSetterMethods(superclass);
+			supperGetterMethods = getClassGetterMethods(superclass,superClassType);
 		}
 		if (supperGetterMethods == null)
 		{
@@ -179,8 +184,15 @@ public class ObjectUtils
 			boolean isFinal = Modifier.isFinal(field.getModifiers());
 			if (!isFinal && !isStatic)
 			{
-				Method getMethod = StrUtil.dealGetMethod(field, clazz);
-				getMethodMap.put(fieldName, getMethod);
+				try
+				{
+					Method getMethod = StrUtil.dealGetMethod(field, clazz);
+					getMethodMap.put(fieldName, getMethod);
+				}
+				catch(Exception e)
+				{
+					
+				}
 			}
 		}
 		classGetterMethodCache.put(name, getMethodMap);
@@ -193,11 +205,15 @@ public class ObjectUtils
 	 * @return
 	 * 赵玉柱
 	 */
-	public static Map<String,Method> getClassSetterMethods(Class<?> clazz)
+	public static Map<String,Method> getClassSetterMethods(Class<?> clazz,Class<?> superClassType)
 	{
 		if (clazz == null)
 		{
 			return null;
+		}
+		if(superClassType == null)
+		{
+			superClassType = Object.class;
 		}
 		String name = clazz.getName();
 		if (classSetterMethodCache.containsKey(name))
@@ -207,9 +223,9 @@ public class ObjectUtils
 		Map<String,Method> setMethodMap = new ConcurrentHashMap<>();
 		Class<?> superclass = clazz.getSuperclass();
 		Map<String,Method> supperSetterMethods = null;
-		if (superclass != null)
+		if (superclass != null&&superClassType.isAssignableFrom(superclass))
 		{
-			supperSetterMethods = getClassSetterMethods(superclass);
+			supperSetterMethods = getClassSetterMethods(superclass,superClassType);
 		}
 		if (supperSetterMethods == null)
 		{
@@ -224,12 +240,19 @@ public class ObjectUtils
 			{
 				if (setMethod != null)
 				{
-					setMethod = StrUtil.dealSetMethodByName(fldName, clazz, setMethod.getParameterTypes()[0]);
+					try
+					{
+						setMethod = StrUtil.dealSetMethodByName(fldName, clazz, setMethod.getParameterTypes()[0]);
+						setMethodMap.put(fldName, setMethod);
+					}
+					catch(Exception e)
+					{
+						
+					}
 				}
 			} catch (Exception e)
 			{
 			}
-			setMethodMap.put(fldName, setMethod);
 		}
 		//将当前类所有的sett方法补入
 		Field[] fields = clazz.getDeclaredFields();
@@ -240,8 +263,15 @@ public class ObjectUtils
 			boolean isFinal = Modifier.isFinal(field.getModifiers());
 			if (!isFinal && !isStatic)
 			{
-				Method setMethod = StrUtil.dealSetMethod(field, clazz);
-				setMethodMap.put(fieldName, setMethod);
+				Method setMethod = null;
+				try
+				{
+					setMethod= StrUtil.dealSetMethod(field, clazz);
+					setMethodMap.put(fieldName, setMethod);
+				}
+				catch(Exception e)
+				{
+				}
 			}
 		}
 		classSetterMethodCache.put(name, setMethodMap);
@@ -398,7 +428,7 @@ public class ObjectUtils
 			}
 		}
 		List<Field> fields = getClassFields(clazz, 2);
-		Map<String,Method> getterMethods = getClassGetterMethods(clazz);
+		Map<String,Method> getterMethods = getClassGetterMethods(clazz,Object.class);
 		if (fields != null && !fields.isEmpty() && getterMethods != null && !getterMethods.isEmpty())
 		{
 			for (Field field : fields)

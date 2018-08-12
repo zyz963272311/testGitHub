@@ -38,6 +38,10 @@ public class ModelUtils
 	 */
 	private static Map<Class<?>,String>				classTableCache			= new ConcurrentHashMap<>();
 	/**
+	 * 类字段与表字段对应缓存
+	 */
+	private static Map<Class<?>,Map<String,Field>>	classColumnFieldsCache		= new ConcurrentHashMap<>();
+	/**
 	 * 类字段与表对应缓存
 	 */
 	private static Map<Class<?>,Map<Field,String>>	classColumnCache		= new ConcurrentHashMap<>();
@@ -79,6 +83,35 @@ public class ModelUtils
 		}
 	}
 
+	public static <T extends BasModel> Map<String,Field> getClassFieldColumns(Class<T> t)
+	{
+		if (t == null)
+		{
+			return null;
+		}
+		Map<String,Field> map = null;
+		synchronized (t)
+		{
+			map = classColumnFieldsCache.get(t);
+			if (map != null)
+			{
+				return map;
+			}
+		}
+		Map<Field, String> classColumns = getClassColumns(t);
+		map = new HashMap<>();
+		if(classColumns!=null)
+		{
+			for(Entry<Field, String> entry:classColumns.entrySet())
+			{
+				String column = entry.getValue();
+				Field field = entry.getKey();
+				map.put(column, field);
+			}
+		}
+		classColumnFieldsCache.put(t, map);
+		return map;
+	}
 	/**
 	 * 获取model的field对应列名缓存
 	 * @param t
@@ -145,12 +178,12 @@ public class ModelUtils
 			return classPrimaryColsCache.get(t);
 		}
 		String modelTable = getModelTable(t);
-		List<Field> classFields = getClassFields(t);
+		Map<Field, String> classColumns = getClassColumns(t);
 		List<String> primaryKeys = new ArrayList<>();
-		if (modelTable != null && classFields != null && !classFields.isEmpty())
+		if (modelTable != null && classColumns != null && !classColumns.isEmpty())
 		{
 			Database configDatabase = DatabasePoolManager.getNewInstance().getConfigDatabase();
-			String sql = "select colname,flags from tbcol where tbname=:tbname";
+			String sql = "select colname,flags from tbcolumn where tbname=:tbname ";
 			Map<String,Object> params = new HashMap<>();
 			params.put("tbname", modelTable);
 			List<Map<String,Object>> listMapFromSql = configDatabase.getListMapFromSql(sql, params);
@@ -158,22 +191,13 @@ public class ModelUtils
 			{
 				for (Map<String,Object> map : listMapFromSql)
 				{
-					String colname = StrUtil.obj2str(map.get("column"));
+					String colname = StrUtil.obj2str(map.get("colname"));
 					int flags = StrUtil.obj2int(map.get("flags"));
 					if (StrUtil.isNoStrTrimNull(colname) && (flags & 1) == 1)
 					{
-						for (Field field : classFields)
+						if(	classColumns.containsValue(colname))
 						{
-							FieldDef annotation = field.getAnnotation(FieldDef.class);
-							if (annotation != null)
-							{
-								String column = annotation.column();
-								String colName = StrUtil.obj2str(column, field.getName());
-								if (StrUtil.equals(colName, colname))
-								{
-									primaryKeys.add(colName);
-								}
-							}
+							primaryKeys.add(colname);
 						}
 					}
 				}
@@ -190,7 +214,7 @@ public class ModelUtils
 			return null;
 		}
 		StringBuffer filter = new StringBuffer(" where ");
-		Map<String,Object> values = t.getValues();
+		Map<String,Object> values = t.getTableValues();
 		int i = 0;
 		int length = values.size();
 		for (Entry<String,Object> entry : values.entrySet())
@@ -223,12 +247,12 @@ public class ModelUtils
 			return classPrimaryFieldsCache.get(t);
 		}
 		String modelTable = getModelTable(t);
-		List<Field> classFields = getClassFields(t);
+		Map<String, Field> classColumns = getClassFieldColumns(t);
 		List<Field> primaryKeys = new ArrayList<>();
-		if (modelTable != null && classFields != null && !classFields.isEmpty())
+		if (modelTable != null && classColumns != null && !classColumns.isEmpty())
 		{
 			Database configDatabase = DatabasePoolManager.getNewInstance().getConfigDatabase();
-			String sql = "select colname,flags from tbcol where tbname=:tbname";
+			String sql = "select colname,flags from tbcolumn where tbname=:tbname ";
 			Map<String,Object> params = new HashMap<>();
 			params.put("tbname", modelTable);
 			List<Map<String,Object>> listMapFromSql = configDatabase.getListMapFromSql(sql, params);
@@ -236,22 +260,13 @@ public class ModelUtils
 			{
 				for (Map<String,Object> map : listMapFromSql)
 				{
-					String colname = StrUtil.obj2str(map.get("column"));
+					String colname = StrUtil.obj2str(map.get("colname"));
 					int flags = StrUtil.obj2int(map.get("flags"));
 					if (StrUtil.isNoStrTrimNull(colname) && (flags & 1) == 1)
 					{
-						for (Field field : classFields)
+						if(classColumns.containsKey(colname))
 						{
-							FieldDef annotation = field.getAnnotation(FieldDef.class);
-							if (annotation != null)
-							{
-								String column = annotation.column();
-								String colName = StrUtil.obj2str(column, field.getName());
-								if (StrUtil.equals(colName, colname))
-								{
-									primaryKeys.add(field);
-								}
-							}
+							primaryKeys.add(classColumns.get(colname));
 						}
 					}
 				}

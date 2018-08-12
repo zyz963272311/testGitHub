@@ -1,1 +1,8 @@
 	webservice	servicename	服务名称	varchar	128,0	0b00000011
+	
+	
+	menu1	mid		菜单id	varchar	128,0	0b00000011
+	menu1	mname	菜单名称	varchar	128,0	0b00000000
+	menu1	offlags	停用标识	int		4,0		0b00000000 0
+	menu1	url		对应链接	varchar	128,0	0b00000000
+	menu1	limits	权限		varchar	512,0	0b00000000

@@ -22,6 +22,7 @@ public class Menu1 extends BasModel
 	String						mid;
 	@FieldDef()
 	String						mname;
+	@FieldDef(defaultValue="0")
 	Integer						offlags;
 	@FieldDef()
 	String						url;

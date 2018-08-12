@@ -60,10 +60,10 @@ public class SqlUtil
 				continue;
 			}
 			Object value = entry.getValue();
-			if (EmptyUtil.isEmpty(value))
-			{
-				continue;
-			}
+//			if (EmptyUtil.isEmpty(value))
+//			{
+//				continue;
+//			}
 			if (key.endsWith(".[from]") || key.endsWith(".[to]"))
 			{
 				sql = buildBetweenAnd(sql, key, params);
@@ -323,6 +323,10 @@ public class SqlUtil
 	 */
 	private static String parseSql(Database db, String src, String key, Object value)
 	{
+		if(EmptyUtil.isEmpty(value))
+		{
+			return replaceSql(src, ":" + key, "null" );
+		}
 		Class<? extends Object> valueType = value.getClass();
 		//常用类型
 		boolean assignFlag = String.class.isAssignableFrom(valueType);

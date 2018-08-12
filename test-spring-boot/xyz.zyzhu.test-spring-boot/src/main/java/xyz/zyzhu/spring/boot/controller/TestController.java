@@ -45,8 +45,25 @@ public class TestController
 			Menu1 menu = new Menu1();
 			menu.setMname("0001");
 			List<Menu1> query = db.query(menu);
+			System.out.println("查询完成");
+			Menu1 menu1 = new Menu1();
+			menu1.setMname("测试名称");
+			menu1.setUrl("www.baidu.com");
+			menu1.setLimits("*");
+			db.save(menu1);
 			if (query != null && !query.isEmpty())
 			{
+				Menu1 menu12 = query.get(0);
+				menu12.setLimits(menu12.getLimits()+menu12.getLimits());
+				menu12.setSaveMode(2);
+				db.save(menu12);
+				if(query.size()>0)
+				{
+					Menu1 menu13 = query.get(1);
+					menu13.setLimits(null);
+					menu13.setSaveMode(4);
+					db.save(menu13);
+				}
 				return query.toString();
 			}
 		} finally

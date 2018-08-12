@@ -9,6 +9,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+
+import com.liiwin.utils.StrUtil;
+
 import xyz.zyzhu.spring.boot.annotation.FieldDef;
 import xyz.zyzhu.spring.boot.utils.ModelUtils;
 /**
@@ -42,7 +45,7 @@ public class BasModel implements Serializable
 	@FieldDef(notColumn = true)
 	private Map<String,Object>	newValues			= new HashMap<>();
 	/**
-	 * 存盘类型  0:调用save方法;1:调用issert方法;2:调用delete方法;4:调用update方法;8:删除更新[删除空字段];
+	 * 存盘类型 1:调用insert方法;2:调用update方法;4:删除更新[删除空字段]; 默认位1
 	 */
 	@FieldDef(notColumn = true)
 	private Integer				saveMode;
@@ -133,13 +136,101 @@ public class BasModel implements Serializable
 			}
 		}
 	}
-
-	public Map<String,Object> getValues()
+	/**
+	 * 获取表结构对应的值
+	 * @return
+	 * 赵玉柱
+	 */
+	public Map<String,Object> getTableValues()
 	{
-		Map<String,Object> values = new HashMap<>();
-		values.putAll(oldValues);
-		values.putAll(newValues);
-		return values;
+		Map<String, Object> values = getMapValues();
+		Map<String, Object> result= new HashMap<>();
+		Map<Field, String> classColumns = ModelUtils.getClassColumns(getClass());
+		for(Entry<Field, String> entry:classColumns.entrySet())
+		{
+			String key = entry.getKey().getName();
+			if(values.containsKey(key))
+			{
+				Object value = values.get(key);
+				result.put(key, value);
+			}
+		}
+		return result;
+	}
+	/**
+	 * 当前字段是否为主键字段
+	 * @param column
+	 * @return
+	 * 赵玉柱
+	 */
+	public boolean isPrimaryKeyColumn(String column)
+	{
+		if(StrUtil.isStrTrimNull(column))
+		{
+			return false;
+		}
+		List<String> primaryKsys = getPrimaryKsys();
+		if(primaryKsys == null||primaryKsys.isEmpty())
+		{
+			return false;
+		}
+		return primaryKsys.contains(column);
+	}
+	/**
+	 * 判断当前字段是否位表字段
+	 * @param column
+	 * @return
+	 * 赵玉柱
+	 */
+	public boolean isColumn(String column)
+	{
+		if(StrUtil.isStrTrimNull(column))
+		{
+			return false;
+		}
+		Map<String, Field> tempCassFields = getClassFields();
+		if(tempCassFields == null||tempCassFields.isEmpty())
+		{
+			return false;
+		}
+		return tempCassFields.containsKey(column);
+	}
+	/**
+	 * 
+	 * @return
+	 * 赵玉柱
+	 */
+	public Map<String, Object> getNewTableValues()
+	{
+		Map<String, Object> values =getNewValues();
+		Map<String, Object> result= new HashMap<>();
+		Map<Field, String> classColumns = ModelUtils.getClassColumns(getClass());
+		for(Entry<Field, String> entry:classColumns.entrySet())
+		{
+			String key = entry.getKey().getName();
+			if(values.containsKey(key))
+			{
+				Object value = values.get(key);
+				result.put(key, value);
+			}
+		}
+		return result;
+	}
+	public Map<String, Object> getOldTableValues()
+	{
+		Map<String, Object> values =getOldValues();
+		Map<String, Object> result= new HashMap<>();
+		Map<Field, String> classColumns = ModelUtils.getClassColumns(getClass());
+		for(Entry<Field, String> entry:classColumns.entrySet())
+		{
+			String key = entry.getKey().getName();
+			if(values.containsKey(key))
+			{
+				Object value = values.get(key);
+				result.put(key, value);
+			}
+		}
+		return result;
 	}
 
 	/**

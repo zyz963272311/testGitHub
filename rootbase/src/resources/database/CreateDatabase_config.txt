@@ -10,7 +10,7 @@
 	tb			tblang1name			表中文名			varchar			128,0			0b00000000
 	
 	tbcolumn	colname				列名					varchar			128,0			0b00000011
-	tbcolumn	tbname				表名					varchar			128,0			0b00000000
+	tbcolumn	tbname				表名					varchar			128,0			0b00000011
 	tbcolumn	comment				说明					varchar			128,0			0b00000000
 	tbcolumn	defaultvalue		默认值				varchar			128,0			0b00000000
 	tbcolumn	datatype			列类型				varchar			64,0			0b00000000

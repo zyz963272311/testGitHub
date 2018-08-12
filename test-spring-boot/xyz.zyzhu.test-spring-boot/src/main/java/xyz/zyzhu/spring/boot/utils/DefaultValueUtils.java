@@ -19,6 +19,7 @@ import com.liiwin.utils.StrUtil;
 import xyz.zyzhu.spring.boot.annotation.FieldDef;
 import xyz.zyzhu.spring.boot.model.AutoCode;
 import xyz.zyzhu.spring.boot.model.AutoCodeG;
+import xyz.zyzhu.spring.boot.model.BasModel;
 import xyz.zyzhu.spring.boot.service.AutoCodeService;
 /**
  * <p>标题： 默认值工具类</p>
@@ -44,7 +45,7 @@ public class DefaultValueUtils
 	 * 赵玉柱
 	 */
 	@SuppressWarnings("unchecked")
-	public static <E extends Object> E buildDefaultValueByClass(Class<E> clazz, boolean recursion)
+	public static <E extends BasModel> E buildDefaultValueByClass(Class<E> clazz, boolean recursion)
 	{
 		if (clazz == null)
 		{
@@ -69,20 +70,20 @@ public class DefaultValueUtils
 	 * 赵玉柱
 	 */
 	@SuppressWarnings("unchecked")
-	public static void buildDefaultValue(Object o, boolean recursion)
+	public static <E extends BasModel> void buildDefaultValue(E o, boolean recursion)
 	{
 		if (o == null)
 		{
 			return;
 		}
 		Class<?> clazz = o.getClass();
-		List<Field> fields = ObjectUtils.getClassFields(clazz, 2);
+		List<Field> fields = ModelUtils.getClassFields(o.getClass());
 		if (fields == null || fields.size() == 0)
 		{
 			return;
 		}
-		Map<String,Method> getterMethods = ObjectUtils.getClassGetterMethods(clazz);
-		Map<String,Method> setterMethods = ObjectUtils.getClassSetterMethods(clazz);
+		Map<String,Method> getterMethods = ObjectUtils.getClassGetterMethods(clazz,BasModel.class);
+		Map<String,Method> setterMethods = ObjectUtils.getClassSetterMethods(clazz,BasModel.class);
 		for (Field field : fields)
 		{
 			Class<?> fieldClazz = field.getType();
@@ -239,7 +240,7 @@ public class DefaultValueUtils
 							{
 								for (Entry<Object,Object> valEntry : value.entrySet())
 								{
-									buildDefaultValue(valEntry.getValue(), recursion);
+									buildDefaultValue((E) valEntry.getValue(), recursion);
 								}
 							}
 						} else if (Collection.class.isAssignableFrom(fieldClazz))
@@ -250,7 +251,7 @@ public class DefaultValueUtils
 							{
 								for (Object coll : value)
 								{
-									buildDefaultValue(coll, recursion);
+									buildDefaultValue((E) coll, recursion);
 								}
 							}
 						} else
@@ -258,10 +259,10 @@ public class DefaultValueUtils
 							Object value = getterMethod.invoke(o);
 							if (value != null)
 							{
-								buildDefaultValue(value, recursion);
+								buildDefaultValue((E) value, recursion);
 							} else
 							{
-								value = buildDefaultValueByClass(fieldClazz, true);
+								value = buildDefaultValueByClass((Class<E>) fieldClazz, true);
 								setterMethod.invoke(o, value);
 							}
 						}

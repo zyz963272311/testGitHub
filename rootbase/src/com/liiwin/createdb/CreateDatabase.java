@@ -664,6 +664,6 @@ public class CreateDatabase
 	public static void main(String[] args)
 	{
 		System.out.println("默认编码格式" + Charset.defaultCharset());
-		createDatabase(new String[] { "zyztest", "config", "project01" });
+		createDatabase(new String[] { "zyztest"/*, "config", "project01" */});
 	}
 }
