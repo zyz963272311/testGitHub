@@ -110,7 +110,7 @@ public class ModelUtils
 		{
 			DatabaseMetaData metaData = db.getConn().getMetaData();
 			ResultSet columnsResSet = null;
-			columnsResSet = metaData.getColumns(null, null, tablename, "*");
+			columnsResSet = metaData.getColumns(null, null, tablename.toUpperCase(),null);
 			if (columnsResSet != null)
 			{
 				while (columnsResSet.next())
@@ -179,7 +179,7 @@ public class ModelUtils
 			{
 				DatabaseMetaData metaData = db.getConn().getMetaData();
 				ResultSet columnsResSet = null;
-				columnsResSet = metaData.getColumns(null, null, tablename, "*");
+				columnsResSet = metaData.getColumns(null, null, tablename.toUpperCase(), null);
 				if (columnsResSet != null)
 				{
 					while (columnsResSet.next())
@@ -240,7 +240,7 @@ public class ModelUtils
 		{
 			DatabaseMetaData metaData = db.getConn().getMetaData();
 			ResultSet columnsResSet = null;
-			columnsResSet = metaData.getPrimaryKeys(null, null, modelTable);
+			columnsResSet = metaData.getPrimaryKeys(null, null, modelTable.toUpperCase());
 			if (columnsResSet != null)
 			{
 				while (columnsResSet.next())
@@ -318,10 +318,7 @@ public class ModelUtils
 				if (primaryKeyCols.contains(colname))
 				{
 					primaryKeys.add(classColumns.get(colname));
-				} else
-				{
-					throw new RuntimeException("表" + modelTable + "不存在主键字段" + colname);
-				}
+				} 
 			}
 		}
 		classPrimaryFieldsCache.put(t, primaryKeys);

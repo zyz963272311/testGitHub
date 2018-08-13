@@ -89,7 +89,7 @@ public class Menu1 extends BasModel
 
 	public void setUrl(String url)
 	{
-		setValue("limits", url);
+		setValue("url", url);
 	}
 
 	public String getLimits()

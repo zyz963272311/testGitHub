@@ -171,7 +171,7 @@ public class DefaultValueUtils
 											autoCode = dealSpecChar(autoCode);
 											Class<? extends BasModel> class1 = o.getClass();
 											Map<String,Field> classFieldColumns = ModelUtils.getClassFieldColumns(class1, db);
-											String lastKey = tableName + "|" + columnName + "|" + dayStr;
+											String lastKey = tableName + "|" + columnName + "|" + lastDayStr;
 											String key = tableName + "|" + columnName + "|" + dayStr;
 											if (classFieldColumns.containsKey(columnName))
 											{

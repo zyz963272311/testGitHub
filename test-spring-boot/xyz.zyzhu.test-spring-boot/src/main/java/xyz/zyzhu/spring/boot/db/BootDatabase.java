@@ -636,7 +636,7 @@ public class BootDatabase extends Database
 		Map<Field,String> columns = t.getColumns(this);
 		Map<String,Object> values = t.getTableValues(this);
 		StringBuffer columnSB = new StringBuffer("(");
-		StringBuffer valueSB = new StringBuffer(" values (");
+		StringBuffer valueSB = new StringBuffer(" value (");
 		if (columns == null || columns.isEmpty())
 		{
 			throw new RuntimeException("当前对象无对应表字段" + t.getClass());

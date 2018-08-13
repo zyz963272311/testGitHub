@@ -85,13 +85,11 @@ public class SqlUtil
 				if (fromIdx >= 0 && endIdx > fromIdx)
 				{
 					sqlSB.append('?');
-					String key = sql.substring(fromIdx + 1, endIdx);
+					String key = sql.substring(fromIdx + 1, endIdx+1);
 					Object value = params.get(key);
 					paramList.add(value);
-				} else
-				{
-					sqlSB.append(c);
 				}
+				sqlSB.append(c);
 				fromIdx = -1;
 				endIdx = -1;
 			}

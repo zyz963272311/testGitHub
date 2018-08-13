@@ -40,9 +40,11 @@ public class TestController
 	public String test()
 	{
 		BootDatabase db = BootDatabasePoolManager.getDatabase("zyztest");
+		boolean rollback = false;
 		try
 		{
-			Menu1 menu = new Menu1();
+			db.beginTrans();
+ 			Menu1 menu = new Menu1();
 			menu.setMname("0001");
 			List<Menu1> query = db.query(menu);
 			System.out.println("查询完成");
@@ -64,13 +66,21 @@ public class TestController
 					menu13.setSaveMode(4);
 					db.save(menu13);
 				}
-				return query.toString();
 			}
+			db.commit();
+			rollback = false;
+			return query!=null?query.toString():null;
 		} finally
 		{
-			BootDatabasePoolManager.close(db);
+			try
+			{
+				db.rollback(rollback, false);
+			}
+			finally
+			{
+				BootDatabasePoolManager.close(db);
+			}
 		}
-		return null;
 	}
 
 	/**

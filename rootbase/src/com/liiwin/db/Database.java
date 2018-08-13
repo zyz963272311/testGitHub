@@ -169,7 +169,23 @@ public class Database
 	{
 		List<Object> paramsList = new ArrayList<>();
 		sql = SqlUtil.sqlBindParams(this, sql, params, paramsList);
-		return getMapFromSql(sql);
+		return getMapFromSqlByListParam(sql, paramsList);
+	}
+	/**
+	 * 
+	 * @param sql
+	 * @param paramsList
+	 * @return
+	 * 赵玉柱
+	 */
+	public Map<String,Object> getMapFromSqlByListParam(String sql, List<Object> paramsList)
+	{
+		List<Map<String,Object>> listMap = getListMapFromSqlByListParam(sql, paramsList);
+		if(listMap == null||listMap.isEmpty())
+		{
+			return null;
+		}
+		return listMap.get(0);
 	}
 
 	/**
@@ -205,7 +221,37 @@ public class Database
 
 	public List<Map<String,Object>> getListMapFromSqlByListParam(String sql, List<Object> paramsList)
 	{
-		return getListMapFromSqlByListParam(sql, paramsList);
+		System.out.println("执行sql[" + sql + "]");
+		List<Map<String,Object>> resultList = new ArrayList<>();
+		try
+		{
+			ResultSet rs = getResultSet(sql,paramsList);
+			if (rs.next() == false)
+			{
+				return resultList;
+			}
+			rs.beforeFirst();
+			ResultSetMetaData rsm = rs.getMetaData();
+			int col = rsm.getColumnCount();
+			String[] column = new String[col];
+			for (int i = 0; i < col; i++)
+			{
+				column[i] = rsm.getColumnLabel(i + 1);
+			}
+			while (rs.next())
+			{
+				Map<String,Object> rowValue = new HashMap<String,Object>();
+				for (int i = 0; i < col; i++)
+				{
+					rowValue.put(column[i], rs.getObject(i + 1));
+				}
+				resultList.add(rowValue);
+			}
+		} catch (SQLException e)
+		{
+			throw new RuntimeException("报错内容", e);
+		}
+		return resultList;
 	}
 
 	/**
@@ -488,7 +534,7 @@ public class Database
 					int size = paramList.size();
 					for (int i = 0; i < size; i++)
 					{
-						prepareStatement.setObject(i, paramList.get(i));
+						prepareStatement.setObject(i+1, paramList.get(i));
 					}
 				}
 				rs = prepareStatement.executeQuery();
@@ -525,7 +571,7 @@ public class Database
 	{
 		List<Object> paramsList = new ArrayList<>();
 		sql = SqlUtil.sqlBindParams(this, sql, params, paramsList);
-		return execSqlForWrite(sql);
+		return execSqlForWriteWithParamsList(sql, paramsList);
 	}
 
 	public boolean execSqlForWriteWithParamsList(String sql, List<Object> paramsList)
@@ -542,10 +588,10 @@ public class Database
 					int size = paramsList.size();
 					for (int i = 0; i < size; i++)
 					{
-						statement.setObject(i, paramsList.get(i));
+						statement.setObject(i+1, paramsList.get(i));
 					}
 				}
-				result = statement.execute(sql);
+				result = statement.execute();
 			} else
 			{
 				throw new RuntimeException("db" + databaseName + "已经断开连接");
