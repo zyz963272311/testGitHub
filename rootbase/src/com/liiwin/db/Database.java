@@ -2,10 +2,10 @@ package com.liiwin.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +35,7 @@ public class Database
 	private String			driver;
 	private String			user;
 	private String			password;
-	private int				type;
+	protected int			type;
 	//连接属性
 	protected Connection	conn;
 	private int				minConnects;			//最小连接数
@@ -167,7 +167,8 @@ public class Database
 	 */
 	public Map<String,Object> getMapFromSql(String sql, Map<String,Object> params)
 	{
-		sql = SqlUtil.sqlBindParams(this, sql, params);
+		List<Object> paramsList = new ArrayList<>();
+		sql = SqlUtil.sqlBindParams(this, sql, params, paramsList);
 		return getMapFromSql(sql);
 	}
 
@@ -197,8 +198,14 @@ public class Database
 	 */
 	public List<Map<String,Object>> getListMapFromSql(String sql, Map<String,Object> params)
 	{
-		sql = SqlUtil.sqlBindParams(this, sql, params);
-		return getListMapFromSql(sql);
+		List<Object> paramsList = new ArrayList<>();
+		sql = SqlUtil.sqlBindParams(this, sql, params, paramsList);
+		return getListMapFromSqlByListParam(sql, paramsList);
+	}
+
+	public List<Map<String,Object>> getListMapFromSqlByListParam(String sql, List<Object> paramsList)
+	{
+		return getListMapFromSqlByListParam(sql, paramsList);
 	}
 
 	/**
@@ -251,7 +258,8 @@ public class Database
 	 */
 	public ResultSet sqlSelect(String sql, Map<String,Object> params)
 	{
-		sql = SqlUtil.sqlBindParams(this, sql, params);
+		List<Object> paramsList = new ArrayList<>();
+		sql = SqlUtil.sqlBindParams(this, sql, params, paramsList);
 		return sqlSelect(sql);
 	}
 
@@ -261,9 +269,14 @@ public class Database
 	 * @return
 	 * 赵玉柱
 	 */
+	public ResultSet sqlSelectWithParamList(String sql, List<Object> paramsList)
+	{
+		return getResultSet(sql, paramsList);
+	}
+
 	public ResultSet sqlSelect(String sql)
 	{
-		return getResultSet(sql);
+		return getResultSet(sql, null);
 	}
 
 	/**
@@ -351,7 +364,8 @@ public class Database
 	 */
 	public int insert(String sql, Map<String,Object> params)
 	{
-		String sqlTemp = SqlUtil.sqlBindParams(this, sql, params);
+		List<Object> paramsList = new ArrayList<>();
+		String sqlTemp = SqlUtil.sqlBindParams(this, sql, params, paramsList);
 		return insert(sqlTemp);
 	}
 
@@ -411,8 +425,9 @@ public class Database
 	 */
 	public int update(String sql, Map<String,Object> params)
 	{
-		sql = SqlUtil.sqlBindParams(this, sql, params);
-		return update(sql);
+		List<Object> paramsList = new ArrayList<>();
+		sql = SqlUtil.sqlBindParams(this, sql, params, paramsList);
+		return updateWithParamsList(sql, paramsList);
 	}
 
 	/**
@@ -421,15 +436,23 @@ public class Database
 	 * @return
 	 * 赵玉柱
 	 */
-	public int update(String sql)
+	public int updateWithParamsList(String sql, List<Object> paramsList)
 	{
 		int result = -1;
 		try
 		{
 			if (connIsOpen())
 			{
-				Statement statement = this.conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-				result = statement.executeUpdate(sql);
+				PreparedStatement statement = getConn().prepareStatement(sql);
+				if (paramsList != null && !paramsList.isEmpty())
+				{
+					int size = paramsList.size();
+					for (int i = 0; i < size; i++)
+					{
+						statement.setObject(i, paramsList.get(i));
+					}
+				}
+				result = statement.executeUpdate();
 			} else
 			{
 				throw new RuntimeException("连接已关闭");
@@ -441,21 +464,34 @@ public class Database
 		return result;
 	}
 
+	public int update(String sql)
+	{
+		return updateWithParamsList(sql, null);
+	}
+
 	/**
 	 * 根据sql获取ResultSet
 	 * @param sql
 	 * @return
 	 * 赵玉柱
 	 */
-	public ResultSet getResultSet(String sql)
+	public ResultSet getResultSet(String sql, List<Object> paramList)
 	{
 		ResultSet rs = null;
 		try
 		{
 			if (connIsOpen())
 			{
-				Statement statement = getConn().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-				rs = statement.executeQuery(sql);
+				PreparedStatement prepareStatement = getConn().prepareStatement(sql);
+				if (paramList != null)
+				{
+					int size = paramList.size();
+					for (int i = 0; i < size; i++)
+					{
+						prepareStatement.setObject(i, paramList.get(i));
+					}
+				}
+				rs = prepareStatement.executeQuery();
 			} else
 			{
 				throw new RuntimeException("连接已关闭");
@@ -468,6 +504,17 @@ public class Database
 	}
 
 	/**
+	 * 
+	 * @param sql
+	 * @return
+	 * 赵玉柱
+	 */
+	public ResultSet getResultSet(String sql)
+	{
+		return getResultSet(sql, null);
+	}
+
+	/**
 	 * 根据sql执行一个写操作
 	 * @param sql
 	 * @param params
@@ -476,11 +523,12 @@ public class Database
 	 */
 	public boolean execSqlForWrite(String sql, Map<String,Object> params)
 	{
-		sql = SqlUtil.sqlBindParams(this, sql, params);
+		List<Object> paramsList = new ArrayList<>();
+		sql = SqlUtil.sqlBindParams(this, sql, params, paramsList);
 		return execSqlForWrite(sql);
 	}
 
-	public boolean execSqlForWrite(String sql)
+	public boolean execSqlForWriteWithParamsList(String sql, List<Object> paramsList)
 	{
 		System.out.println("execSqlforWrite[" + sql + "]");
 		boolean result = false;
@@ -488,7 +536,15 @@ public class Database
 		{
 			if (connIsOpen())
 			{
-				Statement statement = this.conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+				PreparedStatement statement = getConn().prepareStatement(sql);
+				if (paramsList != null && !paramsList.isEmpty())
+				{
+					int size = paramsList.size();
+					for (int i = 0; i < size; i++)
+					{
+						statement.setObject(i, paramsList.get(i));
+					}
+				}
 				result = statement.execute(sql);
 			} else
 			{
@@ -499,6 +555,11 @@ public class Database
 			throw new RuntimeException(e.getMessage());
 		}
 		return result;
+	}
+
+	public boolean execSqlForWrite(String sql)
+	{
+		return execSqlForWriteWithParamsList(sql, null);
 	}
 
 	/**

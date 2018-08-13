@@ -1365,6 +1365,62 @@ public class StrUtil
 	}
 
 	/**
+	 * 在src1中获取strGet字符串包含的字符字符信息
+	 * @param src1 源1
+	 * @param src2 源 2
+	 * @param strGet 要获取的字符
+	 * @param forNull 为空是返回的字符 可空 当对应的字符为空的情况下，返回原值
+	 * @return
+	 * <p>
+	 * bitGetStr("dsadaasdgfdwe","uyiohjkbnmiop","ad",null)==>"uiohji"
+	 * <p>
+	 * bitGetStr("dsadaasdgfdwe","uyiohjk","ad",null)==>"uiohdd"
+	 * <p>
+	 * bitGetStr("dsadaasdgfdwe","uyiohjk","ad",{'d':'q'})==>"uiohqq"
+	 * @author 赵玉柱
+	 */
+	public static String bitGetStr(String src1, String src2, String strGet, Map<Character,Character> forNullMap)
+	{
+		if (src1 == null)
+		{
+			return null;
+		}
+		if (strGet == null)
+		{
+			return null;
+		}
+		StringBuffer sb = new StringBuffer();
+		String tempStr2 = obj2str(src2, "");
+		int length = tempStr2.length();
+		char[] src1Chars = src1.toCharArray();
+		for (int i = 0; i < src1Chars.length; i++)
+		{
+			char src1Char = src1Chars[i];
+			char repChar = src1Char;
+			if (strGet.indexOf(src1Char) >= 0)
+			{
+				if (i >= length)
+				{
+					if (forNullMap != null)
+					{
+						char forNullChar = forNullMap.get(src1Char);
+						if (forNullChar == 0)
+						{
+							forNullChar = src1Char;
+						}
+						repChar = forNullChar;
+					}
+				} else
+				{
+					repChar = tempStr2.charAt(i);
+				}
+				sb.append(repChar);
+			}
+		}
+		return sb.toString();
+	}
+
+	/**
 	 * 替换字符串中的指定字符的占位符
 	 * @param str
 	 * @param params

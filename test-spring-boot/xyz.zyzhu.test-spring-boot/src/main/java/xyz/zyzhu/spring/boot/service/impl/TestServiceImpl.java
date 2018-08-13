@@ -1,6 +1,8 @@
 package xyz.zyzhu.spring.boot.service.impl;
 
 import org.springframework.stereotype.Service;
+import xyz.zyzhu.spring.boot.db.BootDatabase;
+import xyz.zyzhu.spring.boot.db.BootDatabasePoolManager;
 import xyz.zyzhu.spring.boot.model.AutoCode;
 import xyz.zyzhu.spring.boot.service.TestService;
 import xyz.zyzhu.spring.boot.utils.DefaultValueUtils;
@@ -25,7 +27,8 @@ public class TestServiceImpl implements TestService
 	@Override
 	public AutoCode test()
 	{
-		AutoCode autoCode = DefaultValueUtils.buildDefaultValueByClass(AutoCode.class, true);
+		BootDatabase db = BootDatabasePoolManager.getDatabase("zyztest");
+		AutoCode autoCode = DefaultValueUtils.buildDefaultValueByClass(AutoCode.class, true, db);
 		ObjectUtils.objValueCheck(autoCode);
 		return autoCode;
 	}

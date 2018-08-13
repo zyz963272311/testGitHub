@@ -33,7 +33,7 @@ public class MakeCodeUtil
 		{
 			throw new RuntimeException("获取码值不可为空");
 		}
-		int setLock = RedisUtil.setLock(key, 10, RedisUtil.MINUTE);
+		int setLock = RedisUtil.setLock(key, 2, RedisUtil.DAY);
 		String result = StrUtil.obj2str(setLock);
 		if (codeLength <= 0)
 		{

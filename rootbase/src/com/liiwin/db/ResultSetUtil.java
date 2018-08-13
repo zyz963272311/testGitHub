@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 /**
@@ -37,8 +38,9 @@ public class ResultSetUtil
 
 	public static ResultSet select(Database db, String sql, Map<String,Object> params)
 	{
-		String sqlTemp = SqlUtil.sqlBindParams(db, sql, params);
-		return getResultSet(db, sqlTemp);
+		List<Object> paramsList = new ArrayList<>();
+		String sqlTemp = SqlUtil.sqlBindParams(db, sql, params, paramsList);
+		return db.getResultSet(sqlTemp, paramsList);
 	}
 
 	/**
@@ -66,34 +68,41 @@ public class ResultSetUtil
 
 	public static List<Map<String,Object>> getListMapFromSql(Database db, String sql, Map<String,Object> params)
 	{
-		String sqlTemp = SqlUtil.sqlBindParams(db, sql, params);
-		return getListMapFromSql(db, sqlTemp);
+		List<Object> paramsList = new ArrayList<>();
+		String sqlTemp = SqlUtil.sqlBindParams(db, sql, params, paramsList);
+		return getListMapFromSqlByParamsList(db, sqlTemp, paramsList);
 	}
 
-	public static List<Map<String,Object>> getListMapFromSql(Database db, String sql)
+	public static List<Map<String,Object>> getListMapFromSqlByParamsList(Database db, String sql, List<Object> paramsList)
 	{
 		if (db != null)
 		{
-			return db.getListMapFromSql(sql);
+			return db.getListMapFromSqlByListParam(sql, paramsList);
 		}
 		return null;
 	}
 
 	public static Map<String,Object> getMapFromSql(Database db, String sql, Map<String,Object> params)
 	{
-		String sqlTemp = SqlUtil.sqlBindParams(db, sql, params);
+		List<Object> paramsList = new ArrayList<>();
+		String sqlTemp = SqlUtil.sqlBindParams(db, sql, params, paramsList);
 		return getMapFromSql(db, sqlTemp);
 	}
 
-	public static Map<String,Object> getMapFromSql(Database db, String sql)
+	public static Map<String,Object> getMapFromSqlByParmasList(Database db, String sql, List<Object> paramsList)
 	{
 		Map<String,Object> resultMap = null;
-		List<Map<String,Object>> resultList = getListMapFromSql(db, sql);
+		List<Map<String,Object>> resultList = getListMapFromSqlByParamsList(db, sql, paramsList);
 		if (resultList != null && !resultList.isEmpty())
 		{
 			resultMap = resultList.get(0);
 		}
 		return resultMap;
+	}
+
+	public static Map<String,Object> getMapFromSql(Database db, String sql)
+	{
+		return getMapFromSqlByParmasList(db, sql, null);
 	}
 
 	/**

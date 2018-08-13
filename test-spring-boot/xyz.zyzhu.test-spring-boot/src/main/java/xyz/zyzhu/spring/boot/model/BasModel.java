@@ -9,9 +9,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-
+import com.liiwin.db.Database;
 import com.liiwin.utils.StrUtil;
-
 import xyz.zyzhu.spring.boot.annotation.FieldDef;
 import xyz.zyzhu.spring.boot.utils.ModelUtils;
 /**
@@ -76,9 +75,9 @@ public class BasModel implements Serializable
 	 * @return
 	 * 赵玉柱
 	 */
-	public Map<Field,String> getColumns()
+	public Map<Field,String> getColumns(Database db)
 	{
-		return getColumns(getClass());
+		return getColumns(getClass(), db);
 	}
 
 	/**
@@ -87,9 +86,9 @@ public class BasModel implements Serializable
 	 * @return
 	 * 赵玉柱
 	 */
-	public static <T extends BasModel> Map<Field,String> getColumns(Class<T> t)
+	public static <T extends BasModel> Map<Field,String> getColumns(Class<T> t, Database db)
 	{
-		return ModelUtils.getClassColumns(t);
+		return ModelUtils.getClassColumns(t, db);
 	}
 
 	public BasModel setValues(Map<String,Object> values)
@@ -136,20 +135,21 @@ public class BasModel implements Serializable
 			}
 		}
 	}
+
 	/**
 	 * 获取表结构对应的值
 	 * @return
 	 * 赵玉柱
 	 */
-	public Map<String,Object> getTableValues()
+	public Map<String,Object> getTableValues(Database db)
 	{
-		Map<String, Object> values = getMapValues();
-		Map<String, Object> result= new HashMap<>();
-		Map<Field, String> classColumns = ModelUtils.getClassColumns(getClass());
-		for(Entry<Field, String> entry:classColumns.entrySet())
+		Map<String,Object> values = getMapValues();
+		Map<String,Object> result = new HashMap<>();
+		Map<Field,String> classColumns = ModelUtils.getClassColumns(getClass(), db);
+		for (Entry<Field,String> entry : classColumns.entrySet())
 		{
 			String key = entry.getKey().getName();
-			if(values.containsKey(key))
+			if (values.containsKey(key))
 			{
 				Object value = values.get(key);
 				result.put(key, value);
@@ -157,25 +157,27 @@ public class BasModel implements Serializable
 		}
 		return result;
 	}
+
 	/**
 	 * 当前字段是否为主键字段
 	 * @param column
 	 * @return
 	 * 赵玉柱
 	 */
-	public boolean isPrimaryKeyColumn(String column)
+	public boolean isPrimaryKeyColumn(String column, Database db)
 	{
-		if(StrUtil.isStrTrimNull(column))
+		if (StrUtil.isStrTrimNull(column))
 		{
 			return false;
 		}
-		List<String> primaryKsys = getPrimaryKsys();
-		if(primaryKsys == null||primaryKsys.isEmpty())
+		List<String> primaryKsys = getPrimaryKsys(db);
+		if (primaryKsys == null || primaryKsys.isEmpty())
 		{
 			return false;
 		}
 		return primaryKsys.contains(column);
 	}
+
 	/**
 	 * 判断当前字段是否位表字段
 	 * @param column
@@ -184,31 +186,32 @@ public class BasModel implements Serializable
 	 */
 	public boolean isColumn(String column)
 	{
-		if(StrUtil.isStrTrimNull(column))
+		if (StrUtil.isStrTrimNull(column))
 		{
 			return false;
 		}
-		Map<String, Field> tempCassFields = getClassFields();
-		if(tempCassFields == null||tempCassFields.isEmpty())
+		Map<String,Field> tempCassFields = getClassFields();
+		if (tempCassFields == null || tempCassFields.isEmpty())
 		{
 			return false;
 		}
 		return tempCassFields.containsKey(column);
 	}
+
 	/**
 	 * 
 	 * @return
 	 * 赵玉柱
 	 */
-	public Map<String, Object> getNewTableValues()
+	public Map<String,Object> getNewTableValues(Database db)
 	{
-		Map<String, Object> values =getNewValues();
-		Map<String, Object> result= new HashMap<>();
-		Map<Field, String> classColumns = ModelUtils.getClassColumns(getClass());
-		for(Entry<Field, String> entry:classColumns.entrySet())
+		Map<String,Object> values = getNewValues();
+		Map<String,Object> result = new HashMap<>();
+		Map<Field,String> classColumns = ModelUtils.getClassColumns(getClass(), db);
+		for (Entry<Field,String> entry : classColumns.entrySet())
 		{
 			String key = entry.getKey().getName();
-			if(values.containsKey(key))
+			if (values.containsKey(key))
 			{
 				Object value = values.get(key);
 				result.put(key, value);
@@ -216,15 +219,16 @@ public class BasModel implements Serializable
 		}
 		return result;
 	}
-	public Map<String, Object> getOldTableValues()
+
+	public Map<String,Object> getOldTableValues(Database db)
 	{
-		Map<String, Object> values =getOldValues();
-		Map<String, Object> result= new HashMap<>();
-		Map<Field, String> classColumns = ModelUtils.getClassColumns(getClass());
-		for(Entry<Field, String> entry:classColumns.entrySet())
+		Map<String,Object> values = getOldValues();
+		Map<String,Object> result = new HashMap<>();
+		Map<Field,String> classColumns = ModelUtils.getClassColumns(getClass(), db);
+		for (Entry<Field,String> entry : classColumns.entrySet())
 		{
 			String key = entry.getKey().getName();
-			if(values.containsKey(key))
+			if (values.containsKey(key))
 			{
 				Object value = values.get(key);
 				result.put(key, value);
@@ -266,9 +270,9 @@ public class BasModel implements Serializable
 	 * @return
 	 * 赵玉柱
 	 */
-	public List<String> getPrimaryKsys()
+	public List<String> getPrimaryKsys(Database db)
 	{
-		return getPrimaryKeys(getClass());
+		return getPrimaryKeys(getClass(), db);
 	}
 
 	/**
@@ -277,9 +281,9 @@ public class BasModel implements Serializable
 	 * @return
 	 * 赵玉柱
 	 */
-	public static <T extends BasModel> List<String> getPrimaryKeys(Class<T> t)
+	public static <T extends BasModel> List<String> getPrimaryKeys(Class<T> t, Database db)
 	{
-		return ModelUtils.getPrimaryKeyCols(t);
+		return ModelUtils.getPrimaryKeyCols(t, db);
 	}
 
 	/**
@@ -287,9 +291,9 @@ public class BasModel implements Serializable
 	 * @return
 	 * 赵玉柱
 	 */
-	public List<Field> getPrimaryFields()
+	public List<Field> getPrimaryFields(Database db)
 	{
-		return getPrimaryFields(getClass());
+		return getPrimaryFields(getClass(), db);
 	}
 
 	/**
@@ -298,9 +302,9 @@ public class BasModel implements Serializable
 	 * @return
 	 * 赵玉柱
 	 */
-	public static <T extends BasModel> List<Field> getPrimaryFields(Class<T> t)
+	public static <T extends BasModel> List<Field> getPrimaryFields(Class<T> t, Database db)
 	{
-		return ModelUtils.getPrimaryFields(t);
+		return ModelUtils.getPrimaryFields(t, db);
 	}
 
 	/**
@@ -308,9 +312,9 @@ public class BasModel implements Serializable
 	 * @return
 	 * 赵玉柱
 	 */
-	public List<Object> getOldPrimaryValues()
+	public List<Object> getOldPrimaryValues(Database db)
 	{
-		return getPrimaryValues(true);
+		return getPrimaryValues(true, db);
 	}
 
 	/**
@@ -318,9 +322,9 @@ public class BasModel implements Serializable
 	 * @return
 	 * 赵玉柱
 	 */
-	public List<Object> getNewPrimaryValues()
+	public List<Object> getNewPrimaryValues(Database db)
 	{
-		return getPrimaryValues(false);
+		return getPrimaryValues(false, db);
 	}
 
 	/**
@@ -329,10 +333,10 @@ public class BasModel implements Serializable
 	 * @return
 	 * 赵玉柱
 	 */
-	public List<Object> getPrimaryValues(boolean getOld)
+	public List<Object> getPrimaryValues(boolean getOld, Database db)
 	{
 		List<Object> result = new ArrayList<>();
-		List<Field> primaryFields = getPrimaryFields();
+		List<Field> primaryFields = getPrimaryFields(db);
 		if (primaryFields != null)
 		{
 			for (Field field : primaryFields)

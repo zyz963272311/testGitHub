@@ -4,9 +4,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -14,7 +16,9 @@ import com.liiwin.code.Code;
 import com.liiwin.code.CodePart;
 import com.liiwin.code.MakeCodeUtil;
 import com.liiwin.date.DateUtil;
+import com.liiwin.db.Database;
 import com.liiwin.utils.BigUtils;
+import com.liiwin.utils.RedisUtil;
 import com.liiwin.utils.StrUtil;
 import xyz.zyzhu.spring.boot.annotation.FieldDef;
 import xyz.zyzhu.spring.boot.model.AutoCode;
@@ -45,7 +49,7 @@ public class DefaultValueUtils
 	 * 赵玉柱
 	 */
 	@SuppressWarnings("unchecked")
-	public static <E extends BasModel> E buildDefaultValueByClass(Class<E> clazz, boolean recursion)
+	public static <E extends BasModel> E buildDefaultValueByClass(Class<E> clazz, boolean recursion, Database db)
 	{
 		if (clazz == null)
 		{
@@ -55,7 +59,7 @@ public class DefaultValueUtils
 		try
 		{
 			instance = (E) ObjectUtils.newInstance(clazz);
-			buildDefaultValue(instance, recursion);
+			buildDefaultValue(instance, recursion, db);
 		} catch (InstantiationException | IllegalAccessException | NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException e)
 		{
 			throw new RuntimeException("设置默认值异常", e);
@@ -70,8 +74,12 @@ public class DefaultValueUtils
 	 * 赵玉柱
 	 */
 	@SuppressWarnings("unchecked")
-	public static <E extends BasModel> void buildDefaultValue(E o, boolean recursion)
+	public static <E extends BasModel> void buildDefaultValue(E o, boolean recursion, Database db)
 	{
+		Date curDate = DateUtil.getCurDate();
+		long lastDayTime = curDate.getTime() - 24 * 60 * 60 * 1000;
+		String dayStr = new SimpleDateFormat("dd").format(curDate);
+		String lastDayStr = new SimpleDateFormat("dd").format(DateUtil.getCurDate(lastDayTime));
 		if (o == null)
 		{
 			return;
@@ -82,8 +90,8 @@ public class DefaultValueUtils
 		{
 			return;
 		}
-		Map<String,Method> getterMethods = ObjectUtils.getClassGetterMethods(clazz,BasModel.class);
-		Map<String,Method> setterMethods = ObjectUtils.getClassSetterMethods(clazz,BasModel.class);
+		Map<String,Method> getterMethods = ObjectUtils.getClassGetterMethods(clazz, BasModel.class);
+		Map<String,Method> setterMethods = ObjectUtils.getClassSetterMethods(clazz, BasModel.class);
 		for (Field field : fields)
 		{
 			Class<?> fieldClazz = field.getType();
@@ -155,12 +163,49 @@ public class DefaultValueUtils
 											{
 												tableName = clazz.getName();
 											}
+											String columnName = annotation.column();
+											if (StrUtil.isStrTrimNull(columnName))
+											{
+												columnName = field.getName();
+											}
+											autoCode = dealSpecChar(autoCode);
+											Class<? extends BasModel> class1 = o.getClass();
+											Map<String,Field> classFieldColumns = ModelUtils.getClassFieldColumns(class1, db);
+											String lastKey = tableName + "|" + columnName + "|" + dayStr;
+											String key = tableName + "|" + columnName + "|" + dayStr;
+											if (classFieldColumns.containsKey(columnName))
+											{
+												//当前字段是表中的字段，需要进行数据库中校验
+												Object redisValue = RedisUtil.get(key);
+												if (redisValue == null)
+												{
+													Object lastRedisValue = RedisUtil.get(lastKey);
+													if (lastRedisValue == null)
+													{
+														//如果数据为空，先从数据库中查询最新的数据
+														Map<String,Object> params = new HashMap<>();
+														params.put(columnName, autoCode);
+														Map<String,Object> mapFromSql = db.getMapFromSql(
+																"select max(" + columnName + ") as max from " + tableName + " where " + columnName + " like (:" + columnName + ")", params);
+														if (mapFromSql != null && !mapFromSql.isEmpty())
+														{
+															String max = StrUtil.obj2str(mapFromSql.get("max"));
+															if (max != null)
+															{
+																String bitGetStr = StrUtil.bitGetStr(autoCode, max, "_", null);
+																int bitGetInt = StrUtil.obj2int(bitGetStr);
+																RedisUtil.set(key, bitGetInt, 2, RedisUtil.DAY);
+															}
+														}
+													}
+												}
+											}
 											int allLength = autoCode.length();
 											int defLength = autoCode.replace("_", "").length();
 											String code = autoCode;
 											if (allLength > defLength)
 											{
-												String autoCodePart = MakeCodeUtil.makeOuttercode("", allLength - defLength, tableName + "|" + field.getName());
+												String autoCodePart = MakeCodeUtil.makeOuttercode("", allLength - defLength, key);
 												code = StrUtil.strReplaceBit(autoCode, autoCodePart, '_', '_', true);
 											}
 											setterMethod.invoke(o, code);
@@ -240,7 +285,7 @@ public class DefaultValueUtils
 							{
 								for (Entry<Object,Object> valEntry : value.entrySet())
 								{
-									buildDefaultValue((E) valEntry.getValue(), recursion);
+									buildDefaultValue((E) valEntry.getValue(), recursion, db);
 								}
 							}
 						} else if (Collection.class.isAssignableFrom(fieldClazz))
@@ -251,7 +296,7 @@ public class DefaultValueUtils
 							{
 								for (Object coll : value)
 								{
-									buildDefaultValue((E) coll, recursion);
+									buildDefaultValue((E) coll, recursion, db);
 								}
 							}
 						} else
@@ -259,10 +304,10 @@ public class DefaultValueUtils
 							Object value = getterMethod.invoke(o);
 							if (value != null)
 							{
-								buildDefaultValue((E) value, recursion);
+								buildDefaultValue((E) value, recursion, db);
 							} else
 							{
-								value = buildDefaultValueByClass((Class<E>) fieldClazz, true);
+								value = buildDefaultValueByClass((Class<E>) fieldClazz, true, db);
 								setterMethod.invoke(o, value);
 							}
 						}
@@ -273,5 +318,39 @@ public class DefaultValueUtils
 				throw new RuntimeException("设置默认值异常", e);
 			}
 		}
+	}
+
+	/**
+	 * 处理特殊字符
+	 * @param autocode
+	 * @return
+	 * 赵玉柱
+	 */
+	private static String dealSpecChar(String autocode)
+	{
+		Date curDate = DateUtil.getCurDate();
+		SimpleDateFormat format = new SimpleDateFormat();
+		dealDateSpecChar(autocode, "YYYY", curDate, format);
+		dealDateSpecChar(autocode, "yyyy", curDate, format);
+		dealDateSpecChar(autocode, "YY", curDate, format);
+		dealDateSpecChar(autocode, "yy", curDate, format);
+		dealDateSpecChar(autocode, "MM", curDate, format);
+		dealDateSpecChar(autocode, "DD", curDate, format);
+		dealDateSpecChar(autocode, "HH", curDate, format);
+		dealDateSpecChar(autocode, "hh", curDate, format);
+		dealDateSpecChar(autocode, "mm", curDate, format);
+		dealDateSpecChar(autocode, "ss", curDate, format);
+		return autocode;
+	}
+
+	private static String dealDateSpecChar(String autocode, String specCode, Date curdate, SimpleDateFormat format)
+	{
+		if (autocode.indexOf(specCode) > 0)
+		{
+			format.applyPattern(specCode);
+			String afterDeal = format.format(curdate);
+			autocode = autocode.replace(specCode, afterDeal);
+		}
+		return autocode;
 	}
 }

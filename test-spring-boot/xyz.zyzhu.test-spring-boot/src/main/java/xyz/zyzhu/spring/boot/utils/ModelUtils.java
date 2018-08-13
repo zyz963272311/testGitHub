@@ -1,15 +1,19 @@
 package xyz.zyzhu.spring.boot.utils;
 
 import java.lang.reflect.Field;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.persistence.Table;
 import com.liiwin.db.Database;
-import com.liiwin.db.pool.DatabasePoolManager;
 import com.liiwin.utils.StrUtil;
 import xyz.zyzhu.spring.boot.annotation.FieldDef;
 import xyz.zyzhu.spring.boot.model.BasModel;
@@ -40,7 +44,7 @@ public class ModelUtils
 	/**
 	 * 类字段与表字段对应缓存
 	 */
-	private static Map<Class<?>,Map<String,Field>>	classColumnFieldsCache		= new ConcurrentHashMap<>();
+	private static Map<Class<?>,Map<String,Field>>	classColumnFieldsCache	= new ConcurrentHashMap<>();
 	/**
 	 * 类字段与表对应缓存
 	 */
@@ -83,7 +87,7 @@ public class ModelUtils
 		}
 	}
 
-	public static <T extends BasModel> Map<String,Field> getClassFieldColumns(Class<T> t)
+	public static <T extends BasModel> Map<String,Field> getClassFieldColumns(Class<T> t, Database db)
 	{
 		if (t == null)
 		{
@@ -98,27 +102,53 @@ public class ModelUtils
 				return map;
 			}
 		}
-		Map<Field, String> classColumns = getClassColumns(t);
+		Map<Field,String> classColumns = getClassColumns(t, db);
 		map = new HashMap<>();
-		if(classColumns!=null)
+		String tablename = BasModel.getTableName(t);
+		Set<String> columnsSet = new HashSet<>();
+		try
 		{
-			for(Entry<Field, String> entry:classColumns.entrySet())
+			DatabaseMetaData metaData = db.getConn().getMetaData();
+			ResultSet columnsResSet = null;
+			columnsResSet = metaData.getColumns(null, null, tablename, "*");
+			if (columnsResSet != null)
+			{
+				while (columnsResSet.next())
+				{
+					String colName = columnsResSet.getString("COLUMN_NAME");
+					columnsSet.add(colName);
+				}
+			}
+		} catch (SQLException e)
+		{
+			throw new RuntimeException("获取表" + tablename + "的元数据失败", e);
+		}
+		if (classColumns != null)
+		{
+			for (Entry<Field,String> entry : classColumns.entrySet())
 			{
 				String column = entry.getValue();
 				Field field = entry.getKey();
-				map.put(column, field);
+				if (columnsSet.contains(column))
+				{
+					map.put(column, field);
+				} else
+				{
+					throw new RuntimeException("表" + tablename + "不存在列" + column);
+				}
 			}
 		}
 		classColumnFieldsCache.put(t, map);
 		return map;
 	}
+
 	/**
 	 * 获取model的field对应列名缓存
 	 * @param t
 	 * @return
 	 * 赵玉柱
 	 */
-	public static <T extends BasModel> Map<Field,String> getClassColumns(Class<T> t)
+	public static <T extends BasModel> Map<Field,String> getClassColumns(Class<T> t, Database db)
 	{
 		if (t == null)
 		{
@@ -143,6 +173,25 @@ public class ModelUtils
 				return map;
 			}
 			map = new HashMap<>();
+			String tablename = BasModel.getTableName(t);
+			Set<String> columnsSet = new HashSet<>();
+			try
+			{
+				DatabaseMetaData metaData = db.getConn().getMetaData();
+				ResultSet columnsResSet = null;
+				columnsResSet = metaData.getColumns(null, null, tablename, "*");
+				if (columnsResSet != null)
+				{
+					while (columnsResSet.next())
+					{
+						String colName = columnsResSet.getString("COLUMN_NAME");
+						columnsSet.add(colName);
+					}
+				}
+			} catch (SQLException e)
+			{
+				throw new RuntimeException("获取表" + tablename + "的元数据失败", e);
+			}
 			for (Field field : classFields)
 			{
 				FieldDef annotation = field.getAnnotation(FieldDef.class);
@@ -153,7 +202,13 @@ public class ModelUtils
 					{
 						column = field.getName();
 					}
-					map.put(field, column);
+					if (columnsSet.contains(column))
+					{
+						map.put(field, column);
+					} else
+					{
+						throw new RuntimeException("表" + tablename + "不存在字段" + column);
+					}
 				}
 			}
 			classColumnCache.put(t, map);
@@ -167,7 +222,7 @@ public class ModelUtils
 	 * @return
 	 * 赵玉柱
 	 */
-	public static <T extends BasModel> List<String> getPrimaryKeyCols(Class<T> t)
+	public static <T extends BasModel> List<String> getPrimaryKeyCols(Class<T> t, Database db)
 	{
 		if (t == null)
 		{
@@ -178,28 +233,33 @@ public class ModelUtils
 			return classPrimaryColsCache.get(t);
 		}
 		String modelTable = getModelTable(t);
-		Map<Field, String> classColumns = getClassColumns(t);
+		Map<Field,String> classColumns = getClassColumns(t, db);
 		List<String> primaryKeys = new ArrayList<>();
+		Set<String> primarysSet = new HashSet<>();
+		try
+		{
+			DatabaseMetaData metaData = db.getConn().getMetaData();
+			ResultSet columnsResSet = null;
+			columnsResSet = metaData.getPrimaryKeys(null, null, modelTable);
+			if (columnsResSet != null)
+			{
+				while (columnsResSet.next())
+				{
+					String colName = columnsResSet.getString("COLUMN_NAME");
+					primarysSet.add(colName);
+				}
+			}
+		} catch (SQLException e)
+		{
+			throw new RuntimeException("获取表" + modelTable + "的元数据失败", e);
+		}
 		if (modelTable != null && classColumns != null && !classColumns.isEmpty())
 		{
-			Database configDatabase = DatabasePoolManager.getNewInstance().getConfigDatabase();
-			String sql = "select colname,flags from tbcolumn where tbname=:tbname ";
-			Map<String,Object> params = new HashMap<>();
-			params.put("tbname", modelTable);
-			List<Map<String,Object>> listMapFromSql = configDatabase.getListMapFromSql(sql, params);
-			if (listMapFromSql != null && !listMapFromSql.isEmpty())
+			for (String colname : primarysSet)
 			{
-				for (Map<String,Object> map : listMapFromSql)
+				if (classColumns.containsValue(colname))
 				{
-					String colname = StrUtil.obj2str(map.get("colname"));
-					int flags = StrUtil.obj2int(map.get("flags"));
-					if (StrUtil.isNoStrTrimNull(colname) && (flags & 1) == 1)
-					{
-						if(	classColumns.containsValue(colname))
-						{
-							primaryKeys.add(colname);
-						}
-					}
+					primaryKeys.add(colname);
 				}
 			}
 		}
@@ -207,14 +267,14 @@ public class ModelUtils
 		return primaryKeys;
 	}
 
-	public static <T extends BasModel> String getQueryFilter(T t)
+	public static <T extends BasModel> String getQueryFilter(T t, Database db)
 	{
 		if (t == null)
 		{
 			return null;
 		}
 		StringBuffer filter = new StringBuffer(" where ");
-		Map<String,Object> values = t.getTableValues();
+		Map<String,Object> values = t.getTableValues(db);
 		int i = 0;
 		int length = values.size();
 		for (Entry<String,Object> entry : values.entrySet())
@@ -236,7 +296,7 @@ public class ModelUtils
 	 * @return
 	 * 赵玉柱
 	 */
-	public static <T extends BasModel> List<Field> getPrimaryFields(Class<T> t)
+	public static <T extends BasModel> List<Field> getPrimaryFields(Class<T> t, Database db)
 	{
 		if (t == null)
 		{
@@ -247,28 +307,20 @@ public class ModelUtils
 			return classPrimaryFieldsCache.get(t);
 		}
 		String modelTable = getModelTable(t);
-		Map<String, Field> classColumns = getClassFieldColumns(t);
+		Map<String,Field> classColumns = getClassFieldColumns(t, db);
 		List<Field> primaryKeys = new ArrayList<>();
 		if (modelTable != null && classColumns != null && !classColumns.isEmpty())
 		{
-			Database configDatabase = DatabasePoolManager.getNewInstance().getConfigDatabase();
-			String sql = "select colname,flags from tbcolumn where tbname=:tbname ";
-			Map<String,Object> params = new HashMap<>();
-			params.put("tbname", modelTable);
-			List<Map<String,Object>> listMapFromSql = configDatabase.getListMapFromSql(sql, params);
-			if (listMapFromSql != null && !listMapFromSql.isEmpty())
+			List<String> primaryKeyCols = getPrimaryKeyCols(t, db);
+			for (Entry<String,Field> entry : classColumns.entrySet())
 			{
-				for (Map<String,Object> map : listMapFromSql)
+				String colname = entry.getKey();
+				if (primaryKeyCols.contains(colname))
 				{
-					String colname = StrUtil.obj2str(map.get("colname"));
-					int flags = StrUtil.obj2int(map.get("flags"));
-					if (StrUtil.isNoStrTrimNull(colname) && (flags & 1) == 1)
-					{
-						if(classColumns.containsKey(colname))
-						{
-							primaryKeys.add(classColumns.get(colname));
-						}
-					}
+					primaryKeys.add(classColumns.get(colname));
+				} else
+				{
+					throw new RuntimeException("表" + modelTable + "不存在主键字段" + colname);
 				}
 			}
 		}

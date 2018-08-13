@@ -1,5 +1,7 @@
 package com.liiwin.test;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
@@ -7,6 +9,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.util.EntityUtils;
 import com.liiwin.constant.RegExpConstant;
+import com.liiwin.date.DateUtil;
 import com.liiwin.encryption.AES;
 import com.liiwin.http.HttpClientUtil;
 import com.liiwin.random.RandomString;
@@ -25,12 +28,68 @@ import com.liiwin.random.RandomStringImpl;
  * 监听使用界面:
  * @version 8.0
  */
-public class Test_84
+public class Test_84 extends T
 {
+	static
+	{
+		System.out.println("1");
+	}
+
+	/**
+	 * 
+	 */
+	public Test_84()
+	{
+		System.out.println("2");
+	}
+
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args)
+	{
+		char a = 'a';
+		char b = a;
+		System.out.println(a);
+		System.out.println(b);
+		a = 'b';
+		System.out.println(a);
+		System.out.println(b);
+	}
+
+	/**
+	 * 
+	 * 赵玉柱
+	 */
+	private static void test1()
+	{
+		SimpleDateFormat fmt = new SimpleDateFormat();
+		Date date = DateUtil.getCurDate();
+		fmt.applyPattern("YYYY");
+		String format = fmt.format(date);
+		System.out.println(format);
+		fmt.applyPattern("YY");
+		format = fmt.format(date);
+		System.out.println(format);
+		fmt.applyPattern("yy");
+		format = fmt.format(date);
+		System.out.println(format);
+		fmt.applyPattern("yyyy");
+		format = fmt.format(date);
+		System.out.println(format);
+		fmt.applyPattern("MM");
+		format = fmt.format(date);
+		System.out.println(format);
+		fmt.applyPattern("ss");
+		format = fmt.format(date);
+		System.out.println(format);
+	}
+
+	/**
+	 * 
+	 * 赵玉柱
+	 */
+	private static void testIdCard()
 	{
 		String id1 = "123123123123123";
 		String id2 = "12312312312312X";
@@ -268,5 +327,20 @@ public class Test_84
 	{
 		double result = (Ehav - Ehav_(a, b, CL, PLR, Epump_tower, E)) / (Ehav + Ehav_(a, b, CL, PLR, Epump_tower, E));
 		return result;
+	}
+}
+class T
+{
+	static
+	{
+		System.out.println("3");
+	}
+
+	/**
+	 * 
+	 */
+	public T()
+	{
+		System.out.println("4");
 	}
 }

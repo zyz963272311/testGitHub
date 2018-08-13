@@ -2,8 +2,11 @@ package com.liiwin.db;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -45,36 +48,78 @@ public class SqlUtil
 	 * @return
 	 * 赵玉柱
 	 */
-	public static String sqlBindParams(Database db, String sql, Map<String,Object> params)
+	public static String sqlBindParams(Database db, String sql, Map<String,Object> params, List<Object> paramList)
 	{
 		if (params == null || params.isEmpty())
 		{
 			return sql;
 		}
-		Set<Entry<String,Object>> entrySet = params.entrySet();
-		for (Entry<String,Object> entry : entrySet)
+		if (paramList == null)
 		{
-			String key = entry.getKey();
-			if (StrUtil.isStrTrimNull(key))
+			return sql;
+		}
+		if (StrUtil.isStrTrimNull(sql))
+		{
+			return sql;
+		}
+		//处理分页 格式化between与and的sql
+		sql = mallocSql(db, sql, params);
+		StringBuffer sqlSB = new StringBuffer();
+		char[] sqlCharArr = sql.toCharArray();
+		int fromIdx = -1;
+		int endIdx = -1;
+		for (int i = 0; i < sqlCharArr.length; i++)
+		{
+			char c = sqlCharArr[i];
+			if (c == ':')
 			{
+				fromIdx = i;
 				continue;
 			}
-			Object value = entry.getValue();
-//			if (EmptyUtil.isEmpty(value))
-//			{
-//				continue;
-//			}
-			if (key.endsWith(".[from]") || key.endsWith(".[to]"))
+			if (fromIdx >= 0 && Character.isJavaIdentifierStart(c))
 			{
-				sql = buildBetweenAnd(sql, key, params);
-			}
-			if (key == PAGENO || key == PAGESIZE || key == ROWFROM || key == ROWTO)
+				//判断当前字符是否为合法标识符
+				endIdx = i;
+			} else
 			{
-				sql = parsePages(db, sql, key, params);
+				if (fromIdx >= 0 && endIdx > fromIdx)
+				{
+					sqlSB.append('?');
+					String key = sql.substring(fromIdx + 1, endIdx);
+					Object value = params.get(key);
+					paramList.add(value);
+				} else
+				{
+					sqlSB.append(c);
+				}
+				fromIdx = -1;
+				endIdx = -1;
 			}
-			sql = parseSql(db, sql, key, value);
 		}
-		return sql;
+		//		Set<Entry<String,Object>> entrySet = params.entrySet();
+		//		for (Entry<String,Object> entry : entrySet)
+		//		{
+		//			String key = entry.getKey();
+		//			if (StrUtil.isStrTrimNull(key))
+		//			{
+		//				continue;
+		//			}
+		//			Object value = entry.getValue();
+		//			//			if (EmptyUtil.isEmpty(value))
+		//			//			{
+		//			//				continue;
+		//			//			}
+		//			if (key.endsWith(".[from]") || key.endsWith(".[to]"))
+		//			{
+		//				sql = buildBetweenAnd(sql, key, params);
+		//			}
+		//			if (key == PAGENO || key == PAGESIZE || key == ROWFROM || key == ROWTO)
+		//			{
+		//				sql = parsePages(db, sql, key, params);
+		//			}
+		//			sql = parseSql(db, sql, key, value);
+		//		}
+		return sqlSB.toString();
 	}
 
 	/**
@@ -154,6 +199,16 @@ public class SqlUtil
 							control = 0;
 						}
 						String key = name + (i + fromIdx);
+						for (;; fromIdx++)
+						{
+							if (existKey(params, key))
+							{
+								key = name + (i + fromIdx);
+							} else
+							{
+								break;
+							}
+						}
 						params.put(key, listArray[i]);
 						sqlBuffer.append(":").append(key).append(",");
 					}
@@ -170,6 +225,11 @@ public class SqlUtil
 			}
 		}
 		return sqlBuffer.toString();
+	}
+
+	private static boolean existKey(Map<String,Object> params, String name)
+	{
+		return params.containsKey(name);
 	}
 
 	/**
@@ -321,11 +381,12 @@ public class SqlUtil
 	 * @return
 	 * 赵玉柱
 	 */
+	@SuppressWarnings("unused")
 	private static String parseSql(Database db, String src, String key, Object value)
 	{
-		if(EmptyUtil.isEmpty(value))
+		if (EmptyUtil.isEmpty(value))
 		{
-			return replaceSql(src, ":" + key, "null" );
+			return replaceSql(src, ":" + key, "null");
 		}
 		Class<? extends Object> valueType = value.getClass();
 		//常用类型
@@ -463,6 +524,57 @@ public class SqlUtil
 		return sql;
 	}
 
+	/**
+	 * 将sql进行初步格式化
+	 * @param sql
+	 * @param params
+	 * @return
+	 * 赵玉柱
+	 */
+	private static String mallocSql(Database db, String sql, Map<String,Object> params)
+	{
+		//1、拼装分页
+		if (params.containsKey(PAGENO))
+		{
+			sql = parsePages(db, sql, PAGENO, params);
+		}
+		if (params.containsKey(PAGESIZE))
+		{
+			sql = parsePages(db, sql, PAGESIZE, params);
+		}
+		if (params.containsKey(ROWFROM))
+		{
+			sql = parsePages(db, sql, ROWFROM, params);
+		}
+		if (params.containsKey(ROWTO))
+		{
+			sql = parsePages(db, sql, ROWTO, params);
+		}
+		Set<String> fromKeys = new HashSet<>();
+		for (Entry<String,Object> entry : params.entrySet())
+		{
+			String key = entry.getKey();
+			//2、拼装sqlBetween与and
+			if (key.endsWith(".[from]"))
+			{
+				if (!fromKeys.contains(key))
+				{
+					fromKeys.add(key);
+					sql = buildBetweenAnd(sql, key, params);
+				}
+			} else if (key.endsWith(".[to]"))
+			{
+				String betKey = key.replace(".[to]", ".[from]");
+				if (!fromKeys.contains(betKey))
+				{
+					sql = buildBetweenAnd(sql, key, params);
+					fromKeys.add(betKey);
+				}
+			}
+		}
+		return sql;
+	}
+
 	public static void main(String[] args)
 	{
 		main2();
@@ -489,23 +601,23 @@ public class SqlUtil
 	 */
 	private static void main1()
 	{
-		String sql = "select * from table where a= :a ane b = :b and c = :c and d = :d and e = :e";
+		String sql = "select * from menu where testlimit=:a and mname=:b";
 		Map<String,Object> params = new HashMap<>();
 		params.put("a", "a");
-		params.put("b", BigDecimal.ZERO);
+		params.put("b", "11");
 		params.put("c", 'c');
 		params.put("d", 123);
 		params.put("e", new Date());
 		params.put("f", new Date());
-		params.put("g.[from]", new Date());
-		params.put("g.[to]", new Date());
-		params.put("h.[to]", new Date());
+		//		params.put("g.[from]", new Date());
+		//		params.put("g.[to]", new Date());
+		//		params.put("h.[to]", new Date());
 		params.put(PAGENO, 1);
 		params.put(PAGESIZE, 2);
 		params.put(ROWFROM, 3);
 		params.put(ROWTO, 4);
 		Database db = new Database("zyztest");
-		sql = sqlBindParams(db, sql, params);
+		sql = sqlBindParams(db, sql, params, new ArrayList<>());
 		System.out.println(sql);
 		RandomString rs = new RandomStringImpl();
 		String[] array = rs.getRandomStringArray(5, 10000, 'a', 'z');
@@ -513,7 +625,7 @@ public class SqlUtil
 		Map<String,Object> params1 = new HashMap<>();
 		long start = System.currentTimeMillis();
 		sql = addWhereFilter(sql, bindSqlIn(name, array, params1, 0));
-		sql = sqlBindParams(db, sql, params1);
+		sql = sqlBindParams(db, sql, params1, new ArrayList<>());
 		System.out.println(sql);
 		System.out.println("解析sql消耗时间为" + (System.currentTimeMillis() - start));
 		db.close();
