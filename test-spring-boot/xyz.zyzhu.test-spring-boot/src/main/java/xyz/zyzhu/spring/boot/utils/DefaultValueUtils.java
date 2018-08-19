@@ -76,10 +76,7 @@ public class DefaultValueUtils
 	@SuppressWarnings("unchecked")
 	public static <E extends BasModel> void buildDefaultValue(E o, boolean recursion, Database db)
 	{
-		Date curDate = DateUtil.getCurDate();
-		long lastDayTime = curDate.getTime() - 24 * 60 * 60 * 1000;
-		String dayStr = new SimpleDateFormat("dd").format(curDate);
-		String lastDayStr = new SimpleDateFormat("dd").format(DateUtil.getCurDate(lastDayTime));
+		
 		if (o == null)
 		{
 			return;
@@ -129,9 +126,9 @@ public class DefaultValueUtils
 										AutoCode autoCodeQuery = new AutoCode();
 										autoCodeQuery.setCode(autoCode);
 										List<AutoCode> autoCodeList = autoCodeService.queryListMByFilter(autoCodeQuery, null);
+										AutoCode codeEnable = null;
 										if (autoCodeList != null && !autoCodeList.isEmpty())
 										{
-											AutoCode codeEnable = null;
 											for (AutoCode code : autoCodeList)
 											{
 												if (code.isEnabled())
@@ -140,7 +137,12 @@ public class DefaultValueUtils
 													break;
 												}
 											}
-											List<AutoCodeG> autoCodeGs = codeEnable.getAutoCodeGs();
+											
+										} 
+										if(codeEnable != null)
+										{
+											
+											List<AutoCodeG> autoCodeGs =autoCodeService.queryListGByFilter(codeEnable, null);
 											if (autoCodeGs != null && autoCodeGs.size() > 0)
 											{
 												List<CodePart> parts = new ArrayList<>();
@@ -156,7 +158,7 @@ public class DefaultValueUtils
 													setterMethod.invoke(o, makeCode);
 												}
 											}
-										} else
+										}else
 										{
 											String tableName = ObjectUtils.getTableName(o);
 											if (tableName == null)
@@ -168,45 +170,30 @@ public class DefaultValueUtils
 											{
 												columnName = field.getName();
 											}
-											autoCode = dealSpecChar(autoCode);
+											Date curDate = DateUtil.getCurDate();
+											String curAutoCode = dealSpecChar(autoCode,curDate);
+											//long lastDayTime = curDate.getTime() - 24 * 60 * 60 * 1000;
+											//String lastAutoCode = dealSpecChar(autoCode,new Date(lastDayTime));
 											Class<? extends BasModel> class1 = o.getClass();
 											Map<String,Field> classFieldColumns = ModelUtils.getClassFieldColumns(class1, db);
-											String lastKey = tableName + "|" + columnName + "|" + lastDayStr;
-											String key = tableName + "|" + columnName + "|" + dayStr;
+											String key = tableName + "|" + columnName + "|" + curAutoCode;
+											// String lastKey = tableName + "|" + columnName + "|" +lastAutoCode ;
 											if (classFieldColumns.containsKey(columnName))
 											{
 												//当前字段是表中的字段，需要进行数据库中校验
 												Object redisValue = RedisUtil.get(key);
 												if (redisValue == null)
 												{
-													Object lastRedisValue = RedisUtil.get(lastKey);
-													if (lastRedisValue == null)
-													{
-														//如果数据为空，先从数据库中查询最新的数据
-														Map<String,Object> params = new HashMap<>();
-														params.put(columnName, autoCode);
-														Map<String,Object> mapFromSql = db.getMapFromSql(
-																"select max(" + columnName + ") as max from " + tableName + " where " + columnName + " like (:" + columnName + ")", params);
-														if (mapFromSql != null && !mapFromSql.isEmpty())
-														{
-															String max = StrUtil.obj2str(mapFromSql.get("max"));
-															if (max != null)
-															{
-																String bitGetStr = StrUtil.bitGetStr(autoCode, max, "_", null);
-																int bitGetInt = StrUtil.obj2int(bitGetStr);
-																RedisUtil.set(key, bitGetInt, 2, RedisUtil.DAY);
-															}
-														}
-													}
+													putCodeRedis(db, tableName, columnName, curAutoCode, key);
 												}
 											}
-											int allLength = autoCode.length();
-											int defLength = autoCode.replace("_", "").length();
-											String code = autoCode;
+											int allLength = curAutoCode.length();
+											int defLength = curAutoCode.replace("_", "").length();
+											String code = curAutoCode;
 											if (allLength > defLength)
 											{
 												String autoCodePart = MakeCodeUtil.makeOuttercode("", allLength - defLength, key);
-												code = StrUtil.strReplaceBit(autoCode, autoCodePart, '_', '_', true);
+												code = StrUtil.strReplaceBit(curAutoCode, autoCodePart, '_', '_', true);
 											}
 											setterMethod.invoke(o, code);
 										}
@@ -321,14 +308,49 @@ public class DefaultValueUtils
 	}
 
 	/**
+	 * @param db
+	 * @param autoCode
+	 * @param tableName
+	 * @param columnName
+	 * @param curAutoCode
+	 * @param key
+	 * @param lastKey
+	 * 赵玉柱
+	 */
+	private static void putCodeRedis(Database db, String tableName, String columnName,String curAutoCode, String key) {
+		Object redisValue = RedisUtil.get(key);
+		if (redisValue == null)
+		{
+			//如果数据为空，先从数据库中查询最新的数据
+			Map<String,Object> params = new HashMap<>();
+			params.put(columnName, curAutoCode);
+			Map<String,Object> mapFromSql = db.getMapFromSql(
+					"select max(" + columnName + ") as max from " + tableName + " where " + columnName + " like (:" + columnName + ")", params);
+			if (mapFromSql != null && !mapFromSql.isEmpty())
+			{
+				String max = StrUtil.obj2str(mapFromSql.get("max"));
+				if (max != null)
+				{
+					String bitGetStr = StrUtil.bitGetStr(curAutoCode, max, "_", null);
+					int bitGetInt = StrUtil.obj2int(bitGetStr);
+					RedisUtil.set(key, bitGetInt, 2, RedisUtil.DAY);
+				}
+			}
+		}
+	}
+
+	/**
 	 * 处理特殊字符
 	 * @param autocode
 	 * @return
 	 * 赵玉柱
 	 */
-	private static String dealSpecChar(String autocode)
+	private static String dealSpecChar(String autocode,Date curDate)
 	{
-		Date curDate = DateUtil.getCurDate();
+		if(curDate == null)
+		{
+			curDate = DateUtil.getCurDate();
+		}
 		SimpleDateFormat format = new SimpleDateFormat();
 		dealDateSpecChar(autocode, "YYYY", curDate, format);
 		dealDateSpecChar(autocode, "yyyy", curDate, format);

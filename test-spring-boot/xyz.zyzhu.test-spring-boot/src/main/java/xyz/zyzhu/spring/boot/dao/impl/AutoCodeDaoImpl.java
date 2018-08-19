@@ -2,13 +2,12 @@ package xyz.zyzhu.spring.boot.dao.impl;
 
 import java.util.List;
 import java.util.Map;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Repository;
+
 import xyz.zyzhu.spring.boot.dao.AutoCodeDao;
 import xyz.zyzhu.spring.boot.model.AutoCode;
 import xyz.zyzhu.spring.boot.model.AutoCodeG;
-import xyz.zyzhu.spring.boot.repository.AutoCodeGRepository;
-import xyz.zyzhu.spring.boot.repository.AutoCodeRepository;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -26,10 +25,6 @@ import xyz.zyzhu.spring.boot.repository.AutoCodeRepository;
 @Repository
 public class AutoCodeDaoImpl implements AutoCodeDao
 {
-	@Autowired
-	AutoCodeRepository	autoCodeRepository;
-	@Autowired
-	AutoCodeGRepository	autoCodegRepository;
 
 	@Override
 	public AutoCode insertM(AutoCode c)

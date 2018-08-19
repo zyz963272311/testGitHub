@@ -2,14 +2,16 @@ package xyz.zyzhu.spring.boot.dao.impl;
 
 import java.util.List;
 import java.util.Map;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
+
 import xyz.zyzhu.spring.boot.dao.WXRouterDao;
+import xyz.zyzhu.spring.boot.db.BootDatabase;
+import xyz.zyzhu.spring.boot.db.BootDatabasePoolManager;
 import xyz.zyzhu.spring.boot.model.WXRouter;
-import xyz.zyzhu.spring.boot.repository.WXRouterRepository;
 /**
  * <p>标题： 微信路由dao实现类</p>
  * <p>功能： </p>
@@ -27,58 +29,70 @@ import xyz.zyzhu.spring.boot.repository.WXRouterRepository;
 @Repository
 public class WXRouterDaoImpl implements WXRouterDao
 {
-	@Autowired
-	WXRouterRepository wxRouterRepository;
-
+	private static final String dbname = "zyztest";
 	@Cacheable(value = "WXRouterModule", key = "#id")
 	@Override
 	public WXRouter queryById(String id)
 	{
-		return wxRouterRepository.findOne(id);
+		BootDatabase database = BootDatabasePoolManager.getDatabase(dbname);
+		WXRouter router = new WXRouter();
+		router.setId(id);;
+		WXRouter query = database.query1(router);
+		return query;
 	}
 
 	@CachePut(value = "WXRouterModule", key = "#m.id")
 	@Override
 	public void add(WXRouter m)
 	{
-		wxRouterRepository.save(m);
+		BootDatabase database = BootDatabasePoolManager.getDatabase(dbname);
+		database.save(m);
 	}
 
 	@CacheEvict(value = "WXRouterModule")
 	@Override
 	public void delete(WXRouter m)
 	{
-		wxRouterRepository.delete(m);
+		BootDatabase database = BootDatabasePoolManager.getDatabase(dbname);
+		database.delete(m);
 	}
 
 	@CacheEvict(value = "WXRouterModule", key = "#id")
 	@Override
 	public void deleteById(String id)
 	{
-		wxRouterRepository.delete(id);
+		BootDatabase database = BootDatabasePoolManager.getDatabase(dbname);
+		WXRouter router = new WXRouter();
+		router.setId(id);;
+		database.delete(router);
 	}
 
 	@CachePut(value = "WXRouterModule", key = "#m.id")
 	@Override
 	public void update(WXRouter m)
 	{
-		wxRouterRepository.save(m);
+		BootDatabase database = BootDatabasePoolManager.getDatabase(dbname);
+		database.update(m);
 	}
 
 	@Cacheable(value = "WXRouterModule")
 	@Override
 	public List<WXRouter> queryList()
 	{
-		return wxRouterRepository.findAll();
+		BootDatabase database = BootDatabasePoolManager.getDatabase(dbname);
+		List<WXRouter> query = database.query(new WXRouter());
+		return query;
 	}
 
 	@Cacheable(value = "WXRouterModule")
 	@Override
 	public List<WXRouter> queryListByModule(WXRouter m)
 	{
-		return null;
+		BootDatabase database = BootDatabasePoolManager.getDatabase(dbname);
+		List<WXRouter> query = database.query(m);
+		return query;
 	}
-
+	@Deprecated
 	@Cacheable(value = "WXRouterModule")
 	@Override
 	public List<WXRouter> queryListByFilter(WXRouter m, Map<String,Object> params)

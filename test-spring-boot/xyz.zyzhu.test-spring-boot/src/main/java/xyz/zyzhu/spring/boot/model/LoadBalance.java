@@ -1,7 +1,15 @@
 package xyz.zyzhu.spring.boot.model;
 
 import java.io.Serializable;
+
+import javax.persistence.Table;
+
+import org.apache.commons.collections4.SetValuedMap;
+
 import com.liiwin.utils.StrUtil;
+
+import xyz.zyzhu.spring.boot.annotation.FieldDef;
+
 /**
  * <p>标题： 负载均衡对象</p>
  * <p>功能： </p>
@@ -16,12 +24,17 @@ import com.liiwin.utils.StrUtil;
  * 监听使用界面:
  * @version 8.0
  */
-public class LoadBalance implements Serializable
+@Table(name="loadbalance")
+public class LoadBalance extends BasModel
 {
 	private static final long	serialVersionUID	= 1L;
+	@FieldDef()
 	private String				key;						//键
+	@FieldDef()
 	private String				name;						//名
+	@FieldDef()
 	private Integer				weight;						//权重
+	@FieldDef()
 	private Integer				flags;						//标志
 	private Integer index;//下标
 	/**
@@ -68,6 +81,7 @@ public class LoadBalance implements Serializable
 		{
 			flags = flags | 1;
 		}
+		setValue("flags", flags);
 		return this;
 	}
 
@@ -85,6 +99,7 @@ public class LoadBalance implements Serializable
 		{
 			flags = flags | 1;
 		}
+		setValue("flags", flags);
 		return this;
 	}
 
@@ -95,7 +110,7 @@ public class LoadBalance implements Serializable
 
 	public void setKey(String key)
 	{
-		this.key = key;
+		setValue("key", key);
 	}
 
 	public Integer getWeight()
@@ -105,7 +120,7 @@ public class LoadBalance implements Serializable
 
 	public void setWeight(Integer weight)
 	{
-		this.weight = weight;
+		setValue("weight", weight);
 	}
 
 	public Integer getFlags()
@@ -115,7 +130,7 @@ public class LoadBalance implements Serializable
 
 	public void setFlags(Integer flags)
 	{
-		this.flags = flags;
+		setValue("flags", flags);
 	}
 
 	public String getName()
@@ -125,7 +140,7 @@ public class LoadBalance implements Serializable
 
 	public void setName(String name)
 	{
-		this.name = name;
+		setValue("name", name);
 	}
 
 	public Integer getIndex() {
@@ -133,7 +148,7 @@ public class LoadBalance implements Serializable
 	}
 
 	public void setIndex(Integer index) {
-		this.index = index;
+		setValue("index", index);
 	}
 	
 }

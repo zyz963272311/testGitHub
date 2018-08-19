@@ -1,11 +1,5 @@
 package xyz.zyzhu.spring.boot.model;
 
-import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import com.liiwin.utils.StrUtil;
 import xyz.zyzhu.spring.boot.annotation.FieldDef;
@@ -23,12 +17,11 @@ import xyz.zyzhu.spring.boot.annotation.FieldDef;
  * 监听使用界面:
  * @version 8.0
  */
-@Entity
+//@Entity
 @Table(name = "autocode")
 public class AutoCode extends BasModel
 {
 	private static final long	serialVersionUID	= -8812813800065226766L;
-	@Id
 	@FieldDef(defaultValue = "AutoCode:autoid__________")
 	private String				id;											//id 内码
 	@FieldDef(defaultValue = "ExecMethod:new xyz.zyzhu.spring.boot.test.Test().getCode()")
@@ -37,10 +30,6 @@ public class AutoCode extends BasModel
 	private String				name;										//编码名称
 	@FieldDef(defaultValue = "1")
 	private Integer				flags;										//1:启用;0:停用
-	//级联删除，级联更新
-	@FieldDef(notNull = true)
-	@OneToMany(targetEntity = AutoCodeG.class, cascade = { CascadeType.REMOVE, CascadeType.MERGE }, fetch = FetchType.LAZY)
-	private List<AutoCodeG>		autoCodeGs;									//子表
 
 	/**
 	 * 已经启用
@@ -70,7 +59,7 @@ public class AutoCode extends BasModel
 
 	public void setId(String id)
 	{
-		this.id = id;
+		setValue("id", id);
 	}
 
 	public String getCode()
@@ -80,7 +69,7 @@ public class AutoCode extends BasModel
 
 	public void setCode(String code)
 	{
-		this.code = code;
+		setValue("code", code);
 	}
 
 	public String getName()
@@ -90,7 +79,7 @@ public class AutoCode extends BasModel
 
 	public void setName(String name)
 	{
-		this.name = name;
+		setValue("name", name);
 	}
 
 	public Integer getFlags()
@@ -100,16 +89,6 @@ public class AutoCode extends BasModel
 
 	public void setFlags(Integer flags)
 	{
-		this.flags = flags;
-	}
-
-	public List<AutoCodeG> getAutoCodeGs()
-	{
-		return autoCodeGs;
-	}
-
-	public void setAutoCodeGs(List<AutoCodeG> autoCodeGs)
-	{
-		this.autoCodeGs = autoCodeGs;
+		setValue("flags", flags);
 	}
 }

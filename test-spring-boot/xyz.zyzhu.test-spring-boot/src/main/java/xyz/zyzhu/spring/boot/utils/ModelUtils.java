@@ -12,9 +12,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+
 import javax.persistence.Table;
+
 import com.liiwin.db.Database;
 import com.liiwin.utils.StrUtil;
+
 import xyz.zyzhu.spring.boot.annotation.FieldDef;
 import xyz.zyzhu.spring.boot.model.BasModel;
 /**
@@ -273,10 +276,14 @@ public class ModelUtils
 		{
 			return null;
 		}
-		StringBuffer filter = new StringBuffer(" where ");
+		StringBuffer filter = new StringBuffer();
 		Map<String,Object> values = t.getTableValues(db);
 		int i = 0;
 		int length = values.size();
+		if(length>0)
+		{
+			filter.append(" where ");
+		}
 		for (Entry<String,Object> entry : values.entrySet())
 		{
 			String key = entry.getKey();

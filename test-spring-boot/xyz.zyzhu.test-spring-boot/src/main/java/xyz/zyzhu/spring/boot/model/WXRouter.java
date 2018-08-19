@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import com.liiwin.utils.StrUtil;
+
+import xyz.zyzhu.spring.boot.annotation.FieldDef;
 /**
  * <p>标题： 微信路由Module</p>
  * <p>功能： </p>
@@ -18,18 +20,24 @@ import com.liiwin.utils.StrUtil;
  * 监听使用界面:
  * @version 8.0
  */
-@Entity
+//@Entity
 @Table(name = "wxrouter")
 public class WXRouter extends BasModel
 {
 	private static final long	serialVersionUID	= 1411879407786673442L;
-	@Id
+	@FieldDef(defaultValue = "AutoCode:id________")
 	private String				id;											//主键
+	@FieldDef()
 	private String				node;										//节点 排序用
+	@FieldDef()
 	private String				name;										//名称 用于标记当前路由作用
+	@FieldDef()
 	private String				matcherClassPath;							//匹配器路径
+	@FieldDef()
 	private String				interClassPath;								//拦截器路径
+	@FieldDef()
 	private String				handlerClassPath;							//处理器路径
+	@FieldDef(defaultValue="0")
 	private Integer				flags;										//1:启用;2:end;default:启用，next
 
 	/**
@@ -42,7 +50,7 @@ public class WXRouter extends BasModel
 		boolean isEnd = false;
 		if (flags != null)
 		{
-			isEnd = (flags & 2) > 0;
+			isEnd = (isEnable())&&((flags & 2) > 0);
 		}
 		return isEnd;
 	}
@@ -54,7 +62,7 @@ public class WXRouter extends BasModel
 	 */
 	public boolean isNext()
 	{
-		return !isEnd();
+		return (isEnable()&&!isEnd());
 	}
 
 	/**
@@ -148,7 +156,7 @@ public class WXRouter extends BasModel
 			int flags = StrUtil.obj2int(getFlags());
 			if (flags != 0)
 			{
-				flags = flags - 2;
+				flags = ((flags&2)>0)?(flags - 2):flags;
 			}
 			setFlags(flags);
 		}
@@ -162,7 +170,7 @@ public class WXRouter extends BasModel
 
 	public void setId(String id)
 	{
-		this.id = id;
+		setValue("id", id);
 	}
 
 	public String getNode()
@@ -172,7 +180,7 @@ public class WXRouter extends BasModel
 
 	public void setNode(String node)
 	{
-		this.node = node;
+		setValue("node", node);
 	}
 
 	public String getName()
@@ -182,7 +190,7 @@ public class WXRouter extends BasModel
 
 	public void setName(String name)
 	{
-		this.name = name;
+		setValue("name", name);
 	}
 
 	public String getMatcherClassPath()
@@ -192,7 +200,7 @@ public class WXRouter extends BasModel
 
 	public void setMatcherClassPath(String matcherClassPath)
 	{
-		this.matcherClassPath = matcherClassPath;
+		setValue("matcherClassPath", matcherClassPath);
 	}
 
 	public String getInterClassPath()
@@ -202,7 +210,7 @@ public class WXRouter extends BasModel
 
 	public void setInterClassPath(String interClassPath)
 	{
-		this.interClassPath = interClassPath;
+		setValue("interClassPath", interClassPath);
 	}
 
 	public String getHandlerClassPath()
@@ -212,7 +220,7 @@ public class WXRouter extends BasModel
 
 	public void setHandlerClassPath(String handlerClassPath)
 	{
-		this.handlerClassPath = handlerClassPath;
+		setValue("handlerClassPath", handlerClassPath);
 	}
 
 	public Integer getFlags()
@@ -222,6 +230,6 @@ public class WXRouter extends BasModel
 
 	public void setFlags(Integer flags)
 	{
-		this.flags = flags;
+		setValue("flags", flags);
 	}
 }

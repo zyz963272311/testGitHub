@@ -19,17 +19,20 @@ import xyz.zyzhu.spring.boot.annotation.FieldDef;
  * 监听使用界面:
  * @version 8.0
  */
-@Entity
+//@Entity
 @Table(name = "autocodeg")
 public class AutoCodeG extends BasModel
 {
 	private static final long	serialVersionUID	= 8480040917605629855L;
-	@Id
 	@FieldDef(defaultValue = "AutoCode:autogid__________")
 	private String				id;											//内码
+	@FieldDef()
 	private String				mid;										//主表内码
+	@FieldDef()
 	private String				num;										//序号
+	@FieldDef()
 	private String				formate;									//格式
+	@FieldDef()
 	private Integer				length;										//长度
 	/**@see CodePart*/
 	@FieldDef(defaultValue = "4")
@@ -42,7 +45,7 @@ public class AutoCodeG extends BasModel
 
 	public void setMid(String mid)
 	{
-		this.mid = mid;
+		setValue("mid", mid);
 	}
 
 	public String getNum()
@@ -52,7 +55,7 @@ public class AutoCodeG extends BasModel
 
 	public void setNum(String num)
 	{
-		this.num = num;
+		setValue("num", num);
 	}
 
 	public String getFormate()
@@ -62,7 +65,7 @@ public class AutoCodeG extends BasModel
 
 	public void setFormate(String formate)
 	{
-		this.formate = formate;
+		setValue("formate", formate);
 	}
 
 	public Integer getLength()
@@ -72,7 +75,7 @@ public class AutoCodeG extends BasModel
 
 	public void setLength(Integer length)
 	{
-		this.length = length;
+		setValue("length", length);
 	}
 
 	public String getType()
@@ -82,7 +85,7 @@ public class AutoCodeG extends BasModel
 
 	public void setType(String type)
 	{
-		this.type = type;
+		setValue("type", type);
 	}
 
 	public String getId()
@@ -92,6 +95,6 @@ public class AutoCodeG extends BasModel
 
 	public void setId(String id)
 	{
-		this.id = id;
+		setValue("id", id);
 	}
 }

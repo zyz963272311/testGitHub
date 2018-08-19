@@ -2,21 +2,30 @@ package xyz.zyzhu.spring.boot.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.liiwin.utils.BeanUtils;
+import com.liiwin.utils.StrUtil;
 import com.soecode.wxtools.api.IService;
+import com.soecode.wxtools.api.WxMessageHandler;
+import com.soecode.wxtools.api.WxMessageInterceptor;
+import com.soecode.wxtools.api.WxMessageMatcher;
 import com.soecode.wxtools.api.WxMessageRouter;
+import com.soecode.wxtools.api.WxMessageRouterRule;
 import com.soecode.wxtools.api.WxService;
 import com.soecode.wxtools.bean.WxXmlMessage;
 import com.soecode.wxtools.bean.WxXmlOutMessage;
 import com.soecode.wxtools.util.xml.XStreamTransformer;
-import xyz.zyzhu.spring.boot.wx.handler.ConstellationHandler;
-import xyz.zyzhu.spring.boot.wx.handler.SubscribeEventHandler;
-import xyz.zyzhu.spring.boot.wx.matcher.ConstellationMatcher;
-import xyz.zyzhu.spring.boot.wx.matcher.SubscribeEventMatcher;
-/**
+
+import xyz.zyzhu.spring.boot.model.WXRouter;
+import xyz.zyzhu.spring.boot.service.WXRouterService;
+import xyz.zyzhu.spring.boot.utils.SpringBeanUtils;
+/** 
  * <p>标题： TODO</p>
  * <p>功能： </p>
  * <p>所属模块： TODO</p>
@@ -70,8 +79,55 @@ public class WeChatServlet extends HttpServlet
 			// end()是指消息进入该规则后不再进入其他规则。 而next()是指消息进入了一个规则后，如果满足其他规则也能进入，处理。
 			//			router.rule().matcher(new DemoMatcher()).interceptor(new DemoInterceptor()).handler(new DemoHandler()).end();
 			//匹配生日到星座
-			router.rule().matcher(new SubscribeEventMatcher()).handler(new SubscribeEventHandler()).end();
-			router.rule().matcher(new ConstellationMatcher()).handler(new ConstellationHandler()).end();
+			WXRouterService service = SpringBeanUtils.getBean(WXRouterService.class);
+			if(service == null)
+			{
+				throw new RuntimeException("获取service失败"+WXRouterService.class);
+			}
+			List<WXRouter> queryList = service.queryList();
+			if(queryList!=null)
+			{
+				for(WXRouter wxRouter:queryList)
+				{
+					if(wxRouter.isEnable())
+					{
+						String matcherClassPath = wxRouter.getMatcherClassPath();
+						WxMessageRouterRule rule = router.rule();
+						String handlerClassPath = wxRouter.getHandlerClassPath();
+						String interClassPath = wxRouter.getInterClassPath();
+						boolean notAllNull = false;
+						if(StrUtil.isNoStrTrimNull(matcherClassPath))
+						{
+							WxMessageMatcher matcher = (WxMessageMatcher) BeanUtils.newInstance(matcherClassPath);
+							rule.matcher(matcher);
+							notAllNull = true;
+						}
+						if(StrUtil.isNoStrTrimNull(interClassPath))
+						{
+							WxMessageInterceptor interceptor = (WxMessageInterceptor) BeanUtils.newInstance(interClassPath);
+							rule.interceptor(interceptor);
+							notAllNull = true;
+						}
+						if(StrUtil.isNoStrTrimNull(handlerClassPath))
+						{
+							WxMessageHandler handler = (WxMessageHandler) BeanUtils.newInstance(handlerClassPath);
+							rule.handler(handler);
+							notAllNull = true;
+						}
+						if(notAllNull)
+						{
+							if(wxRouter.isEnd())
+							{
+								rule.end();
+							}
+							else
+							{
+								rule.next();
+							}
+						}
+					}
+				}
+			}
 			// 把消息传递给路由器进行处理
 			WxXmlOutMessage xmlOutMsg = router.route(wx);
 			if (xmlOutMsg != null)

@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import xyz.zyzhu.spring.boot.annotation.FieldDef;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -21,13 +23,14 @@ import javax.persistence.Table;
  * 监听使用界面:
  * @version 8.0
  */
-@Entity
+//@Entity
 @Table(name = "users")
 public class User extends BasModel
 {
 	private static final long	serialVersionUID	= 1L;
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.AUTO)
+	@FieldDef(defaultValue = "AutoCode:useridYYMMDD_______")
 	private String				id;
 	private String				openid;
 	private String				username;
@@ -81,7 +84,7 @@ public class User extends BasModel
 
 	public void setId(String id)
 	{
-		this.id = id;
+		setValue("id", id);
 	}
 
 	public String getOpenid()
@@ -91,7 +94,7 @@ public class User extends BasModel
 
 	public void setOpenid(String openid)
 	{
-		this.openid = openid;
+		setValue("openid", openid);
 	}
 
 	public String getUsername()
@@ -101,7 +104,7 @@ public class User extends BasModel
 
 	public void setUsername(String username)
 	{
-		this.username = username;
+		setValue("username", username);
 	}
 
 	public String getHeadimage()
@@ -111,7 +114,7 @@ public class User extends BasModel
 
 	public void setHeadimage(String headimage)
 	{
-		this.headimage = headimage;
+		setValue("headimage", headimage);
 	}
 
 	public BigDecimal getPosx()
@@ -121,7 +124,7 @@ public class User extends BasModel
 
 	public void setPosx(BigDecimal posx)
 	{
-		this.posx = posx;
+		setValue("posx", posx);
 	}
 
 	public BigDecimal getPosy()
@@ -131,7 +134,7 @@ public class User extends BasModel
 
 	public void setPosy(BigDecimal posy)
 	{
-		this.posy = posy;
+		setValue("posy", posy);
 	}
 
 	public Integer getUsertype()
@@ -141,7 +144,7 @@ public class User extends BasModel
 
 	public void setUsertype(Integer usertype)
 	{
-		this.usertype = usertype;
+		setValue("usertype", usertype);
 	}
 
 	public Date getFollowtime()
@@ -151,7 +154,7 @@ public class User extends BasModel
 
 	public void setFollowtime(Date followtime)
 	{
-		this.followtime = followtime;
+		setValue("followtime", followtime);
 	}
 
 	public Integer getFollowflags()
@@ -161,7 +164,7 @@ public class User extends BasModel
 
 	public void setFollowflags(Integer followflags)
 	{
-		this.followflags = followflags;
+		setValue("followflags", followflags);
 	}
 
 	public Date getModifydate()
@@ -171,6 +174,6 @@ public class User extends BasModel
 
 	public void setModifydate(Date modifydate)
 	{
-		this.modifydate = modifydate;
+		setValue("followflags", followflags);
 	}
 }

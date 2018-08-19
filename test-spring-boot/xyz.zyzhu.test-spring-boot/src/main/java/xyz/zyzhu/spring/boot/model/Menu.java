@@ -1,10 +1,8 @@
 package xyz.zyzhu.spring.boot.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
+
+import xyz.zyzhu.spring.boot.annotation.FieldDef;
 /**
  * <p>标题： TODO</p>
  * <p>功能：</p>
@@ -17,13 +15,14 @@ import javax.persistence.Table;
  * 
  * @version 8.0
  */
-@Entity
+//@Entity
 @Table(name = "menu")
 public class Menu extends BasModel
 {
 	private static final long	serialVersionUID	= 8548831581997780285L;
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.AUTO)
+	@FieldDef(defaultValue="AutoCode:mid________")
 	Integer						mid;
 	String						mname;
 	Integer						offlags;
