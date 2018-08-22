@@ -171,6 +171,7 @@ public class Database
 		sql = SqlUtil.sqlBindParams(this, sql, params, paramsList);
 		return getMapFromSqlByListParam(sql, paramsList);
 	}
+
 	/**
 	 * 
 	 * @param sql
@@ -181,7 +182,7 @@ public class Database
 	public Map<String,Object> getMapFromSqlByListParam(String sql, List<Object> paramsList)
 	{
 		List<Map<String,Object>> listMap = getListMapFromSqlByListParam(sql, paramsList);
-		if(listMap == null||listMap.isEmpty())
+		if (listMap == null || listMap.isEmpty())
 		{
 			return null;
 		}
@@ -221,11 +222,11 @@ public class Database
 
 	public List<Map<String,Object>> getListMapFromSqlByListParam(String sql, List<Object> paramsList)
 	{
-		System.out.println("执行sql[" + sql + "]");
+		System.out.println("执行sql[" + sql + "],参数" + paramsList);
 		List<Map<String,Object>> resultList = new ArrayList<>();
 		try
 		{
-			ResultSet rs = getResultSet(sql,paramsList);
+			ResultSet rs = getResultSet(sql, paramsList);
 			if (rs.next() == false)
 			{
 				return resultList;
@@ -441,7 +442,7 @@ public class Database
 		{
 		case Databasetype.MYSQL:
 			//mysql
-			sql = "select * from information_schema.ROUTINES a where a.SPECIFIC_NAME=:tablename ";
+			sql = "select * from information_schema.TABLES a where a.table_name=:tablename ";
 			break;
 		default:
 			break;
@@ -534,7 +535,7 @@ public class Database
 					int size = paramList.size();
 					for (int i = 0; i < size; i++)
 					{
-						prepareStatement.setObject(i+1, paramList.get(i));
+						prepareStatement.setObject(i + 1, paramList.get(i));
 					}
 				}
 				rs = prepareStatement.executeQuery();
@@ -576,7 +577,7 @@ public class Database
 
 	public boolean execSqlForWriteWithParamsList(String sql, List<Object> paramsList)
 	{
-		System.out.println("execSqlforWrite[" + sql + "]");
+		System.out.println(getDatabaseName() + ":execSqlforWrite[" + sql + "]参数" + paramsList);
 		boolean result = false;
 		try
 		{
@@ -588,7 +589,7 @@ public class Database
 					int size = paramsList.size();
 					for (int i = 0; i < size; i++)
 					{
-						statement.setObject(i+1, paramsList.get(i));
+						statement.setObject(i + 1, paramsList.get(i));
 					}
 				}
 				result = statement.execute();
@@ -677,6 +678,7 @@ public class Database
 			if (getConn() != null && !getConn().isClosed())
 			{
 				getConn().commit();
+				getConn().setAutoCommit(true);
 			}
 		} catch (SQLException e)
 		{

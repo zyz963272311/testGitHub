@@ -352,7 +352,7 @@ public class CreateDatabase
 			List<String> tableExecSqlList = new ArrayList<>();
 			tableExecSql.put(dbName, tableExecSqlList);
 			List<String> tbcolExecSqlList = new ArrayList<>();
-			tableExecSql.put(dbName, tbcolExecSqlList);
+			tbcolExecSql.put(dbName, tbcolExecSqlList);
 			if (tableFileMessage != null)
 			{
 				for (Entry<String,Table> tableFileEntry : tableFileMessage)
@@ -393,7 +393,7 @@ public class CreateDatabase
 				sql.append("create table `" + fileTable.getTableName() + "`\n(\n");
 				Set<Entry<String,Column>> columnEntrySet = columns.entrySet();
 				String tableName = fileTable.getTableName();
-				String tableExecSqlStr = "insert into `tb` (tbname,dbname,tblang1name) value('" + tableName + "','" + fileTable.getDbName() + "','" + fileTable.getTableName() + "')";
+				String tableExecSqlStr = "insert into `tb` (`tbname`,`dbname`,`tblang1name`) value('" + tableName + "','" + fileTable.getDbName() + "','" + fileTable.getTableName() + "')";
 				tableExecSql.add(tableExecSqlStr);
 				for (Entry<String,Column> columnEntry : columnEntrySet)
 				{
@@ -422,8 +422,8 @@ public class CreateDatabase
 						sql.append(" default " + defaultValue + "");
 					}
 					sql.append(",\n");
-					String tbcolExecSqlStr = "insert into `tbcolumn` (colname,tbname,comment,defaultvalue,datatype,dataLength,decimal,flags) value('" + column.getColumnName() + "','" + tableName
-							+ "','" + comment + "','" + defaultValue + "','" + column.getDataType() + "'," + column.getDataLength() + "," + column.getDecimal() + "," + flags + ")";
+					String tbcolExecSqlStr = "insert into `tbcolumn` (`colname`,`tbname`,`comment`,`defaultvalue`,`datatype`,`dataLength`,`decimal`,`flags`) value('" + column.getColumnName() + "','"
+							+ tableName + "','" + comment + "','" + defaultValue + "','" + column.getDataType() + "'," + column.getDataLength() + "," + column.getDecimal() + "," + flags + ")";
 					tbcolExecSql.add(tbcolExecSqlStr);
 				}
 				if (primarySB.length() > srcPriLength)
@@ -453,6 +453,11 @@ public class CreateDatabase
 			switch (dbType)
 			{
 			case Databasetype.MYSQL:
+				String tableName = fileTable.getTableName();
+				//				String tableExecSqlStr = "insert into `tb` (`tbname`,`dbname`,`tblang1name`) value('" + tableName + "','" + fileTable.getDbName() + "','" + fileTable.getTableName() + "')";
+				//				tableExecSql.add(tableExecSqlStr);
+				String tableExecSqlStr = "update `tb` set `tbname`='" + tableName + "',`dbname`='" + fileTable.getDbName() + "',`tblang1name`='" + tableName + "' where `tbname`='" + tableName + "'";
+				tableExecSql.add(tableExecSqlStr);
 				Set<Entry<String,Column>> columnEntrySet = columns.entrySet();
 				for (Entry<String,Column> columnEntry : columnEntrySet)
 				{
@@ -461,6 +466,7 @@ public class CreateDatabase
 					Column column = columnEntry.getValue();
 					if (!dbColumns.containsKey(columnName))
 					{
+						int flags = 0;
 						//添加字段
 						sql.append("alter table `" + column.getTableName() + "` add ");
 						sql.append("`" + column.getColumnName() + "` " + column.getDataType() + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "") + ")");
@@ -473,22 +479,29 @@ public class CreateDatabase
 						if ((constraint & 1) == 1)
 						{
 							sql.append(" primary key PK_" + column.getTableName() + "_" + column.getColumnName());
+							flags += 1;
 						}
 						if ((constraint & 2) == 2)
 						{
 							sql.append(" not null ");
+							flags += 2;
 						}
 						String defaultValue = column.getDefaultValue();
 						if (!StrUtil.asNull(defaultValue))
 						{
 							sql.append(" default " + defaultValue + ",\n");
 						}
+						String tbcolExecSqlStr = "insert into `tbcolumn` (`colname`,`tbname`,`comment`,`defaultvalue`,`datatype`,`dataLength`,`decimal`,`flags`) value('" + column.getColumnName()
+								+ "','" + tableName + "','" + comment + "','" + defaultValue + "','" + column.getDataType() + "'," + column.getDataLength() + "," + column.getDecimal() + "," + flags
+								+ ")";
+						tbcolExecSql.add(tbcolExecSqlStr);
 					} else
 					{
 						//修改字段
 						Column dbColumn = dbColumns.get(columnName);
 						if (dbColumn.isDiffWith(column))
 						{
+							int flags = 0;
 							sql.append("alter table `" + column.getTableName() + "` modify column ");
 							sql.append("`" + column.getColumnName() + "` " + column.getDataType() + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "") + ")");
 							String comment = column.getComment();
@@ -500,12 +513,21 @@ public class CreateDatabase
 							if ((constraint & 2) == 2)
 							{
 								sql.append(" not null ");
+								flags += 2;
 							}
 							String defaultValue = column.getDefaultValue();
 							if (!StrUtil.asNull(defaultValue))
 							{
 								sql.append(" default " + defaultValue);
 							}
+							//							String tbcolExecSqlStr = "insert into `tbcolumn` (`colname`,`tbname`,`comment`,`defaultvalue`,`datatype`,`dataLength`,`decimal`,`flags`) value('" + column.getColumnName()
+							//									+ "','" + tableName + "','" + comment + "','" + defaultValue + "','" + column.getDataType() + "'," + column.getDataLength() + "," + column.getDecimal() + ","
+							//									+ flags + ")";
+							//							tbcolExecSql.add(tbcolExecSqlStr);
+							String tbcolExecSqlStr = "update `tbcolumn` set colname='" + column.getColumnName() + "',`tbname`='" + tableName + "',`comment`='" + comment + "',`defaultvalue`='"
+									+ defaultValue + "',`datatype`='" + column.getDataType() + "',`dataLength`=" + column.getDataLength() + ",`decimal`=" + column.getDecimal() + ",`flags`=" + flags
+									+ "|`flags` where `colname`='" + column.getColumnName() + "' and `tbname`='" + tableName + "'";
+							tbcolExecSql.add(tbcolExecSqlStr);
 						}
 					}
 					returnSql.add(sql.toString());
@@ -541,6 +563,7 @@ public class CreateDatabase
 				Database db = null;
 				try
 				{
+					cfgDB.beginTrans();
 					db = sqlEntry.getKey();
 					List<String> value = sqlEntry.getValue();
 					if (value != null)
@@ -579,7 +602,7 @@ public class CreateDatabase
 					}
 					try
 					{
-						cfgDB.rollback(rollback, true);
+						cfgDB.rollback(rollback, false);
 					} catch (Exception e)
 					{
 					}
@@ -618,22 +641,28 @@ public class CreateDatabase
 		String dbSql = null;
 		if (resultMap != null && !resultMap.isEmpty())
 		{
-			dbSql = "update db set url=:url ,username=:username ,password=:password ,initcount=:initcount ,maxcount=:maxcount  where dbname=:dbname  ";
+			dbSql = "update `db` set `url`=:url ,`username`=:username ,`password`=:password ,`initcount`=:initcount ,`maxcount`=:maxcount  where `dbname`=:dbname  ";
 		} else
 		{
-			dbSql = "insert into db(dbname,url,username,password,initcount,maxcount) values (:dbname ,:url ,:username ,:password ,:initcount ,:maxcount ) ";
+			dbSql = "insert into `db`(`dbname`,`url`,`username`,`password`,`initcount`,`maxcount`) values (:dbname ,:url ,:username ,:password ,:initcount ,:maxcount ) ";
 		}
 		//更新库信息到config库中
 		cfgDB.execSqlForWrite(dbSql, updateDBParams);
 		//更新表信息
-		for (String tableExecSqlStr : tableExecSql)
+		if (tableExecSql != null)
 		{
-			cfgDB.execSqlForWrite(tableExecSqlStr);
+			for (String tableExecSqlStr : tableExecSql)
+			{
+				cfgDB.execSqlForWrite(tableExecSqlStr);
+			}
 		}
 		//更新表结构信息
-		for (String tbcolExecSqlStr : tbcolExecSqlList)
+		if (tbcolExecSqlList != null)
 		{
-			cfgDB.execSqlForWrite(tbcolExecSqlStr);
+			for (String tbcolExecSqlStr : tbcolExecSqlList)
+			{
+				cfgDB.execSqlForWrite(tbcolExecSqlStr);
+			}
 		}
 		//		if (tables != null && !tables.isEmpty())
 		//		{
@@ -664,6 +693,7 @@ public class CreateDatabase
 	public static void main(String[] args)
 	{
 		System.out.println("默认编码格式" + Charset.defaultCharset());
-		createDatabase(new String[] { "zyztest"/*, "config", "project01" */});
+		createDatabase(new String[] { "zyztest", "config"/*, "project01" */ });
+		System.exit(0);
 	}
 }
