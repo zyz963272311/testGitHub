@@ -1,9 +1,6 @@
 package xyz.zyzhu.spring.boot.utils;
 
 import java.lang.reflect.Field;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,14 +9,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-
 import javax.persistence.Table;
-
-import com.liiwin.db.Database;
 import com.liiwin.utils.StrUtil;
-
 import xyz.zyzhu.spring.boot.annotation.FieldDef;
+import xyz.zyzhu.spring.boot.db.BootDatabase;
+import xyz.zyzhu.spring.boot.db.BootDatabasePoolManager;
 import xyz.zyzhu.spring.boot.model.BasModel;
+import xyz.zyzhu.spring.boot.model.TableColumnDef;
 /**
  * <p>标题： 对象工具类</p>
  * <p>功能： </p>
@@ -90,7 +86,7 @@ public class ModelUtils
 		}
 	}
 
-	public static <T extends BasModel> Map<String,Field> getClassFieldColumns(Class<T> t, Database db)
+	public static <T extends BasModel> Map<String,Field> getClassFieldColumns(Class<T> t)
 	{
 		if (t == null)
 		{
@@ -105,26 +101,20 @@ public class ModelUtils
 				return map;
 			}
 		}
-		Map<Field,String> classColumns = getClassColumns(t, db);
+		Map<Field,String> classColumns = getClassColumns(t);
 		map = new HashMap<>();
 		String tablename = BasModel.getTableName(t);
 		Set<String> columnsSet = new HashSet<>();
-		try
+		BootDatabase db = BootDatabasePoolManager.getReadDatabaseByTable("tbcolumn");
+		TableColumnDef queryDef = new TableColumnDef();
+		queryDef.setTbname(tablename);
+		List<TableColumnDef> query = db.query(queryDef);
+		if (query != null)
 		{
-			DatabaseMetaData metaData = db.getConn().getMetaData();
-			ResultSet columnsResSet = null;
-			columnsResSet = metaData.getColumns(null, null, tablename.toUpperCase(),null);
-			if (columnsResSet != null)
+			for (TableColumnDef def : query)
 			{
-				while (columnsResSet.next())
-				{
-					String colName = columnsResSet.getString("COLUMN_NAME");
-					columnsSet.add(colName);
-				}
+				columnsSet.add(def.getColname());
 			}
-		} catch (SQLException e)
-		{
-			throw new RuntimeException("获取表" + tablename + "的元数据失败", e);
 		}
 		if (classColumns != null)
 		{
@@ -151,7 +141,7 @@ public class ModelUtils
 	 * @return
 	 * 赵玉柱
 	 */
-	public static <T extends BasModel> Map<Field,String> getClassColumns(Class<T> t, Database db)
+	public static <T extends BasModel> Map<Field,String> getClassColumns(Class<T> t)
 	{
 		if (t == null)
 		{
@@ -178,22 +168,17 @@ public class ModelUtils
 			map = new HashMap<>();
 			String tablename = BasModel.getTableName(t);
 			Set<String> columnsSet = new HashSet<>();
-			try
+			BootDatabase db = BootDatabasePoolManager.getReadDatabaseByTable("tbcolumn");
+			TableColumnDef defQuery = new TableColumnDef();
+			defQuery.setTbname(tablename);
+			List<TableColumnDef> query = db.query(defQuery);
+			if (query != null)
 			{
-				DatabaseMetaData metaData = db.getConn().getMetaData();
-				ResultSet columnsResSet = null;
-				columnsResSet = metaData.getColumns(null, null, tablename.toUpperCase(), null);
-				if (columnsResSet != null)
+				for (TableColumnDef def : query)
 				{
-					while (columnsResSet.next())
-					{
-						String colName = columnsResSet.getString("COLUMN_NAME");
-						columnsSet.add(colName);
-					}
+					String colName = def.getColname();
+					columnsSet.add(colName);
 				}
-			} catch (SQLException e)
-			{
-				throw new RuntimeException("获取表" + tablename + "的元数据失败", e);
 			}
 			for (Field field : classFields)
 			{
@@ -225,7 +210,7 @@ public class ModelUtils
 	 * @return
 	 * 赵玉柱
 	 */
-	public static <T extends BasModel> List<String> getPrimaryKeyCols(Class<T> t, Database db)
+	public static <T extends BasModel> List<String> getPrimaryKeyCols(Class<T> t)
 	{
 		if (t == null)
 		{
@@ -236,25 +221,22 @@ public class ModelUtils
 			return classPrimaryColsCache.get(t);
 		}
 		String modelTable = getModelTable(t);
-		Map<Field,String> classColumns = getClassColumns(t, db);
+		Map<Field,String> classColumns = getClassColumns(t);
 		List<String> primaryKeys = new ArrayList<>();
 		Set<String> primarysSet = new HashSet<>();
-		try
+		BootDatabase db = BootDatabasePoolManager.getReadDatabaseByTable("tbcolumn");
+		TableColumnDef queryDef = new TableColumnDef();
+		queryDef.setTbname(modelTable);
+		List<TableColumnDef> query = db.query(queryDef);
+		if (query != null)
 		{
-			DatabaseMetaData metaData = db.getConn().getMetaData();
-			ResultSet columnsResSet = null;
-			columnsResSet = metaData.getPrimaryKeys(null, null, modelTable.toUpperCase());
-			if (columnsResSet != null)
+			for (TableColumnDef def : query)
 			{
-				while (columnsResSet.next())
+				if (def.isPrimary())
 				{
-					String colName = columnsResSet.getString("COLUMN_NAME");
-					primarysSet.add(colName);
+					primarysSet.add(def.getColname());
 				}
 			}
-		} catch (SQLException e)
-		{
-			throw new RuntimeException("获取表" + modelTable + "的元数据失败", e);
 		}
 		if (modelTable != null && classColumns != null && !classColumns.isEmpty())
 		{
@@ -270,17 +252,17 @@ public class ModelUtils
 		return primaryKeys;
 	}
 
-	public static <T extends BasModel> String getQueryFilter(T t, Database db)
+	public static <T extends BasModel> String getQueryFilter(T t)
 	{
 		if (t == null)
 		{
 			return null;
 		}
 		StringBuffer filter = new StringBuffer();
-		Map<String,Object> values = t.getTableValues(db);
+		Map<String,Object> values = t.getTableValues();
 		int i = 0;
 		int length = values.size();
-		if(length>0)
+		if (length > 0)
 		{
 			filter.append(" where ");
 		}
@@ -303,7 +285,7 @@ public class ModelUtils
 	 * @return
 	 * 赵玉柱
 	 */
-	public static <T extends BasModel> List<Field> getPrimaryFields(Class<T> t, Database db)
+	public static <T extends BasModel> List<Field> getPrimaryFields(Class<T> t)
 	{
 		if (t == null)
 		{
@@ -314,18 +296,18 @@ public class ModelUtils
 			return classPrimaryFieldsCache.get(t);
 		}
 		String modelTable = getModelTable(t);
-		Map<String,Field> classColumns = getClassFieldColumns(t, db);
+		Map<String,Field> classColumns = getClassFieldColumns(t);
 		List<Field> primaryKeys = new ArrayList<>();
 		if (modelTable != null && classColumns != null && !classColumns.isEmpty())
 		{
-			List<String> primaryKeyCols = getPrimaryKeyCols(t, db);
+			List<String> primaryKeyCols = getPrimaryKeyCols(t);
 			for (Entry<String,Field> entry : classColumns.entrySet())
 			{
 				String colname = entry.getKey();
 				if (primaryKeyCols.contains(colname))
 				{
 					primaryKeys.add(classColumns.get(colname));
-				} 
+				}
 			}
 		}
 		classPrimaryFieldsCache.put(t, primaryKeys);

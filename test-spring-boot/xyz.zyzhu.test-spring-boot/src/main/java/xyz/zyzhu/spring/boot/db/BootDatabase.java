@@ -129,8 +129,8 @@ public class BootDatabase extends Database
 		{
 			return null;
 		}
-		String filter = ModelUtils.getQueryFilter(t, this);
-		Map<String,Object> params = t.getTableValues(this);
+		String filter = ModelUtils.getQueryFilter(t);
+		Map<String,Object> params = t.getTableValues();
 		Class<T> class1 = (Class<T>) t.getClass();
 		return query(class1, params, filter, null);
 	}
@@ -271,7 +271,7 @@ public class BootDatabase extends Database
 		}
 		if (columns == null || columns.length == 0)
 		{
-			Map<Field,String> classColumns = ModelUtils.getClassColumns(clazz, this);
+			Map<Field,String> classColumns = ModelUtils.getClassColumns(clazz);
 			columns = new String[classColumns.size()];
 			int i = 0;
 			for (Entry<Field,String> entry : classColumns.entrySet())
@@ -342,8 +342,8 @@ public class BootDatabase extends Database
 		{
 			throw new RuntimeException("当前对象无对应表名");
 		}
-		List<String> primaryKeys = t.getPrimaryKsys(this);
-		List<Object> primaryValues = t.getPrimaryValues(false, this);
+		List<String> primaryKeys = t.getPrimaryKsys();
+		List<Object> primaryValues = t.getPrimaryValues(false);
 		if (primaryKeys == null || primaryKeys.isEmpty())
 		{
 			throw new RuntimeException("当前对象内码字段为空" + t);
@@ -489,9 +489,9 @@ public class BootDatabase extends Database
 		{
 			throw new RuntimeException("当前对象不存在对应表名" + t.getClass());
 		}
-		List<String> primaryKsys = t.getPrimaryKsys(this);
-		List<Object> primaryValues = t.getPrimaryValues(false, this);
-		List<Object> oldPrimarys = t.getOldPrimaryValues(this);
+		List<String> primaryKsys = t.getPrimaryKsys();
+		List<Object> primaryValues = t.getPrimaryValues(false);
+		List<Object> oldPrimarys = t.getOldPrimaryValues();
 		if (primaryKsys == null || primaryKsys.isEmpty())
 		{
 			throw new RuntimeException("当前对象不存在主键字段" + t.getClass());
@@ -502,7 +502,7 @@ public class BootDatabase extends Database
 		}
 		if (columns == null || columns.length == 0)
 		{
-			Map<Field,String> columns2 = t.getColumns(this);
+			Map<Field,String> columns2 = t.getColumns();
 			if (columns2 == null || columns2.isEmpty())
 			{
 				throw new RuntimeException("当前对象获取到的数据库字段为空");
@@ -515,7 +515,7 @@ public class BootDatabase extends Database
 				columns[i++] = column;
 			}
 		}
-		Map<String,Object> tableValues = t.getNewTableValues(this);
+		Map<String,Object> tableValues = t.getNewTableValues();
 		StringBuffer sb = new StringBuffer("update " + table + " set ");
 		Map<String,Object> params = new HashMap<>();
 		int sbLength = sb.length();
@@ -633,8 +633,8 @@ public class BootDatabase extends Database
 		{
 			DefaultValueUtils.buildDefaultValue(t, false, this);
 		}
-		Map<Field,String> columns = t.getColumns(this);
-		Map<String,Object> values = t.getTableValues(this);
+		Map<Field,String> columns = t.getColumns();
+		Map<String,Object> values = t.getTableValues();
 		StringBuffer columnSB = new StringBuffer("(");
 		StringBuffer valueSB = new StringBuffer(" value (");
 		if (columns == null || columns.isEmpty())

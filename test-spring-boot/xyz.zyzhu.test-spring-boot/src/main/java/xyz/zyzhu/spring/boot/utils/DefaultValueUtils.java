@@ -76,7 +76,6 @@ public class DefaultValueUtils
 	@SuppressWarnings("unchecked")
 	public static <E extends BasModel> void buildDefaultValue(E o, boolean recursion, Database db)
 	{
-		
 		if (o == null)
 		{
 			return;
@@ -137,12 +136,10 @@ public class DefaultValueUtils
 													break;
 												}
 											}
-											
-										} 
-										if(codeEnable != null)
+										}
+										if (codeEnable != null)
 										{
-											
-											List<AutoCodeG> autoCodeGs =autoCodeService.queryListGByFilter(codeEnable, null);
+											List<AutoCodeG> autoCodeGs = autoCodeService.queryListGByFilter(codeEnable, null);
 											if (autoCodeGs != null && autoCodeGs.size() > 0)
 											{
 												List<CodePart> parts = new ArrayList<>();
@@ -158,7 +155,7 @@ public class DefaultValueUtils
 													setterMethod.invoke(o, makeCode);
 												}
 											}
-										}else
+										} else
 										{
 											String tableName = ObjectUtils.getTableName(o);
 											if (tableName == null)
@@ -171,11 +168,11 @@ public class DefaultValueUtils
 												columnName = field.getName();
 											}
 											Date curDate = DateUtil.getCurDate();
-											String curAutoCode = dealSpecChar(autoCode,curDate);
+											String curAutoCode = dealSpecChar(autoCode, curDate);
 											//long lastDayTime = curDate.getTime() - 24 * 60 * 60 * 1000;
 											//String lastAutoCode = dealSpecChar(autoCode,new Date(lastDayTime));
 											Class<? extends BasModel> class1 = o.getClass();
-											Map<String,Field> classFieldColumns = ModelUtils.getClassFieldColumns(class1, db);
+											Map<String,Field> classFieldColumns = ModelUtils.getClassFieldColumns(class1);
 											String key = tableName + "|" + columnName + "|" + curAutoCode;
 											// String lastKey = tableName + "|" + columnName + "|" +lastAutoCode ;
 											if (classFieldColumns.containsKey(columnName))
@@ -317,15 +314,15 @@ public class DefaultValueUtils
 	 * @param lastKey
 	 * 赵玉柱
 	 */
-	private static void putCodeRedis(Database db, String tableName, String columnName,String curAutoCode, String key) {
+	private static void putCodeRedis(Database db, String tableName, String columnName, String curAutoCode, String key)
+	{
 		Object redisValue = RedisUtil.get(key);
 		if (redisValue == null)
 		{
 			//如果数据为空，先从数据库中查询最新的数据
 			Map<String,Object> params = new HashMap<>();
 			params.put(columnName, curAutoCode);
-			Map<String,Object> mapFromSql = db.getMapFromSql(
-					"select max(" + columnName + ") as max from " + tableName + " where " + columnName + " like (:" + columnName + ")", params);
+			Map<String,Object> mapFromSql = db.getMapFromSql("select max(" + columnName + ") as max from " + tableName + " where " + columnName + " like (:" + columnName + ")", params);
 			if (mapFromSql != null && !mapFromSql.isEmpty())
 			{
 				String max = StrUtil.obj2str(mapFromSql.get("max"));
@@ -345,9 +342,9 @@ public class DefaultValueUtils
 	 * @return
 	 * 赵玉柱
 	 */
-	private static String dealSpecChar(String autocode,Date curDate)
+	private static String dealSpecChar(String autocode, Date curDate)
 	{
-		if(curDate == null)
+		if (curDate == null)
 		{
 			curDate = DateUtil.getCurDate();
 		}

@@ -22,7 +22,6 @@ import javax.persistence.Table;
 import com.liiwin.utils.ArrayUtil;
 import com.liiwin.utils.StrUtil;
 import xyz.zyzhu.spring.boot.annotation.FieldDef;
-import xyz.zyzhu.spring.boot.model.BasModel;
 /**
  * <p>标题： 对象工具类</p>
  * <p>功能： </p>
@@ -133,13 +132,13 @@ public class ObjectUtils
 	 * @return
 	 * 赵玉柱
 	 */
-	public static Map<String,Method> getClassGetterMethods(Class<?> clazz,Class<?> superClassType)
+	public static Map<String,Method> getClassGetterMethods(Class<?> clazz, Class<?> superClassType)
 	{
 		if (clazz == null)
 		{
 			return null;
 		}
-		if(superClassType == null)
+		if (superClassType == null)
 		{
 			superClassType = Object.class;
 		}
@@ -151,9 +150,9 @@ public class ObjectUtils
 		Map<String,Method> getMethodMap = new ConcurrentHashMap<>();
 		Class<?> superclass = clazz.getSuperclass();
 		Map<String,Method> supperGetterMethods = null;
-		if (superclass != null&&superClassType.isAssignableFrom(superclass))
+		if (superclass != null && superClassType.isAssignableFrom(superclass))
 		{
-			supperGetterMethods = getClassGetterMethods(superclass,superClassType);
+			supperGetterMethods = getClassGetterMethods(superclass, superClassType);
 		}
 		if (supperGetterMethods == null)
 		{
@@ -188,10 +187,8 @@ public class ObjectUtils
 				{
 					Method getMethod = StrUtil.dealGetMethod(field, clazz);
 					getMethodMap.put(fieldName, getMethod);
-				}
-				catch(Exception e)
+				} catch (Exception e)
 				{
-					
 				}
 			}
 		}
@@ -205,13 +202,13 @@ public class ObjectUtils
 	 * @return
 	 * 赵玉柱
 	 */
-	public static Map<String,Method> getClassSetterMethods(Class<?> clazz,Class<?> superClassType)
+	public static Map<String,Method> getClassSetterMethods(Class<?> clazz, Class<?> superClassType)
 	{
 		if (clazz == null)
 		{
 			return null;
 		}
-		if(superClassType == null)
+		if (superClassType == null)
 		{
 			superClassType = Object.class;
 		}
@@ -223,9 +220,9 @@ public class ObjectUtils
 		Map<String,Method> setMethodMap = new ConcurrentHashMap<>();
 		Class<?> superclass = clazz.getSuperclass();
 		Map<String,Method> supperSetterMethods = null;
-		if (superclass != null&&superClassType.isAssignableFrom(superclass))
+		if (superclass != null && superClassType.isAssignableFrom(superclass))
 		{
-			supperSetterMethods = getClassSetterMethods(superclass,superClassType);
+			supperSetterMethods = getClassSetterMethods(superclass, superClassType);
 		}
 		if (supperSetterMethods == null)
 		{
@@ -244,10 +241,8 @@ public class ObjectUtils
 					{
 						setMethod = StrUtil.dealSetMethodByName(fldName, clazz, setMethod.getParameterTypes()[0]);
 						setMethodMap.put(fldName, setMethod);
-					}
-					catch(Exception e)
+					} catch (Exception e)
 					{
-						
 					}
 				}
 			} catch (Exception e)
@@ -266,10 +261,9 @@ public class ObjectUtils
 				Method setMethod = null;
 				try
 				{
-					setMethod= StrUtil.dealSetMethod(field, clazz);
+					setMethod = StrUtil.dealSetMethod(field, clazz);
 					setMethodMap.put(fieldName, setMethod);
-				}
-				catch(Exception e)
+				} catch (Exception e)
 				{
 				}
 			}
@@ -428,7 +422,7 @@ public class ObjectUtils
 			}
 		}
 		List<Field> fields = getClassFields(clazz, 2);
-		Map<String,Method> getterMethods = getClassGetterMethods(clazz,Object.class);
+		Map<String,Method> getterMethods = getClassGetterMethods(clazz, Object.class);
 		if (fields != null && !fields.isEmpty() && getterMethods != null && !getterMethods.isEmpty())
 		{
 			for (Field field : fields)
@@ -730,6 +724,32 @@ public class ObjectUtils
 			}
 		}
 		return classs;
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static int compareObject(Object o1, Object o2)
+	{
+		if (o1 == o2)
+		{
+			return 0;
+		}
+		if (o1 == null)
+		{
+			return -1;
+		}
+		if (o2 == null)
+		{
+			return 1;
+		}
+		if (!o1.getClass().equals(o2.getClass()))
+		{
+			throw new RuntimeException("不同类型不可进行比较");
+		}
+		if (o1.getClass().isAssignableFrom(Comparable.class))
+		{
+			return ((Comparable) o1).compareTo(o2);
+		}
+		throw new RuntimeException("无法比较量对象o1[" + o1 + "[,o2[" + o2 + "]");
 	}
 
 	/**
