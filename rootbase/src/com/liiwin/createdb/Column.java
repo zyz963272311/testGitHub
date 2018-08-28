@@ -20,9 +20,9 @@ public class Column implements Serializable
 {
 	private static final long	serialVersionUID	= 401964077213938565L;
 	private String				tableName;									//表名
-	private String				columnName;								//列名
+	private String				columnName;									//列名
 	private String				dataType;									//字段类型
-	private int					dataLength;								//字段长度
+	private int					dataLength;									//字段长度
 	private int					decimal;									//精度
 	private String				comment;									//注释
 	/**
@@ -33,7 +33,7 @@ public class Column implements Serializable
 	 * 4：唯一约束
 	 * 8：外键约束 一般不用
 	 */
-	private int					constraint;								//约束
+	private int					constraint;									//约束
 	private String				defaultValue;								//默认值
 
 	public String getTableName()
@@ -157,6 +157,12 @@ public class Column implements Serializable
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		return toString().equals(obj.toString());
 	}
 
 	@Override

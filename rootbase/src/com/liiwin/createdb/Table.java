@@ -2,6 +2,8 @@ package com.liiwin.createdb;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.Objects;
+import com.liiwin.utils.StrUtil;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -73,5 +75,40 @@ public class Table implements Serializable
 	public void setLang1name(String lang1name)
 	{
 		this.lang1name = lang1name;
+	}
+
+	/**
+	 * ab是否不同
+	 * @param table
+	 * @return
+	 * 赵玉柱
+	 */
+	public boolean isDiff(Table table)
+	{
+		if (table == null)
+		{
+			return true;
+		}
+		if (!StrUtil.equals(dbName, table.dbName))
+		{
+			return true;
+		}
+		if (!StrUtil.equals(dbType, table.dbType))
+		{
+			return true;
+		}
+		if (!StrUtil.equals(tableName, table.tableName))
+		{
+			return true;
+		}
+		if (!StrUtil.equals(dbName, table.dbName))
+		{
+			return true;
+		}
+		if (!StrUtil.equals(lang1name, table.lang1name))
+		{
+			return true;
+		}
+		return Objects.equals(columns, table.columns);
 	}
 }

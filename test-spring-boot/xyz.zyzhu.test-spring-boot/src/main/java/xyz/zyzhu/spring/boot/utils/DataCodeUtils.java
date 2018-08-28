@@ -1,5 +1,6 @@
 package xyz.zyzhu.spring.boot.utils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -93,15 +94,47 @@ public class DataCodeUtils
 	}
 
 	/**
+	 * 字典码名映射，根据名获取对应的码
+	 * @param dictcode
+	 * @param name
+	 * @return
+	 * 赵玉柱
+	 */
+	public static List<String> getDictinfoByName(String dictcode, String name)
+	{
+		Map<String,String> dictInfo = getDictInfo(dictcode);
+		List<String> result = new ArrayList<>();
+		if (dictInfo != null)
+		{
+			if (StrUtil.isStrTrimNull(name))
+			{
+				result.addAll(dictInfo.keySet());
+			} else if (dictInfo.containsValue(name))
+			{
+				for (Entry<String,String> entry : dictInfo.entrySet())
+				{
+					String value = entry.getValue();
+					if (name.equals(value))
+					{
+						String key = entry.getKey();
+						result.add(key);
+					}
+				}
+			}
+		}
+		return result;
+	}
+
+	/**
 	 * 根据字典编号与key获取值
-	 * @param dicticode
+	 * @param dictcode
 	 * @param code
 	 * @return
 	 * 赵玉柱
 	 */
-	public static String getDictInfo(String dicticode, String code)
+	public static String getDictInfo(String dictcode, String code)
 	{
-		Map<String,String> dictInfo = getDictInfo(dicticode);
+		Map<String,String> dictInfo = getDictInfo(dictcode);
 		if (dictInfo != null)
 		{
 			return dictInfo.get(code);
@@ -109,41 +142,52 @@ public class DataCodeUtils
 		return null;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	/**
+	 * 获取码表的码名映射
+	 * @param datacode
+	 * @param codename
+	 * @return
+	 * 赵玉柱
+	 */
 	public static Map<String,String> getDataCode(String datacode, String codename)
 	{
 		if (StrUtil.isNoStrTrimNull(datacode))
 		{
 			return null;
 		}
-		String dataCodeKey = getDataCodeKey(datacode);
-		RedisConfig bean = SpringBeanUtils.getBean(RedisConfig.class);
-		RedisTemplate<String,Map> dataCodeRedis = null;
-		if (bean != null)
+		if (codename == null)
 		{
-			dataCodeRedis = bean.getRedisTemplete(String.class, Map.class);
+			codename = "codename";
 		}
-		if (dataCodeRedis != null)
-		{
-			Map<String,Map<String,String>> map = dataCodeRedis.opsForValue().get(dataCodeKey);
-			if (map != null)
-			{
-				Map<String,String> resultMap = new HashMap<>();
-				for (Entry<String,Map<String,String>> entry : map.entrySet())
-				{
-					String key = entry.getKey();
-					Map<String,String> value = entry.getValue();
-					String codevalue = null;
-					if (value != null && !value.isEmpty())
-					{
-						codevalue = value.get(codename);
-					}
-					resultMap.put(key, codevalue);
-				}
-				return resultMap;
-			}
-		}
+		//		String dataCodeKey = getDataCodeKey(datacode);
+		//		RedisConfig bean = SpringBeanUtils.getBean(RedisConfig.class);
+		//		RedisTemplate<String,Map> dataCodeRedis = null;
+		//		if (bean != null)
+		//		{
+		//			dataCodeRedis = bean.getRedisTemplete(String.class, Map.class);
+		//		}
+		//		if (dataCodeRedis != null)
+		//		{
+		//			Map<String,Map<String,String>> map = dataCodeRedis.opsForValue().get(dataCodeKey);
+		//			if (map != null)
+		//			{
+		//				Map<String,String> resultMap = new HashMap<>();
+		//				for (Entry<String,Map<String,String>> entry : map.entrySet())
+		//				{
+		//					String key = entry.getKey();
+		//					Map<String,String> value = entry.getValue();
+		//					String codevalue = null;
+		//					if (value != null && !value.isEmpty())
+		//					{
+		//						codevalue = value.get(codename);
+		//					}
+		//					resultMap.put(key, codevalue);
+		//				}
+		//				return resultMap;
+		//			}
+		//		} 
 		BootDatabase db = null;
+		Map<String,String> result = new HashMap<>();
 		try
 		{
 			db = BootDatabasePoolManager.getReadDatabaseByTable("datacodedef");
@@ -193,6 +237,15 @@ public class DataCodeUtils
 					List<Map<String,Object>> listMapFromSql = db.getListMapFromSql(sqlSB.toString());
 					if (listMapFromSql != null && !listMapFromSql.isEmpty())
 					{
+						for (Map<String,Object> map : listMapFromSql)
+						{
+							String code = StrUtil.obj2str(map.get("code"));
+							if (StrUtil.isNoStrTrimNull(code))
+							{
+								String value = StrUtil.obj2str(map.get(codename));
+								result.put(code, value);
+							}
+						}
 					}
 				}
 			}
@@ -203,7 +256,54 @@ public class DataCodeUtils
 				BootDatabasePoolManager.close(db);
 			}
 		}
-		return null;
+		return result;
+	}
+
+	/**
+	 * 根据码表的名获取码
+	 * @param datacode
+	 * @param codename
+	 * @param name
+	 * @return
+	 * 赵玉柱
+	 */
+	public static List<String> getDataCodeByName(String datacode, String codename, String name)
+	{
+		Map<String,String> dataCode2 = getDataCode(datacode, codename);
+		List<String> result = new ArrayList<>();
+		if (dataCode2 != null)
+		{
+			if (StrUtil.isStrTrimNull(name))
+			{
+				result.addAll(dataCode2.keySet());
+			} else if (dataCode2.containsValue(name))
+			{
+				for (Entry<String,String> entry : dataCode2.entrySet())
+				{
+					String value = entry.getValue();
+					if (name.equals(value))
+					{
+						String key = entry.getKey();
+						result.add(key);
+					}
+				}
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * 获取码表的某一个码对应的名映射
+	 * @param datacode
+	 * @param codename
+	 * @param code
+	 * @return
+	 * 赵玉柱
+	 */
+	public static String getDataCode(String datacode, String codename, String code)
+	{
+		Map<String,String> dataCode2 = getDataCode(datacode, codename);
+		return dataCode2.get(code);
 	}
 
 	/**

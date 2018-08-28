@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import com.liiwin.db.Database;
 import com.liiwin.db.Databasetype;
 import com.liiwin.db.pool.DatabasePoolManager;
@@ -29,6 +30,8 @@ import com.liiwin.utils.StrUtil;
  */
 public class CreateDatabase
 {
+	public static final AtomicBoolean loadDb = new AtomicBoolean(false);
+
 	/**
 	 * 生成数据库
 	 * @param dbNames
@@ -73,15 +76,24 @@ public class CreateDatabase
 	 */
 	private static void createDatabase(List<Database> dbList, List<BufferedReader> dbFile)
 	{
-		Map<Database,List<Map<String,Object>>> selectDBMessage = getSelectDBMessage(dbList);
-		Map<String,Map<String,Table>> dbMessage2Table = dbMessage2Table(selectDBMessage);
+		Map<Database,List<Map<String,Object>>> selectConfigDBMessage = getSelectConfigDBMessage(dbList);
+		Map<String,Map<String,Table>> configDbMessage2Table = dbMessage2Table(selectConfigDBMessage);
+		Map<String,Map<String,Table>> dbMessage2Table = null;
+		if (loadDb.get())
+		{
+			dbMessage2Table = configDbMessage2Table;
+		} else
+		{
+			Map<Database,List<Map<String,Object>>> selectDBMessage = getSelectDBMessage(dbList);
+			dbMessage2Table = dbMessage2Table(selectDBMessage);
+		}
 		Map<String,Map<String,Table>> selectDBFileMessage = getSelectDBFileMessage(dbList, dbFile);
 		//config tb表需要执行的sql
 		Map<String,List<String>> tableExecSql = new HashMap<>();
 		//config tbcol需要执行的sql
 		Map<String,List<String>> tbcolExecSql = new HashMap<>();
-		Map<Database,List<String>> sqlDbMap = compareDBAndDBFile(dbMessage2Table, selectDBFileMessage, dbList, tableExecSql, tbcolExecSql);
-		System.out.println(dbMessage2Table);
+		Map<Database,List<String>> sqlDbMap = compareDBAndDBFile(configDbMessage2Table, dbMessage2Table, selectDBFileMessage, dbList, tableExecSql, tbcolExecSql);
+		System.out.println(configDbMessage2Table);
 		System.out.println(selectDBFileMessage);
 		execUpdateSql(sqlDbMap, selectDBFileMessage, tableExecSql, tbcolExecSql);
 	}
@@ -92,6 +104,18 @@ public class CreateDatabase
 	 * @return
 	 * 赵玉柱
 	 */
+	private static Map<Database,List<Map<String,Object>>> getSelectConfigDBMessage(List<Database> dbList)
+	{
+		Map<Database,List<Map<String,Object>>> selectDBMessage = new HashMap<>();
+		for (Database db : dbList)
+		{
+			List<Map<String,Object>> dbMessage = getConfigDBMessage(db);
+			System.out.println(dbMessage);
+			selectDBMessage.put(db, dbMessage);
+		}
+		return selectDBMessage;
+	}
+
 	private static Map<Database,List<Map<String,Object>>> getSelectDBMessage(List<Database> dbList)
 	{
 		Map<Database,List<Map<String,Object>>> selectDBMessage = new HashMap<>();
@@ -113,19 +137,57 @@ public class CreateDatabase
 	private static List<Map<String,Object>> getDBMessage(Database db)
 	{
 		int dbType = db.getType();
-		if (dbType == Databasetype.MYSQL)
+		Database confDb = DatabasePoolManager.getNewInstance().getConfigDatabase();
+		try
 		{
-			String sql = "select TABLE_NAME as tablename,COLUMN_NAME as columnname,COLUMN_COMMENT as comm,COLUMN_DEFAULT as dft,IS_NULLABLE as isnullable,DATA_TYPE as datatype,COLUMN_KEY as columnkey,NUMERIC_SCALE as scaly,NUMERIC_PRECISION as prec,CHARACTER_MAXIMUM_LENGTH as maxlength from information_schema.COLUMNS where table_schema=:table_schema ";
-			Map<String,Object> params = new HashMap<String,Object>();
-			params.put("table_schema", db.getDatabaseName());
-			return db.getListMapFromSql(sql, params);
-			//mysql
-		} else if (dbType == Databasetype.ORACLE)
+			if (dbType == Databasetype.MYSQL)
+			{
+				String sql = "select TABLE_NAME as tablename,COLUMN_NAME as columnname,COLUMN_COMMENT as comm,COLUMN_DEFAULT as dft,IS_NULLABLE as isnullable,DATA_TYPE as datatype,COLUMN_KEY as columnkey,NUMERIC_SCALE as scaly,NUMERIC_PRECISION as prec,CHARACTER_MAXIMUM_LENGTH as maxlength from information_schema.COLUMNS where table_schema=:table_schema ";
+				// tablename,columnname,comm,dft,isnullable,datatype,columnkey,scaly,prec,maxlength
+				//				String sql = "select c.tbname as tablename,c.colname as colname,c.comment as comm,c.defaultvalue as dft,case c.flags&2 when 2 then 'YES' else 'NO' end as isnullable,c.datatype as datatype,case c.flags&1 when 1 then 'PRI' else '' end as columnkey,c.decimal as scaly,c.dataLength as prec,c.dataLength as maxlength from tbcolumn as c,tb as t where t.tbname = c.tbname and t.dbname =:table_schema ";
+				Map<String,Object> params = new HashMap<String,Object>();
+				params.put("table_schema", db.getDatabaseName());
+				return db.getListMapFromSql(sql, params);
+				//mysql
+			} else if (dbType == Databasetype.ORACLE)
+			{
+				//oracle
+			} else if (dbType == Databasetype.SQLSQRVER)
+			{
+				//sqlserver
+			}
+		} finally
 		{
-			//oracle
-		} else if (dbType == Databasetype.SQLSQRVER)
+			DatabasePoolManager.getNewInstance().close(confDb);
+		}
+		return null;
+	}
+
+	private static List<Map<String,Object>> getConfigDBMessage(Database db)
+	{
+		int dbType = db.getType();
+		Database confDb = DatabasePoolManager.getNewInstance().getConfigDatabase();
+		try
 		{
-			//sqlserver
+			if (dbType == Databasetype.MYSQL)
+			{
+				//String sql = "select TABLE_NAME as tablename,COLUMN_NAME as columnname,COLUMN_COMMENT as comm,COLUMN_DEFAULT as dft,IS_NULLABLE as isnullable,DATA_TYPE as datatype,COLUMN_KEY as columnkey,NUMERIC_SCALE as scaly,NUMERIC_PRECISION as prec,CHARACTER_MAXIMUM_LENGTH as maxlength from information_schema.COLUMNS where table_schema=:table_schema ";
+				// tablename,columnname,comm,dft,isnullable,datatype,columnkey,scaly,prec,maxlength
+				String sql = "select c.tbname as tablename,c.colname as colname,c.comment as comm,c.defaultvalue as dft,case c.flags&2 when 2 then 'YES' else 'NO' end as isnullable,c.datatype as datatype,case c.flags&1 when 1 then 'PRI' else '' end as columnkey,c.decimal as scaly,c.dataLength as prec,c.dataLength as maxlength from tbcolumn as c,tb as t where t.tbname = c.tbname and t.dbname =:table_schema ";
+				Map<String,Object> params = new HashMap<String,Object>();
+				params.put("table_schema", db.getDatabaseName());
+				return confDb.getListMapFromSql(sql, params);
+				//mysql
+			} else if (dbType == Databasetype.ORACLE)
+			{
+				//oracle
+			} else if (dbType == Databasetype.SQLSQRVER)
+			{
+				//sqlserver
+			}
+		} finally
+		{
+			DatabasePoolManager.getNewInstance().close(confDb);
 		}
 		return null;
 	}
@@ -323,7 +385,7 @@ public class CreateDatabase
 
 	/**
 	 * 比较DB与DBfile
-	 * @param dbMessage2Table
+	 * @param configDbMessage2Table
 	 * @param selectDBFileMessage
 	 * @param dbList
 	 * @param tbcolExecSql 
@@ -331,10 +393,11 @@ public class CreateDatabase
 	 * @return
 	 * 赵玉柱
 	 */
-	private static Map<Database,List<String>> compareDBAndDBFile(Map<String,Map<String,Table>> dbMessage2Table, Map<String,Map<String,Table>> selectDBFileMessage, List<Database> dbList,
-			Map<String,List<String>> tableExecSql, Map<String,List<String>> tbcolExecSql)
+	private static Map<Database,List<String>> compareDBAndDBFile(Map<String,Map<String,Table>> configDbMessage2Table, Map<String,Map<String,Table>> dbMessage2Table,
+			Map<String,Map<String,Table>> selectDBFileMessage, List<Database> dbList, Map<String,List<String>> tableExecSql, Map<String,List<String>> tbcolExecSql)
 	{
-		if (dbMessage2Table == null || dbMessage2Table.size() == 0 || selectDBFileMessage == null || selectDBFileMessage.size() == 0)
+		if (configDbMessage2Table == null || configDbMessage2Table.size() == 0 || selectDBFileMessage == null || selectDBFileMessage.size() == 0 || dbMessage2Table == null
+				|| dbMessage2Table.isEmpty())
 		{
 			return null;
 		}
@@ -342,11 +405,12 @@ public class CreateDatabase
 		for (Database db : dbList)
 		{
 			String dbName = db.getDatabaseName();
-			if (!dbMessage2Table.containsKey(dbName))
+			if (!configDbMessage2Table.containsKey(dbName))
 			{
 				continue;
 			}
 			Map<String,Table> dbFileMessage = selectDBFileMessage.get(dbName);
+			Map<String,Table> configDbMessage = configDbMessage2Table.get(dbName);
 			Map<String,Table> dbMessage = dbMessage2Table.get(dbName);
 			Set<Entry<String,Table>> tableFileMessage = dbFileMessage.entrySet();
 			List<String> tableExecSqlList = new ArrayList<>();
@@ -359,8 +423,9 @@ public class CreateDatabase
 				{
 					String fileTableName = tableFileEntry.getKey();
 					Table fileTable = tableFileEntry.getValue();
+					Table configDbTable = configDbMessage.get(fileTableName);
 					Table dbTable = dbMessage.get(fileTableName);
-					returnSql.put(db, compareTableAndTableFile(fileTable, dbTable, tableExecSqlList, tbcolExecSqlList));
+					returnSql.put(db, compareTableAndTableFile(fileTable, configDbTable, dbTable, tableExecSqlList, tbcolExecSqlList));
 				}
 			}
 		}
@@ -370,17 +435,17 @@ public class CreateDatabase
 	/**
 	 * 比较table与tablefile
 	 * @param fileTable
-	 * @param dbTable
+	 * @param configDbTable
 	 * @param tbcolExecSql 
 	 * @param tableExecSql 
 	 * @return
 	 * 赵玉柱
 	 */
-	private static List<String> compareTableAndTableFile(Table fileTable, Table dbTable, List<String> tableExecSql, List<String> tbcolExecSql)
+	private static List<String> compareTableAndTableFile(Table fileTable, Table configDbTable, Table dbTable, List<String> tableExecSql, List<String> tbcolExecSql)
 	{
 		List<String> returnSql = new ArrayList<>();
 		int dbType = fileTable.getDbType();
-		if (dbTable == null)
+		if (configDbTable == null)
 		{
 			Map<String,Column> columns = fileTable.getColumns();
 			//新增表结构
@@ -448,7 +513,7 @@ public class CreateDatabase
 		} else
 		{
 			Map<String,Column> columns = fileTable.getColumns();
-			Map<String,Column> dbColumns = dbTable.getColumns();
+			Map<String,Column> dbColumns = configDbTable.getColumns();
 			//更新表结构
 			switch (dbType)
 			{

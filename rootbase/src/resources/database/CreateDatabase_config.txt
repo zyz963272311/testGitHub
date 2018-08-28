@@ -16,7 +16,7 @@
 	tbcolumn	datatype			列类型				varchar			64,0			0b00000000
 	tbcolumn	dataLength			列长度				int				8,0			0b00000000
 	tbcolumn	decimal				列精度				int				8,0			0b00000000
-	//1:非空;2:主键
+	//2:非空;1:主键
 	tbcolumn	flags				标记					int				8,0			0b00000000
 
 	properties pkey					属性名				varchar			128,0			0b00000011
