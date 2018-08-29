@@ -2,7 +2,7 @@ package xyz.zyzhu.spring.boot.model;
 
 import java.util.Date;
 import javax.persistence.Table;
-import com.liiwin.annotation.FieldDef;
+import xyz.zyzhu.spring.boot.annotation.FieldDef;
 /**
  * <p>标题： 微信订单</p>
  * <p>功能： </p>

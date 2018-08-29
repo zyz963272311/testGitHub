@@ -1,8 +1,8 @@
 package xyz.zyzhu.spring.boot.model;
 
 import javax.persistence.Table;
-import com.liiwin.annotation.FieldDef;
 import com.liiwin.code.CodePart;
+import xyz.zyzhu.spring.boot.annotation.FieldDef;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>

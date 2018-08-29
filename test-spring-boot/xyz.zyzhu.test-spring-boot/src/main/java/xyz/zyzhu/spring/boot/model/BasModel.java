@@ -9,8 +9,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import com.liiwin.annotation.FieldDef;
 import com.liiwin.utils.StrUtil;
+import xyz.zyzhu.spring.boot.annotation.FieldDef;
 import xyz.zyzhu.spring.boot.utils.ModelUtils;
 /**
  * <p>标题： 基础Model</p>

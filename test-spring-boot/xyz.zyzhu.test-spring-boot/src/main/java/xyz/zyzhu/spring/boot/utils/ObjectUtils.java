@@ -19,9 +19,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.persistence.Table;
-import com.liiwin.annotation.FieldDef;
 import com.liiwin.utils.ArrayUtil;
 import com.liiwin.utils.StrUtil;
+import xyz.zyzhu.spring.boot.annotation.FieldDef;
 /**
  * <p>标题： 对象工具类</p>
  * <p>功能： </p>

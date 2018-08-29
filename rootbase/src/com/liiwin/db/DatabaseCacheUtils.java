@@ -62,7 +62,7 @@ public class DatabaseCacheUtils
 	 * @return
 	 * 赵玉柱
 	 */
-	public boolean tableSameDb(String tablename1, String tablename2)
+	public static boolean tableSameDb(String tablename1, String tablename2)
 	{
 		if (StrUtil.isNullIn(tablename1, tablename2))
 		{
@@ -88,7 +88,7 @@ public class DatabaseCacheUtils
 	 * @return
 	 * 赵玉柱
 	 */
-	public boolean sameDb(Database db, String tablename)
+	public static boolean sameDb(Database db, String tablename)
 	{
 		if (db == null)
 		{
@@ -113,7 +113,7 @@ public class DatabaseCacheUtils
 	 * @return
 	 * 赵玉柱
 	 */
-	public int getUseableDbByTable(List<Database> dbs, String tablename)
+	public static int getUseableDbByTable(List<Database> dbs, String tablename)
 	{
 		if (tablename == null)
 		{
@@ -143,7 +143,7 @@ public class DatabaseCacheUtils
 	 * @return
 	 * 赵玉柱
 	 */
-	public int getUseableDbByDbName(List<Database> dbs, String dbname)
+	public static <T extends Database> int getUseableDbByDbName(List<T> dbs, String dbname)
 	{
 		if (dbname == null)
 		{

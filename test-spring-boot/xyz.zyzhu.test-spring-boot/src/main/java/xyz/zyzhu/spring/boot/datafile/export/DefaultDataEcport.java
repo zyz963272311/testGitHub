@@ -3,6 +3,9 @@ package xyz.zyzhu.spring.boot.datafile.export;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import com.liiwin.db.DatabaseCacheUtils;
+import com.liiwin.utils.StrUtil;
 import xyz.zyzhu.spring.boot.datafile.export.domain.DataExportDetail;
 import xyz.zyzhu.spring.boot.db.BootDatabase;
 import xyz.zyzhu.spring.boot.db.BootDatabasePoolManager;
@@ -42,6 +45,9 @@ public abstract class DefaultDataEcport implements DataEcport
 				throw new RuntimeException("根据导出定义编号未找到数据导出定义明细" + exportcode);
 			}
 			List<DataExportDetail> exportDetails = getExportDetails(exportgDefs, dbs);
+			File resultFile = buildExportFile(exportDetails);
+			String absolutePath = resultFile.getAbsolutePath();
+			return absolutePath;
 		} finally
 		{
 			try
@@ -63,7 +69,6 @@ public abstract class DefaultDataEcport implements DataEcport
 				}
 			}
 		}
-		return null;
 	}
 
 	/**
@@ -75,7 +80,10 @@ public abstract class DefaultDataEcport implements DataEcport
 	 */
 	protected DataexpDef getExportDef(String exportcode, BootDatabase configDb)
 	{
-		return null;
+		DataexpDef queryDef = new DataexpDef();
+		queryDef.setExportcode(exportcode);
+		DataexpDef result = configDb.query1(queryDef);
+		return result;
 	}
 
 	/**
@@ -87,7 +95,10 @@ public abstract class DefaultDataEcport implements DataEcport
 	 */
 	protected List<DataexpgDef> getExportgDefs(DataexpDef dataexpDef, BootDatabase configDb)
 	{
-		return null;
+		DataexpgDef queryGdef = new DataexpgDef();
+		queryGdef.setMid(dataexpDef.getId());
+		List<DataexpgDef> redult = configDb.query(queryGdef);
+		return redult;
 	}
 
 	/**
@@ -119,7 +130,40 @@ public abstract class DefaultDataEcport implements DataEcport
 	{
 		DataExportDetail detail = new DataExportDetail();
 		detail.setDataexpDef(dataexpDef);
+		String tableName = dataexpDef.getTableName();
+		int dbIdx = DatabaseCacheUtils.getUseableDbByDbName(dbs, tableName);
+		BootDatabase db = null;
+		if (dbIdx >= 0)
+		{
+			db = dbs.get(dbIdx);
+		} else
+		{
+			db = BootDatabasePoolManager.getReadDatabaseByTable(tableName);
+			dbs.add(db);
+		}
+		String sql = buildSql(dataexpDef);
+		List<Map<String,Object>> esprotData = db.getListMapFromSql(sql);
+		detail.setExportData(esprotData);
 		return detail;
+	}
+
+	/**
+	 * 根据定义组装sql
+	 * @param dataexpDef
+	 * @return
+	 * 赵玉柱
+	 */
+	protected String buildSql(DataexpgDef dataexpDef)
+	{
+		StringBuffer sqlSb = new StringBuffer("select ");
+		String tablename = dataexpDef.getTablename();
+		String querycolumns = dataexpDef.getQuerycolumns();
+		String queryfilter = dataexpDef.getQueryfilter();
+		queryfilter = StrUtil.isStrTrimNull(queryfilter) ? " 1=1 " : queryfilter;
+		sqlSb.append(querycolumns).append(" ");
+		sqlSb.append(" from ").append(tablename);
+		sqlSb.append(" where ").append(queryfilter);
+		return sqlSb.toString();
 	}
 
 	/**

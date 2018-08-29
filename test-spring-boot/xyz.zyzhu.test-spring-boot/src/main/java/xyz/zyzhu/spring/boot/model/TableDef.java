@@ -1,7 +1,7 @@
 package xyz.zyzhu.spring.boot.model;
 
 import javax.persistence.Table;
-import com.liiwin.annotation.FieldDef;
+import xyz.zyzhu.spring.boot.annotation.FieldDef;
 @Table(name = "tb")
 public class TableDef extends BasModel
 {
