@@ -1,7 +1,7 @@
 package xyz.zyzhu.spring.boot.model;
 
 import javax.persistence.Table;
-import xyz.zyzhu.spring.boot.annotation.FieldDef;
+import com.liiwin.annotation.FieldDef;
 /**
  * <p>标题： TODO</p>
  * <p>功能：</p>
@@ -22,7 +22,7 @@ public class Menu1 extends BasModel
 	String						mid;
 	@FieldDef()
 	String						mname;
-	@FieldDef(defaultValue="0")
+	@FieldDef(defaultValue = "0")
 	Integer						offlags;
 	@FieldDef()
 	String						url;

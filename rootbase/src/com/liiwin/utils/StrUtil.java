@@ -663,7 +663,7 @@ public class StrUtil
 		{
 			return ((Number) obj).intValue() != 0;
 		}
-		return obj.toString().toUpperCase().equals("TRUE");
+		return obj.toString().toUpperCase().equals("TRUE") || obj.toString().toUpperCase().equals("YES");
 	}
 
 	public static String intListToString(int[] list, char dim)

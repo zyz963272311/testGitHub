@@ -11,6 +11,9 @@ import xyz.zyzhu.spring.boot.db.BootDatabase;
 import xyz.zyzhu.spring.boot.db.BootDatabasePoolManager;
 import xyz.zyzhu.spring.boot.model.AutoCode;
 import xyz.zyzhu.spring.boot.model.Menu1;
+import xyz.zyzhu.spring.boot.service.TestService;
+import xyz.zyzhu.spring.boot.utils.SpringBeanUtils;
+import xyz.zyzhu.spring.config.DruidConfig;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -25,9 +28,6 @@ import xyz.zyzhu.spring.boot.model.Menu1;
  * 监听使用界面:
  * @version 8.0
  */
-import xyz.zyzhu.spring.boot.service.TestService;
-import xyz.zyzhu.spring.boot.utils.SpringBeanUtils;
-import xyz.zyzhu.spring.config.DruidConfig;
 @EnableAutoConfiguration
 @RestController
 @RequestMapping("/test")
@@ -44,7 +44,7 @@ public class TestController
 		try
 		{
 			db.beginTrans();
- 			Menu1 menu = new Menu1();
+			Menu1 menu = new Menu1();
 			menu.setMname("0001");
 			List<Menu1> query = db.query(menu);
 			System.out.println("查询完成");
@@ -56,10 +56,10 @@ public class TestController
 			if (query != null && !query.isEmpty())
 			{
 				Menu1 menu12 = query.get(0);
-				menu12.setLimits(menu12.getLimits()+menu12.getLimits());
+				menu12.setLimits(menu12.getLimits() + menu12.getLimits());
 				menu12.setSaveMode(2);
 				db.save(menu12);
-				if(query.size()>0)
+				if (query.size() > 0)
 				{
 					Menu1 menu13 = query.get(1);
 					menu13.setLimits(null);
@@ -69,14 +69,13 @@ public class TestController
 			}
 			db.commit();
 			rollback = false;
-			return query!=null?query.toString():null;
+			return query != null ? query.toString() : null;
 		} finally
 		{
 			try
 			{
 				db.rollback(rollback, false);
-			}
-			finally
+			} finally
 			{
 				BootDatabasePoolManager.close(db);
 			}

@@ -1,7 +1,7 @@
 package xyz.zyzhu.spring.boot.model;
 
+import com.liiwin.annotation.FieldDef;
 import com.liiwin.utils.StrUtil;
-import xyz.zyzhu.spring.boot.annotation.FieldDef;
 /**
  * <p>标题： 码表字段定义</p>
  * <p>功能： </p>

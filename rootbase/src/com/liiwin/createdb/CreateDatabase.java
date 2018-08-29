@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import com.liiwin.db.Database;
@@ -66,6 +67,8 @@ public class CreateDatabase
 		{
 			createDatabase(dbList, dbFile);
 		}
+		System.out.println("执行完成");
+		loadDb.set(true);
 	}
 
 	/**
@@ -87,6 +90,7 @@ public class CreateDatabase
 			Map<Database,List<Map<String,Object>>> selectDBMessage = getSelectDBMessage(dbList);
 			dbMessage2Table = dbMessage2Table(selectDBMessage);
 		}
+		//一般来说 configDbMessage2Table 与 dbMessage2Table 应该是一样的 但是这里增加了容错
 		Map<String,Map<String,Table>> selectDBFileMessage = getSelectDBFileMessage(dbList, dbFile);
 		//config tb表需要执行的sql
 		Map<String,List<String>> tableExecSql = new HashMap<>();
@@ -173,7 +177,7 @@ public class CreateDatabase
 			{
 				//String sql = "select TABLE_NAME as tablename,COLUMN_NAME as columnname,COLUMN_COMMENT as comm,COLUMN_DEFAULT as dft,IS_NULLABLE as isnullable,DATA_TYPE as datatype,COLUMN_KEY as columnkey,NUMERIC_SCALE as scaly,NUMERIC_PRECISION as prec,CHARACTER_MAXIMUM_LENGTH as maxlength from information_schema.COLUMNS where table_schema=:table_schema ";
 				// tablename,columnname,comm,dft,isnullable,datatype,columnkey,scaly,prec,maxlength
-				String sql = "select c.tbname as tablename,c.colname as colname,c.comment as comm,c.defaultvalue as dft,case c.flags&2 when 2 then 'YES' else 'NO' end as isnullable,c.datatype as datatype,case c.flags&1 when 1 then 'PRI' else '' end as columnkey,c.decimal as scaly,c.dataLength as prec,c.dataLength as maxlength from tbcolumn as c,tb as t where t.tbname = c.tbname and t.dbname =:table_schema ";
+				String sql = "select c.tbname as tablename,c.colname as columnname,c.comment as comm,c.defaultvalue as dft,case c.flags&2 when 2 then 'NO' else 'YES' end as isnullable,c.datatype as datatype,case c.flags&1 when 1 then 'PRI' else '' end as columnkey,c.decimal as scaly,c.dataLength as prec,c.dataLength as maxlength from tbcolumn as c,tb as t where t.tbname = c.tbname and t.dbname =:table_schema ";
 				Map<String,Object> params = new HashMap<String,Object>();
 				params.put("table_schema", db.getDatabaseName());
 				return confDb.getListMapFromSql(sql, params);
@@ -246,7 +250,7 @@ public class CreateDatabase
 				//					private Object				defaultValue;								//默认值
 				column.setTableName(tableName);
 				column.setComment(StrUtil.obj2str(selectTableMap.get("comm")));
-				int dataLength = StrUtil.obj2int(selectTableMap.get("maxlength"), StrUtil.obj2int(tableMap.get("maxlength")));
+				int dataLength = StrUtil.obj2int(selectTableMap.get("maxlength"), StrUtil.obj2int(selectTableMap.get("prec")));
 				int decimal = StrUtil.obj2int(selectTableMap.get("scaly"));
 				String columnName = StrUtil.obj2str(selectTableMap.get("columnname"));
 				String dataType = StrUtil.obj2str(selectTableMap.get("datatype"));
@@ -419,14 +423,16 @@ public class CreateDatabase
 			tbcolExecSql.put(dbName, tbcolExecSqlList);
 			if (tableFileMessage != null)
 			{
+				List<String> execSqlList = new ArrayList<>();
 				for (Entry<String,Table> tableFileEntry : tableFileMessage)
 				{
 					String fileTableName = tableFileEntry.getKey();
 					Table fileTable = tableFileEntry.getValue();
 					Table configDbTable = configDbMessage.get(fileTableName);
 					Table dbTable = dbMessage.get(fileTableName);
-					returnSql.put(db, compareTableAndTableFile(fileTable, configDbTable, dbTable, tableExecSqlList, tbcolExecSqlList));
+					execSqlList.addAll(compareTableAndTableFile(fileTable, configDbTable, dbTable, tableExecSqlList, tbcolExecSqlList));
 				}
+				returnSql.put(db, execSqlList);
 			}
 		}
 		return returnSql;
@@ -444,97 +450,31 @@ public class CreateDatabase
 	private static List<String> compareTableAndTableFile(Table fileTable, Table configDbTable, Table dbTable, List<String> tableExecSql, List<String> tbcolExecSql)
 	{
 		List<String> returnSql = new ArrayList<>();
+		boolean tableEquals = Objects.equals(configDbTable, dbTable);
 		int dbType = fileTable.getDbType();
-		if (configDbTable == null)
+		if (tableEquals)
 		{
-			Map<String,Column> columns = fileTable.getColumns();
-			//新增表结构
-			switch (dbType)
+			//config表与数据库表结构相同 同时更新 config表与数据库结构
+			if (configDbTable == null)
 			{
-			case Databasetype.MYSQL:
-				StringBuffer sql = new StringBuffer();
-				StringBuffer primarySB = new StringBuffer(" primary key (");
-				int srcPriLength = primarySB.length();
-				sql.append("create table `" + fileTable.getTableName() + "`\n(\n");
-				Set<Entry<String,Column>> columnEntrySet = columns.entrySet();
-				String tableName = fileTable.getTableName();
-				String tableExecSqlStr = "insert into `tb` (`tbname`,`dbname`,`tblang1name`) value('" + tableName + "','" + fileTable.getDbName() + "','" + fileTable.getTableName() + "')";
-				tableExecSql.add(tableExecSqlStr);
-				for (Entry<String,Column> columnEntry : columnEntrySet)
+				Map<String,Column> columns = fileTable.getColumns();
+				//新增表结构
+				switch (dbType)
 				{
-					int flags = 0;
-					Column column = columnEntry.getValue();
-					sql.append(column.getColumnName() + " " + column.getDataType() + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "") + ")");
-					String comment = column.getComment();
-					if (comment != null)
-					{
-						sql.append(" COMMENT '" + comment + "'");
-					}
-					int constraint = column.getConstraint();
-					if ((constraint & 1) == 1)
-					{
-						primarySB.append(column.getColumnName() + ",");
-						flags += 1;
-					}
-					if ((constraint & 2) == 2)
-					{
-						sql.append(" not null ");
-						flags += 2;
-					}
-					String defaultValue = column.getDefaultValue();
-					if (!StrUtil.asNull(defaultValue))
-					{
-						sql.append(" default " + defaultValue + "");
-					}
-					sql.append(",\n");
-					String tbcolExecSqlStr = "insert into `tbcolumn` (`colname`,`tbname`,`comment`,`defaultvalue`,`datatype`,`dataLength`,`decimal`,`flags`) value('" + column.getColumnName() + "','"
-							+ tableName + "','" + comment + "','" + defaultValue + "','" + column.getDataType() + "'," + column.getDataLength() + "," + column.getDecimal() + "," + flags + ")";
-					tbcolExecSql.add(tbcolExecSqlStr);
-				}
-				if (primarySB.length() > srcPriLength)
-				{
-					sql.setLength(sql.length() - 1);
-					primarySB.setLength(primarySB.length() - 1);
-					primarySB.append(")");
-					sql.append("\n");
-					sql.append(primarySB);
-				} else
-				{
-					sql.setLength(sql.length() - 2);
-				}
-				sql.append("\n)");
-				returnSql.add(sql.toString());
-				break;
-			case Databasetype.ORACLE:
-				break;
-			case Databasetype.SQLSQRVER:
-				break;
-			}
-		} else
-		{
-			Map<String,Column> columns = fileTable.getColumns();
-			Map<String,Column> dbColumns = configDbTable.getColumns();
-			//更新表结构
-			switch (dbType)
-			{
-			case Databasetype.MYSQL:
-				String tableName = fileTable.getTableName();
-				//				String tableExecSqlStr = "insert into `tb` (`tbname`,`dbname`,`tblang1name`) value('" + tableName + "','" + fileTable.getDbName() + "','" + fileTable.getTableName() + "')";
-				//				tableExecSql.add(tableExecSqlStr);
-				String tableExecSqlStr = "update `tb` set `tbname`='" + tableName + "',`dbname`='" + fileTable.getDbName() + "',`tblang1name`='" + tableName + "' where `tbname`='" + tableName + "'";
-				tableExecSql.add(tableExecSqlStr);
-				Set<Entry<String,Column>> columnEntrySet = columns.entrySet();
-				for (Entry<String,Column> columnEntry : columnEntrySet)
-				{
+				case Databasetype.MYSQL:
 					StringBuffer sql = new StringBuffer();
-					String columnName = columnEntry.getKey();
-					Column column = columnEntry.getValue();
-					if (!dbColumns.containsKey(columnName))
+					StringBuffer primarySB = new StringBuffer(" primary key (");
+					int srcPriLength = primarySB.length();
+					sql.append("create table `" + fileTable.getTableName() + "`\n(\n");
+					Set<Entry<String,Column>> columnEntrySet = columns.entrySet();
+					String tableName = fileTable.getTableName();
+					String tableExecSqlStr = "insert into `tb` (`tbname`,`dbname`,`tblang1name`) value('" + tableName + "','" + fileTable.getDbName() + "','" + fileTable.getTableName() + "')";
+					tableExecSql.add(tableExecSqlStr);
+					for (Entry<String,Column> columnEntry : columnEntrySet)
 					{
 						int flags = 0;
-						//添加字段
-						sql.append("alter table `" + column.getTableName() + "` add ");
-						sql.append("`" + column.getColumnName() + "` " + column.getDataType() + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "") + ")");
+						Column column = columnEntry.getValue();
+						sql.append(column.getColumnName() + " " + column.getDataType() + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "") + ")");
 						String comment = column.getComment();
 						if (comment != null)
 						{
@@ -543,7 +483,7 @@ public class CreateDatabase
 						int constraint = column.getConstraint();
 						if ((constraint & 1) == 1)
 						{
-							sql.append(" primary key PK_" + column.getTableName() + "_" + column.getColumnName());
+							primarySB.append(column.getColumnName() + ",");
 							flags += 1;
 						}
 						if ((constraint & 2) == 2)
@@ -554,20 +494,58 @@ public class CreateDatabase
 						String defaultValue = column.getDefaultValue();
 						if (!StrUtil.asNull(defaultValue))
 						{
-							sql.append(" default " + defaultValue + ",\n");
+							sql.append(" default " + defaultValue + "");
 						}
+						sql.append(",\n");
 						String tbcolExecSqlStr = "insert into `tbcolumn` (`colname`,`tbname`,`comment`,`defaultvalue`,`datatype`,`dataLength`,`decimal`,`flags`) value('" + column.getColumnName()
 								+ "','" + tableName + "','" + comment + "','" + defaultValue + "','" + column.getDataType() + "'," + column.getDataLength() + "," + column.getDecimal() + "," + flags
 								+ ")";
 						tbcolExecSql.add(tbcolExecSqlStr);
+					}
+					if (primarySB.length() > srcPriLength)
+					{
+						sql.setLength(sql.length() - 1);
+						primarySB.setLength(primarySB.length() - 1);
+						primarySB.append(")");
+						sql.append("\n");
+						sql.append(primarySB);
 					} else
 					{
-						//修改字段
-						Column dbColumn = dbColumns.get(columnName);
-						if (dbColumn.isDiffWith(column))
+						sql.setLength(sql.length() - 2);
+					}
+					sql.append("\n)");
+					returnSql.add(sql.toString());
+					break;
+				case Databasetype.ORACLE:
+					break;
+				case Databasetype.SQLSQRVER:
+					break;
+				}
+			} else
+			{
+				Map<String,Column> columns = fileTable.getColumns();
+				Map<String,Column> dbColumns = configDbTable.getColumns();
+				//更新表结构
+				switch (dbType)
+				{
+				case Databasetype.MYSQL:
+					String tableName = fileTable.getTableName();
+					//				String tableExecSqlStr = "insert into `tb` (`tbname`,`dbname`,`tblang1name`) value('" + tableName + "','" + fileTable.getDbName() + "','" + fileTable.getTableName() + "')";
+					//				tableExecSql.add(tableExecSqlStr);
+					String tableExecSqlStr = "update `tb` set `tbname`='" + tableName + "',`dbname`='" + fileTable.getDbName() + "',`tblang1name`='" + tableName + "' where `tbname`='" + tableName
+							+ "'";
+					tableExecSql.add(tableExecSqlStr);
+					Set<Entry<String,Column>> columnEntrySet = columns.entrySet();
+					for (Entry<String,Column> columnEntry : columnEntrySet)
+					{
+						StringBuffer sql = new StringBuffer();
+						String columnName = columnEntry.getKey();
+						Column column = columnEntry.getValue();
+						if (!dbColumns.containsKey(columnName))
 						{
 							int flags = 0;
-							sql.append("alter table `" + column.getTableName() + "` modify column ");
+							//添加字段
+							sql.append("alter table `" + column.getTableName() + "` add ");
 							sql.append("`" + column.getColumnName() + "` " + column.getDataType() + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "") + ")");
 							String comment = column.getComment();
 							if (comment != null)
@@ -575,6 +553,11 @@ public class CreateDatabase
 								sql.append(" COMMENT '" + comment + "'");
 							}
 							int constraint = column.getConstraint();
+							if ((constraint & 1) == 1)
+							{
+								sql.append(" primary key PK_" + column.getTableName() + "_" + column.getColumnName());
+								flags += 1;
+							}
 							if ((constraint & 2) == 2)
 							{
 								sql.append(" not null ");
@@ -583,25 +566,385 @@ public class CreateDatabase
 							String defaultValue = column.getDefaultValue();
 							if (!StrUtil.asNull(defaultValue))
 							{
-								sql.append(" default " + defaultValue);
+								sql.append(" default " + defaultValue + ",\n");
+							}
+							String tbcolExecSqlStr = "insert into `tbcolumn` (`colname`,`tbname`,`comment`,`defaultvalue`,`datatype`,`dataLength`,`decimal`,`flags`) value('" + column.getColumnName()
+									+ "','" + tableName + "','" + comment + "','" + defaultValue + "','" + column.getDataType() + "'," + column.getDataLength() + "," + column.getDecimal() + ","
+									+ flags + ")";
+							tbcolExecSql.add(tbcolExecSqlStr);
+						} else
+						{
+							//修改字段
+							Column dbColumn = dbColumns.get(columnName);
+							if (dbColumn.isDiffWith(column))
+							{
+								int flags = 0;
+								sql.append("alter table `" + column.getTableName() + "` modify column ");
+								sql.append(
+										"`" + column.getColumnName() + "` " + column.getDataType() + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "") + ")");
+								String comment = column.getComment();
+								if (comment != null)
+								{
+									sql.append(" COMMENT '" + comment + "'");
+								}
+								int constraint = column.getConstraint();
+								if ((constraint & 2) == 2)
+								{
+									sql.append(" not null ");
+									flags += 2;
+								}
+								String defaultValue = column.getDefaultValue();
+								if (!StrUtil.asNull(defaultValue))
+								{
+									sql.append(" default " + defaultValue);
+								}
+								//							String tbcolExecSqlStr = "insert into `tbcolumn` (`colname`,`tbname`,`comment`,`defaultvalue`,`datatype`,`dataLength`,`decimal`,`flags`) value('" + column.getColumnName()
+								//									+ "','" + tableName + "','" + comment + "','" + defaultValue + "','" + column.getDataType() + "'," + column.getDataLength() + "," + column.getDecimal() + ","
+								//									+ flags + ")";
+								//							tbcolExecSql.add(tbcolExecSqlStr);
+								String tbcolExecSqlStr = "update `tbcolumn` set colname='" + column.getColumnName() + "',`tbname`='" + tableName + "',`comment`='" + comment + "',`defaultvalue`='"
+										+ defaultValue + "',`datatype`='" + column.getDataType() + "',`dataLength`=" + column.getDataLength() + ",`decimal`=" + column.getDecimal() + ",`flags`="
+										+ flags + "|`flags` where `colname`='" + column.getColumnName() + "' and `tbname`='" + tableName + "'";
+								tbcolExecSql.add(tbcolExecSqlStr);
+							}
+						}
+						returnSql.add(sql.toString());
+					}
+					break;
+				case Databasetype.ORACLE:
+					break;
+				case Databasetype.SQLSQRVER:
+					break;
+				}
+			}
+		} else
+		{
+			//数据库表结构与config表结构不同 分别更新db与config表
+			//对比config表
+			if (configDbTable == null)
+			{
+				Map<String,Column> columns = fileTable.getColumns();
+				//新增表结构
+				switch (dbType)
+				{
+				case Databasetype.MYSQL:
+					//					StringBuffer sql = new StringBuffer();
+					//					StringBuffer primarySB = new StringBuffer(" primary key (");
+					//					int srcPriLength = primarySB.length();
+					//					sql.append("create table `" + fileTable.getTableName() + "`\n(\n");
+					Set<Entry<String,Column>> columnEntrySet = columns.entrySet();
+					String tableName = fileTable.getTableName();
+					String tableExecSqlStr = "insert into `tb` (`tbname`,`dbname`,`tblang1name`) value('" + tableName + "','" + fileTable.getDbName() + "','" + fileTable.getTableName() + "')";
+					tableExecSql.add(tableExecSqlStr);
+					for (Entry<String,Column> columnEntry : columnEntrySet)
+					{
+						int flags = 0;
+						Column column = columnEntry.getValue();
+						//						sql.append(column.getColumnName() + " " + column.getDataType() + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "") + ")");
+						String comment = column.getComment();
+						//						if (comment != null)
+						//						{
+						//							sql.append(" COMMENT '" + comment + "'");
+						//						}
+						int constraint = column.getConstraint();
+						if ((constraint & 1) == 1)
+						{
+							//							primarySB.append(column.getColumnName() + ",");
+							flags += 1;
+						}
+						if ((constraint & 2) == 2)
+						{
+							//							sql.append(" not null ");
+							flags += 2;
+						}
+						String defaultValue = column.getDefaultValue();
+						//						if (!StrUtil.asNull(defaultValue))
+						//						{
+						//							sql.append(" default " + defaultValue + "");
+						//						}
+						//						sql.append(",\n");
+						String tbcolExecSqlStr = "insert into `tbcolumn` (`colname`,`tbname`,`comment`,`defaultvalue`,`datatype`,`dataLength`,`decimal`,`flags`) value('" + column.getColumnName()
+								+ "','" + tableName + "','" + comment + "','" + defaultValue + "','" + column.getDataType() + "'," + column.getDataLength() + "," + column.getDecimal() + "," + flags
+								+ ")";
+						tbcolExecSql.add(tbcolExecSqlStr);
+					}
+					//					if (primarySB.length() > srcPriLength)
+					//					{
+					//						sql.setLength(sql.length() - 1);
+					//						primarySB.setLength(primarySB.length() - 1);
+					//						primarySB.append(")");
+					//						sql.append("\n");
+					//						sql.append(primarySB);
+					//					} else
+					//					{
+					//						sql.setLength(sql.length() - 2);
+					//					}
+					//					sql.append("\n)");
+					//					returnSql.add(sql.toString());
+					break;
+				case Databasetype.ORACLE:
+					break;
+				case Databasetype.SQLSQRVER:
+					break;
+				}
+			} else if (!Objects.equals(configDbTable, fileTable))
+			{
+				Map<String,Column> columns = fileTable.getColumns();
+				Map<String,Column> dbColumns = configDbTable.getColumns();
+				//更新表结构
+				switch (dbType)
+				{
+				case Databasetype.MYSQL:
+					String tableName = fileTable.getTableName();
+					//				String tableExecSqlStr = "insert into `tb` (`tbname`,`dbname`,`tblang1name`) value('" + tableName + "','" + fileTable.getDbName() + "','" + fileTable.getTableName() + "')";
+					//				tableExecSql.add(tableExecSqlStr);
+					String tableExecSqlStr = "update `tb` set `tbname`='" + tableName + "',`dbname`='" + fileTable.getDbName() + "',`tblang1name`='" + tableName + "' where `tbname`='" + tableName
+							+ "'";
+					tableExecSql.add(tableExecSqlStr);
+					Set<Entry<String,Column>> columnEntrySet = columns.entrySet();
+					for (Entry<String,Column> columnEntry : columnEntrySet)
+					{
+						//						StringBuffer sql = new StringBuffer();
+						String columnName = columnEntry.getKey();
+						Column column = columnEntry.getValue();
+						if (!dbColumns.containsKey(columnName))
+						{
+							int flags = 0;
+							//添加字段
+							//							sql.append("alter table `" + column.getTableName() + "` add ");
+							//							sql.append("`" + column.getColumnName() + "` " + column.getDataType() + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "") + ")");
+							String comment = column.getComment();
+							if (comment != null)
+							{
+								//								sql.append(" COMMENT '" + comment + "'");
+							}
+							int constraint = column.getConstraint();
+							if ((constraint & 1) == 1)
+							{
+								//								sql.append(" primary key PK_" + column.getTableName() + "_" + column.getColumnName());
+								flags += 1;
+							}
+							if ((constraint & 2) == 2)
+							{
+								//								sql.append(" not null ");
+								flags += 2;
+							}
+							String defaultValue = column.getDefaultValue();
+							if (!StrUtil.asNull(defaultValue))
+							{
+								//								sql.append(" default " + defaultValue + ",\n");
+							}
+							String tbcolExecSqlStr = "insert into `tbcolumn` (`colname`,`tbname`,`comment`,`defaultvalue`,`datatype`,`dataLength`,`decimal`,`flags`) value('" + column.getColumnName()
+									+ "','" + tableName + "','" + comment + "','" + defaultValue + "','" + column.getDataType() + "'," + column.getDataLength() + "," + column.getDecimal() + ","
+									+ flags + ")";
+							tbcolExecSql.add(tbcolExecSqlStr);
+						} else
+						{
+							//修改字段
+							Column dbColumn = dbColumns.get(columnName);
+							if (dbColumn.isDiffWith(column))
+							{
+								int flags = 0;
+								//								sql.append("alter table `" + column.getTableName() + "` modify column ");
+								//								sql.append(
+								//										"`" + column.getColumnName() + "` " + column.getDataType() + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "") + ")");
+								String comment = column.getComment();
+								if (comment != null)
+								{
+									//									sql.append(" COMMENT '" + comment + "'");
+								}
+								int constraint = column.getConstraint();
+								if ((constraint & 2) == 2)
+								{
+									//									sql.append(" not null ");
+									flags += 2;
+								}
+								String defaultValue = column.getDefaultValue();
+								if (!StrUtil.asNull(defaultValue))
+								{
+									//									sql.append(" default " + defaultValue);
+								}
+								//							String tbcolExecSqlStr = "insert into `tbcolumn` (`colname`,`tbname`,`comment`,`defaultvalue`,`datatype`,`dataLength`,`decimal`,`flags`) value('" + column.getColumnName()
+								//									+ "','" + tableName + "','" + comment + "','" + defaultValue + "','" + column.getDataType() + "'," + column.getDataLength() + "," + column.getDecimal() + ","
+								//									+ flags + ")";
+								//							tbcolExecSql.add(tbcolExecSqlStr);
+								String tbcolExecSqlStr = "update `tbcolumn` set colname='" + column.getColumnName() + "',`tbname`='" + tableName + "',`comment`='" + comment + "',`defaultvalue`='"
+										+ defaultValue + "',`datatype`='" + column.getDataType() + "',`dataLength`=" + column.getDataLength() + ",`decimal`=" + column.getDecimal() + ",`flags`="
+										+ flags + "|`flags` where `colname`='" + column.getColumnName() + "' and `tbname`='" + tableName + "'";
+								tbcolExecSql.add(tbcolExecSqlStr);
+							}
+						}
+						//						returnSql.add(sql.toString());
+					}
+					break;
+				case Databasetype.ORACLE:
+					break;
+				case Databasetype.SQLSQRVER:
+					break;
+				}
+			}
+			//对比数据库表结构
+			if (dbTable == null)
+			{
+				Map<String,Column> columns = fileTable.getColumns();
+				//新增表结构
+				switch (dbType)
+				{
+				case Databasetype.MYSQL:
+					StringBuffer sql = new StringBuffer();
+					StringBuffer primarySB = new StringBuffer(" primary key (");
+					int srcPriLength = primarySB.length();
+					sql.append("create table `" + fileTable.getTableName() + "`\n(\n");
+					Set<Entry<String,Column>> columnEntrySet = columns.entrySet();
+					//					String tableName = fileTable.getTableName();
+					//					String tableExecSqlStr = "insert into `tb` (`tbname`,`dbname`,`tblang1name`) value('" + tableName + "','" + fileTable.getDbName() + "','" + fileTable.getTableName() + "')";
+					//					tableExecSql.add(tableExecSqlStr);
+					for (Entry<String,Column> columnEntry : columnEntrySet)
+					{
+						//						int flags = 0;
+						Column column = columnEntry.getValue();
+						sql.append(column.getColumnName() + " " + column.getDataType() + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "") + ")");
+						String comment = column.getComment();
+						if (comment != null)
+						{
+							sql.append(" COMMENT '" + comment + "'");
+						}
+						int constraint = column.getConstraint();
+						if ((constraint & 1) == 1)
+						{
+							primarySB.append(column.getColumnName() + ",");
+							//							flags += 1;
+						}
+						if ((constraint & 2) == 2)
+						{
+							sql.append(" not null ");
+							//							flags += 2;
+						}
+						String defaultValue = column.getDefaultValue();
+						if (!StrUtil.asNull(defaultValue))
+						{
+							sql.append(" default " + defaultValue + "");
+						}
+						sql.append(",\n");
+						//						String tbcolExecSqlStr = "insert into `tbcolumn` (`colname`,`tbname`,`comment`,`defaultvalue`,`datatype`,`dataLength`,`decimal`,`flags`) value('" + column.getColumnName()
+						//								+ "','" + tableName + "','" + comment + "','" + defaultValue + "','" + column.getDataType() + "'," + column.getDataLength() + "," + column.getDecimal() + "," + flags
+						//								+ ")";
+						//						tbcolExecSql.add(tbcolExecSqlStr);
+					}
+					if (primarySB.length() > srcPriLength)
+					{
+						sql.setLength(sql.length() - 1);
+						primarySB.setLength(primarySB.length() - 1);
+						primarySB.append(")");
+						sql.append("\n");
+						sql.append(primarySB);
+					} else
+					{
+						sql.setLength(sql.length() - 2);
+					}
+					sql.append("\n)");
+					returnSql.add(sql.toString());
+					break;
+				case Databasetype.ORACLE:
+					break;
+				case Databasetype.SQLSQRVER:
+					break;
+				}
+			} else if (!Objects.equals(dbTable, fileTable))
+			{
+				Map<String,Column> columns = fileTable.getColumns();
+				Map<String,Column> dbColumns = dbTable.getColumns();
+				//更新表结构
+				switch (dbType)
+				{
+				case Databasetype.MYSQL:
+					String tableName = fileTable.getTableName();
+					//				String tableExecSqlStr = "insert into `tb` (`tbname`,`dbname`,`tblang1name`) value('" + tableName + "','" + fileTable.getDbName() + "','" + fileTable.getTableName() + "')";
+					//				tableExecSql.add(tableExecSqlStr);
+					//					String tableExecSqlStr = "update `tb` set `tbname`='" + tableName + "',`dbname`='" + fileTable.getDbName() + "',`tblang1name`='" + tableName + "' where `tbname`='" + tableName
+					//							+ "'";
+					//					tableExecSql.add(tableExecSqlStr);
+					Set<Entry<String,Column>> columnEntrySet = columns.entrySet();
+					for (Entry<String,Column> columnEntry : columnEntrySet)
+					{
+						StringBuffer sql = new StringBuffer();
+						String columnName = columnEntry.getKey();
+						Column column = columnEntry.getValue();
+						if (!dbColumns.containsKey(columnName))
+						{
+							int flags = 0;
+							//添加字段
+							sql.append("alter table `" + column.getTableName() + "` add ");
+							sql.append("`" + column.getColumnName() + "` " + column.getDataType() + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "") + ")");
+							String comment = column.getComment();
+							if (comment != null)
+							{
+								sql.append(" COMMENT '" + comment + "'");
+							}
+							int constraint = column.getConstraint();
+							if ((constraint & 1) == 1)
+							{
+								sql.append(" primary key PK_" + column.getTableName() + "_" + column.getColumnName());
+								flags += 1;
+							}
+							if ((constraint & 2) == 2)
+							{
+								sql.append(" not null ");
+								flags += 2;
+							}
+							String defaultValue = column.getDefaultValue();
+							if (!StrUtil.asNull(defaultValue))
+							{
+								sql.append(" default " + defaultValue + ",\n");
 							}
 							//							String tbcolExecSqlStr = "insert into `tbcolumn` (`colname`,`tbname`,`comment`,`defaultvalue`,`datatype`,`dataLength`,`decimal`,`flags`) value('" + column.getColumnName()
 							//									+ "','" + tableName + "','" + comment + "','" + defaultValue + "','" + column.getDataType() + "'," + column.getDataLength() + "," + column.getDecimal() + ","
 							//									+ flags + ")";
 							//							tbcolExecSql.add(tbcolExecSqlStr);
-							String tbcolExecSqlStr = "update `tbcolumn` set colname='" + column.getColumnName() + "',`tbname`='" + tableName + "',`comment`='" + comment + "',`defaultvalue`='"
-									+ defaultValue + "',`datatype`='" + column.getDataType() + "',`dataLength`=" + column.getDataLength() + ",`decimal`=" + column.getDecimal() + ",`flags`=" + flags
-									+ "|`flags` where `colname`='" + column.getColumnName() + "' and `tbname`='" + tableName + "'";
-							tbcolExecSql.add(tbcolExecSqlStr);
+						} else
+						{
+							//修改字段
+							Column dbColumn = dbColumns.get(columnName);
+							if (dbColumn.isDiffWith(column))
+							{
+								int flags = 0;
+								sql.append("alter table `" + column.getTableName() + "` modify column ");
+								sql.append(
+										"`" + column.getColumnName() + "` " + column.getDataType() + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "") + ")");
+								String comment = column.getComment();
+								if (comment != null)
+								{
+									sql.append(" COMMENT '" + comment + "'");
+								}
+								int constraint = column.getConstraint();
+								if ((constraint & 2) == 2)
+								{
+									sql.append(" not null ");
+									flags += 2;
+								}
+								String defaultValue = column.getDefaultValue();
+								if (!StrUtil.asNull(defaultValue))
+								{
+									sql.append(" default " + defaultValue);
+								}
+								//							String tbcolExecSqlStr = "insert into `tbcolumn` (`colname`,`tbname`,`comment`,`defaultvalue`,`datatype`,`dataLength`,`decimal`,`flags`) value('" + column.getColumnName()
+								//									+ "','" + tableName + "','" + comment + "','" + defaultValue + "','" + column.getDataType() + "'," + column.getDataLength() + "," + column.getDecimal() + ","
+								//									+ flags + ")";
+								//							tbcolExecSql.add(tbcolExecSqlStr);
+								//								String tbcolExecSqlStr = "update `tbcolumn` set colname='" + column.getColumnName() + "',`tbname`='" + tableName + "',`comment`='" + comment + "',`defaultvalue`='"
+								//										+ defaultValue + "',`datatype`='" + column.getDataType() + "',`dataLength`=" + column.getDataLength() + ",`decimal`=" + column.getDecimal() + ",`flags`="
+								//										+ flags + "|`flags` where `colname`='" + column.getColumnName() + "' and `tbname`='" + tableName + "'";
+								//								tbcolExecSql.add(tbcolExecSqlStr);
+							}
 						}
+						returnSql.add(sql.toString());
 					}
-					returnSql.add(sql.toString());
+					break;
+				case Databasetype.ORACLE:
+					break;
+				case Databasetype.SQLSQRVER:
+					break;
 				}
-				break;
-			case Databasetype.ORACLE:
-				break;
-			case Databasetype.SQLSQRVER:
-				break;
 			}
 		}
 		return returnSql;

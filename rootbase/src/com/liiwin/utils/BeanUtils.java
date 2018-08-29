@@ -3,7 +3,6 @@ package com.liiwin.utils;
 import java.lang.reflect.Constructor;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-
 /**
  * <p>标题： Class操作类</p>
  * <p>功能：</p>
@@ -19,49 +18,78 @@ import java.util.concurrent.ConcurrentHashMap;
  * 
  * @version 8.0
  */
-public class BeanUtils {
-	private static final ConcurrentHashMap<String, Class<?>> cacheClazz = new ConcurrentHashMap<>();
+public class BeanUtils
+{
+	private static final ConcurrentHashMap<String,Class<?>> cacheClazz = new ConcurrentHashMap<>();
 
-	public static Object newInstance(String classPath) {
+	public static Object newInstance(String classPath)
+	{
 		return newInstance(classPath, null, null);
 	}
+
 	@SuppressWarnings("unchecked")
-	public static <T extends Object> T newInstance(String classPath, List<Class<?>> paramType,
-			List<Object> paramObject) {
-		try {
+	public static <T extends Object> T newInstance(String classPath, List<Class<?>> paramType, List<Object> paramObject)
+	{
+		try
+		{
 			Class<T> forName = (Class<T>) cacheClazz.get(classPath);
-			if (forName == null) {
+			if (forName == null)
+			{
 				forName = (Class<T>) Class.forName(classPath);
 				cacheClazz.put(classPath, forName);
 			}
 			T newInstance = newInstanceByClass(forName, paramType, paramObject);
 			return newInstance;
-		} catch (ClassNotFoundException e) {
+		} catch (ClassNotFoundException e)
+		{
 			throw new RuntimeException("报错内容", e);
 		}
 	}
 
+	public static <T> T instantiate(Class<T> clazz)
+	{
+		if (clazz.isInterface())
+		{
+			throw new RuntimeException(clazz.getName() + "Specified class is an interface");
+		}
+		try
+		{
+			return clazz.newInstance();
+		} catch (InstantiationException ex)
+		{
+			throw new RuntimeException(clazz.getName() + "Is it an abstract class?", ex);
+		} catch (IllegalAccessException ex)
+		{
+			throw new RuntimeException(clazz.getName() + "Is the constructor accessible?", ex);
+		}
+	}
+
 	@SuppressWarnings("unchecked")
-	public static <T extends Object> T newInstanceByClass(Class<T> forName, List<Class<?>> paramType,
-			List<Object> params) {
-		if (forName == null) {
+	public static <T extends Object> T newInstanceByClass(Class<T> forName, List<Class<?>> paramType, List<Object> params)
+	{
+		if (forName == null)
+		{
 			return null;
 		}
 		Class<?>[] paramClazz = null;
-		if (paramType != null && paramType.size() > 0) {
+		if (paramType != null && paramType.size() > 0)
+		{
 			paramClazz = new Class<?>[paramType.size()];
 			paramType.toArray(paramClazz);
 		}
-		try {
+		try
+		{
 			Constructor<T> constructor = forName.getConstructor(paramClazz);
 			Object paramsObj = null;
-			if (params != null && params.size() > 0) {
+			if (params != null && params.size() > 0)
+			{
 				paramsObj = new Object[params.size()];
 				params.toArray((T[]) paramsObj);
 			}
 			T instance = constructor.newInstance(params);
 			return instance;
-		} catch (Exception e) {
+		} catch (Exception e)
+		{
 			throw new RuntimeException("获取实例失败", e);
 		}
 	}

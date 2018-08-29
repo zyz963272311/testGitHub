@@ -1,6 +1,7 @@
 package xyz.zyzhu.spring.boot.model;
 
-import xyz.zyzhu.spring.boot.annotation.FieldDef;
+import javax.persistence.Table;
+import com.liiwin.annotation.FieldDef;
 /**
  * <p>标题： 微信退款结果</p>
  * <p>功能： </p>
@@ -15,6 +16,7 @@ import xyz.zyzhu.spring.boot.annotation.FieldDef;
  * 监听使用界面:
  * @version 8.0
  */
+@Table(name = "wxrefuseresult")
 public class WXRefuseResult extends BasModel
 {
 	private static final long	serialVersionUID	= 5623694850263171751L;

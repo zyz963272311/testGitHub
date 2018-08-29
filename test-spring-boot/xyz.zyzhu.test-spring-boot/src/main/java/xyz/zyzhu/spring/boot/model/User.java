@@ -2,13 +2,8 @@ package xyz.zyzhu.spring.boot.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
-
-import xyz.zyzhu.spring.boot.annotation.FieldDef;
+import com.liiwin.annotation.FieldDef;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -28,8 +23,8 @@ import xyz.zyzhu.spring.boot.annotation.FieldDef;
 public class User extends BasModel
 {
 	private static final long	serialVersionUID	= 1L;
-//	@Id
-//	@GeneratedValue(strategy = GenerationType.AUTO)
+	//	@Id
+	//	@GeneratedValue(strategy = GenerationType.AUTO)
 	@FieldDef(defaultValue = "AutoCode:useridYYMMDD_______")
 	private String				id;
 	private String				openid;

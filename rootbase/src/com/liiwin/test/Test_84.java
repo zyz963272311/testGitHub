@@ -1,5 +1,7 @@
 package com.liiwin.test;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.apache.http.HttpResponse;
@@ -11,6 +13,8 @@ import org.apache.http.util.EntityUtils;
 import com.liiwin.constant.RegExpConstant;
 import com.liiwin.date.DateUtil;
 import com.liiwin.encryption.AES;
+import com.liiwin.encryption.DES;
+import com.liiwin.encryption.Encryption;
 import com.liiwin.http.HttpClientUtil;
 import com.liiwin.random.RandomString;
 import com.liiwin.random.RandomStringImpl;
@@ -48,13 +52,21 @@ public class Test_84 extends T
 	 */
 	public static void main(String[] args)
 	{
-		char a = 'a';
-		char b = a;
-		System.out.println(a);
-		System.out.println(b);
-		a = 'b';
-		System.out.println(a);
-		System.out.println(b);
+		String a = "test赵玉柱xxx";
+		Encryption encryption1 = new DES();
+		Encryption encryption2 = new DES();
+		try
+		{
+			String encryption = encryption1.getEncryption(a);
+			System.out.println(encryption);
+			String decrypt = encryption1.getDecrypt(encryption);
+			String decrypt1 = encryption2.getDecrypt(encryption);
+			System.out.println(decrypt);
+			System.out.println(decrypt1);
+		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e)
+		{
+			throw new RuntimeException("报错内容", e);
+		}
 	}
 
 	/**

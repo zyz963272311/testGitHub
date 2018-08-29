@@ -1,8 +1,7 @@
 package xyz.zyzhu.spring.boot.model;
 
 import javax.persistence.Table;
-
-import xyz.zyzhu.spring.boot.annotation.FieldDef;
+import com.liiwin.annotation.FieldDef;
 /**
  * <p>标题： TODO</p>
  * <p>功能：</p>
@@ -20,9 +19,9 @@ import xyz.zyzhu.spring.boot.annotation.FieldDef;
 public class Menu extends BasModel
 {
 	private static final long	serialVersionUID	= 8548831581997780285L;
-//	@Id
-//	@GeneratedValue(strategy = GenerationType.AUTO)
-	@FieldDef(defaultValue="AutoCode:mid________")
+	//	@Id
+	//	@GeneratedValue(strategy = GenerationType.AUTO)
+	@FieldDef(defaultValue = "AutoCode:mid________")
 	Integer						mid;
 	String						mname;
 	Integer						offlags;

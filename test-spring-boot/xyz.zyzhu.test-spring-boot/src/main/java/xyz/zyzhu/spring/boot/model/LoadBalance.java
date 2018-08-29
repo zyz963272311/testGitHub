@@ -1,15 +1,8 @@
 package xyz.zyzhu.spring.boot.model;
 
-import java.io.Serializable;
-
 import javax.persistence.Table;
-
-import org.apache.commons.collections4.SetValuedMap;
-
+import com.liiwin.annotation.FieldDef;
 import com.liiwin.utils.StrUtil;
-
-import xyz.zyzhu.spring.boot.annotation.FieldDef;
-
 /**
  * <p>标题： 负载均衡对象</p>
  * <p>功能： </p>
@@ -24,7 +17,7 @@ import xyz.zyzhu.spring.boot.annotation.FieldDef;
  * 监听使用界面:
  * @version 8.0
  */
-@Table(name="loadbalance")
+@Table(name = "loadbalance")
 public class LoadBalance extends BasModel
 {
 	private static final long	serialVersionUID	= 1L;
@@ -36,7 +29,8 @@ public class LoadBalance extends BasModel
 	private Integer				weight;						//权重
 	@FieldDef()
 	private Integer				flags;						//标志
-	private Integer index;//下标
+	private Integer				index;						//下标
+
 	/**
 	 * 获取权重的int值
 	 * @return
@@ -143,12 +137,13 @@ public class LoadBalance extends BasModel
 		setValue("name", name);
 	}
 
-	public Integer getIndex() {
+	public Integer getIndex()
+	{
 		return index;
 	}
 
-	public void setIndex(Integer index) {
+	public void setIndex(Integer index)
+	{
 		setValue("index", index);
 	}
-	
 }

@@ -22,3 +22,20 @@
 	properties pkey					属性名				varchar			128,0			0b00000011
 	properties pvalue				属性值				varchar			128,0			0b00000000                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
 	properties premark				属性备注				varchar			128,0			0b00000000
+	
+	//数据导入导出定义
+	dataexp 	id					内码				varchar			128,0			0b00000011
+	dataexp 	exportcode			导出编号			varchar			128,0			0b00000000
+	dataexp 	name				导出名称			varchar			128,0			0b00000000
+	dataexp 	remark				描述				varchar			1024,0			0b00000000
+
+	//数据导入导出明细定义
+	dataexpg 	id					内码				varchar			128,0			0b00000011
+	dataexpg 	mid					主表内码			varchar			128,0			0b00000000
+	dataexpg 	rno					序号				varchar			128,0			0b00000000
+	dataexpg 	tablename			导出表名			varchar			128,0			0b00000000
+	dataexpg 	columns				导出列名			varchar			128,0			0b00000000
+	dataexpg 	remark				描述				varchar			128,0			0b00000000
+	dataexpg 	queryfilter			查询条件			varchar			128,0			0b00000000
+	//插入#1/更新#2/执行前删除#4  #3==0则先查询再更新 
+	dataexpg 	flags				标志位			int				4,0				0b00000000

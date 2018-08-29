@@ -1,7 +1,7 @@
 package xyz.zyzhu.spring.boot.model;
 
 import javax.persistence.Table;
-import xyz.zyzhu.spring.boot.annotation.FieldDef;
+import com.liiwin.annotation.FieldDef;
 /**
  * <p>标题： 微信退款申请</p>
  * <p>功能： </p>

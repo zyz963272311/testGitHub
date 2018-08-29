@@ -2,9 +2,7 @@ package xyz.zyzhu.spring.boot.dao.impl;
 
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.stereotype.Repository;
-
 import xyz.zyzhu.spring.boot.dao.AutoCodeDao;
 import xyz.zyzhu.spring.boot.model.AutoCode;
 import xyz.zyzhu.spring.boot.model.AutoCodeG;
@@ -25,7 +23,6 @@ import xyz.zyzhu.spring.boot.model.AutoCodeG;
 @Repository
 public class AutoCodeDaoImpl implements AutoCodeDao
 {
-
 	@Override
 	public AutoCode insertM(AutoCode c)
 	{

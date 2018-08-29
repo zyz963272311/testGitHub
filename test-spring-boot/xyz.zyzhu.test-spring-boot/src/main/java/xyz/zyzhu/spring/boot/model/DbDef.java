@@ -1,6 +1,7 @@
 package xyz.zyzhu.spring.boot.model;
 
 import javax.persistence.Table;
+import com.liiwin.annotation.FieldDef;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -19,11 +20,17 @@ import javax.persistence.Table;
 public class DbDef extends BasModel
 {
 	private static final long	serialVersionUID	= 7603688596301149797L;
+	@FieldDef()
 	private String				dbname;
+	@FieldDef()
 	private String				url;
+	@FieldDef()
 	private String				username;
+	@FieldDef()
 	private String				password;
+	@FieldDef()
 	private Integer				initcount;
+	@FieldDef()
 	private Integer				maxcount;
 
 	public String getDbname()

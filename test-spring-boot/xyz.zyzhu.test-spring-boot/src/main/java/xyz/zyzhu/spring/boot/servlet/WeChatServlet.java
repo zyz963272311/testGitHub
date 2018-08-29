@@ -3,12 +3,10 @@ package xyz.zyzhu.spring.boot.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.liiwin.utils.BeanUtils;
 import com.liiwin.utils.StrUtil;
 import com.soecode.wxtools.api.IService;
@@ -21,7 +19,6 @@ import com.soecode.wxtools.api.WxService;
 import com.soecode.wxtools.bean.WxXmlMessage;
 import com.soecode.wxtools.bean.WxXmlOutMessage;
 import com.soecode.wxtools.util.xml.XStreamTransformer;
-
 import xyz.zyzhu.spring.boot.model.WXRouter;
 import xyz.zyzhu.spring.boot.service.WXRouterService;
 import xyz.zyzhu.spring.boot.utils.SpringBeanUtils;
@@ -80,47 +77,46 @@ public class WeChatServlet extends HttpServlet
 			//			router.rule().matcher(new DemoMatcher()).interceptor(new DemoInterceptor()).handler(new DemoHandler()).end();
 			//匹配生日到星座
 			WXRouterService service = SpringBeanUtils.getBean(WXRouterService.class);
-			if(service == null)
+			if (service == null)
 			{
-				throw new RuntimeException("获取service失败"+WXRouterService.class);
+				throw new RuntimeException("获取service失败" + WXRouterService.class);
 			}
 			List<WXRouter> queryList = service.queryList();
-			if(queryList!=null)
+			if (queryList != null)
 			{
-				for(WXRouter wxRouter:queryList)
+				for (WXRouter wxRouter : queryList)
 				{
-					if(wxRouter.isEnable())
+					if (wxRouter.isEnable())
 					{
 						String matcherClassPath = wxRouter.getMatcherClassPath();
 						WxMessageRouterRule rule = router.rule();
 						String handlerClassPath = wxRouter.getHandlerClassPath();
 						String interClassPath = wxRouter.getInterClassPath();
 						boolean notAllNull = false;
-						if(StrUtil.isNoStrTrimNull(matcherClassPath))
+						if (StrUtil.isNoStrTrimNull(matcherClassPath))
 						{
 							WxMessageMatcher matcher = (WxMessageMatcher) BeanUtils.newInstance(matcherClassPath);
 							rule.matcher(matcher);
 							notAllNull = true;
 						}
-						if(StrUtil.isNoStrTrimNull(interClassPath))
+						if (StrUtil.isNoStrTrimNull(interClassPath))
 						{
 							WxMessageInterceptor interceptor = (WxMessageInterceptor) BeanUtils.newInstance(interClassPath);
 							rule.interceptor(interceptor);
 							notAllNull = true;
 						}
-						if(StrUtil.isNoStrTrimNull(handlerClassPath))
+						if (StrUtil.isNoStrTrimNull(handlerClassPath))
 						{
 							WxMessageHandler handler = (WxMessageHandler) BeanUtils.newInstance(handlerClassPath);
 							rule.handler(handler);
 							notAllNull = true;
 						}
-						if(notAllNull)
+						if (notAllNull)
 						{
-							if(wxRouter.isEnd())
+							if (wxRouter.isEnd())
 							{
 								rule.end();
-							}
-							else
+							} else
 							{
 								rule.next();
 							}

@@ -10,8 +10,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.persistence.Table;
+import com.liiwin.annotation.FieldDef;
 import com.liiwin.utils.StrUtil;
-import xyz.zyzhu.spring.boot.annotation.FieldDef;
 import xyz.zyzhu.spring.boot.db.BootDatabase;
 import xyz.zyzhu.spring.boot.db.BootDatabasePoolManager;
 import xyz.zyzhu.spring.boot.model.BasModel;
@@ -132,6 +132,7 @@ public class ModelUtils
 			}
 		}
 		classColumnFieldsCache.put(t, map);
+		BootDatabasePoolManager.close(db);
 		return map;
 	}
 
@@ -200,6 +201,7 @@ public class ModelUtils
 				}
 			}
 			classColumnCache.put(t, map);
+			BootDatabasePoolManager.close(db);
 			return map;
 		}
 	}
@@ -248,6 +250,7 @@ public class ModelUtils
 				}
 			}
 		}
+		BootDatabasePoolManager.close(db);
 		classPrimaryColsCache.put(t, primaryKeys);
 		return primaryKeys;
 	}
