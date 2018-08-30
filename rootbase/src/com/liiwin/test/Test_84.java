@@ -1,7 +1,7 @@
 package com.liiwin.test;
 
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.apache.http.HttpResponse;
@@ -10,11 +10,14 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.util.EntityUtils;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.XMLWriter;
 import com.liiwin.constant.RegExpConstant;
 import com.liiwin.date.DateUtil;
 import com.liiwin.encryption.AES;
-import com.liiwin.encryption.DES;
-import com.liiwin.encryption.Encryption;
 import com.liiwin.http.HttpClientUtil;
 import com.liiwin.random.RandomString;
 import com.liiwin.random.RandomStringImpl;
@@ -52,21 +55,24 @@ public class Test_84 extends T
 	 */
 	public static void main(String[] args)
 	{
-		String a = "test赵玉柱xxx";
-		Encryption encryption1 = new DES();
-		Encryption encryption2 = new DES();
+		Element table = DocumentHelper.createElement("table");
+		Element body = DocumentHelper.createElement("body");
+		table.add(body);
+		Document createDocument = DocumentHelper.createDocument();
+		createDocument.add(table);
+		OutputFormat formater = OutputFormat.createPrettyPrint();
+		formater.setEncoding("UTF-8");
+		StringWriter out = new StringWriter();
+		XMLWriter writer = new XMLWriter(out, formater);
 		try
 		{
-			String encryption = encryption1.getEncryption(a);
-			System.out.println(encryption);
-			String decrypt = encryption1.getDecrypt(encryption);
-			String decrypt1 = encryption2.getDecrypt(encryption);
-			System.out.println(decrypt);
-			System.out.println(decrypt1);
-		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e)
+			writer.write(createDocument);
+			writer.close();
+		} catch (IOException e)
 		{
 			throw new RuntimeException("报错内容", e);
 		}
+		System.out.println(out.toString());
 	}
 
 	/**

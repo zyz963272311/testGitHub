@@ -85,7 +85,7 @@ public class SqlUtil
 				if (fromIdx >= 0 && endIdx > fromIdx)
 				{
 					sqlSB.append('?');
-					String key = sql.substring(fromIdx + 1, endIdx+1);
+					String key = sql.substring(fromIdx + 1, endIdx + 1);
 					Object value = params.get(key);
 					paramList.add(value);
 				}
@@ -93,6 +93,15 @@ public class SqlUtil
 				fromIdx = -1;
 				endIdx = -1;
 			}
+		}
+		if (fromIdx >= 0 && endIdx > fromIdx)
+		{
+			sqlSB.append('?');
+			String key = sql.substring(fromIdx + 1, endIdx + 1);
+			Object value = params.get(key);
+			paramList.add(value);
+			fromIdx = -1;
+			endIdx = -1;
 		}
 		//		Set<Entry<String,Object>> entrySet = params.entrySet();
 		//		for (Entry<String,Object> entry : entrySet)

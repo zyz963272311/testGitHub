@@ -1,6 +1,7 @@
 package xyz.zyzhu.spring.boot.model;
 
 import javax.persistence.Table;
+import com.liiwin.utils.StrUtil;
 import xyz.zyzhu.spring.boot.annotation.FieldDef;
 /**
  * <p>标题： 数据导出定义 子表</p>
@@ -28,7 +29,7 @@ public class DataexpgDef extends BasModel
 	private String				rno;
 	@FieldDef(notEmpty = true)
 	private String				tablename;
-	@FieldDef()
+	@FieldDef(column = "columns")
 	private String				querycolumns;
 	@FieldDef()
 	private String				remark;
@@ -36,6 +37,44 @@ public class DataexpgDef extends BasModel
 	private String				queryfilter;
 	@FieldDef()
 	private Integer				flags;
+
+	/**
+	 * 获取执行前删除的语句
+	 * @return
+	 * 赵玉柱
+	 */
+	public String getBeforeExec()
+	{
+		if (flags == null)
+		{
+			return null;
+		}
+		if ((flags & 4) > 0)
+		{
+			StringBuffer execDel = new StringBuffer("delete from ").append(getTablename());
+			String queryfilter2 = getQueryfilter();
+			if (StrUtil.isNoStrTrimNull(queryfilter2))
+			{
+				execDel.append(" where ").append(queryfilter2);
+			}
+			return execDel.toString();
+		}
+		return null;
+	}
+
+	/**
+	 * 获取数据存盘类型
+	 * @return
+	 * 赵玉柱
+	 */
+	public int getDataSaveMode()
+	{
+		if (flags == null)
+		{
+			return 0;
+		}
+		return flags & 3;
+	}
 
 	public String getId()
 	{
@@ -79,7 +118,7 @@ public class DataexpgDef extends BasModel
 
 	public void setQuerycolumns(String querycolumns)
 	{
-		setValue("querycolumns", querycolumns);
+		setValue("columns", querycolumns);
 	}
 
 	public void setTablename(String tablename)

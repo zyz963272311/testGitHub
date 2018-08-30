@@ -1,8 +1,6 @@
 package xyz.zyzhu.spring.boot.model;
 
-import javax.persistence.Table;
 import com.liiwin.utils.StrUtil;
-import xyz.zyzhu.spring.boot.annotation.FieldDef;
 /**
  * <p>标题： 负载均衡对象</p>
  * <p>功能： </p>
@@ -17,19 +15,17 @@ import xyz.zyzhu.spring.boot.annotation.FieldDef;
  * 监听使用界面:
  * @version 8.0
  */
-@Table(name = "loadbalance")
-public class LoadBalance extends BasModel
+public class LoadBalance
 {
-	private static final long	serialVersionUID	= 1L;
-	@FieldDef()
-	private String				key;						//键
-	@FieldDef()
-	private String				name;						//名
-	@FieldDef()
-	private Integer				weight;						//权重
-	@FieldDef()
-	private Integer				flags;						//标志
-	private Integer				index;						//下标
+	//	@FieldDef()
+	private String	key;	//键
+	//	@FieldDef()
+	private String	name;	//名
+	//	@FieldDef()
+	private Integer	weight;	//权重
+	//	@FieldDef()
+	private Integer	flags;	//标志
+	private Integer	index;	//下标
 
 	/**
 	 * 获取权重的int值
@@ -75,7 +71,7 @@ public class LoadBalance extends BasModel
 		{
 			flags = flags | 1;
 		}
-		setValue("flags", flags);
+		setFlags(flags);
 		return this;
 	}
 
@@ -93,7 +89,7 @@ public class LoadBalance extends BasModel
 		{
 			flags = flags | 1;
 		}
-		setValue("flags", flags);
+		setFlags(flags);
 		return this;
 	}
 
@@ -104,27 +100,8 @@ public class LoadBalance extends BasModel
 
 	public void setKey(String key)
 	{
-		setValue("key", key);
-	}
-
-	public Integer getWeight()
-	{
-		return weight;
-	}
-
-	public void setWeight(Integer weight)
-	{
-		setValue("weight", weight);
-	}
-
-	public Integer getFlags()
-	{
-		return flags;
-	}
-
-	public void setFlags(Integer flags)
-	{
-		setValue("flags", flags);
+		//setValue("key", key);
+		this.key = key;
 	}
 
 	public String getName()
@@ -134,7 +111,30 @@ public class LoadBalance extends BasModel
 
 	public void setName(String name)
 	{
-		setValue("name", name);
+		//setValue("name", name);
+		this.name = name;
+	}
+
+	public Integer getWeight()
+	{
+		return weight;
+	}
+
+	public void setWeight(Integer weight)
+	{
+		//setValue("weight", weight);
+		this.weight = weight;
+	}
+
+	public Integer getFlags()
+	{
+		return flags;
+	}
+
+	public void setFlags(Integer flags)
+	{
+		//setValue("flags", flags);
+		this.flags = flags;
 	}
 
 	public Integer getIndex()
@@ -144,6 +144,7 @@ public class LoadBalance extends BasModel
 
 	public void setIndex(Integer index)
 	{
-		setValue("index", index);
+		//setValue("index", index);
+		this.index = index;
 	}
 }

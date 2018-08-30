@@ -128,10 +128,13 @@ public class BasModel implements Serializable, Comparable
 		{
 			try
 			{
+				boolean accessible = field.isAccessible();
+				field.setAccessible(true);
 				field.set(this, value);
+				field.setAccessible(accessible);
 			} catch (Exception e)
 			{
-				throw new RuntimeException("设置属性值失败key=" + key + "value=" + value);
+				throw new RuntimeException("设置属性值失败key=" + key + "value=" + value, e);
 			}
 		}
 	}

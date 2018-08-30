@@ -6,7 +6,10 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import xyz.zyzhu.spring.boot.datafile.export.DataEcport;
+import xyz.zyzhu.spring.boot.datafile.export.ZipDataExport;
 import xyz.zyzhu.spring.boot.db.BootDatabase;
 import xyz.zyzhu.spring.boot.db.BootDatabasePoolManager;
 import xyz.zyzhu.spring.boot.model.AutoCode;
@@ -80,6 +83,22 @@ public class TestController
 				BootDatabasePoolManager.close(db);
 			}
 		}
+	}
+
+	@RequestMapping(path = "/testDataExp", method = { RequestMethod.GET, RequestMethod.POST })
+	public String testDataExp(@RequestParam(name = "expcode") String expcode, @RequestParam(name = "type", defaultValue = "1") int type)
+	{
+		DataEcport ecport = null;
+		switch (type)
+		{
+		case 1:
+			ecport = new ZipDataExport();
+			break;
+		default:
+			throw new RuntimeException("不存在对应的类型");
+		}
+		String export = ecport.export(expcode);
+		return export;
 	}
 
 	/**

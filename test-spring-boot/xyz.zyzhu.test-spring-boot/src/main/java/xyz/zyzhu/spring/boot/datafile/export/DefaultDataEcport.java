@@ -45,7 +45,7 @@ public abstract class DefaultDataEcport implements DataEcport
 				throw new RuntimeException("根据导出定义编号未找到数据导出定义明细" + exportcode);
 			}
 			List<DataExportDetail> exportDetails = getExportDetails(exportgDefs, dbs);
-			File resultFile = buildExportFile(exportDetails);
+			File resultFile = buildExportFile(exportDef, exportDetails);
 			String absolutePath = resultFile.getAbsolutePath();
 			return absolutePath;
 		} finally
@@ -172,5 +172,5 @@ public abstract class DefaultDataEcport implements DataEcport
 	 * @return
 	 * 赵玉柱
 	 */
-	protected abstract File buildExportFile(List<DataExportDetail> details);
+	protected abstract File buildExportFile(DataexpDef dataexpDef, List<DataExportDetail> details);
 }
