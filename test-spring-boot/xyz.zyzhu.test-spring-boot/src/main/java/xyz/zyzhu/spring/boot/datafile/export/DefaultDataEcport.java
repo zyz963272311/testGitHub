@@ -2,10 +2,12 @@ package xyz.zyzhu.spring.boot.datafile.export;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import com.liiwin.db.DatabaseCacheUtils;
 import com.liiwin.utils.StrUtil;
+import xyz.zyzhu.spring.boot.comparator.ModelComparator;
 import xyz.zyzhu.spring.boot.datafile.export.domain.DataExportDetail;
 import xyz.zyzhu.spring.boot.db.BootDatabase;
 import xyz.zyzhu.spring.boot.db.BootDatabasePoolManager;
@@ -97,8 +99,14 @@ public abstract class DefaultDataEcport implements DataEcport
 	{
 		DataexpgDef queryGdef = new DataexpgDef();
 		queryGdef.setMid(dataexpDef.getId());
-		List<DataexpgDef> redult = configDb.query(queryGdef);
-		return redult;
+		List<DataexpgDef> result = configDb.query(queryGdef);
+		//数据按照序号进行排序
+		if (result != null)
+		{
+			ModelComparator<DataexpgDef> comparator = new ModelComparator<>("rno");
+			Collections.sort(result, comparator);
+		}
+		return result;
 	}
 
 	/**

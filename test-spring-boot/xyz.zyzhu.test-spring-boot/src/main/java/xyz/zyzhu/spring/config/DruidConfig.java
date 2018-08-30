@@ -262,10 +262,10 @@ public class DruidConfig
 			List<LoadBalance> balances = new CopyOnWriteArrayList<>();
 			for (int i = 0; i < size; i++)
 			{
-				String name = prefix + PropertiesUtils.getPropValue(prefix + "." + i + ".name");
+				String name = prefix + PropertiesUtils.getPropValue(prefix + "." + i + ".name", "");
 				String key = prefix + PropertiesUtils.getPropValue(prefix + "." + i + ".key", name);
-				int flags = PropertiesUtils.getPropIntValue(prefix + "." + i + ".flags");
-				int weight = PropertiesUtils.getPropIntValue(prefix + "." + i + ".weight");
+				int flags = PropertiesUtils.getPropIntValue(prefix + "." + i + ".flags", 1);
+				int weight = PropertiesUtils.getPropIntValue(prefix + "." + i + ".weight", 1);
 				LoadBalance balance = new LoadBalance();
 				balance.setKey(key);
 				balance.setName(name);

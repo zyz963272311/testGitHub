@@ -1,8 +1,6 @@
 package xyz.zyzhu.spring.boot.model;
 
-import javax.persistence.Table;
 import com.liiwin.utils.StrUtil;
-import xyz.zyzhu.spring.boot.annotation.FieldDef;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -17,33 +15,32 @@ import xyz.zyzhu.spring.boot.annotation.FieldDef;
  * 监听使用界面:
  * @version 8.0
  */
-@Table(name = "tbcolumn")
-public class TableColumnDef extends BasModel
+public class TableColumnDef
 {
 	private static final long	serialVersionUID	= 332911711470920223L;
 	//列名
-	@FieldDef()
+	//	@FieldDef()
 	private String				colname;
 	//表名
-	@FieldDef()
+	//	@FieldDef()
 	private String				tbname;
 	//说明
-	@FieldDef()
+	//	@FieldDef()
 	private String				comment;
 	//默认值
-	@FieldDef()
+	//	@FieldDef()
 	private String				defaultvalue;
 	//列类型
-	@FieldDef()
+	//	@FieldDef()
 	private String				datatype;
 	//列长度
-	@FieldDef()
+	//	@FieldDef()
 	private Integer				dataLength;
 	//列精度
-	@FieldDef()
+	//	@FieldDef()
 	private Integer				decimal;
 	//标记
-	@FieldDef()
+	//	@FieldDef()
 	private Integer				flags;
 
 	/**
@@ -75,7 +72,8 @@ public class TableColumnDef extends BasModel
 
 	public void setColname(String colname)
 	{
-		setValue("colname", colname);
+		//setValue("colname", colname);
+		this.colname = colname;
 	}
 
 	public String getTbname()
@@ -85,7 +83,8 @@ public class TableColumnDef extends BasModel
 
 	public void setTbname(String tbname)
 	{
-		setValue("tbname", tbname);
+		//setValue("tbname", tbname);
+		this.tbname = tbname;
 	}
 
 	public String getComment()
@@ -95,7 +94,8 @@ public class TableColumnDef extends BasModel
 
 	public void setComment(String comment)
 	{
-		setValue("comment", comment);
+		//setValue("comment", comment);
+		this.comment = comment;
 	}
 
 	public String getDefaultvalue()
@@ -105,7 +105,8 @@ public class TableColumnDef extends BasModel
 
 	public void setDefaultvalue(String defaultvalue)
 	{
-		setValue("defaultvalue", defaultvalue);
+		//setValue("defaultvalue", defaultvalue);
+		this.defaultvalue = defaultvalue;
 	}
 
 	public String getDatatype()
@@ -115,7 +116,8 @@ public class TableColumnDef extends BasModel
 
 	public void setDatatype(String datatype)
 	{
-		setValue("datatype", datatype);
+		//setValue("datatype", datatype);
+		this.datatype = datatype;
 	}
 
 	public Integer getDataLength()
@@ -125,7 +127,8 @@ public class TableColumnDef extends BasModel
 
 	public void setDataLength(Integer dataLength)
 	{
-		setValue("dataLength", dataLength);
+		//setValue("dataLength", dataLength);
+		this.dataLength = dataLength;
 	}
 
 	public Integer getDecimal()
@@ -135,7 +138,8 @@ public class TableColumnDef extends BasModel
 
 	public void setDecimal(Integer decimal)
 	{
-		setValue("decimal", decimal);
+		//setValue("decimal", decimal);
+		this.decimal = decimal;
 	}
 
 	public Integer getFlags()
@@ -145,6 +149,7 @@ public class TableColumnDef extends BasModel
 
 	public void setFlags(Integer flags)
 	{
-		setValue("flags", flags);
+		//setValue("flags", flags);
+		this.flags = flags;
 	}
 }

@@ -106,9 +106,7 @@ public class ModelUtils
 		String tablename = BasModel.getTableName(t);
 		Set<String> columnsSet = new HashSet<>();
 		BootDatabase db = BootDatabasePoolManager.getReadDatabaseByTable("tbcolumn");
-		TableColumnDef queryDef = new TableColumnDef();
-		queryDef.setTbname(tablename);
-		List<TableColumnDef> query = db.query(queryDef);
+		List<TableColumnDef> query = getTableColumnByTableName(db, tablename);
 		if (query != null)
 		{
 			for (TableColumnDef def : query)
@@ -170,9 +168,7 @@ public class ModelUtils
 			String tablename = BasModel.getTableName(t);
 			Set<String> columnsSet = new HashSet<>();
 			BootDatabase db = BootDatabasePoolManager.getReadDatabaseByTable("tbcolumn");
-			TableColumnDef defQuery = new TableColumnDef();
-			defQuery.setTbname(tablename);
-			List<TableColumnDef> query = db.query(defQuery);
+			List<TableColumnDef> query = getTableColumnByTableName(db, tablename);
 			if (query != null)
 			{
 				for (TableColumnDef def : query)
@@ -229,7 +225,7 @@ public class ModelUtils
 		BootDatabase db = BootDatabasePoolManager.getReadDatabaseByTable("tbcolumn");
 		TableColumnDef queryDef = new TableColumnDef();
 		queryDef.setTbname(modelTable);
-		List<TableColumnDef> query = db.query(queryDef);
+		List<TableColumnDef> query = getTableColumnByTableName(db, modelTable);
 		if (query != null)
 		{
 			for (TableColumnDef def : query)
@@ -378,5 +374,63 @@ public class ModelUtils
 		{
 			getClassFields((Class<T>) superclass, fields);
 		}
+	}
+
+	/**
+	 * 根据表名获取字段信息
+	 * @param configDb
+	 * @param tablename
+	 * @return
+	 * 赵玉柱
+	 */
+	private static List<TableColumnDef> getTableColumnByTableName(BootDatabase configDb, String tablename)
+	{
+		if (StrUtil.isStrTrimNull(tablename))
+		{
+			throw new RuntimeException("表名不可为空");
+		}
+		String sql = "select * from tbcolumns where tbname=:tbname";
+		Map<String,Object> params = new HashMap<>();
+		params.put("tbname", tablename);
+		List<Map<String,Object>> listMapFromSql = configDb.getListMapFromSql(sql, params);
+		if (listMapFromSql == null || listMapFromSql.isEmpty())
+		{
+			return null;
+		}
+		List<TableColumnDef> result = new ArrayList<>();
+		for (Map<String,Object> map : listMapFromSql)
+		{
+			TableColumnDef def = new TableColumnDef();
+			String colname = StrUtil.obj2str(map.get("colname"));
+			def.setColname(colname);
+			String tbname = StrUtil.obj2str(map.get("tbname"));
+			def.setTbname(tbname);
+			String comment = StrUtil.obj2str(map.get("comment"));
+			def.setComment(comment);
+			String defaultvalue = StrUtil.obj2str(map.get("defaultvalue"));
+			def.setDefaultvalue(defaultvalue);
+			String datatype = StrUtil.obj2str(map.get("datatype"));
+			def.setDatatype(datatype);
+			Object dataLengthObj = map.get("dataLength");
+			if (dataLengthObj != null)
+			{
+				int dataLength = StrUtil.obj2int(dataLengthObj);
+				def.setDataLength(dataLength);
+			}
+			Object decimalObj = map.get("decimal");
+			if (decimalObj != null)
+			{
+				int decimal = StrUtil.obj2int(decimalObj);
+				def.setDecimal(decimal);
+			}
+			Object flagsObj = map.get("flags");
+			if (flagsObj != null)
+			{
+				int flags = StrUtil.obj2int(flagsObj);
+				def.setFlags(flags);
+			}
+			result.add(def);
+		}
+		return result;
 	}
 }

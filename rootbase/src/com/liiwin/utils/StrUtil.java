@@ -406,8 +406,14 @@ public class StrUtil
 				return Integer.parseInt(s);
 			} catch (Exception e)
 			{
+				try
+				{
+					return Double.valueOf(s).intValue();
+				} catch (Exception e1)
+				{
+					return defaultValue;
+				}
 			}
-			return Double.valueOf(s).intValue();
 		}
 		return defaultValue;
 	}
