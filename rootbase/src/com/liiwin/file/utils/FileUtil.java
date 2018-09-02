@@ -55,6 +55,46 @@ public class FileUtil
 	}
 
 	/**
+	 * 根据文件路径删除文件
+	 * @param filePath
+	 * 赵玉柱
+	 */
+	public static void deleteFileByPath(String filePath)
+	{
+		File file = new File(filePath);
+		deleteFile(file);
+	}
+
+	/**
+	 * 删除文件/文件夹
+	 * @param file
+	 * 赵玉柱
+	 */
+	public static void deleteFile(File file)
+	{
+		if (file == null)
+		{
+			return;
+		}
+		if (!file.exists())
+		{
+			return;
+		}
+		if (file.isDirectory())
+		{
+			File[] listFiles = file.listFiles();
+			if (listFiles != null)
+			{
+				for (File tempFile : listFiles)
+				{
+					deleteFile(tempFile);
+				}
+			}
+		}
+		file.delete();
+	}
+
+	/**
 	 * 若文件夹不存在则创建新文件夹
 	 * @param file
 	 * 赵玉柱

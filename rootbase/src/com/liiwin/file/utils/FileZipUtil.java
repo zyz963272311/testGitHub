@@ -29,10 +29,12 @@ public class FileZipUtil
 		{
 			return flag;
 		}
+		OutputStream os = null;
+		ZipOutputStream zos = null;
 		try
 		{
-			OutputStream os = new BufferedOutputStream(new FileOutputStream(zipFilePath + "/" + fileName));
-			ZipOutputStream zos = new ZipOutputStream(os, Charset.forName("GBK"));
+			os = new BufferedOutputStream(new FileOutputStream(zipFilePath + "/" + fileName));
+			zos = new ZipOutputStream(os, Charset.forName("GBK"));
 			byte[] buffer = new byte[8192];
 			int len = 0;
 			for (int i = 0; i < srcFile.length; i++)
@@ -56,7 +58,6 @@ public class FileZipUtil
 				}
 				zos.closeEntry();
 			}
-			zos.close();
 			flag = true;
 		} catch (FileNotFoundException e)
 		{
@@ -66,6 +67,26 @@ public class FileZipUtil
 		{
 			e.printStackTrace();
 			throw new RuntimeException(e);
+		} finally
+		{
+			if (zos != null)
+			{
+				try
+				{
+					zos.close();
+				} catch (Exception e)
+				{
+				}
+			}
+			if (os != null)
+			{
+				try
+				{
+					os.close();
+				} catch (Exception e)
+				{
+				}
+			}
 		}
 		return flag;
 	}

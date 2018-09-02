@@ -1529,4 +1529,46 @@ public class StrUtil
 		a = a ^ b;
 		System.out.println(a + "\t" + b);
 	}
+
+	/**
+	 * 判断对象是否是10进制数字
+	 * @param obj
+	 * @return
+	 * 赵玉柱
+	 */
+	public static boolean isNum(Object obj)
+	{
+		return isNum(obj, 10);
+	}
+
+	/**
+	 * 判断对象是否是x进制的数字
+	 * @param obj
+	 * @param hex
+	 * @return
+	 * 赵玉柱
+	 */
+	public static boolean isNum(Object obj, int hex)
+	{
+		String obj2str = obj2str(obj);
+		try
+		{
+			//1234567890abcdef
+			Long.parseLong(obj2str, hex);
+			return true;
+		} catch (Exception e)
+		{
+			try
+			{
+				//0x1234567890abcdef
+				Long.parseLong(obj2str.substring(2), hex);
+				return true;
+			} catch (Exception e1)
+			{
+				//double没有二进制展示
+				Double.parseDouble(obj2str);
+				return true;
+			}
+		}
+	}
 }

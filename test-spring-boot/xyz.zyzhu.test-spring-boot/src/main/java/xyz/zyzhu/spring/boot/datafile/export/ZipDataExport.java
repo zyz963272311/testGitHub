@@ -17,6 +17,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.liiwin.config.BasConfig;
 import com.liiwin.date.DateUtil;
+import com.liiwin.file.utils.FileUtil;
 import com.liiwin.file.utils.FileZipUtil;
 import com.liiwin.random.RandomString;
 import com.liiwin.random.RandomStringImpl;
@@ -44,8 +45,10 @@ public class ZipDataExport extends DefaultDataEcport
 	@Override
 	protected File buildExportFile(DataexpDef exportDef, List<DataExportDetail> details)
 	{
+		File resultFile = null;
 		List<Writer> fileWriters = new ArrayList<>();
 		List<XMLWriter> xmlWriters = new ArrayList<>();
+		File file = null;
 		try
 		{
 			if (details != null && !details.isEmpty())
@@ -69,7 +72,6 @@ public class ZipDataExport extends DefaultDataEcport
 				String pathNamePrefix = DateUtil.formateDate(DateUtil.DATA_FORMATE_9);
 				String zipTempDir = null;
 				boolean exist = true;
-				File file = null;
 				String pathName = null;
 				//创建临时文件夹，用于存放当前数据
 				while (exist)
@@ -93,9 +95,10 @@ public class ZipDataExport extends DefaultDataEcport
 				FileWriter write = new FileWriter(export);
 				fileWriters.add(write);
 				JSONObject json = new JSONObject();
-				JSONObject fileinfo = new JSONObject();
+				JSONArray fileinfo = new JSONArray();
 				for (DataExportDetail detail : details)
 				{
+					JSONObject fileJsonInfo = new JSONObject();
 					exist = true;
 					File xmlFile = null;
 					String xmlTempDir = null;
@@ -107,7 +110,7 @@ public class ZipDataExport extends DefaultDataEcport
 						xmlTempFile = pathNamePrefix + randomString + ".xml";
 						xmlTempDir = zipTempDir + xmlTempFile;
 						xmlFile = new File(xmlTempDir);
-						exist = file.exists();
+						exist = xmlFile.exists();
 						if (!exist)
 						{
 							file.createNewFile();
@@ -115,6 +118,7 @@ public class ZipDataExport extends DefaultDataEcport
 						}
 					}
 					FileWriter writer = new FileWriter(xmlFile);
+					fileWriters.add(writer);
 					DataexpgDef dataexpgDef = detail.getDataexpDef();
 					//表名
 					String tablename = dataexpgDef.getTablename();
@@ -159,21 +163,28 @@ public class ZipDataExport extends DefaultDataEcport
 					Element dataElement = DocumentHelper.createElement("data");
 					JSONArray jsonArray = (JSONArray) JSONArray.toJSON(exportData);
 					setText(dataElement, jsonArray.toJSONString());
+					table.add(dataElement);
 					Document document = DocumentHelper.createDocument();
+					document.add(table);
 					OutputFormat formater = OutputFormat.createPrettyPrint();
 					formater.setEncoding("UTF-8");
 					StringWriter out = new StringWriter();
 					XMLWriter xmlWriter = new XMLWriter(out, formater);
 					xmlWriter.write(document);
 					xmlWriters.add(xmlWriter);
-					String xmlFileInfor = xmlWriter.toString();
+					String xmlFileInfor = out.toString();
 					writer.write(xmlFileInfor);
-					fileinfo.put("rno", rno);
-					fileinfo.put("filename", xmlTempFile);
+					writer.flush();
+					fileJsonInfo.put("rno", rno);
+					fileJsonInfo.put("filename", xmlTempFile);
+					fileinfo.add(fileJsonInfo);
 				}
 				json.put("fileinfo", fileinfo);
 				write.write(json.toString());
-				FileZipUtil.file2Zip(new String[] { zipTempDir }, zipTempDir, pathName + ".zip");
+				write.flush();
+				String zipFileName = pathName.substring(0, pathName.length() - 1) + ".zip";
+				FileZipUtil.file2Zip(new String[] { zipTempDir }, zipTempDir.substring(0, zipFileName.length() - 1), zipFileName);
+				resultFile = new File(zipTempDir.substring(0, zipTempDir.length() - 1) + ".zip");
 			}
 		} catch (Exception e)
 		{
@@ -205,7 +216,16 @@ public class ZipDataExport extends DefaultDataEcport
 				}
 			}
 		}
-		return null;
+		if (file != null)
+		{
+			try
+			{
+				FileUtil.deleteFile(file);
+			} catch (Exception e)
+			{
+			}
+		}
+		return resultFile;
 	}
 
 	private void setText(Element e, String text)

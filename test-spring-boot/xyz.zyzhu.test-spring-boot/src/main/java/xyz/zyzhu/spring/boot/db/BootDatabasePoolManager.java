@@ -213,11 +213,12 @@ public class BootDatabasePoolManager
 			throw new RuntimeException("database为空，不能执行关闭操作");
 		}
 		String databaseName = database.getDatabaseName();
+		boolean isWrite = database.getIsWrite();
 		if (!StrUtil.equals(dbName, databaseName))
 		{
 			throw new RuntimeException("要关闭的数据与数据库名称不匹配");
 		}
-		IDatabasePool pool = getPool(dbName);
+		IDatabasePool pool = getPool(dbName, isWrite);
 		try
 		{
 			pool.releaseDatabase(database);

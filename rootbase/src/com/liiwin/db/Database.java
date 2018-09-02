@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import org.dom4j.Element;
 import com.liiwin.createdb.Table;
 import com.liiwin.utils.GetXmlFile;
@@ -29,6 +30,7 @@ import com.liiwin.utils.StrUtil;
  */
 public class Database
 {
+	private AtomicBoolean	isWrite	= new AtomicBoolean(true);
 	//基础属性
 	private String			databaseName;
 	private String			url;
@@ -38,16 +40,16 @@ public class Database
 	protected int			type;
 	//连接属性
 	protected Connection	conn;
-	private int				minConnects;			//最小连接数
-	private int				maxConnects;			//最大连接数
-	private int				initConnections;		//初始化线程个数
-	private long			connTimeOut;			//重复获得连接的频率
-	private int				maxActiveConnections;	//允许的最大连接数
-	private long			connectionTimeOut;		//最大超时时间默认20分钟
-	private boolean			isCurrentConnection;	//是否获取当前的链接
-	private boolean			isCheckPool;			//是否检查连接池
-	private long			lazyCheck;				//延迟多长时间开始检查
-	private long			periodCheck;			//检查频率
+	private int				minConnects;						//最小连接数
+	private int				maxConnects;						//最大连接数
+	private int				initConnections;					//初始化线程个数
+	private long			connTimeOut;						//重复获得连接的频率
+	private int				maxActiveConnections;				//允许的最大连接数
+	private long			connectionTimeOut;					//最大超时时间默认20分钟
+	private boolean			isCurrentConnection;				//是否获取当前的链接
+	private boolean			isCheckPool;						//是否检查连接池
+	private long			lazyCheck;							//延迟多长时间开始检查
+	private long			periodCheck;						//检查频率
 
 	protected Database()
 	{
@@ -930,5 +932,20 @@ public class Database
 		{
 			System.out.println(map);
 		}
+	}
+
+	public void setIsWrite()
+	{
+		isWrite.set(true);
+	}
+
+	public void setIsRead()
+	{
+		isWrite.set(false);
+	}
+
+	public boolean getIsWrite()
+	{
+		return isWrite.get();
 	}
 }

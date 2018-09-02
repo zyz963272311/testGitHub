@@ -32,6 +32,7 @@ import xyz.zyzhu.spring.boot.utils.ModelUtils;
 public class BasModel implements Serializable, Comparable
 {
 	private static final long	serialVersionUID	= 1L;
+	@FieldDef(notColumn = true)
 	private Map<String,Field>	classFields;
 	/**
 	 * 当前数据的原数据
@@ -114,12 +115,12 @@ public class BasModel implements Serializable, Comparable
 		if (classFields == null)
 		{
 			classFields = new HashMap<>();
-			List<Field> fields = ModelUtils.getClassFields(getClass());
-			if (fields != null)
+			Map<Field,String> classColumns = ModelUtils.getClassColumns(getClass());
+			if (classColumns != null)
 			{
-				for (Field field : fields)
+				for (Entry<Field,String> entry : classColumns.entrySet())
 				{
-					classFields.put(field.getName(), field);
+					classFields.put(entry.getValue(), entry.getKey());
 				}
 			}
 		}

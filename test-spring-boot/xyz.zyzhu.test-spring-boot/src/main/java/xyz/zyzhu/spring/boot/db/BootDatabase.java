@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 import javax.sql.DataSource;
 import com.liiwin.db.Database;
 import com.liiwin.db.Databasetype;
@@ -36,8 +35,7 @@ import xyz.zyzhu.spring.config.DruidConfig;
  */
 public class BootDatabase extends Database
 {
-	private AtomicBoolean	isWrite	= new AtomicBoolean(true);
-	DataSource				datasource;
+	DataSource datasource;
 
 	/**************************************************构造方法****************************************/
 	/**
@@ -89,6 +87,7 @@ public class BootDatabase extends Database
 		{
 			throw new RuntimeException("报错内容", e);
 		}
+		setIsRead();
 	}
 
 	public BootDatabase(DataSource datasource, String dbname)
@@ -161,7 +160,7 @@ public class BootDatabase extends Database
 	 */
 	public <T extends BasModel> T query1(T t)
 	{
-		return query1(t, null);
+		return query1(t, t.getTableValues(), null);
 	}
 
 	/**
@@ -202,6 +201,10 @@ public class BootDatabase extends Database
 	public <T extends BasModel> T query1(T t, Map<String,Object> params, String filter, String[] columns)
 	{
 		Class<T> clazz = (Class<T>) t.getClass();
+		if (StrUtil.isStrTrimNull(filter))
+		{
+			filter = ModelUtils.getQueryFilter(t);
+		}
 		List<T> query = query(clazz, params, filter, columns);
 		if (query != null && !query.isEmpty())
 		{
@@ -292,7 +295,7 @@ public class BootDatabase extends Database
 			i++;
 		}
 		String modelTable = ModelUtils.getModelTable(clazz);
-		if (!StrUtil.trimStartWith(filter, "where "))
+		if (filter != null && !StrUtil.trimStartWith(filter, "where "))
 		{
 			filter = " where " + filter;
 		}
@@ -721,22 +724,5 @@ public class BootDatabase extends Database
 			throw new RuntimeException("不支持的操作" + saveMode);
 		}
 	}
-
 	/**************************************************存盘分割线****************************************/
-	public BootDatabase setIsWrite()
-	{
-		isWrite.set(true);
-		return this;
-	}
-
-	public BootDatabase setIsRead()
-	{
-		isWrite.set(false);
-		return this;
-	}
-
-	public boolean getIsWrite()
-	{
-		return isWrite.get();
-	}
 }

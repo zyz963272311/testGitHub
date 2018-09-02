@@ -15,6 +15,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
@@ -120,6 +121,7 @@ public class DruidConfig
 	 * @return 赵玉柱
 	 */
 	@Bean(name = "readDatasource")
+	@Lazy
 	public DataSource readDataSource()
 	{
 		return readDatasourceByDbName("default");
@@ -137,6 +139,7 @@ public class DruidConfig
 	 * @return 赵玉柱
 	 */
 	@Bean(name = "writeDatasource")
+	@Lazy
 	public DataSource writeDataSource()
 	{
 		return writeDataSourceByDbName("default");
@@ -296,16 +299,33 @@ public class DruidConfig
 	 * @param prefix
 	 * @return 赵玉柱
 	 */
-	private DataSource getDataSource(String prefix)
+	private DataSource getDataSource(String _prefix)
 	{
+		String prefix = _prefix;
+		int p = prefix.lastIndexOf('.');
+		String name = PropertiesUtils.getPropValue(prefix + ".name");
+		if (p >= 0)
+		{
+			String _p = prefix.substring(p + 1);
+			boolean isNum = (StrUtil.isNum(_p, 10));
+			if (StrUtil.isStrTrimNull(name) && isNum)
+			{
+				name = PropertiesUtils.getPropValue(prefix.substring(0, p) + ".name");
+			}
+			if (StrUtil.isNoStrTrimNull(name) && isNum)
+			{
+				prefix = prefix.substring(0, p);
+				prefix = prefix + "." + name;
+			}
+		}
 		String url = PropertiesUtils.getPropValue(prefix + ".url");
 		String username = PropertiesUtils.getPropValue(prefix + ".username");
 		String password = PropertiesUtils.getPropValue(prefix + ".password");
 		String driverClassName = PropertiesUtils.getPropValue(prefix + ".driverClassName");
-		int maxActive = PropertiesUtils.getPropIntValue(prefix + ".maxActive");
-		int initialSize = PropertiesUtils.getPropIntValue(prefix + ".initialSize");
-		int minIdle = PropertiesUtils.getPropIntValue(prefix + ".minIdle");
-		int maxWait = PropertiesUtils.getPropIntValue(prefix + ".maxWait");
+		int maxActive = PropertiesUtils.getPropIntValue(prefix + ".maxActive", 20);
+		int initialSize = PropertiesUtils.getPropIntValue(prefix + ".initialSize", 5);
+		int minIdle = PropertiesUtils.getPropIntValue(prefix + ".minIdle", 10);
+		int maxWait = PropertiesUtils.getPropIntValue(prefix + ".maxWait", 60000);
 		int timeBetweenEvictionRunsMillis = PropertiesUtils.getPropIntValue(prefix + ".timeBetweenEvictionRunsMillis");
 		int minEvictableIdleTimeMillis = PropertiesUtils.getPropIntValue(prefix + ".minEvictableIdleTimeMillis");
 		String validationQuery = PropertiesUtils.getPropValue(prefix + ".validationQuery");
@@ -322,6 +342,7 @@ public class DruidConfig
 		String filters = PropertiesUtils.getPropValue(prefix + ".filters");
 		DruidDataSource dataSource = new DruidDataSource();
 		dataSource.setUrl(url);
+		dataSource.setName("");
 		dataSource.setDriverClassName(driverClassName);
 		dataSource.setUsername(username);
 		dataSource.setPassword(password);

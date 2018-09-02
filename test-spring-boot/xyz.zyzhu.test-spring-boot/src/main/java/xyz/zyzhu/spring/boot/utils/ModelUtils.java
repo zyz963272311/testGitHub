@@ -389,7 +389,7 @@ public class ModelUtils
 		{
 			throw new RuntimeException("表名不可为空");
 		}
-		String sql = "select * from tbcolumns where tbname=:tbname";
+		String sql = "select * from tbcolumn where tbname=:tbname";
 		Map<String,Object> params = new HashMap<>();
 		params.put("tbname", tablename);
 		List<Map<String,Object>> listMapFromSql = configDb.getListMapFromSql(sql, params);

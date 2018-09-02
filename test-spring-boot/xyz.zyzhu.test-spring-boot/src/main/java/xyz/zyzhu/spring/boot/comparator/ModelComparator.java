@@ -133,7 +133,7 @@ public class ModelComparator<T extends BasModel> implements Comparator<T>
 
 		public CompareColumn(String column, boolean asc)
 		{
-			if (StrUtil.isNoStrTrimNull(column))
+			if (StrUtil.isStrTrimNull(column))
 			{
 				throw new RuntimeException("列名不可为空");
 			}

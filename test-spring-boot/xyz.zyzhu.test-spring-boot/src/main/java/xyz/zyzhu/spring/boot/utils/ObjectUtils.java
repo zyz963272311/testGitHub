@@ -745,7 +745,7 @@ public class ObjectUtils
 		{
 			throw new RuntimeException("不同类型不可进行比较");
 		}
-		if (o1.getClass().isAssignableFrom(Comparable.class))
+		if (Comparable.class.isAssignableFrom(o1.getClass()))
 		{
 			return ((Comparable) o1).compareTo(o2);
 		}

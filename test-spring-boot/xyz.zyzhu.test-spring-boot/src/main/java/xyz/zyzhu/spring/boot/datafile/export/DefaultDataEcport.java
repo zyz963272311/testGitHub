@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import com.liiwin.db.DatabaseCacheUtils;
 import com.liiwin.utils.StrUtil;
 import xyz.zyzhu.spring.boot.comparator.ModelComparator;
 import xyz.zyzhu.spring.boot.datafile.export.domain.DataExportDetail;
@@ -138,17 +137,9 @@ public abstract class DefaultDataEcport implements DataEcport
 	{
 		DataExportDetail detail = new DataExportDetail();
 		detail.setDataexpDef(dataexpDef);
-		String tableName = dataexpDef.getTableName();
-		int dbIdx = DatabaseCacheUtils.getUseableDbByDbName(dbs, tableName);
-		BootDatabase db = null;
-		if (dbIdx >= 0)
-		{
-			db = dbs.get(dbIdx);
-		} else
-		{
-			db = BootDatabasePoolManager.getReadDatabaseByTable(tableName);
-			dbs.add(db);
-		}
+		String tableName = dataexpDef.getTablename();
+		BootDatabase db = BootDatabasePoolManager.getReadDatabaseByTable(tableName);
+		dbs.add(db);
 		String sql = buildSql(dataexpDef);
 		List<Map<String,Object>> esprotData = db.getListMapFromSql(sql);
 		detail.setExportData(esprotData);
