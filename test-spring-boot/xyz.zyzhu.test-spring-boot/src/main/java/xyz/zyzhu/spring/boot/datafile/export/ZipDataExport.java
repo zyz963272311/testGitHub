@@ -22,7 +22,7 @@ import com.liiwin.file.utils.FileZipUtil;
 import com.liiwin.random.RandomString;
 import com.liiwin.random.RandomStringImpl;
 import com.liiwin.utils.StrUtil;
-import xyz.zyzhu.spring.boot.datafile.export.domain.DataExportDetail;
+import xyz.zyzhu.spring.boot.datafile.domain.DataExportDetail;
 import xyz.zyzhu.spring.boot.model.DataexpDef;
 import xyz.zyzhu.spring.boot.model.DataexpgDef;
 /**
@@ -39,7 +39,7 @@ import xyz.zyzhu.spring.boot.model.DataexpgDef;
  * 监听使用界面:
  * @version 8.0
  */
-public class ZipDataExport extends DefaultDataEcport
+public class ZipDataExport extends DefaultDataExport
 {
 	@SuppressWarnings("resource")
 	@Override

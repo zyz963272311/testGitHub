@@ -1,4 +1,4 @@
-package xyz.zyzhu.spring.boot.datafile.export.domain;
+package xyz.zyzhu.spring.boot.datafile.domain;
 
 import java.io.Serializable;
 import java.util.List;

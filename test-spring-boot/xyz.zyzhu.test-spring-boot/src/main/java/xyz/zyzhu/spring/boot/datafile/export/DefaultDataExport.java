@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import com.liiwin.utils.StrUtil;
 import xyz.zyzhu.spring.boot.comparator.ModelComparator;
-import xyz.zyzhu.spring.boot.datafile.export.domain.DataExportDetail;
+import xyz.zyzhu.spring.boot.datafile.domain.DataExportDetail;
 import xyz.zyzhu.spring.boot.db.BootDatabase;
 import xyz.zyzhu.spring.boot.db.BootDatabasePoolManager;
 import xyz.zyzhu.spring.boot.model.DataexpDef;
@@ -26,7 +26,7 @@ import xyz.zyzhu.spring.boot.model.DataexpgDef;
  * 监听使用界面:
  * @version 8.0
  */
-public abstract class DefaultDataEcport implements DataEcport
+public abstract class DefaultDataExport implements DataExport
 {
 	@Override
 	public String export(String exportcode)

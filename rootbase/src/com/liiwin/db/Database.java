@@ -679,8 +679,13 @@ public class Database
 		{
 			if (getConn() != null && !getConn().isClosed())
 			{
-				getConn().commit();
-				getConn().setAutoCommit(true);
+				try
+				{
+					getConn().commit();
+				} finally
+				{
+					getConn().setAutoCommit(true);
+				}
 			}
 		} catch (SQLException e)
 		{

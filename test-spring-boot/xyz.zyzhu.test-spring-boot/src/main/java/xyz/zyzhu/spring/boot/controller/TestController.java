@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import xyz.zyzhu.spring.boot.datafile.export.DataEcport;
+import xyz.zyzhu.spring.boot.datafile.export.DataExport;
 import xyz.zyzhu.spring.boot.datafile.export.ZipDataExport;
 import xyz.zyzhu.spring.boot.db.BootDatabase;
 import xyz.zyzhu.spring.boot.db.BootDatabasePoolManager;
@@ -88,7 +88,7 @@ public class TestController
 	@RequestMapping(path = "/testDataExp", method = { RequestMethod.GET, RequestMethod.POST })
 	public String testDataExp(@RequestParam(name = "expcode") String expcode, @RequestParam(name = "type", defaultValue = "1") int type)
 	{
-		DataEcport ecport = null;
+		DataExport ecport = null;
 		switch (type)
 		{
 		case 1:

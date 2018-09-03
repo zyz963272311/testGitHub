@@ -14,7 +14,7 @@ package xyz.zyzhu.spring.boot.datafile.export;
  * 监听使用界面:
  * @version 8.0
  */
-public interface DataEcport
+public interface DataExport
 {
 	String export(String exportcode);
 }
