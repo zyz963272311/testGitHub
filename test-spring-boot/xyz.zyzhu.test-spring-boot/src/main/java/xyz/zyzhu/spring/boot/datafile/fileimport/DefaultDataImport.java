@@ -26,8 +26,17 @@ import xyz.zyzhu.spring.boot.db.BootDatabasePoolManager;
  */
 public abstract class DefaultDataImport implements DataImport
 {
-	public DefaultDataImport()
+	Map<String,Object> params;
+
+	public DefaultDataImport(Map<String,Object> params)
 	{
+		if (params == null)
+		{
+			this.params = new HashMap<>();
+		} else
+		{
+			this.params = params;
+		}
 	}
 
 	@Override
@@ -258,5 +267,10 @@ public abstract class DefaultDataImport implements DataImport
 				}
 			}
 		}
+	}
+
+	public Map<String,Object> getParams()
+	{
+		return params;
 	}
 }

@@ -41,7 +41,6 @@ import xyz.zyzhu.spring.boot.model.DataexpgDef;
  */
 public class ZipDataExport extends DefaultDataExport
 {
-	@SuppressWarnings("resource")
 	@Override
 	protected File buildExportFile(DataexpDef exportDef, List<DataExportDetail> details)
 	{
@@ -113,7 +112,7 @@ public class ZipDataExport extends DefaultDataExport
 						exist = xmlFile.exists();
 						if (!exist)
 						{
-							file.createNewFile();
+							xmlFile.createNewFile();
 							break;
 						}
 					}
