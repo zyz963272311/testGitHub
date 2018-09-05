@@ -59,8 +59,8 @@ public class PropertiesUtils
 				properties.put(key, value);
 			}
 			forceLoadZKProperties();
-			loadSystemProperties(localProperties);
 			loadDBProperties(localProperties);
+			loadSystemProperties(localProperties);
 			for (Entry<Object,Object> sysEntry : localProperties.entrySet())
 			{
 				Object key = sysEntry.getKey();

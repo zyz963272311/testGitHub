@@ -1,7 +1,12 @@
 package xyz.zyzhu.spring.boot.controller;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.core.env.Environment;
@@ -102,7 +107,7 @@ public class TestController
 	 * 赵玉柱
 	 */
 	@RequestMapping(path = "/testDataExp", method = { RequestMethod.GET, RequestMethod.POST })
-	public String testDataExp(@RequestParam(name = "expcode") String expcode, @RequestParam(name = "type", defaultValue = "1") int type)
+	public void testDataExp(@RequestParam(name = "expcode") String expcode, @RequestParam(name = "type", defaultValue = "1") int type, HttpServletResponse response)
 	{
 		DataExport ecport = null;
 		switch (type)
@@ -114,7 +119,60 @@ public class TestController
 			throw new RuntimeException("不存在对应的类型");
 		}
 		String export = ecport.export(expcode);
-		return export;
+		if (!StrUtil.isStrTrimNull(export))
+		{
+			int p = export.lastIndexOf('/');
+			String filename = null;
+			if (p > 0)
+			{
+				filename = expcode.substring(p + 1);
+			}
+			File file = new File(export);
+			if (file.exists() && file.isFile() && StrUtil.isNoStrTrimNull(filename))
+			{
+				response.setContentType("application/force-download");//设置文件为下载
+				response.addHeader("Content-Disposition", "attachment;fileName=" + filename);// 设置文件名
+				byte[] buffer = new byte[1024];
+				FileInputStream fis = null;
+				BufferedInputStream bis = null;
+				try
+				{
+					fis = new FileInputStream(file);
+					bis = new BufferedInputStream(fis);
+					OutputStream os = response.getOutputStream();
+					int i = bis.read(buffer);
+					while (i != -1)
+					{
+						os.write(buffer, 0, i);
+						i = bis.read(buffer);
+					}
+				} catch (Exception e)
+				{
+				} finally
+				{
+					if (fis != null)
+					{
+						try
+						{
+							fis.close();
+						} catch (IOException e)
+						{
+							e.printStackTrace();
+						}
+					}
+					if (bis != null)
+					{
+						try
+						{
+							bis.close();
+						} catch (IOException e)
+						{
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		}
 	}
 
 	/**
