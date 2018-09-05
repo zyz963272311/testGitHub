@@ -81,6 +81,7 @@ public class PropertiesUtils
 		synchronized (PropertiesUtils.class)
 		{
 			Properties loadLoaclProperties = loadLoaclProperties();
+			loadDBProperties(loadLoaclProperties);
 			String sysPropPath = loadLoaclProperties.getProperty("SystemPropertyesPath", "D://MyProject/OnGithub/system.properties");
 			loadLoaclProperties.clear();
 			loadLoaclProperties.put("SystemPropertyesPath", sysPropPath);

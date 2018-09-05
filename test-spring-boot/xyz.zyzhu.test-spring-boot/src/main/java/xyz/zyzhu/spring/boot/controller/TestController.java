@@ -121,11 +121,11 @@ public class TestController
 		String export = ecport.export(expcode);
 		if (!StrUtil.isStrTrimNull(export))
 		{
-			int p = export.lastIndexOf('/');
+			int p = export.lastIndexOf(File.separator);
 			String filename = null;
 			if (p > 0)
 			{
-				filename = expcode.substring(p + 1);
+				filename = export.substring(p + 1);
 			}
 			File file = new File(export);
 			if (file.exists() && file.isFile() && StrUtil.isNoStrTrimNull(filename))
@@ -226,6 +226,7 @@ public class TestController
 					break;
 				}
 			}
+			exist = true;
 			File tempFile = null;
 			String tempFileDir = null;
 			String tempFileName = null;
@@ -233,7 +234,7 @@ public class TestController
 			while (exist)
 			{
 				String randomString = random.getRandomString(10, 'a', 'z');
-				tempFileName = pathNamePrefix + randomString + ".xml";
+				tempFileName = pathNamePrefix + randomString + ".zip";
 				tempFileDir = zipTempDir + tempFileName;
 				tempFile = new File(tempFileDir);
 				exist = tempFile.exists();

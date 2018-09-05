@@ -33,7 +33,8 @@ public class FileZipUtil
 		ZipOutputStream zos = null;
 		try
 		{
-			os = new BufferedOutputStream(new FileOutputStream(zipFilePath + "/" + fileName));
+			String path = (StrUtil.isStrTrimNull(zipFilePath) ? "" : (zipFilePath + "/")) + fileName;
+			os = new BufferedOutputStream(new FileOutputStream(path));
 			zos = new ZipOutputStream(os, Charset.forName("GBK"));
 			byte[] buffer = new byte[8192];
 			int len = 0;
@@ -148,7 +149,8 @@ public class FileZipUtil
 			needClose = true;
 			try
 			{
-				zos = new ZipOutputStream(new FileOutputStream(zipPath + "/" + zipName), Charset.forName("GBK"));
+				String path = (StrUtil.isStrTrimNull(zipPath) ? "" : (zipPath + "/")) + zipName;
+				zos = new ZipOutputStream(new FileOutputStream(path), Charset.forName("GBK"));
 			} catch (FileNotFoundException e)
 			{
 				e.printStackTrace();

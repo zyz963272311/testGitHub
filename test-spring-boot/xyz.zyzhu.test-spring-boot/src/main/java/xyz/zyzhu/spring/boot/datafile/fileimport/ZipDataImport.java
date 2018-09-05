@@ -152,6 +152,7 @@ public class ZipDataImport extends DefaultDataImport
 						}
 						detail.setImpDatas(list);
 					}
+					details.add(detail);
 					br.close();
 				}
 			} else

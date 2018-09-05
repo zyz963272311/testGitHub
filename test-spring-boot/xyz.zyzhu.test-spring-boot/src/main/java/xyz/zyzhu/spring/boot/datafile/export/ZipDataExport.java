@@ -87,6 +87,9 @@ public class ZipDataExport extends DefaultDataExport
 					}
 				}
 				File export = new File(zipTempDir + "export.info");
+				List<String> filePathList = new ArrayList<>();
+				String absolutePath2 = export.getAbsolutePath();
+				filePathList.add(absolutePath2);
 				//创建新文件
 				export.createNewFile();
 				//设置文件可以写
@@ -116,6 +119,8 @@ public class ZipDataExport extends DefaultDataExport
 							break;
 						}
 					}
+					String absolutePath = xmlFile.getAbsolutePath();
+					filePathList.add(absolutePath);
 					FileWriter writer = new FileWriter(xmlFile);
 					fileWriters.add(writer);
 					DataexpgDef dataexpgDef = detail.getDataexpDef();
@@ -182,7 +187,11 @@ public class ZipDataExport extends DefaultDataExport
 				write.write(json.toString());
 				write.flush();
 				String zipFileName = pathName.substring(0, pathName.length() - 1) + ".zip";
-				FileZipUtil.file2Zip(new String[] { zipTempDir }, zipTempDir.substring(0, zipFileName.length() - 1), zipFileName);
+				String[] paths = new String[filePathList.size()];
+				filePathList.toArray(paths);
+				FileZipUtil.file2Zip(paths, zipTempDir.substring(0, zipFileName.length() - 1), zipFileName);
+				//FileZipUtil.file2Zip(new String[] { zipTempDir }, zipTempDir.substring(0, zipFileName.length() - 1), zipFileName);
+				//				FileZipUtil.file2Zip(new String[] { zipTempDir }, "", zipFileName);
 				resultFile = new File(zipTempDir.substring(0, zipTempDir.length() - 1) + ".zip");
 			}
 		} catch (Exception e)
