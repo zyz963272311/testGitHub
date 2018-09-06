@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import com.liiwin.test.Test;
 /**
@@ -49,6 +50,35 @@ public class MapUtil
 			keyList.add(key);
 		}
 		return buildMapByList1(list, keyList, limit);
+	}
+
+	/**
+	 * 将from的数据拷贝到to中
+	 * @param from
+	 * @param to
+	 * @param onlyRelease
+	 * @return
+	 * 赵玉柱
+	 */
+	public static Map<String,Object> copyMap(Map<String,Object> from, Map<String,Object> to, boolean onlyRelease)
+	{
+		if (from == null || from.isEmpty())
+		{
+			return to;
+		}
+		if ((to == null || to.isEmpty()) && onlyRelease)
+		{
+			return to;
+		}
+		if (to == null)
+		{
+			to = new HashMap<>();
+		}
+		for (Entry<String,Object> fromEntry : from.entrySet())
+		{
+			to.put(fromEntry.getKey(), fromEntry.getValue());
+		}
+		return to;
 	}
 
 	/**

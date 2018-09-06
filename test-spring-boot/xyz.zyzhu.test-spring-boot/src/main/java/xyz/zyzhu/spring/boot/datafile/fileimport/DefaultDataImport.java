@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import com.liiwin.db.DatabaseCacheUtils;
+import com.liiwin.utils.MapUtil;
 import com.liiwin.utils.StrUtil;
 import xyz.zyzhu.spring.boot.datafile.domain.DataImportDetail;
 import xyz.zyzhu.spring.boot.datafile.utils.DataFileUtils;
@@ -29,7 +31,8 @@ import xyz.zyzhu.spring.boot.utils.ModelUtils;
  */
 public abstract class DefaultDataImport implements DataImport
 {
-	Map<String,Object> params;
+	Map<String,Object>	params;
+	String				errMessage;
 
 	public DefaultDataImport(Map<String,Object> params)
 	{
@@ -71,6 +74,11 @@ public abstract class DefaultDataImport implements DataImport
 			}
 			//3.2、所有数据入库后的操作
 			afterDetailsImport(details, dbs);
+		} catch (Exception e)
+		{
+			String message = e.getMessage();
+			message = StrUtil.isStrTrimNull(message) ? "数据导入异常" : message;
+			setErrMessage(message);
 		} finally
 		{
 			//4、事务提交
@@ -108,6 +116,12 @@ public abstract class DefaultDataImport implements DataImport
 		execDataSave(detail, db);
 	}
 
+	/**
+	 * 执行数据入库
+	 * @param detail
+	 * @param db
+	 * 赵玉柱
+	 */
 	protected void execDataSave(DataImportDetail detail, BootDatabase db)
 	{
 		List<Map<String,Object>> impDatas = detail.getImpDatas();
@@ -177,11 +191,79 @@ public abstract class DefaultDataImport implements DataImport
 			}
 		} else
 		{
-			//执行数据存盘
+			//执行数据存盘  先查询再插入
 			//1.进行数据查询
-			List<String> tablePrimaryCols = ModelUtils.getTablePrimaryCols(tablename);
-			//2.进行数据组装
-			//3.进行数据更新
+			List<String> primaryCols = ModelUtils.getTablePrimaryCols(tablename);
+			List<String> tableColumns = ModelUtils.getTableColumnByTableName(tablename);
+			if (primaryCols != null && !primaryCols.isEmpty() && tableColumns != null && !tableColumns.isEmpty())
+			{
+				String limit = "@";
+				Map<String,List<Map<String,Object>>> mapList = MapUtil.buildMapByList1(impDatas, primaryCols, limit);
+				Set<String> keySet = mapList.keySet();
+				List<Map<String,Object>> queryList = new ArrayList<>();
+				StringBuffer sqlSb = new StringBuffer("select * from " + tablename + " where ");
+				for (String primaryCol : primaryCols)
+				{
+					sqlSb.append(primaryCol).append("=:").append(primaryCol).append(" and ");
+				}
+				sqlSb.setLength(sqlSb.length() - 4);
+				for (String keyValue : keySet)
+				{
+					String[] split = StrUtil.split(keyValue, limit.charAt(0));
+					List<Object> keyList = new ArrayList<>();
+					for (String key : split)
+					{
+						keyList.add(key);
+					}
+					Map<String,Object> map = db.getMapFromSqlByListParam(sqlSb.toString(), keyList);
+					queryList.add(map);
+				}
+				Map<String,List<Map<String,Object>>> queryListMap = MapUtil.buildMapByList1(queryList, primaryCols, limit);
+				//2.进行数据分类与数据组装
+				List<Map<String,Object>> updateList = new ArrayList<>();
+				List<Map<String,Object>> insertList = new ArrayList<>();
+				StringBuffer updateSb = new StringBuffer("update " + tablename + " set ");
+				for (Entry<String,List<Map<String,Object>>> mepEntry : mapList.entrySet())
+				{
+					String key = mepEntry.getKey();
+					Map<String,Object> value = mepEntry.getValue().get(0);
+					List<Map<String,Object>> list = queryListMap.get(key);
+					if (list != null && !list.isEmpty())
+					{
+						Map<String,Object> map = list.get(0);
+						MapUtil.copyMap(value, map, false);
+						updateList.add(map);
+					} else
+					{
+						insertList.add(value);
+					}
+				}
+				//3.进行数据更新
+				//3.1 进行数据更新
+				if (!updateList.isEmpty())
+				{
+					for (String tableCol : tableColumns)
+					{
+						updateSb.append(tableCol).append("=:").append(tableCol).append(" , ");
+					}
+					updateSb.setLength(updateSb.length() - 2);
+					updateSb.append(" where ");
+					for (String primaryCol : primaryCols)
+					{
+						updateSb.append(primaryCol).append("=:").append(primaryCol).append(" and ");
+					}
+					updateSb.setLength(updateSb.length() - 4);
+					for (Map<String,Object> updateMap : updateList)
+					{
+						db.execSqlForWrite(updateSb.toString(), updateMap);
+					}
+				}
+				//进行数据插入
+				if (insertList != null && !insertList.isEmpty())
+				{
+					db.insertTableList(tablename, insertList);
+				}
+			}
 		}
 	}
 
@@ -316,6 +398,9 @@ public abstract class DefaultDataImport implements DataImport
 	 */
 	private void transAndCloseDb(List<DataImportDetail> details, List<BootDatabase> dbs)
 	{
+		//单个数据库中，若出现异常，不会影响其他的db进行事务提交
+		boolean isSuccess = isSuccess();
+		boolean hasException = false;
 		Map<String,BootDatabase> dbMap = new HashMap<>();
 		Map<String,List<DataImportDetail>> detailsMap = new HashMap<>();
 		if (details != null && !details.isEmpty() && dbs != null && !dbs.isEmpty())
@@ -355,14 +440,19 @@ public abstract class DefaultDataImport implements DataImport
 						//4.2、单条记录事务提交前操作
 						beforeDetailTrans(detail, db);
 					}
-					db.commit();
+					if (isSuccess)
+					{
+						db.commit();
+					}
 				} catch (Exception e)
 				{
 					//4.3、某一个db对应的一批数据提交事务出现异常
 					afterDbDetailTrensException(tempDetails, db, e);
-					db.rollback(true);
+					hasException = true;
 				} finally
 				{
+					db.rollback(hasException || isSuccess);
+					hasException = false;
 					try
 					{
 						BootDatabasePoolManager.close(db);
@@ -377,5 +467,26 @@ public abstract class DefaultDataImport implements DataImport
 	public Map<String,Object> getParams()
 	{
 		return params;
+	}
+
+	protected void setErrMessage(String errMessage)
+	{
+		this.errMessage = errMessage;
+	}
+
+	protected String getErrMessage()
+	{
+		return this.errMessage;
+	}
+
+	public boolean isSuccess()
+	{
+		String errMessage2 = getErrMessage();
+		return StrUtil.isStrTrimNull(errMessage2);
+	}
+
+	public boolean isError()
+	{
+		return !isSuccess();
 	}
 }
