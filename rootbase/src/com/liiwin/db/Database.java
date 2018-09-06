@@ -434,9 +434,10 @@ public class Database
 	 */
 	public int insert(String sql, Map<String,Object> params)
 	{
+		System.out.println(getDatabaseName() + ":insert[" + sql + "]参数" + params);
 		List<Object> paramsList = new ArrayList<>();
 		String sqlTemp = SqlUtil.sqlBindParams(this, sql, params, paramsList);
-		return insert(sqlTemp);
+		return insertByParamList(sqlTemp, paramsList);
 	}
 
 	/**
@@ -448,6 +449,11 @@ public class Database
 	public int insert(String sql)
 	{
 		return update(sql);
+	}
+
+	public int insertByParamList(String sql, List<Object> paramList)
+	{
+		return updateWithParamsList(sql, paramList);
 	}
 
 	/**
@@ -519,7 +525,7 @@ public class Database
 					int size = paramsList.size();
 					for (int i = 0; i < size; i++)
 					{
-						statement.setObject(i, paramsList.get(i));
+						statement.setObject(i + 1, paramsList.get(i));
 					}
 				}
 				result = statement.executeUpdate();

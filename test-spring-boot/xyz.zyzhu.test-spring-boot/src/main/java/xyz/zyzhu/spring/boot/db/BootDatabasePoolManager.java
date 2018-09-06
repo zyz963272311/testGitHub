@@ -1,6 +1,5 @@
 package xyz.zyzhu.spring.boot.db;
 
-import java.sql.SQLException;
 import java.util.Hashtable;
 import javax.sql.DataSource;
 import com.liiwin.db.Database;
@@ -193,11 +192,11 @@ public class BootDatabasePoolManager
 	 */
 	public static void close(Database database)
 	{
-		if (database == null)
-		{
-			throw new RuntimeException("database为空，不能执行关闭操作");
-		}
-		close(database.getDatabaseName(), database);
+		//		if (database == null)
+		//		{
+		//			throw new RuntimeException("database为空，不能执行关闭操作");
+		//		}
+		//		close(database.getDatabaseName(), database);
 	}
 
 	/**
@@ -208,23 +207,23 @@ public class BootDatabasePoolManager
 	 */
 	public static void close(String dbName, Database database)
 	{
-		if (database == null)
-		{
-			throw new RuntimeException("database为空，不能执行关闭操作");
-		}
-		String databaseName = database.getDatabaseName();
-		boolean isWrite = database.getIsWrite();
-		if (!StrUtil.equals(dbName, databaseName))
-		{
-			throw new RuntimeException("要关闭的数据与数据库名称不匹配");
-		}
-		IDatabasePool pool = getPool(dbName, isWrite);
-		try
-		{
-			pool.releaseDatabase(database);
-		} catch (SQLException e)
-		{
-			throw new RuntimeException("关闭DB出错", e);
-		}
+		//		if (database == null)
+		//		{
+		//			throw new RuntimeException("database为空，不能执行关闭操作");
+		//		}
+		//		String databaseName = database.getDatabaseName();
+		//		boolean isWrite = database.getIsWrite();
+		//		if (!StrUtil.equals(dbName, databaseName))
+		//		{
+		//			throw new RuntimeException("要关闭的数据与数据库名称不匹配");
+		//		}
+		//		IDatabasePool pool = getPool(dbName, isWrite);
+		//		try
+		//		{
+		//			pool.releaseDatabase(database);
+		//		} catch (SQLException e)
+		//		{
+		//			throw new RuntimeException("关闭DB出错", e);
+		//		}
 	}
 }
