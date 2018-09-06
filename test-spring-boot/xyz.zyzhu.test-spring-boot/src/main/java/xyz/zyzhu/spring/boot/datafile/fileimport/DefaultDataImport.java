@@ -8,8 +8,11 @@ import java.util.Map.Entry;
 import com.liiwin.db.DatabaseCacheUtils;
 import com.liiwin.utils.StrUtil;
 import xyz.zyzhu.spring.boot.datafile.domain.DataImportDetail;
+import xyz.zyzhu.spring.boot.datafile.utils.DataFileUtils;
 import xyz.zyzhu.spring.boot.db.BootDatabase;
 import xyz.zyzhu.spring.boot.db.BootDatabasePoolManager;
+import xyz.zyzhu.spring.boot.model.DataimpgDef;
+import xyz.zyzhu.spring.boot.utils.ModelUtils;
 /**
  * <p>标题： 默认的数据导入</p>
  * <p>功能： </p>
@@ -93,6 +96,108 @@ public abstract class DefaultDataImport implements DataImport
 	 */
 	public void importData(DataImportDetail detail, BootDatabase db)
 	{
+		if (detail == null)
+		{
+			return;
+		}
+		DataimpgDef impgDef = detail.getImpgDef();
+		String beforeExec = impgDef.getBeforeExec();
+		//先删除数据
+		beforeExec(beforeExec, db);
+		//数据入库
+		execDataSave(detail, db);
+	}
+
+	protected void execDataSave(DataImportDetail detail, BootDatabase db)
+	{
+		List<Map<String,Object>> impDatas = detail.getImpDatas();
+		if (impDatas == null || impDatas.isEmpty())
+		{
+			return;
+		}
+		DataimpgDef def = detail.getImpgDef();
+		String tablename = detail.getTablename();
+		boolean isInsert = DataFileUtils.isImpdefInsert(def);
+		boolean isUpdate = DataFileUtils.isImpdefUpdate(def);
+		if (isInsert)
+		{
+			//执行数据插入
+			db.insertTableList(tablename, impDatas);
+		} else if (isUpdate)
+		{
+			//执行数据更新
+			List<String> tablePrimaryCols = ModelUtils.getTablePrimaryCols(tablename);
+			String columns = StrUtil.trim(detail.getColumns());
+			List<String> tableColumns = new ArrayList<>();
+			if (StrUtil.equals(columns, "*"))
+			{
+				tableColumns = ModelUtils.getTableColumnByTableName(tablename);
+			} else
+			{
+				String[] columnArray = StrUtil.split(columns, ',');
+				for (String column : columnArray)
+				{
+					tableColumns.add(column);
+				}
+			}
+			if (tablePrimaryCols != null && !tablePrimaryCols.isEmpty())
+			{
+				StringBuffer sqlSb = new StringBuffer("update ").append(tablename).append(" set ");
+				int length = sqlSb.length();
+				for (String column : tableColumns)
+				{
+					if (tablePrimaryCols.contains(column))
+					{
+						sqlSb.append(column).append("=:").append(column).append(" ").append(", ");
+					}
+				}
+				if (sqlSb.length() > length)
+				{
+					//去掉最后的", "
+					sqlSb.setLength(sqlSb.length() - 2);
+				}
+				sqlSb.append(" where ");
+				length = sqlSb.length();
+				for (String column : tablePrimaryCols)
+				{
+					if (tablePrimaryCols.contains(column))
+					{
+						sqlSb.append(column).append("=:").append(column).append(" ").append(" and ");
+					}
+				}
+				if (sqlSb.length() > length)
+				{
+					//去掉最后的", "
+					sqlSb.setLength(sqlSb.length() - 4);
+				}
+				for (Map<String,Object> data : impDatas)
+				{
+					db.execSqlForWrite(sqlSb.toString(), data);
+				}
+			}
+		} else
+		{
+			//执行数据存盘
+			//1.进行数据查询
+			List<String> tablePrimaryCols = ModelUtils.getTablePrimaryCols(tablename);
+			//2.进行数据组装
+			//3.进行数据更新
+		}
+	}
+
+	/**
+	 * 
+	 * 执行数据导入前的数据删除
+	 * @param beforeExec
+	 * @param db
+	 * 赵玉柱
+	 */
+	protected void beforeExec(String beforeExec, BootDatabase db)
+	{
+		if (StrUtil.isNoStrTrimNull(beforeExec))
+		{
+			db.execSqlForWrite(beforeExec);
+		}
 	}
 
 	/**

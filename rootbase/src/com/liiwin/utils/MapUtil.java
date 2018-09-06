@@ -2,6 +2,7 @@ package com.liiwin.utils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,90 @@ import com.liiwin.test.Test;
  */
 public class MapUtil
 {
+	/**
+	 * 将list转换成map&lt;List&gt;的形式
+	 * @param list
+	 * @param keys
+	 * @param limit
+	 * @return
+	 * 赵玉柱
+	 */
+	public static Map<String,List<Map<String,Object>>> buildMapByList(List<Map<String,Object>> list, String keys, String limit)
+	{
+		if (list == null || StrUtil.isStrTrimNull(keys))
+		{
+			return null;
+		}
+		if (list.isEmpty())
+		{
+			return new HashMap<>();
+		}
+		String[] keyArray = StrUtil.split(keys, ',');
+		List<String> keyList = new ArrayList<>();
+		for (String key : keyArray)
+		{
+			keyList.add(key);
+		}
+		return buildMapByList1(list, keyList, limit);
+	}
+
+	/**
+	 * 将List组装成Map&lt;List&gt;形式
+	 * @param list
+	 * @param keyList
+	 * @param limit
+	 * @return
+	 * 赵玉柱
+	 */
+	public static Map<String,List<Map<String,Object>>> buildMapByList1(List<Map<String,Object>> list, List<String> keyList, String limit)
+	{
+		if (list == null || keyList == null || keyList.isEmpty())
+		{
+			return null;
+		}
+		if (list.isEmpty())
+		{
+			return new HashMap<>();
+		}
+		Map<String,List<Map<String,Object>>> result = new HashMap<>();
+		for (Map<String,Object> map : list)
+		{
+			String keyVAlue = getKeys(map, keyList, limit);
+			List<Map<String,Object>> value = result.get(keyVAlue);
+			if (value == null)
+			{
+				value = new ArrayList<>();
+				result.put(keyVAlue, value);
+			}
+			value.add(map);
+		}
+		return result;
+	}
+
+	/**
+	 * 获取map的key对应的value
+	 * @param map
+	 * @param keyList
+	 * @param limit
+	 * @return
+	 * 赵玉柱
+	 */
+	public static String getKeys(Map<String,Object> map, List<String> keyList, String limit)
+	{
+		if (map == null || map.isEmpty() || keyList == null || keyList.isEmpty())
+		{
+			return null;
+		}
+		String result = null;
+		for (String key : keyList)
+		{
+			Object object = map.get(key);
+			String value = StrUtil.obj2str(object);
+			result = result + (value == null ? "" : value) + (limit == null ? "" : limit);
+		}
+		return result;
+	}
+
 	@SuppressWarnings("unchecked")
 	public static <T extends Object> T toObject(Class<T> clazz, Map<String,Object> map)
 	{

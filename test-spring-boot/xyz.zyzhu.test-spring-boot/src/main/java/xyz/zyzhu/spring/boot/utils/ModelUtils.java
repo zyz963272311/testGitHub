@@ -53,6 +53,18 @@ public class ModelUtils
 	 */
 	private static Map<Class<?>,List<String>>		classPrimaryColsCache	= new ConcurrentHashMap<>();
 	/**
+	 * 表的主键字段缓存
+	 */
+	private static Map<String,List<String>>			tablePrimaryColsCache	= new ConcurrentHashMap<>();
+	/**
+	 * 表的字段缓存
+	 */
+	private static Map<String,List<String>>			tableColsCache			= new ConcurrentHashMap<>();
+	/**
+	 * 表的字段缓存
+	 */
+	private static Map<String,List<TableColumnDef>>	tableColsDefCache		= new ConcurrentHashMap<>();
+	/**
 	 * 类上的主键 field缓存
 	 */
 	private static Map<Class<?>,List<Field>>		classPrimaryFieldsCache	= new ConcurrentHashMap<>();
@@ -106,7 +118,7 @@ public class ModelUtils
 		String tablename = BasModel.getTableName(t);
 		Set<String> columnsSet = new HashSet<>();
 		BootDatabase db = BootDatabasePoolManager.getReadDatabaseByTable("tbcolumn");
-		List<TableColumnDef> query = getTableColumnByTableName(db, tablename);
+		List<TableColumnDef> query = getTableColumnDefByTableName(db, tablename);
 		if (query != null)
 		{
 			for (TableColumnDef def : query)
@@ -168,7 +180,7 @@ public class ModelUtils
 			String tablename = BasModel.getTableName(t);
 			Set<String> columnsSet = new HashSet<>();
 			BootDatabase db = BootDatabasePoolManager.getReadDatabaseByTable("tbcolumn");
-			List<TableColumnDef> query = getTableColumnByTableName(db, tablename);
+			List<TableColumnDef> query = getTableColumnDefByTableName(db, tablename);
 			if (query != null)
 			{
 				for (TableColumnDef def : query)
@@ -221,21 +233,8 @@ public class ModelUtils
 		String modelTable = getModelTable(t);
 		Map<Field,String> classColumns = getClassColumns(t);
 		List<String> primaryKeys = new ArrayList<>();
-		Set<String> primarysSet = new HashSet<>();
-		BootDatabase db = BootDatabasePoolManager.getReadDatabaseByTable("tbcolumn");
-		TableColumnDef queryDef = new TableColumnDef();
-		queryDef.setTbname(modelTable);
-		List<TableColumnDef> query = getTableColumnByTableName(db, modelTable);
-		if (query != null)
-		{
-			for (TableColumnDef def : query)
-			{
-				if (def.isPrimary())
-				{
-					primarysSet.add(def.getColname());
-				}
-			}
-		}
+		List<String> tablePrimaryCols = getTablePrimaryCols(modelTable);
+		Set<String> primarysSet = new HashSet<>(tablePrimaryCols);
 		if (modelTable != null && classColumns != null && !classColumns.isEmpty())
 		{
 			for (String colname : primarysSet)
@@ -246,9 +245,71 @@ public class ModelUtils
 				}
 			}
 		}
-		BootDatabasePoolManager.close(db);
 		classPrimaryColsCache.put(t, primaryKeys);
 		return primaryKeys;
+	}
+
+	/**
+	 * 获取表的索引字段
+	 * @param tablename
+	 * @return
+	 * 赵玉柱
+	 */
+	public static List<String> getTablePrimaryCols(String tablename)
+	{
+		return getTablePrimaryCols(tablename, null);
+	}
+
+	/**
+	 * 获取表的索引字段
+	 * @param tablename
+	 * @param db
+	 * @return
+	 * 赵玉柱
+	 */
+	public static List<String> getTablePrimaryCols(String tablename, BootDatabase db)
+	{
+		if (StrUtil.isStrTrimNull(tablename))
+		{
+			throw new RuntimeException("表名不可为空");
+		}
+		if (tablePrimaryColsCache.containsKey(tablename))
+		{
+			return tablePrimaryColsCache.get(tablename);
+		}
+		boolean needClose = false;
+		if (db == null)
+		{
+			db = BootDatabasePoolManager.getReadDatabaseByTable("tbcolumn");
+			needClose = true;
+		}
+		//用于去重
+		Set<String> primarysSet = new HashSet<>();
+		try
+		{
+			TableColumnDef queryDef = new TableColumnDef();
+			queryDef.setTbname(tablename);
+			List<TableColumnDef> query = getTableColumnDefByTableName(db, tablename);
+			if (query != null)
+			{
+				for (TableColumnDef def : query)
+				{
+					if (def.isPrimary())
+					{
+						primarysSet.add(def.getColname());
+					}
+				}
+			}
+			List<String> result = new ArrayList<>(primarysSet);
+			tablePrimaryColsCache.put(tablename, result);
+			return result;
+		} finally
+		{
+			if (needClose)
+			{
+				BootDatabasePoolManager.close(db);
+			}
+		}
 	}
 
 	public static <T extends BasModel> String getQueryFilter(T t)
@@ -377,60 +438,125 @@ public class ModelUtils
 	}
 
 	/**
+	 * 获取表与字段的缓存
+	 * @param tablename
+	 * @return
+	 * 赵玉柱
+	 */
+	public static List<String> getTableColumnByTableName(String tablename)
+	{
+		return getTableColumnByTableName(null, tablename);
+	}
+
+	/**
+	 * 获取表与字段的缓存
+	 * @param configDb
+	 * @param tablename
+	 * @return
+	 * 赵玉柱
+	 */
+	public static List<String> getTableColumnByTableName(BootDatabase configDb, String tablename)
+	{
+		if (tablename == null)
+		{
+			throw new RuntimeException("表名不可为空");
+		}
+		if (tableColsCache.containsKey(tablename))
+		{
+			return tableColsCache.get(tablename);
+		}
+		boolean needClose = false;
+		if (configDb == null)
+		{
+			configDb = BootDatabasePoolManager.getDatabaseByTable("tbcolumn", false);
+			needClose = true;
+		}
+		List<String> columns = new ArrayList<>();
+		try
+		{
+			List<TableColumnDef> defs = getTableColumnDefByTableName(configDb, tablename);
+			if (defs != null)
+			{
+				for (TableColumnDef def : defs)
+				{
+					String colname = def.getColname();
+					columns.add(colname);
+				}
+			}
+			tableColsCache.put(tablename, columns);
+			return columns;
+		} finally
+		{
+			if (needClose)
+			{
+				BootDatabasePoolManager.close(configDb);
+			}
+		}
+	}
+
+	/**
 	 * 根据表名获取字段信息
 	 * @param configDb
 	 * @param tablename
 	 * @return
 	 * 赵玉柱
 	 */
-	private static List<TableColumnDef> getTableColumnByTableName(BootDatabase configDb, String tablename)
+	public static List<TableColumnDef> getTableColumnDefByTableName(BootDatabase configDb, String tablename)
 	{
-		if (StrUtil.isStrTrimNull(tablename))
+		synchronized (tablename)
 		{
-			throw new RuntimeException("表名不可为空");
-		}
-		String sql = "select * from tbcolumn where tbname=:tbname";
-		Map<String,Object> params = new HashMap<>();
-		params.put("tbname", tablename);
-		List<Map<String,Object>> listMapFromSql = configDb.getListMapFromSql(sql, params);
-		if (listMapFromSql == null || listMapFromSql.isEmpty())
-		{
-			return null;
-		}
-		List<TableColumnDef> result = new ArrayList<>();
-		for (Map<String,Object> map : listMapFromSql)
-		{
-			TableColumnDef def = new TableColumnDef();
-			String colname = StrUtil.obj2str(map.get("colname"));
-			def.setColname(colname);
-			String tbname = StrUtil.obj2str(map.get("tbname"));
-			def.setTbname(tbname);
-			String comment = StrUtil.obj2str(map.get("comment"));
-			def.setComment(comment);
-			String defaultvalue = StrUtil.obj2str(map.get("defaultvalue"));
-			def.setDefaultvalue(defaultvalue);
-			String datatype = StrUtil.obj2str(map.get("datatype"));
-			def.setDatatype(datatype);
-			Object dataLengthObj = map.get("dataLength");
-			if (dataLengthObj != null)
+			if (StrUtil.isStrTrimNull(tablename))
 			{
-				int dataLength = StrUtil.obj2int(dataLengthObj);
-				def.setDataLength(dataLength);
+				throw new RuntimeException("表名不可为空");
 			}
-			Object decimalObj = map.get("decimal");
-			if (decimalObj != null)
+			if (tableColsDefCache.containsKey(tablename))
 			{
-				int decimal = StrUtil.obj2int(decimalObj);
-				def.setDecimal(decimal);
+				return tableColsDefCache.get(tablename);
 			}
-			Object flagsObj = map.get("flags");
-			if (flagsObj != null)
+			String sql = "select * from tbcolumn where tbname=:tbname";
+			Map<String,Object> params = new HashMap<>();
+			params.put("tbname", tablename);
+			List<Map<String,Object>> listMapFromSql = configDb.getListMapFromSql(sql, params);
+			if (listMapFromSql == null || listMapFromSql.isEmpty())
 			{
-				int flags = StrUtil.obj2int(flagsObj);
-				def.setFlags(flags);
+				return null;
 			}
-			result.add(def);
+			List<TableColumnDef> result = new ArrayList<>();
+			for (Map<String,Object> map : listMapFromSql)
+			{
+				TableColumnDef def = new TableColumnDef();
+				String colname = StrUtil.obj2str(map.get("colname"));
+				def.setColname(colname);
+				String tbname = StrUtil.obj2str(map.get("tbname"));
+				def.setTbname(tbname);
+				String comment = StrUtil.obj2str(map.get("comment"));
+				def.setComment(comment);
+				String defaultvalue = StrUtil.obj2str(map.get("defaultvalue"));
+				def.setDefaultvalue(defaultvalue);
+				String datatype = StrUtil.obj2str(map.get("datatype"));
+				def.setDatatype(datatype);
+				Object dataLengthObj = map.get("dataLength");
+				if (dataLengthObj != null)
+				{
+					int dataLength = StrUtil.obj2int(dataLengthObj);
+					def.setDataLength(dataLength);
+				}
+				Object decimalObj = map.get("decimal");
+				if (decimalObj != null)
+				{
+					int decimal = StrUtil.obj2int(decimalObj);
+					def.setDecimal(decimal);
+				}
+				Object flagsObj = map.get("flags");
+				if (flagsObj != null)
+				{
+					int flags = StrUtil.obj2int(flagsObj);
+					def.setFlags(flags);
+				}
+				result.add(def);
+			}
+			tableColsDefCache.put(tablename, result);
+			return result;
 		}
-		return result;
 	}
 }

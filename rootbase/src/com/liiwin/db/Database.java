@@ -329,6 +329,27 @@ public class Database
 	}
 
 	/**
+	 * 表插入
+	 * @param table
+	 * @param paramsList
+	 * @return
+	 * 赵玉柱
+	 */
+	public int insertTableList(String table, List<Map<String,Object>> paramsList)
+	{
+		int result = 0;
+		if (StrUtil.isNoStrTrimNull(table) && paramsList != null && !paramsList.isEmpty())
+		{
+			for (Map<String,Object> params : paramsList)
+			{
+				int insert = insertTable(table, params);
+				result += insert;
+			}
+		}
+		return result;
+	}
+
+	/**
 	 * 插入表
 	 * @param table
 	 * @param params
