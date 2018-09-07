@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="common_head :: commandHeader(${errortitle})">
+ </head>
+<body>
+<div th:include="common_js :: onloadJS"></div>
+<p th:text="${errorname}"></p>
+<p th:text="${errmessage}"></p>
+<p th:text="${url}" style="color:red"></p>
+<p>StackTrace</p>
+<p th:text="${exception}"></p>
+<p >如果问题依然存在，请与 Web服务器的管理员联系</p>
+</body>
+</html>
