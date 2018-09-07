@@ -4,6 +4,10 @@
 <body>
 	<div th:fragment="onloadJS()">
 		<div>测试 onloadJS()</div>
+		<script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+		<script  th:src="@{/js/bootstrap.min.js}" ></script>
+		<!-- <script th:if="${background}" th:src="@{/js/bootstrap.min.js}" ></script>-->
+		<script  th:src="@{/js/bootstrap-table.min.js}" ></script>
 	</div>
 </body>
 </html>

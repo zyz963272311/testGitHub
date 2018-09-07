@@ -1,8 +1,11 @@
 package xyz.zyzhu.spring.boot.db;
 
 import java.sql.SQLException;
+import javax.sql.DataSource;
 import com.liiwin.db.Database;
 import com.liiwin.db.pool.IDatabasePool;
+import xyz.zyzhu.spring.boot.utils.SpringBeanUtils;
+import xyz.zyzhu.spring.config.DruidConfig;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -88,7 +91,19 @@ public class BootDatabasePool implements IDatabasePool
 	@Override
 	public synchronized Database getDatabase()
 	{
-		return db;
+		String databaseName = db.getDatabaseName();
+		boolean isWrite = db.getIsWrite();
+		DruidConfig druidConfig = SpringBeanUtils.getBean(DruidConfig.class);
+		DataSource datasource = druidConfig.dataSourceByDbName(databaseName, isWrite);
+		BootDatabase resultDb = new BootDatabase(datasource, databaseName);
+		if (isWrite)
+		{
+			resultDb.setIsWrite();
+		} else
+		{
+			resultDb.setIsRead();
+		}
+		return resultDb;
 		//		Database database = null;
 		//		try
 		//		{

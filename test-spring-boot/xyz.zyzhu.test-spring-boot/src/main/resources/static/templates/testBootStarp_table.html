@@ -1,0 +1,304 @@
+ <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!--  <head> -->
+<!--    <title>aplex Bootstrap</title> -->
+<!--    <meta charset="utf-8"> -->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+<!--    <link rel="stylesheet" href="/css/bootstrap.min.css"> -->
+<!--    <script src="/js/jquery.js"></script> -->
+<!--    <script src="/js/bootstrap.min.js"></script> -->
+<!--  </head> -->
+ <head th:include="common_head :: commandHeader('测试标题')">
+ </head>
+ 
+<body class="hold-transition skin-blue sidebar-mini">
+ <div th:include="common_js :: onloadJS()"></div>
+<div class="wrapper">
+
+  <div class="content-wrapper">
+  
+    <section class="content-header">
+      <h1>
+                     客户管理
+        <small>客户列表</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> 主页</a></li>
+        <li class="active">首页</li>
+      </ol>
+    </section>
+    <section class="content">
+      <div class="row">
+         <div class="panel-body" style="padding-bottom:0px;">
+        <div id="toolbar" class="btn-group">
+            <button id="btn_add" type="button" class="btn  btn-success" onclick="btn_add()">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+            </button>
+           <button id="remove" class="btn btn-danger" >
+            <i class="glyphicon glyphicon-remove"></i> 删除
+           </button>
+        </div>
+           <div class="box">
+            <!-- /.box-header -->
+            <div class="box-body">
+        <table id="tb_customer" data-response-handler="responseHandler">
+        </table>
+         </div>
+        </div>
+    </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+  </div>
+</div>
+ <script >
+ 
+ selections = [];
+ $(function () {
+     //1.初始化Table
+     var oTable = new TableInit();
+     oTable.Init();
+
+     //2.初始化Button的点击事件
+     var oButtonInit = new ButtonInit();
+     oButtonInit.Init();
+
+ });
+
+
+
+ var TableInit = function () {
+     var oTableInit = new Object();
+     //初始化Table
+     oTableInit.Init = function () {
+         $('#tb_customer').bootstrapTable({
+             url: '/customer-data',         //请求后台的URL（*）
+             method: 'get',                      //请求方式（*）
+             toolbar: '#toolbar',                //工具按钮用哪个容器
+             striped: true,                      //是否显示行间隔色
+             cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+             pagination: true,                   //是否显示分页（*）
+             sortable: false,                     //是否启用排序
+             sortOrder: "asc",                   //排序方式
+             queryParams: oTableInit.queryParams,//传递参数（*）
+             sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+             pageNumber:1,                       //初始化加载第一页，默认第一页
+             pageSize: 10,                       //每页的记录行数（*）
+             pageList: [10],        //可供选择的每页的行数（*）
+             search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+             strictSearch: true,
+             showColumns: true,                  //是否显示所有的列
+             showRefresh: true,                  //是否显示刷新按钮
+             minimumCountColumns: 2,             //最少允许的列数
+             clickToSelect: true,                //是否启用点击选中行
+             height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+             uniqueId: "mid",                     //每一行的唯一标识，一般为主键列
+             showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+             cardView: false,                    //是否显示详细视图
+             detailView: false,                   //是否显示父子表onEditableSave
+             columns: [{
+                 checkbox: true
+             }, {
+                 field: 'mid',
+                 title: '菜单id'
+                 
+             }, {
+                 field: 'limits',
+                 title: '权限'
+              
+             }, {
+                 field: 'mname',
+                 title: '菜单名称'
+               
+             }, {
+                 field: 'offlags',
+                 title: '停用标识'
+               
+             }, {
+                 field: 'url',
+                 title: '对应连接'
+               
+             }
+             , {
+                 field: 'operate',
+                 title: '操作',
+                 align: 'center',
+                 events: operateEvents,
+                 formatter: operateFormatter
+             }
+             
+             
+             ],
+             onEditableSave:function (field, row, oldValue, $el) {
+              $.ajax({
+                  type: "post",
+                  url: "/edit",
+                  data: { strJson: JSON.stringify(row) },
+                  success: function (data, status) {
+                      if (status == "success") {
+                          alert("编辑成功");
+                      }
+                  },
+                  error: function () {
+                      alert("Error");
+                  },
+                  complete: function () {
+
+                  }
+
+              });
+          }
+         });
+     };
+     
+    
+
+     //得到查询的参数
+   oTableInit.queryParams = function (params) {
+         var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+			tablename: "menu",   //查询表名
+			columns: "*",   //查询列名
+			queryFilter: "1=1",   //查询条件
+			pagefrom: params.offset,   //查询页码
+			pagesize: params.limit,   //每页行数
+			//offset: params.offset,  //页码
+			sortColumns: "mname",  //排序
+			havingFilter: null,  //having条件
+			groupFilter: null  //分组条件
+			//search:params.search
+         };
+         return temp;
+     };
+     return oTableInit;
+ };
+
+
+ var ButtonInit = function () {
+     var oInit = new Object();
+     var postdata = {};
+
+     oInit.Init = function () {
+         //初始化页面上面的按钮事件
+     };
+
+     return oInit;
+ };
+
+ function btn_add(){
+       $("#myModalLabel").text("添加客户");
+        $('#myModal').modal();
+      
+ }
+
+ function operateFormatter(value, row, index) {
+     return [
+          '<a class="like" href="javascript:void(0)" title="Like">',
+             '<i class="fa fa-pencil-square-o"></i>',
+             '</a>  ',
+         '<a class="remove" href="javascript:void(0)" title="Remove">',
+         '<i class="glyphicon glyphicon-remove"></i>',
+         '</a>'
+     ].join('');
+ }
+
+ window.operateEvents = {
+         'click .like': function (e, value, row, index) {
+         $("#myModalLabel").text("编辑客户");
+         $("#mobile").attr("value",row.mobile);
+           $("#money").attr("value",row.doubleSumMoney); 
+           $("#id").attr("value",row.id);
+           $("#index").attr("value",index);
+             $('#myModal').modal();
+               
+         },
+         'click.remove': function (e, value, row, index) {
+               $.ajax({
+                 type: "post",
+                 url: "/delete-customer",
+                 data: { strJson: row.id },
+                 success: function (data, status) {
+                     if (status == "success") {
+                         alert("删除成功");
+                     }
+                 },
+                 error: function () {
+                     alert("Error");
+                 },
+                 complete: function () {
+
+                 }
+
+             });
+             $('#tb_customer').bootstrapTable('remove', {
+                 field: 'id',
+                 values: [row.id]
+             });
+       
+         }
+     };
+     function save(){
+          $.ajax({
+             type: "post",
+             url: "/edit-cus",
+             data:$('#dataFrom').serialize(),
+             success: function (data, status) {
+                 if (status == "success") {
+                     $('#myModal').modal('hide');
+                     $('#tb_customer').bootstrapTable('refresh');
+             
+                 }
+             },
+             error: function () {
+                 alert("Error");
+             },
+             complete: function () {
+
+             }
+
+         });
+         
+         
+     }
+     
+     function getIdSelections() {
+         return $.map($('#tb_customer').bootstrapTable('getSelections'), function (row) {
+             return row.id
+         });
+     }
+
+     
+     function responseHandler(res) {
+         $.each(res.rows, function (i, row) {
+             row.state = $.inArray(row.id, selections) !== -1;
+         });
+         return res;
+     }
+     $('#remove').click(function () {
+         var ids = getIdSelections();
+         $('#tb_customer').bootstrapTable('remove', {
+             field: 'id',
+             values: ids
+         });
+         $.ajax({
+             type: "post",
+             url: "/delete-customer",
+             data: { strJson: ids.toString() },
+             success: function (data, status) {
+                 if (status == "success") {
+                     alert("删除成功");
+                 }
+             },
+             error: function () {
+                 alert("Error");
+             },
+             complete: function () {
+
+             }
+
+         });
+         $('#tb_customer').bootstrapTable('refresh');
+     });
+ </script>
+ </html>

@@ -10,11 +10,13 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.persistence.Table;
+import com.liiwin.db.SqlUtil;
 import com.liiwin.utils.StrUtil;
 import xyz.zyzhu.spring.boot.annotation.FieldDef;
 import xyz.zyzhu.spring.boot.db.BootDatabase;
 import xyz.zyzhu.spring.boot.db.BootDatabasePoolManager;
 import xyz.zyzhu.spring.boot.model.BasModel;
+import xyz.zyzhu.spring.boot.model.BootStrapQueryRequestModel;
 import xyz.zyzhu.spring.boot.model.TableColumnDef;
 /**
  * <p>标题： 对象工具类</p>
@@ -558,5 +560,82 @@ public class ModelUtils
 			tableColsDefCache.put(tablename, result);
 			return result;
 		}
+	}
+
+	public static String getQueryString(BootStrapQueryRequestModel requestModel, BootDatabase db, List<Object> queryParams)
+	{
+		return getQueryString(requestModel, db, queryParams, true);
+	}
+
+	/**
+	 * 根据bootstrap组装查询sql
+	 * @param requestModel
+	 * @return
+	 * 赵玉柱
+	 */
+	public static String getQueryString(BootStrapQueryRequestModel requestModel, BootDatabase db, List<Object> queryParams, boolean buildCount)
+	{
+		if (requestModel == null)
+		{
+			return null;
+		}
+		String tablename = requestModel.getTablename();
+		if (StrUtil.isStrTrimNull(tablename))
+		{
+			throw new RuntimeException("表名不可为空");
+		}
+		String columns = requestModel.getColumns();
+		if (StrUtil.isStrTrimNull(columns))
+		{
+			columns = "*";
+		}
+		String queryFilter = requestModel.getQueryFilter();
+		Integer pagefrom = requestModel.getPagefrom();
+		Integer pagesize = requestModel.getPagesize();
+		Map<String,Object> params = new HashMap<>();
+		if (buildCount)
+		{
+			if ((pagefrom != null && pagefrom.intValue() >= 1) || (pagesize != null && pagesize.intValue() >= 1))
+			{
+				int pagefromInt = pagefrom == null ? 0 : pagefrom.intValue() > 0 ? pagefrom.intValue() : 1;
+				int pagesizeInt = pagesize == null ? 0 : pagesize.intValue() > 0 ? pagesize.intValue() : 1;
+				params.put(SqlUtil.PAGENO, pagefromInt);
+				params.put(SqlUtil.PAGESIZE, pagesizeInt);
+			}
+		}
+		String groupFilter = requestModel.getGroupFilter();
+		String havingFilter = requestModel.getHavingFilter();
+		String sortColumns = requestModel.getSortColumns();
+		StringBuffer sqlSb = new StringBuffer("select ");
+		sqlSb.append(columns).append(" from ").append(tablename);
+		if (StrUtil.isNoStrTrimNull(queryFilter))
+		{
+			sqlSb.append(" where ").append(queryFilter);
+		}
+		if (StrUtil.isNoStrTrimNull(havingFilter))
+		{
+			sqlSb.append(" having ").append(havingFilter);
+		}
+		if (StrUtil.isNoStrTrimNull(groupFilter))
+		{
+			sqlSb.append(" group by ").append(groupFilter);
+		}
+		if (StrUtil.isNoStrTrimNull(sortColumns))
+		{
+			sqlSb.append(" order by ").append(sortColumns);
+		}
+		String sqlBindParams = SqlUtil.sqlBindParams(db, sqlSb.toString(), params, queryParams);
+		return sqlBindParams;
+	}
+
+	public static String getQueryCountString(BootStrapQueryRequestModel requestModel, BootDatabase db, List<Object> queryParams)
+	{
+		String queryString = getQueryString(requestModel, db, queryParams, false);
+		//"select count(*) count from (queryString)"
+		if (queryString != null)
+		{
+			return "select count(*) count from (" + queryString + ") as v_count ";
+		}
+		return null;
 	}
 }
