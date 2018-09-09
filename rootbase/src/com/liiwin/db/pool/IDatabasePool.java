@@ -16,21 +16,21 @@ import com.liiwin.db.Database;
  * 监听使用界面:
  * @version 8.0
  */
-public interface IDatabasePool
+public interface IDatabasePool<D extends Database>
 {
 	/**
 	 * 获取DB
 	 * @return
 	 * 赵玉柱
 	 */
-	public Database getDatabase();
+	public D getDatabase();
 
 	/**
 	 * 获取当前的DB
 	 * @return
 	 * 赵玉柱
 	 */
-	public Database getCurrentDatabase();
+	public D getCurrentDatabase();
 
 	/**
 	 * 释放DB
@@ -38,7 +38,7 @@ public interface IDatabasePool
 	 * @throws SQLException
 	 * 赵玉柱
 	 */
-	public <T extends Database> void releaseDatabase(T db) throws SQLException;
+	public void releaseDatabase(D db) throws SQLException;
 
 	/**
 	 * 销毁db

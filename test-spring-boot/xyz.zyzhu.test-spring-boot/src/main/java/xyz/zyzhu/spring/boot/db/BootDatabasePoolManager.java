@@ -1,7 +1,7 @@
 package xyz.zyzhu.spring.boot.db;
 
 import java.util.Hashtable;
-import javax.sql.DataSource;
+import com.alibaba.druid.pool.DruidDataSource;
 import com.liiwin.db.Database;
 import com.liiwin.db.DatabaseCacheUtils;
 import com.liiwin.db.pool.IDatabasePool;
@@ -26,9 +26,9 @@ import xyz.zyzhu.spring.config.DruidConfig;
  */
 public class BootDatabasePoolManager
 {
-	private static Hashtable<String,IDatabasePool>	pools	= new Hashtable<>();
-	private static BootDatabasePoolManager			maneger;
-	private static DruidConfig						druidConfig;
+	private static Hashtable<String,IDatabasePool<BootDatabase>>	pools	= new Hashtable<>();
+	private static BootDatabasePoolManager							maneger;
+	private static DruidConfig										druidConfig;
 	static
 	{
 		getNewInstance();
@@ -142,12 +142,12 @@ public class BootDatabasePoolManager
 	 */
 	public static BootDatabase getDatabase(String dbname, boolean isWrite)
 	{
-		IDatabasePool pool = getPool(dbname, isWrite);
+		IDatabasePool<BootDatabase> pool = getPool(dbname, isWrite);
 		BootDatabase database = null;
 		String key = dbname + "@" + (isWrite ? "write" : "read");
 		if (pool == null)
 		{
-			DataSource datasource = druidConfig.dataSourceByDbName(dbname, isWrite);
+			DruidDataSource datasource = druidConfig.dataSourceByDbName(dbname, isWrite);
 			database = new BootDatabase(datasource, dbname);
 			if (isWrite)
 			{
@@ -165,14 +165,14 @@ public class BootDatabasePoolManager
 		return database;
 	}
 
-	public static IDatabasePool getPool(String dbName)
+	public static IDatabasePool<BootDatabase> getPool(String dbName)
 	{
 		return getPool(dbName, true);
 	}
 
-	public static IDatabasePool getPool(String dbName, boolean isWrite)
+	public static IDatabasePool<BootDatabase> getPool(String dbName, boolean isWrite)
 	{
-		IDatabasePool pool = null;
+		IDatabasePool<BootDatabase> pool = null;
 		if (StrUtil.isStrTrimNull(dbName))
 		{
 			throw new RuntimeException("db名称不可为空");

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
-import javax.sql.DataSource;
+import com.alibaba.druid.pool.DruidDataSource;
 import com.liiwin.db.Database;
 import com.liiwin.db.Databasetype;
 import com.liiwin.utils.BeanUtils;
@@ -35,7 +35,7 @@ import xyz.zyzhu.spring.config.DruidConfig;
  */
 public class BootDatabase extends Database
 {
-	DataSource datasource;
+	DruidDataSource datasource;
 
 	/**************************************************构造方法****************************************/
 	/**
@@ -55,7 +55,7 @@ public class BootDatabase extends Database
 		}
 		setDatabaseName(databaseName);
 		DruidConfig druidConfig = SpringBeanUtils.getBean(DruidConfig.class);
-		DataSource datasource = null;
+		DruidDataSource datasource = null;
 		if (isRead)
 		{
 			datasource = druidConfig.readDatasourceByDbName(databaseName);
@@ -68,6 +68,7 @@ public class BootDatabase extends Database
 			throw new RuntimeException("获取数据源失败" + databaseName);
 		}
 		this.datasource = datasource;
+		withProperties(datasource);
 		try
 		{
 			conn = datasource.getConnection();
@@ -90,25 +91,47 @@ public class BootDatabase extends Database
 		setIsRead();
 	}
 
-	public BootDatabase(DataSource datasource, String dbname)
+	/**
+	 * 
+	 * @param datasource
+	 * @return
+	 * 赵玉柱
+	 */
+	protected BootDatabase withProperties(DruidDataSource datasource)
+	{
+		//设置最大连接数
+		int maxActive = datasource.getMaxActive();
+		setMaxActiveConnections(maxActive);
+		setMaxActiveConnections(maxActive);
+		//设置最大等待时间
+		long maxWait = datasource.getMaxWait();
+		setConnTimeOut(maxWait);
+		//设置最小链接
+		int initialSize = datasource.getInitialSize();
+		setInitConnections(initialSize);
+		return this;
+	}
+
+	public BootDatabase(DruidDataSource datasource, String dbname)
 	{
 		if (datasource == null)
 		{
 			throw new RuntimeException("参数datasource不可为空");
 		}
 		this.datasource = datasource;
+		withProperties(datasource);
 		try
 		{
 			conn = datasource.getConnection();
 			DatabaseMetaData metaData = conn.getMetaData();
 			String productName = metaData.getDatabaseProductName();
-			if ("oracle".equals(productName))
+			if (StrUtil.equalsIgnoreCase("oracle", productName, true))
 			{
 				type = Databasetype.ORACLE;
-			} else if ("mysql".equals(productName))
+			} else if (StrUtil.equalsIgnoreCase("mysql", productName, true))
 			{
 				type = Databasetype.MYSQL;
-			} else if ("sqlserver".equals(productName))
+			} else if (StrUtil.equalsIgnoreCase("sqlserver", productName, true))
 			{
 				type = Databasetype.SQLSQRVER;
 			}

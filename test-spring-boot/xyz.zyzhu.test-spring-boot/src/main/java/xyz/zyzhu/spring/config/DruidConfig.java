@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
-import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,7 +42,7 @@ public class DruidConfig
 {
 	private static Logger							logger			= LoggerFactory.getLogger(DruidConfig.class);
 	@Value("${spring.datasource.type}")
-	private Class<? extends DataSource>				dataSourceType;
+	private Class<? extends DruidDataSource>		dataSourceType;
 	private static Map<String,AtomicBoolean>		rdsLoaded		= new ConcurrentHashMap<>();
 	private static Map<String,List<LoadBalance>>	rdsBalancesMap	= new ConcurrentHashMap<>();
 	private static Map<String,AtomicBoolean>		wdsLoaded		= new ConcurrentHashMap<>();
@@ -103,9 +102,9 @@ public class DruidConfig
 	@Bean(name = "defaultDatasource")
 	@Primary
 	@ConfigurationProperties(prefix = "spring.datasource")
-	public DataSource defaultDataSource()
+	public DruidDataSource defaultDataSource()
 	{
-		DataSource dataSource = DataSourceBuilder.create().type(dataSourceType).build();
+		DruidDataSource dataSource = (DruidDataSource) DataSourceBuilder.create().type(dataSourceType).build();
 		return dataSource;
 	}
 
@@ -122,7 +121,7 @@ public class DruidConfig
 	 */
 	@Bean(name = "readDatasource")
 	@Lazy
-	public DataSource readDataSource()
+	public DruidDataSource readDataSource()
 	{
 		return readDatasourceByDbName("default");
 	}
@@ -140,7 +139,7 @@ public class DruidConfig
 	 */
 	@Bean(name = "writeDatasource")
 	@Lazy
-	public DataSource writeDataSource()
+	public DruidDataSource writeDataSource()
 	{
 		return writeDataSourceByDbName("default");
 	}
@@ -158,12 +157,12 @@ public class DruidConfig
 	 * @return
 	 * 赵玉柱
 	 */
-	public DataSource writeDataSourceByDbName(String dbname)
+	public DruidDataSource writeDataSourceByDbName(String dbname)
 	{
 		return dataSourceByDbName(dbname, true);
 	}
 
-	public DataSource dataSourceByDbName(String dbName, boolean isWrite)
+	public DruidDataSource dataSourceByDbName(String dbName, boolean isWrite)
 	{
 		if (dbName == null)
 		{
@@ -174,7 +173,7 @@ public class DruidConfig
 		int options = PropertiesUtils.getPropIntValue(key + ".blance", 0);
 		loadBalances(key, readSize, false);
 		LoadBalance balance = LoadBalanceUtils.balance(key, wdsBalancesMap.get(key), options);
-		DataSource dataSource = null;
+		DruidDataSource dataSource = null;
 		if (balance != null)
 		{
 			dataSource = getDataSource(key + "." + StrUtil.obj2int(balance.getName()));
@@ -197,7 +196,7 @@ public class DruidConfig
 	 * @return
 	 * 赵玉柱
 	 */
-	public DataSource defaultDatasourceByDbName(String dbname)
+	public DruidDataSource defaultDatasourceByDbName(String dbname)
 	{
 		if (dbname == null)
 		{
@@ -208,7 +207,7 @@ public class DruidConfig
 		int options = PropertiesUtils.getPropIntValue(key + ".blance", 0);
 		loadBalances(key, readSize, false);
 		LoadBalance balance = LoadBalanceUtils.balance(key, wdsBalancesMap.get(key), options);
-		DataSource dataSource = null;
+		DruidDataSource dataSource = null;
 		if (balance != null)
 		{
 			dataSource = getDataSource(key + "." + StrUtil.obj2int(balance.getName()));
@@ -226,7 +225,7 @@ public class DruidConfig
 	 * @return
 	 * 赵玉柱
 	 */
-	public DataSource readDatasourceByDbName(String dbname)
+	public DruidDataSource readDatasourceByDbName(String dbname)
 	{
 		return dataSourceByDbName(dbname, false);
 	}
@@ -299,7 +298,7 @@ public class DruidConfig
 	 * @param prefix
 	 * @return 赵玉柱
 	 */
-	private DataSource getDataSource(String _prefix)
+	private DruidDataSource getDataSource(String _prefix)
 	{
 		String prefix = _prefix;
 		int p = prefix.lastIndexOf('.');

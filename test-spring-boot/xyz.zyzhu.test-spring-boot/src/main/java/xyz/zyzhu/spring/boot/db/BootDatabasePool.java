@@ -1,8 +1,7 @@
 package xyz.zyzhu.spring.boot.db;
 
 import java.sql.SQLException;
-import javax.sql.DataSource;
-import com.liiwin.db.Database;
+import com.alibaba.druid.pool.DruidDataSource;
 import com.liiwin.db.pool.IDatabasePool;
 import xyz.zyzhu.spring.boot.utils.SpringBeanUtils;
 import xyz.zyzhu.spring.config.DruidConfig;
@@ -20,20 +19,20 @@ import xyz.zyzhu.spring.config.DruidConfig;
  * 监听使用界面:
  * @version 8.0
  */
-public class BootDatabasePool implements IDatabasePool
+public class BootDatabasePool implements IDatabasePool<BootDatabase>
 {
 	//DB
 	private BootDatabase db;
 	//	//数据库连接活动状态
-	//	private boolean							isActive		= false;
+	//	private boolean								isActive		= false;
 	//	//记录创建的总的线程
-	//	private int								activeCount		= 0;
+	//	private int									activeCount		= 0;
 	//	//空闲DB
-	//	private final List<Database>			freeDatabase	= new Vector<Database>();
+	//	private final List<BootDatabase>			freeDatabase	= new Vector<BootDatabase>();
 	//	//活动DB
-	//	private final List<Database>			activeDatabase	= new Vector<Database>();
+	//	private final List<BootDatabase>			activeDatabase	= new Vector<BootDatabase>();
 	//将线程和连接绑定，保证事务能统一执行
-	//	private static ThreadLocal<Database>	threadLocal	= new ThreadLocal<Database>();
+	//	private static ThreadLocal<BootDatabase>	threadLocal		= new ThreadLocal<BootDatabase>();
 
 	public BootDatabasePool(BootDatabase db)
 	{
@@ -50,51 +49,48 @@ public class BootDatabasePool implements IDatabasePool
 	 */
 	public void init()
 	{
-		/*
-		try
-		{
-			Connection conn = db.getConn();
-			if (conn != null)
-			{
-				for (int i = 0; i < db.getInitConnections(); i++)
-				{
-					Database database = null;
-					if (i == 0)
-					{
-						database = db;
-					} else
-					{
-						database = new BootDatabase(db.getDatabaseName(), db.getIsWrite());
-					}
-					if (database.getConn() != null)
-					{
-						freeDatabase.add(database);
-						activeCount++;
-					}
-				}
-				isActive = true;
-			}
-		} catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-		*/}
-
-	@Override
-	public Database getCurrentDatabase()
-	{
-		Database currDB = null;//threadLocal.get();
-		currDB = getDatabase();
-		return currDB;
+		//		try
+		//		{
+		//			Connection conn = db.getConn();
+		//			if (conn != null)
+		//			{
+		//				for (int i = 0; i < db.getInitConnections(); i++)
+		//				{
+		//					BootDatabase database = null;
+		//					if (i == 0)
+		//					{
+		//						database = db;
+		//					} else
+		//					{
+		//						database = new BootDatabase(db.getDatabaseName(), db.getIsWrite());
+		//					}
+		//					if (database.getConn() != null)
+		//					{
+		//						freeDatabase.add(database);
+		//						activeCount++;
+		//					}
+		//				}
+		//				isActive = true;
+		//			}
+		//		} catch (Exception e)
+		//		{
+		//			e.printStackTrace();
+		//		}
 	}
 
 	@Override
-	public synchronized Database getDatabase()
+	public BootDatabase getCurrentDatabase()
+	{
+		return db;
+	}
+
+	@Override
+	public synchronized BootDatabase getDatabase()
 	{
 		String databaseName = db.getDatabaseName();
 		boolean isWrite = db.getIsWrite();
 		DruidConfig druidConfig = SpringBeanUtils.getBean(DruidConfig.class);
-		DataSource datasource = druidConfig.dataSourceByDbName(databaseName, isWrite);
+		DruidDataSource datasource = druidConfig.dataSourceByDbName(databaseName, isWrite);
 		BootDatabase resultDb = new BootDatabase(datasource, databaseName);
 		if (isWrite)
 		{
@@ -104,7 +100,7 @@ public class BootDatabasePool implements IDatabasePool
 			resultDb.setIsRead();
 		}
 		return resultDb;
-		//		Database database = null;
+		//		BootDatabase database = null;
 		//		try
 		//		{
 		//			if (activeCount < db.getMaxConnects())
@@ -120,14 +116,14 @@ public class BootDatabasePool implements IDatabasePool
 		//			} else
 		//			{
 		//				wait(db.getConnTimeOut());
-		//				database = getDatabase();
+		//				database = (BootDatabase) getDatabase();
 		//			}
-		//					if (isValid(database))
-		//					{
-		//						threadLocal.set(database);
-		//						activeDatabase.add(database);
-		//						activeCount++;
-		//					}
+		//			if (isValid(database))
+		//			{
+		//				threadLocal.set(database);
+		//				activeDatabase.add(database);
+		//				activeCount++;
+		//			}
 		//		} catch (Exception e)
 		//		{
 		//			e.printStackTrace();
@@ -137,18 +133,16 @@ public class BootDatabasePool implements IDatabasePool
 	}
 
 	@Override
-	public synchronized void releaseDatabase(Database database) throws SQLException
+	public synchronized void releaseDatabase(BootDatabase database) throws SQLException
 	{
-		/*
-		if (isValid(database) && !(freeDatabase.size() > db.getMaxActiveConnections()))
-		{
-			freeDatabase.add(database);
-			activeDatabase.remove(database);
-			activeCount--;
-			threadLocal.remove();
-			notifyAll();
-		}
-		*/
+		//		if (isValid(database) && !(freeDatabase.size() > db.getMaxActiveConnections()))
+		//		{
+		//			freeDatabase.add((BootDatabase) database);
+		//			activeDatabase.remove(database);
+		//			activeCount--;
+		//			threadLocal.remove();
+		//			notifyAll();
+		//		}
 	}
 
 	/**
@@ -157,38 +151,36 @@ public class BootDatabasePool implements IDatabasePool
 	@Override
 	public synchronized void destroy()
 	{
-		/*
-		for (int i = freeDatabase.size() - 1; i >= 0; i--)
-		{
-			Database database = freeDatabase.remove(i);
-			try
-			{
-				if (isValid(database))
-				{
-					database.close();
-				}
-			} catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
-		for (int i = activeDatabase.size() - 1; i >= 0; i--)
-		{
-			Database database = activeDatabase.remove(i);
-			try
-			{
-				if (isValid(database))
-				{
-					database.close();
-				}
-			} catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
-		isActive = false;
-		activeCount = 0;
-		*/
+		//		for (int i = freeDatabase.size() - 1; i >= 0; i--)
+		//		{
+		//			BootDatabase database = freeDatabase.remove(i);
+		//			try
+		//			{
+		//				if (isValid(database))
+		//				{
+		//					database.close();
+		//				}
+		//			} catch (Exception e)
+		//			{
+		//				e.printStackTrace();
+		//			}
+		//		}
+		//		for (int i = activeDatabase.size() - 1; i >= 0; i--)
+		//		{
+		//			BootDatabase database = activeDatabase.remove(i);
+		//			try
+		//			{
+		//				if (isValid(database))
+		//				{
+		//					database.close();
+		//				}
+		//			} catch (Exception e)
+		//			{
+		//				e.printStackTrace();
+		//			}
+		//		}
+		//		isActive = false;
+		//		activeCount = 0;
 	}
 
 	@Override
@@ -200,50 +192,18 @@ public class BootDatabasePool implements IDatabasePool
 	@Override
 	public void checkPool()
 	{
-		/*
-		if (db.isCheckPool())
-		{
-			new Timer().schedule(new TimerTask()
-			{
-				@Override
-				public void run()
-				{
-					System.out.println("空闲DB链接数量：" + freeDatabase.size());
-					System.out.println("活动DB线程数量：" + activeDatabase.size());
-					System.out.println("总DB线程数量：" + activeCount);
-				}
-			}, db.getLazyCheck(), db.getPeriodCheck());
-		}
-		*/
-	}
-
-	/**
-	 * 当前数据库对象是否可用
-	 * @param database
-	 * @return
-	 * 赵玉柱
-	 */
-	private boolean isValid(Database database)
-	{
-		return true;
-		/*
-		try
-		{
-			if (database == null)
-			{
-				return false;
-			}
-			Connection conn = database.getConn();
-			if (conn == null || conn.isClosed())
-			{
-				return false;
-			}
-		} catch (SQLException e)
-		{
-			e.printStackTrace();
-			throw new RuntimeException("报错信息：" + e.getMessage());
-		}
-		return true;
-		*/
+		//		if (db.isCheckPool())
+		//		{
+		//			new Timer().schedule(new TimerTask()
+		//			{
+		//				@Override
+		//				public void run()
+		//				{
+		//					System.out.println("空闲DB链接数量：" + freeDatabase.size());
+		//					System.out.println("活动DB线程数量：" + activeDatabase.size());
+		//					System.out.println("总DB线程数量：" + activeCount);
+		//				}
+		//			}, db.getLazyCheck(), db.getPeriodCheck());
+		//		}
 	}
 }

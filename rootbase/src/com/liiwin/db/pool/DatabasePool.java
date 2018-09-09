@@ -21,7 +21,7 @@ import com.liiwin.db.Database;
  * 监听使用界面:
  * @version 8.0
  */
-public class DatabasePool implements IDatabasePool
+public class DatabasePool implements IDatabasePool<Database>
 {
 	//DB
 	private Database						db;

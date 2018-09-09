@@ -1330,6 +1330,43 @@ public class StrUtil
 		return startWith(tempSrc, pre, fromIdx, bothNullRetuen);
 	}
 
+	public static boolean equalsIgnoreCase(Object a, Object b, boolean trim)
+	{
+		if (equals(a, b))
+		{
+			return true;
+		}
+		String stra = obj2str(a);
+		String strb = obj2str(b);
+		if (stra == strb)
+		{
+			return true;
+		}
+		String uppera = toUpper(stra, trim);
+		String upperb = toUpper(strb, trim);
+		return equals(uppera, upperb);
+	}
+
+	public static String toUpper(String str, boolean trim)
+	{
+		if (str == null)
+		{
+			return null;
+		}
+		String temp = trim ? str.trim() : str;
+		return temp.toUpperCase();
+	}
+
+	public static String toLower(String str, boolean trim)
+	{
+		if (str == null)
+		{
+			return null;
+		}
+		String temp = trim ? str.trim() : str;
+		return temp.toLowerCase();
+	}
+
 	public static boolean equals(Object a, Object b)
 	{
 		if (a == null && b == null)
