@@ -22,7 +22,7 @@ public class BootStrapQueryResponseModel implements Serializable
 {
 	private static final long	serialVersionUID	= -263506411624342890L;
 	//公共部分数据
-	private int					totabSize;									//总记录数
+	private int					total;									//总记录数
 	private int					pagefrom;									//页码
 	private int					pagesize;									//每页行数
 	List<Map<String,Object>>	rows;										//查询结果数据
@@ -66,19 +66,19 @@ public class BootStrapQueryResponseModel implements Serializable
 
 	public BootStrapQueryResponseModel withTotalSize(int totalsize)
 	{
-		setTotabSize(totalsize);
+		setTotal(totalsize);
 		return this;
 	}
 
-	public int getTotabSize()
+	public int getTotal()
 	{
-		return totabSize;
+		return total;
 	}
 
-	public void setTotabSize(int totabSize)
+	public void setTotal(int total)
 	{
 		//setValue("totabSize", totabSize);
-		this.totabSize = totabSize;
+		this.total = total;
 	}
 
 	public int getPagefrom()

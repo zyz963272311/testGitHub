@@ -190,8 +190,13 @@ public class BootDatabasePoolManager
 	 * @param database
 	 * 赵玉柱
 	 */
-	public static void close(Database database)
+	public static void close(BootDatabase database)
 	{
+		if (database == null)
+		{
+			return;
+		}
+		database.close();
 		//		if (database == null)
 		//		{
 		//			throw new RuntimeException("database为空，不能执行关闭操作");
@@ -207,6 +212,15 @@ public class BootDatabasePoolManager
 	 */
 	public static void close(String dbName, Database database)
 	{
+		if (database == null)
+		{
+			return;
+		}
+		boolean nameEqual = dbName.equals(database.getDatabaseName());
+		if (nameEqual)
+		{
+			database.close();
+		}
 		//		if (database == null)
 		//		{
 		//			throw new RuntimeException("database为空，不能执行关闭操作");

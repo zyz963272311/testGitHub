@@ -104,8 +104,8 @@ public class DruidConfig
 	@ConfigurationProperties(prefix = "spring.datasource")
 	public DruidDataSource defaultDataSource()
 	{
-		DruidDataSource dataSource = (DruidDataSource) DataSourceBuilder.create().type(dataSourceType).build();
-		return dataSource;
+		DruidDataSource druidDataSource = (DruidDataSource) DataSourceBuilder.create().type(dataSourceType).build();
+		return druidDataSource;
 	}
 
 	/**
@@ -317,6 +317,7 @@ public class DruidConfig
 				prefix = prefix + "." + name;
 			}
 		}
+		DruidDataSource dataSource = new DruidDataSource();
 		String url = PropertiesUtils.getPropValue(prefix + ".url");
 		String username = PropertiesUtils.getPropValue(prefix + ".username");
 		String password = PropertiesUtils.getPropValue(prefix + ".password");
@@ -339,9 +340,8 @@ public class DruidConfig
 		String connectionProperties = PropertiesUtils.getPropValue(prefix + ".connectionProperties");
 		boolean useGlobalDataSourceStat = PropertiesUtils.getPropBoolValue(prefix + ".useGlobalDataSourceStat");
 		String filters = PropertiesUtils.getPropValue(prefix + ".filters");
-		DruidDataSource dataSource = new DruidDataSource();
 		dataSource.setUrl(url);
-		dataSource.setName("");
+		dataSource.setName(name);
 		dataSource.setDriverClassName(driverClassName);
 		dataSource.setUsername(username);
 		dataSource.setPassword(password);

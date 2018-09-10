@@ -597,7 +597,7 @@ public class ModelUtils
 		{
 			if ((pagefrom != null && pagefrom.intValue() >= 1) || (pagesize != null && pagesize.intValue() >= 1))
 			{
-				int pagefromInt = pagefrom == null ? 0 : pagefrom.intValue() > 0 ? pagefrom.intValue() : 1;
+				int pagefromInt = pagefrom == null ? 0 : pagefrom.intValue() > 0 ? pagefrom.intValue() : 0;
 				int pagesizeInt = pagesize == null ? 0 : pagesize.intValue() > 0 ? pagesize.intValue() : 1;
 				params.put(SqlUtil.PAGENO, pagefromInt);
 				params.put(SqlUtil.PAGESIZE, pagesizeInt);

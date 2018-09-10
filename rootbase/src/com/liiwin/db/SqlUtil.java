@@ -317,9 +317,9 @@ public class SqlUtil
 				{
 					int pageno = StrUtil.obj2int(params.get(PAGENO));
 					int pagesize = StrUtil.obj2int(params.get(PAGESIZE));
-					if (pageno > 0 && pagesize > 0)
+					if (pageno >= 0 && pagesize > 0)
 					{
-						int from = pagesize * pageno + 1;
+						int from = pagesize * pageno;
 						int to = from + pagesize;
 						//需要进行分页
 						if (type == Databasetype.MYSQL)
@@ -327,7 +327,7 @@ public class SqlUtil
 							//MYsql
 							if (sql.toLowerCase().indexOf(" limit ") < 0)
 							{
-								sql = sql + " limit " + from + "," + to;
+								sql = sql + " limit " + from + "," + pagesize;
 							}
 						}
 						if (type == Databasetype.ORACLE)

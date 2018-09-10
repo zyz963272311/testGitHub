@@ -135,6 +135,7 @@ public class BootDatabasePool implements IDatabasePool<BootDatabase>
 	@Override
 	public synchronized void releaseDatabase(BootDatabase database) throws SQLException
 	{
+		database.close();
 		//		if (isValid(database) && !(freeDatabase.size() > db.getMaxActiveConnections()))
 		//		{
 		//			freeDatabase.add((BootDatabase) database);
@@ -148,6 +149,7 @@ public class BootDatabasePool implements IDatabasePool<BootDatabase>
 	/**
 	 * 销毁所有的链接
 	 */
+	@Deprecated
 	@Override
 	public synchronized void destroy()
 	{

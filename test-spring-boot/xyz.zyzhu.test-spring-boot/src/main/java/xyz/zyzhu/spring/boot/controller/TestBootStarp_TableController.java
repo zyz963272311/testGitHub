@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.liiwin.utils.StrUtil;
 import xyz.zyzhu.spring.boot.db.BootDatabase;
 import xyz.zyzhu.spring.boot.db.BootDatabasePoolManager;
+import xyz.zyzhu.spring.boot.model.BootStrapDeleteRequestModel;
 import xyz.zyzhu.spring.boot.model.BootStrapQueryRequestModel;
 import xyz.zyzhu.spring.boot.model.BootStrapQueryResponseModel;
 import xyz.zyzhu.spring.boot.utils.ModelUtils;
@@ -64,6 +65,36 @@ public class TestBootStarp_TableController
 		BootStrapQueryResponseModel responseModel = new BootStrapQueryResponseModel();
 		//设置数据
 		responseModel.withPageMessage(request).withTotalSize(totalCount).withRows(queryResult);
+		BootDatabasePoolManager.close(db);
 		return responseModel;
+	}
+
+	@RequestMapping("/delete-customer")
+	public void delete(BootStrapDeleteRequestModel deleteRequest)
+	{
+		if (deleteRequest != null)
+		{
+			String table = deleteRequest.getTable();
+			if (StrUtil.isStrTrimNull(table))
+			{
+				throw new RuntimeException("表名不可为空");
+			}
+			List<Map<String,Object>> delRequest = deleteRequest.getDelRequest();
+			if (delRequest != null && !delRequest.isEmpty())
+			{
+				BootDatabase db = BootDatabasePoolManager.getWriteDatabaseByTable(table);
+				try
+				{
+				} catch (Exception e)
+				{
+				} finally
+				{
+					BootDatabasePoolManager.close(db);
+				}
+			} else
+			{
+				throw new RuntimeException("行信息不可为空");
+			}
+		}
 	}
 }

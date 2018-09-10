@@ -747,5 +747,12 @@ public class BootDatabase extends Database
 			throw new RuntimeException("不支持的操作" + saveMode);
 		}
 	}
+
 	/**************************************************存盘分割线****************************************/
+	@Override
+	public void close()
+	{
+		datasource.close();
+		super.close();
+	}
 }
