@@ -83,13 +83,22 @@ public class TestBootStarp_TableController
 			if (delRequest != null && !delRequest.isEmpty())
 			{
 				BootDatabase db = BootDatabasePoolManager.getWriteDatabaseByTable(table);
+				boolean rollback = true;
 				try
 				{
-				} catch (Exception e)
-				{
+					db.beginTrans();
+					db.deleteTableList(table, delRequest);
+					db.commit();
+					rollback = false;
 				} finally
 				{
-					BootDatabasePoolManager.close(db);
+					try
+					{
+						db.rollback(rollback);
+					} finally
+					{
+						BootDatabasePoolManager.close(db);
+					}
 				}
 			} else
 			{

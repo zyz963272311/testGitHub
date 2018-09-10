@@ -749,6 +749,56 @@ public class BootDatabase extends Database
 	}
 
 	/**************************************************存盘分割线****************************************/
+	/**************************************************删除分割线****************************************/
+	public int deleteTable(String tablename, Map<String,Object> tableValue)
+	{
+		if (StrUtil.isStrTrimNull(tablename))
+		{
+			throw new RuntimeException("表名不可为空");
+		}
+		if (tableValue == null || tableValue.isEmpty())
+		{
+			throw new RuntimeException("表数据不可为空");
+		}
+		List<String> columns = ModelUtils.getTableColumnByTableName(tablename);
+		StringBuffer seleteSb = new StringBuffer("delete from ").append(tablename).append(" where ");
+		boolean hasColumn = false;
+		for (String column : columns)
+		{
+			if (tableValue.containsKey(column))
+			{
+				hasColumn = true;
+				seleteSb.append(column).append("=:").append(column).append(" and ");
+			}
+		}
+		if (!hasColumn)
+		{
+			throw new RuntimeException("表数据中无表字段");
+		}
+		seleteSb.setLength(seleteSb.length() - 4);
+		boolean execResult = execSqlForWrite(seleteSb.toString(), tableValue);
+		return execResult ? 1 : 0;
+	}
+
+	public int deleteTableList(String tablename, List<Map<String,Object>> tableList)
+	{
+		if (StrUtil.isStrTrimNull(tablename))
+		{
+			throw new RuntimeException("表名不可为空");
+		}
+		if (tableList == null || tableList.isEmpty())
+		{
+			throw new RuntimeException("表数据不可为空");
+		}
+		int result = 0;
+		for (Map<String,Object> tableValue : tableList)
+		{
+			result = result + deleteTable(tablename, tableValue);
+		}
+		return result;
+	}
+
+	/**************************************************删除分割线****************************************/
 	@Override
 	public void close()
 	{

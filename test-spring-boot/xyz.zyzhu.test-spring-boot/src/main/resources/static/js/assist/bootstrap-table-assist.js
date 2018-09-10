@@ -26,8 +26,7 @@ function getIdSelections(tableElemSelecter, idCol, isThrow) {
 		for (var i = 0; i < idCols.length; i++) {
 			var name = idCols[i];
 			if (name != null && name != undefined) {
-				rowValue['name'] = idCols[i];
-				rowValue['value'] = row[idCols[i]];
+				rowValue[idCols[i]] = row[idCols[i]];
 			}
 		}
 		return rowValue;
