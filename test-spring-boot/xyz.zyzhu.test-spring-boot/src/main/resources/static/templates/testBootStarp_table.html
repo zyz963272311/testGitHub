@@ -248,13 +248,14 @@
  };
 
  function btn_add(){
-       $("#myModalLabel").text("添加客户");
-       $("#mid").attr("value");
-       $("#index").attr("value");
-       $("#limits").attr("value");
-       $("#offlags_off").attr("value"); 
-       $("#mname").attr("value");
-       $("#url").attr("value");
+       $("#myModalLabel").text("添加菜单");
+       $("#mid").val("");
+       $("#index").val("");
+       $("#limits").val("");
+       $("#offlags_off").val(""); 
+       $("#offlags_off").removeAttr("checked");
+       $("#mname").val("");
+       $("#url").val("");
        $('#myModal').modal();
       
  }
@@ -371,7 +372,7 @@
 	                			else
 	                			{
 	                				//表示插入
-	                				$('#tb_customer').bootstrapTable('prepend',resultValues);
+	                				$('#tb_customer').bootstrapTable('insertRow',{index:0,row:resultValues[0]});
 	                			}
 	                		}
 	                	}

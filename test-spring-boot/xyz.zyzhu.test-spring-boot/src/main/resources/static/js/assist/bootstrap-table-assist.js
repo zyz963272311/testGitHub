@@ -36,7 +36,7 @@ function getIdSelections(tableElemSelecter, idCol,isThrow) {
 				}
 			}
 			return rowValue;
-		}
+		});
 	}
 	else
 	{
@@ -49,6 +49,6 @@ function getIdSelections(tableElemSelecter, idCol,isThrow) {
 				}
 			}
 			return rowValue;
-		}
-	});
+		});
+	}
 }

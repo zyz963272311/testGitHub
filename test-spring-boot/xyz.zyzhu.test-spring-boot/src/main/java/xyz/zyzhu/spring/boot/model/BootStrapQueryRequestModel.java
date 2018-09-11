@@ -1,6 +1,8 @@
 package xyz.zyzhu.spring.boot.model;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 /**
  * <p>标题： bootStrap查询请求参数</p>
  * <p>功能： </p>
@@ -17,15 +19,20 @@ import java.io.Serializable;
  */
 public class BootStrapQueryRequestModel implements Serializable
 {
-	private static final long	serialVersionUID	= 6871825031919095203L;
-	private String				tablename;									//查询表名
-	private String				columns;									//查询列名
-	private String				queryFilter;								//查询条件
-	private Integer				pagefrom;									//查询记录从
-	private Integer				pagesize;									//单页记录数
-	private String				sortColumns;								//排序字段
-	private String				havingFilter;								//having条件
-	private String				groupFilter;								//group by 字段
+	private static final long			serialVersionUID	= 6871825031919095203L;
+	private String						tablename;									//查询表名
+	private String						columns;									//查询列名
+	private String						queryFilter;								//查询条件
+	//格式：{"name":"列名","sqlname":"sql字段名","value":"值","compareMethod":"比较方式","prefix","表名前缀"}
+	//说明：sqlname权值大于name权值
+	//当查询的表名多余一个的情况下prefix字段标识当前的字段名作用在哪个表上
+	//compareMethod为比较方式，默认为等于
+	private List<Map<String,Object>>	moreQueryFilter;							//更多查询条件
+	private Integer						pagefrom;									//查询记录从
+	private Integer						pagesize;									//单页记录数
+	private String						sortColumns;								//排序字段
+	private String						havingFilter;								//having条件
+	private String						groupFilter;								//group by 字段
 
 	public String getTablename()
 	{
@@ -113,5 +120,16 @@ public class BootStrapQueryRequestModel implements Serializable
 	{
 		//setValue("groupFilter", groupFilter);
 		this.groupFilter = groupFilter;
+	}
+
+	public List<Map<String,Object>> getMoreQueryFilter()
+	{
+		return moreQueryFilter;
+	}
+
+	public void setMoreQueryFilter(List<Map<String,Object>> moreQueryFilter)
+	{
+		//setValue("moreQueryFilter", moreQueryFilter);
+		this.moreQueryFilter = moreQueryFilter;
 	}
 }

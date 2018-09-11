@@ -592,7 +592,12 @@ public class ModelUtils
 		String queryFilter = requestModel.getQueryFilter();
 		Integer pagefrom = requestModel.getPagefrom();
 		Integer pagesize = requestModel.getPagesize();
+		List<Map<String,Object>> moreQueryFilter = requestModel.getMoreQueryFilter();
+		StringBuffer moreSb = new StringBuffer();
 		Map<String,Object> params = new HashMap<>();
+		if (moreQueryFilter != null && !moreQueryFilter.isEmpty())
+		{
+		}
 		if (buildCount)
 		{
 			if ((pagefrom != null && pagefrom.intValue() >= 1) || (pagesize != null && pagesize.intValue() >= 1))
@@ -611,6 +616,14 @@ public class ModelUtils
 		if (StrUtil.isNoStrTrimNull(queryFilter))
 		{
 			sqlSb.append(" where ").append(queryFilter);
+		}
+		if (moreSb.length() > 0)
+		{
+			if (sqlSb.indexOf(" where ") >= 0)
+			{
+				sqlSb.append(" and ");
+			}
+			sqlSb.append(moreSb.toString());
 		}
 		if (StrUtil.isNoStrTrimNull(havingFilter))
 		{
