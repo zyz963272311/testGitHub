@@ -39,3 +39,21 @@
 	dataexpg 	queryfilter			查询条件			varchar			128,0			0b00000000
 	//插入#1/更新#2/执行前删除#4  #3==0则先查询再更新 
 	dataexpg 	flags				标志位			int				4,0				0b00000000
+	
+	//编码生成规则
+	autocode	id					内码				varchar			128,0			0b00000011
+	autocode	code				编码				varchar			128,0			0b00000000
+	autocode	name				编码名称			varchar			128,0			0b00000000
+	autocode	flags				启用标识			int				4,0				0b00000000
+	
+	
+	//编码生成规则子表
+	autocodeg	id					内码				varchar			128,0			0b00000011
+	autocodeg	mid					主表内码			varchar			128,0			0b00000000
+	autocodeg	num					序号				varchar			128,0			0b00000000
+	autocodeg	formate				格式				varchar			128,0			0b00000000
+	autocodeg	length				长度				int				4,0				0b00000000
+	autocodeg	type				类型				varchar			128,0			0b00000000
+	
+	
+	

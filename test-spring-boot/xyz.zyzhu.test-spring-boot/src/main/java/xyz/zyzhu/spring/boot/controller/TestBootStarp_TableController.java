@@ -8,12 +8,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.liiwin.utils.BeanUtils;
 import com.liiwin.utils.StrUtil;
 import xyz.zyzhu.spring.boot.db.BootDatabase;
 import xyz.zyzhu.spring.boot.db.BootDatabasePoolManager;
+import xyz.zyzhu.spring.boot.model.BasModel;
 import xyz.zyzhu.spring.boot.model.BootStrapDeleteRequestModel;
 import xyz.zyzhu.spring.boot.model.BootStrapQueryRequestModel;
 import xyz.zyzhu.spring.boot.model.BootStrapQueryResponseModel;
+import xyz.zyzhu.spring.boot.model.BootStrapUpdateRequestModel;
+import xyz.zyzhu.spring.boot.model.BootStrapUpdateResponseModel;
 import xyz.zyzhu.spring.boot.utils.ModelUtils;
 /**
  * <p>标题： TODO</p>
@@ -41,6 +47,12 @@ public class TestBootStarp_TableController
 		return mav;
 	}
 
+	/**
+	 * 数据查询
+	 * @param request
+	 * @return
+	 * 赵玉柱
+	 */
 	@RequestMapping("/customer-data")
 	@ResponseBody
 	public BootStrapQueryResponseModel getData(BootStrapQueryRequestModel request)
@@ -69,6 +81,11 @@ public class TestBootStarp_TableController
 		return responseModel;
 	}
 
+	/**
+	 * 数据删除
+	 * @param deleteRequest
+	 * 赵玉柱
+	 */
 	@RequestMapping("/delete-customer")
 	public void delete(BootStrapDeleteRequestModel deleteRequest)
 	{
@@ -102,8 +119,78 @@ public class TestBootStarp_TableController
 				}
 			} else
 			{
-				throw new RuntimeException("行信息不可为空");
+				throw new RuntimeException("表信息不可为空");
 			}
 		}
+	}
+
+	/**
+	 * 数据更新 包括修改与新增
+	 * @param requestModel
+	 * @return
+	 * 赵玉柱
+	 */
+	@RequestMapping("/update-customer")
+	public BootStrapUpdateResponseModel updateTable(BootStrapUpdateRequestModel requestModel)
+	{
+		if (requestModel == null)
+		{
+			throw new RuntimeException("参数不可为空");
+		}
+		String table = requestModel.getTable();
+		List<Map<String,Object>> tableValues = requestModel.getTableValues();
+		String modelClass = requestModel.getModelClass();
+		Integer options = requestModel.getOptions();
+		if (StrUtil.isStrTrimNull(table))
+		{
+			throw new RuntimeException("表名不可为空");
+		}
+		if (tableValues == null || tableValues.isEmpty())
+		{
+			throw new RuntimeException("表数据不可为空");
+		}
+		if (options == null || options == 0)
+		{
+			options = 1;
+		}
+		if (StrUtil.isStrTrimNull(modelClass))
+		{
+			throw new RuntimeException("转换的类路径不可为空");
+		}
+		Class<BasModel> basModelClass = BeanUtils.getClassByPath(modelClass);
+		List<BasModel> models = new ArrayList<>();
+		for (Map<String,Object> map : tableValues)
+		{
+			JSONObject json = new JSONObject(map);
+			BasModel model = JSONObject.toJavaObject(json, basModelClass);
+			model.setSaveMode(options);
+			models.add(model);
+		}
+		BootDatabase db = BootDatabasePoolManager.getWriteDatabaseByTable(table);
+		boolean rollback = true;
+		try
+		{
+			db.beginTrans();
+			db.saveList(models);
+			db.commit();
+			rollback = false;
+		} finally
+		{
+			try
+			{
+				db.rollback(rollback, false);
+			} finally
+			{
+				BootDatabasePoolManager.close(db);
+			}
+		}
+		JSONArray jsonarray = new JSONArray();
+		for (BasModel model : models)
+		{
+			jsonarray.add(model.getMapValues());
+		}
+		BootStrapUpdateResponseModel responseModel = new BootStrapUpdateResponseModel();
+		responseModel.setResultValues(jsonarray);
+		return responseModel;
 	}
 }

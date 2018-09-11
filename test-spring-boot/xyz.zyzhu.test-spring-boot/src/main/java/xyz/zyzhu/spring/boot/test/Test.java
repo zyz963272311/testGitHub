@@ -32,6 +32,8 @@ public class Test
 
 	public static void main(String[] args)
 	{
+		String a = null;
+		throw new RuntimeException(a.toString());
 	}
 }
 class TestC extends Test

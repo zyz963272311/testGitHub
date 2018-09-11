@@ -22,10 +22,14 @@ public class Menu extends BasModel
 	//	@Id
 	//	@GeneratedValue(strategy = GenerationType.AUTO)
 	@FieldDef(defaultValue = "AutoCode:mid________")
-	Integer						mid;
+	String						mid;
+	@FieldDef()
 	String						mname;
+	@FieldDef()
 	Integer						offlags;
+	@FieldDef()
 	String						url;
+	@FieldDef()
 	String						limits;
 
 	/**
@@ -51,12 +55,12 @@ public class Menu extends BasModel
 		super();
 	}
 
-	public Integer getMid()
+	public String getMid()
 	{
 		return mid;
 	}
 
-	public void setMid(Integer mid)
+	public void setMid(String mid)
 	{
 		setValue("mid", mid);
 	}
@@ -88,7 +92,7 @@ public class Menu extends BasModel
 
 	public void setUrl(String url)
 	{
-		setValue("limits", url);
+		setValue("url", url);
 	}
 
 	public String getLimits()

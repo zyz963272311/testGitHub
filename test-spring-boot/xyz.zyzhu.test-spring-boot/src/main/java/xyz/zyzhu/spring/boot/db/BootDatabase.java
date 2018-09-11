@@ -517,7 +517,6 @@ public class BootDatabase extends Database
 		}
 		List<String> primaryKsys = t.getPrimaryKsys();
 		List<Object> primaryValues = t.getPrimaryValues(false);
-		List<Object> oldPrimarys = t.getOldPrimaryValues();
 		if (primaryKsys == null || primaryKsys.isEmpty())
 		{
 			throw new RuntimeException("当前对象不存在主键字段" + t.getClass());
@@ -546,21 +545,28 @@ public class BootDatabase extends Database
 		Map<String,Object> params = new HashMap<>();
 		int sbLength = sb.length();
 		int length = columns.length;
+		if (length == primaryKsys.size())
+		{
+			throw new RuntimeException("对象内所有的字段均为主键字段，无法进行更新操作" + t.getClass().getName());
+		}
 		for (int i = 0; i < length; i++)
 		{
 			String column = columns[i];
-			boolean isColumn = t.isColumn(column);
-			if (isColumn)
+			if (!primaryKsys.contains(column))
 			{
-				//				if(isPrimary)
-				//				{
-				//					throw new RuntimeException("主键不允许更新");
-				//				}
-				Object object = tableValues.get(column);
-				if (!Objects.isNull(object) || !retainOld)
+				boolean isColumn = t.isColumn(column);
+				if (isColumn)
 				{
-					sb.append(column).append("=:").append(column).append(",");
-					params.put(column, object);
+					//				if(isPrimary)
+					//				{
+					//					throw new RuntimeException("主键不允许更新");
+					//				}
+					Object object = tableValues.get(column);
+					if (!Objects.isNull(object) || !retainOld)
+					{
+						sb.append(column).append("=:").append(column).append(",");
+						params.put(column, object);
+					}
 				}
 			}
 		}
@@ -577,7 +583,7 @@ public class BootDatabase extends Database
 		for (int i = 0; i < length; i++)
 		{
 			String column = primaryKsys.get(i);
-			Object value = oldPrimarys.get(i);
+			Object value = primaryValues.get(i);
 			if (StrUtil.isStrTrimNull(column) || Objects.isNull(value))
 			{
 				throw new RuntimeException("主键字段不可为空" + t);

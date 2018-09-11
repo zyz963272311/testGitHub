@@ -1,8 +1,11 @@
 package xyz.zyzhu.spring.boot.model;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
+import com.liiwin.utils.StrUtil;
 /**
- * <p>标题： boot回执参数</p>
+ * <p>标题： bootstrap table查询回执参数</p>
  * <p>功能： </p>
  * <p>所属模块： boot</p>
  * <p>版权： Copyright © 2018 SNSOFT</p>
@@ -15,14 +18,11 @@ import java.io.Serializable;
  * 监听使用界面:
  * @version 8.0
  */
-import java.util.List;
-import java.util.Map;
-import com.liiwin.utils.StrUtil;
 public class BootStrapQueryResponseModel implements Serializable
 {
 	private static final long	serialVersionUID	= -263506411624342890L;
 	//公共部分数据
-	private int					total;									//总记录数
+	private int					total;										//总记录数
 	private int					pagefrom;									//页码
 	private int					pagesize;									//每页行数
 	List<Map<String,Object>>	rows;										//查询结果数据

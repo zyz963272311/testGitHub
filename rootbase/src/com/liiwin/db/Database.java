@@ -621,7 +621,7 @@ public class Database
 						statement.setObject(i + 1, paramsList.get(i));
 					}
 				}
-				result = statement.execute();
+				result = statement.executeUpdate() > 0;
 			} else
 			{
 				throw new RuntimeException("db" + databaseName + "已经断开连接");

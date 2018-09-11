@@ -28,22 +28,28 @@ public class BeanUtils
 	}
 
 	@SuppressWarnings("unchecked")
+	public static <T extends Object> Class<T> getClassByPath(String classpath)
+	{
+		Class<T> class1 = (Class<T>) cacheClazz.get(classpath);
+		if (class1 == null)
+		{
+			try
+			{
+				class1 = (Class<T>) Class.forName(classpath);
+				cacheClazz.put(classpath, class1);
+			} catch (Exception e)
+			{
+				throw new RuntimeException("报错内容", e);
+			}
+		}
+		return class1;
+	}
+
 	public static <T extends Object> T newInstance(String classPath, List<Class<?>> paramType, List<Object> paramObject)
 	{
-		try
-		{
-			Class<T> forName = (Class<T>) cacheClazz.get(classPath);
-			if (forName == null)
-			{
-				forName = (Class<T>) Class.forName(classPath);
-				cacheClazz.put(classPath, forName);
-			}
-			T newInstance = newInstanceByClass(forName, paramType, paramObject);
-			return newInstance;
-		} catch (ClassNotFoundException e)
-		{
-			throw new RuntimeException("报错内容", e);
-		}
+		Class<T> forName = getClassByPath(classPath);
+		T newInstance = newInstanceByClass(forName, paramType, paramObject);
+		return newInstance;
 	}
 
 	public static <T> T instantiate(Class<T> clazz)

@@ -53,6 +53,67 @@
     <!-- /.content -->
   </div>
 </div>
+
+
+ <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+       aria-labelledby="myModalLabel" aria-hidden="true" style="position:absolute;top:20%;left:10%;">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close"
+                          data-dismiss="modal" aria-hidden="true">
+                      &times;
+                  </button>
+                  <h4 id="myModalLabel">
+                      	标题
+                  </h4>
+              </div>
+              <div class="modal-body">
+              <!-- 此处添加数据 -->
+              	<input type="hidden" id="index">
+              	<input type="hidden" id="mid">
+              <table>
+              	<tr>
+	              	<td>
+	              		<small>权限</small><input type="text" id="limits">
+	              	</td>
+	              	<td>
+	              		<small>菜单名称</small><input type="text" id="mname">
+	              	</td>
+              	</tr>
+              	<tr>
+	              	<td>
+              			<small>停用标识</small><input type="checkbox" id="offlags_off">
+              		</td>
+	              	<td>
+              			<small>对应链接</small><input type="text" id="url">
+              		</td>
+              	</tr>
+              </table>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-success"
+                          data-dismiss="modal" id="qx">
+                      	关闭
+                  </button>
+                  <a class="btn btn-success" id="save">
+                     	 确定
+                  </a>
+              </div>
+          </div><!-- /.modal-content -->
+      </div>
+
+
+
+
+  </div>
+
+
+
+
+
+
+
  <script >
  
  selections = [];
@@ -188,36 +249,45 @@
 
  function btn_add(){
        $("#myModalLabel").text("添加客户");
-        $('#myModal').modal();
+       $("#mid").attr("value");
+       $("#index").attr("value");
+       $("#limits").attr("value");
+       $("#offlags_off").attr("value"); 
+       $("#mname").attr("value");
+       $("#url").attr("value");
+       $('#myModal').modal();
       
  }
 
  function operateFormatter(value, row, index) {
      return [
-          '<a class="like" href="javascript:void(0)" title="Like">',
-             '<i class="fa fa-pencil-square-o"></i>',
-             '</a>  ',
+         '<a class="like" href="javascript:void(0)" title="Like">',
+            '<i class="glyphicon glyphicon-plus"></i>',
+            '<input type="hidden" class="hiden_input" value="'+index+'"/>',
+         '</a>  ',
          '<a class="remove" href="javascript:void(0)" title="Remove">',
-         '<i class="glyphicon glyphicon-remove"></i>',
+         	'<i class="glyphicon glyphicon-remove"></i>',
          '</a>'
      ].join('');
  }
-
  window.operateEvents = {
-         'click .like': function (e, value, row, index) {
-         $("#myModalLabel").text("编辑客户");
-         $("#mobile").attr("value",row.mobile);
-           $("#money").attr("value",row.doubleSumMoney); 
-           $("#id").attr("value",row.id);
-           $("#index").attr("value",index);
-             $('#myModal').modal();
-               
+		 //点击当前行的添加修改事件
+		 'click .like': function (e, value, row, index) {
+	         $("#myModalLabel").text("编辑客户");
+	         $("#mid").attr("value",row.mid);
+	         $("#index").attr("value",index);
+	         $("#limits").attr("value",row.limits);
+	         $("#offlags_off").attr("value",parseInt(row.offlags)); 
+	         $("#mname").attr("value",row.mname);
+	         $("#url").attr("value",row.url);
+	         $('#myModal').modal();
          },
-         'click.remove': function (e, value, row, index) {
+         //点击当前行的删除事件
+         'click .remove': function (e, value, row, index) {
                $.ajax({
                  type: "post",
                  url: "/delete-customer",
-                 data: { strJson: row.id },
+                 data: { table:"menu",delRequest:[row]},
                  success: function (data, status) {
                      if (status == "success") {
                          alert("删除成功");
@@ -233,7 +303,7 @@
              });
              $('#tb_customer').bootstrapTable('remove', {
                  field: 'mid',
-                 values: [row.id]
+                 values: [row.mid]
              });
        
          }
@@ -261,6 +331,69 @@
          
          
      }
+     
+     $('#save').click(function () {
+    	 try
+    	 {
+    		 var mid = $("#mid")[0].value;
+    		 var index = $("#index")[0].value;
+    		 var limitsValue = $("#limits")[0].value;
+    		 var mnameValue = $("#mname")[0].value;
+    		 var offlagsValue = 0;
+    		 if($("#offlags_off")[0].checked)
+    		 {
+    			 offlagsValue = 1;
+    		 }
+    		 var urlValue = $("#url")[0].value;
+    		 var delRequestObj = {mname:mnameValue,limits:limitsValue,offlags:offlagsValue,url:urlValue};
+    		 var optionsValue = 1;
+    		 if(mid)
+    		 {
+    			 delRequestObj.mid = mid;
+    			 optionsValue = 4;
+    		 }
+	         $.ajax({
+	             type: "get",
+	             url: "/update-customer",
+	             data: { table:"menu",tableValues: [delRequestObj],options:optionsValue,modelClass:"xyz.zyzhu.spring.boot.model.Menu"},
+	             success: function (data, status) {
+	                 if (status == "success") {
+	                	if(data)
+	                	{
+	                		var resultValues = data.resultValues;
+	                		if(resultValues && resultValues.length>0)
+	                		{
+	                			if(index)
+	                			{
+	                				//表示更新
+	                				$('#tb_customer').bootstrapTable('updateRow',{index:index,row:resultValues[0]});
+	                			}
+	                			else
+	                			{
+	                				//表示插入
+	                				$('#tb_customer').bootstrapTable('prepend',resultValues);
+	                			}
+	                		}
+	                	}
+	                	 $('#myModal').modal('hide');
+	                 }
+	             },
+	             error: function () {
+	                 alert("Error");
+	             },
+	             complete: function () {
+	             }
+	
+	         });
+    	 }
+    	 catch(e)
+    	 {
+    		 alert(e);
+    	 }
+     });
+     
+     
+     
      
 //      function getIdSelections() {
 //          return $.map($('#tb_customer').bootstrapTable('getSelections'), function (row) {
