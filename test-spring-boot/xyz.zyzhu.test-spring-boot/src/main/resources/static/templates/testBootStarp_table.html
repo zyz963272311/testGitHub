@@ -291,12 +291,19 @@
 		 //点击当前行的添加修改事件
 		 'click .like': function (e, value, row, index) {
 	         $("#myModalLabel").text("编辑客户");
-	         $("#mid").attr("value",row.mid);
-	         $("#index").attr("value",index);
-	         $("#limits").attr("value",row.limits);
-	         $("#offlags_off").attr("value",parseInt(row.offlags)); 
-	         $("#mname").attr("value",row.mname);
-	         $("#url").attr("value",row.url);
+	         $("#mid")[0].value=row.mid;
+	         $("#index")[0].value=index;
+	         $("#limits")[0].value=row.limits;
+	         if(parseInt(row.offlags))
+	         {
+	         	$("#offlags_off")[0].check=true; 
+	         }
+	         else
+	         {
+	        	 $("#offlags_off")[0].check=false; 
+	         }
+	         $("#mname")[0].value=row.mname;
+	         $("#url")[0].value=row.url;
 	         $('#myModal').modal();
          },
          //点击当前行的删除事件
