@@ -76,7 +76,7 @@ public class SqlUtil
 				fromIdx = i;
 				continue;
 			}
-			if (fromIdx >= 0 && Character.isJavaIdentifierStart(c))
+			if (fromIdx >= 0 && (Character.isJavaIdentifierStart(c) || c == '.' || (c >= '0' && c <= '9')))
 			{
 				//判断当前字符是否为合法标识符
 				endIdx = i;

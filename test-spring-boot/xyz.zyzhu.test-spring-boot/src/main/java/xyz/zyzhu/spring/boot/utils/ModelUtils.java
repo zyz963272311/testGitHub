@@ -597,6 +597,39 @@ public class ModelUtils
 		Map<String,Object> params = new HashMap<>();
 		if (moreQueryFilter != null && !moreQueryFilter.isEmpty())
 		{
+			boolean appendAnd = false;
+			for (Map<String,Object> moreQuery : moreQueryFilter)
+			{
+				//名称
+				String name = StrUtil.obj2str(moreQuery.get("name"));
+				//sql名称
+				String sqlname = StrUtil.obj2str(moreQuery.get("sqlname"));
+				if (StrUtil.isStrTrimNull(name) && StrUtil.isStrTrimNull(sqlname))
+				{
+					continue;
+				}
+				//表名前缀
+				String prefix = StrUtil.obj2str(moreQuery.get("prefix"));
+				//比较方式
+				int compareMethod = StrUtil.obj2int(moreQuery.get("compareMethod"));
+				//值
+				Object value = moreQuery.get("value");
+				if (value == null)
+				{
+					continue;
+				}
+				String field = (StrUtil.isStrTrimNull(prefix) ? "" : (prefix + ".")) + (StrUtil.isStrTrimNull(sqlname) ? name : sqlname);
+				String buildSql = BootSqlUtils.buildSql(db, field, value, params, compareMethod);
+				if (buildSql != null)
+				{
+					appendAnd = moreSb.length() > 0;
+					if (appendAnd)
+					{
+						moreSb.append(" and ");
+					}
+					moreSb.append(buildSql);
+				}
+			}
 		}
 		if (buildCount)
 		{

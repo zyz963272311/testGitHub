@@ -57,7 +57,7 @@ function getIdSelections(tableElemSelecter, idCol,isThrow) {
 //比较方式参考类 CompareMethodConstance
 function initPageParams(pageParams)
 {
-	if(pageParams)
+	if(!pageParams)
 	{
 		return;
 	}
@@ -79,14 +79,10 @@ function initPageParams(pageParams)
 				{
 					continue;
 				}
-				for(var j = 0;j<elements.length;j++)
-				{
-					var element = elements[0];
-					element.data("name",name);
-					element.data("sqlname",sqlname);
-					element.data("compareMethod",compareMethod);
-					element.data("prefix",prefix);
-				}
+				elements.data("name",name);
+				elements.data("sqlname",sqlname);
+				elements.data("compareMethod",compareMethod);
+				elements.data("prefix",prefix);
 			}
 		}
 	}
@@ -95,11 +91,11 @@ function initPageParams(pageParams)
 //组装的结果为[{name:名称,sqlname:sql名称,compareMethod:比较方式,prefix:表名前缀,value:值}]
 function getPageParams(pageParams)
 {
-	if(pageParams)
-	{
-		return null;
-	}
 	var resultParams = [];
+	if(!pageParams)
+	{
+		return resultParams;
+	}
 	for(var i = 0;i<pageParams.length;i++)
 	{
 		var pageParam = pageParams[i];
@@ -128,10 +124,11 @@ function getPageParams(pageParams)
 				var value=  element.value;
 				if(value)
 				{
-					element.value = value;
+					resultParam.value = value;
 					resultParams[resultParams.length] = resultParam;
 				}
 			}
 		}
 	}
+	return resultParams;
 }

@@ -126,17 +126,23 @@
  <script >
  
  selections = [];
+ //{id:id选择器,name:名称,sqlname:sql名称,compareMethod:比较方式,prefix:表名前缀}
+ pageParams = [{id:"#mid_query_text",name:"mid",compareMethod:0,prefix:"menu"},{id:"#mname_query_text",name:"mname",compareMethod:6,prefix:"menu"}];
  $(function () {
-     //1.初始化Table
-     var oTable = new TableInit();
-     oTable.Init();
-
-     //2.初始化Button的点击事件
-     var oButtonInit = new ButtonInit();
-     oButtonInit.Init();
+	 //初始化界面查询条件相关
+	 reloadData();
 
  });
-
+ function reloadData(){
+	 initPageParams(pageParams);
+	 //1.初始化Table
+	 var oTable = new TableInit();
+	 oTable.Init();
+	
+	 //2.初始化Button的点击事件
+	 var oButtonInit = new ButtonInit();
+	 oButtonInit.Init();
+ }
 
 
  var TableInit = function () {
@@ -236,8 +242,9 @@
 			//offset: params.offset,  //页码
 			sortColumns: "mname",  //排序
 			havingFilter: null,  //having条件
-			groupFilter: null  //分组条件
+			groupFilter: null,  //分组条件
 			//search:params.search
+			moreQueryFilter:getPageParams(pageParams)
          };
          return temp;
      };
@@ -341,7 +348,10 @@
          
          
      }
-     
+     //点击查询按钮
+     $('#query').click(function () {
+    	 $('#tb_customer').bootstrapTable("refreshOptions",{})
+     });
      $('#save').click(function () {
     	 try
     	 {
