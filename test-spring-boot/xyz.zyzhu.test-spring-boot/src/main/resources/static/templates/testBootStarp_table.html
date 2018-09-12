@@ -12,7 +12,7 @@
  </head>
  
 <body class="hold-transition skin-blue sidebar-mini">
- <div th:include="common_js :: onloadJS()"></div>
+<div th:include="common_js :: onloadJS()"></div>
 <div class="wrapper">
 
   <div class="content-wrapper">
@@ -28,6 +28,15 @@
       </ol>
     </section>
     <section class="content">
+      <div class="input-group">
+        <span class="input-group-addon" id="mid_query">菜单ID</span>
+        <input type="text" id="mid_query_text" class="form-control" placeholder="菜单ID" aria-describedby="mid_query">
+        <span class="input-group-addon" id="mname_query">菜单名称</span>
+        <input type="text" id="mname_query_text" class="form-control" placeholder="菜单名称" aria-describedby="mname_query">
+      </div>
+      <div class="input-group">
+        <input type="button" id="query" class="form-control" value="query">
+      </div>
       <div class="row">
          <div class="panel-body" style="padding-bottom:0px;">
         <div id="toolbar" class="btn-group">

@@ -52,3 +52,86 @@ function getIdSelections(tableElemSelecter, idCol,isThrow) {
 		});
 	}
 }
+//界面查询条件初始化
+//pageParams 格式为[{id:id选择器,name:名称,sqlname:sql名称,compareMethod:比较方式,prefix:表名前缀}]
+//比较方式参考类 CompareMethodConstance
+function initPageParams(pageParams)
+{
+	if(pageParams)
+	{
+		return;
+	}
+	for(var i = 0;i<pageParams.length;i++)
+	{
+		var pageParam = pageParams[i];
+		if(pageParam)
+		{
+			var id = pageParam.id;
+			var name = pageParam.name;
+			var sqlname = pageParam.sqlname;
+			var compareMethod = pageParam.compareMethod;
+			var prefix = pageParam.prefix;
+			if(id)
+			{
+				var elements = $(id);
+				//当类型为redio的情况下，name可能会有多个
+				if(elements === null||elements.length == 0 )
+				{
+					continue;
+				}
+				for(var j = 0;j<elements.length;j++)
+				{
+					var element = elements[0];
+					element.data("name",name);
+					element.data("sqlname",sqlname);
+					element.data("compareMethod",compareMethod);
+					element.data("prefix",prefix);
+				}
+			}
+		}
+	}
+}
+//获取所有的查询条件
+//组装的结果为[{name:名称,sqlname:sql名称,compareMethod:比较方式,prefix:表名前缀,value:值}]
+function getPageParams(pageParams)
+{
+	if(pageParams)
+	{
+		return null;
+	}
+	var resultParams = [];
+	for(var i = 0;i<pageParams.length;i++)
+	{
+		var pageParam = pageParams[i];
+		if(pageParam)
+		{
+			var id = pageParam.id;
+			var name = pageParam.name;
+			var sqlname = pageParam.sqlname;
+			var compareMethod = pageParam.compareMethod;
+			var prefix = pageParam.prefix;
+			if(id)
+			{
+				var elements = $(id);
+				//暂时不考虑radio
+				if(elements === null||elements.length == 0 ||elements.length>1)
+				{
+					continue;
+				}
+				var element = elements[0];
+				var resultParam = {};
+				resultParam.name = name;
+				resultParam.sqlname = sqlname;
+				resultParam.compareMethod = compareMethod;
+				resultParam.prefix = prefix;
+				//目前仅仅考虑 text类型
+				var value=  element.value;
+				if(value)
+				{
+					element.value = value;
+					resultParams[resultParams.length] = resultParam;
+				}
+			}
+		}
+	}
+}
