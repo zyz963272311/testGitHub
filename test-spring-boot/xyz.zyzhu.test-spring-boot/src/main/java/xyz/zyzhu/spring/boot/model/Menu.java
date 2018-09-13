@@ -24,6 +24,8 @@ public class Menu extends BasModel
 	@FieldDef(defaultValue = "AutoCode:mid________")
 	String						mid;
 	@FieldDef()
+	String						node;
+	@FieldDef()
 	String						mname;
 	@FieldDef()
 	Integer						offlags;
@@ -103,5 +105,15 @@ public class Menu extends BasModel
 	public void setLimits(String limits)
 	{
 		setValue("limits", limits);
+	}
+
+	public String getNode()
+	{
+		return node;
+	}
+
+	public void setNode(String node)
+	{
+		setValue("node", node);
 	}
 }

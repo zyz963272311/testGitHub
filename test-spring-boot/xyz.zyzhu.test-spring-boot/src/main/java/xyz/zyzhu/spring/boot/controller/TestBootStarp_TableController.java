@@ -1,8 +1,10 @@
 package xyz.zyzhu.spring.boot.controller;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -47,6 +49,13 @@ public class TestBootStarp_TableController
 		return mav;
 	}
 
+	@RequestMapping("/testBootStarp_table_tree")
+	public ModelAndView index1()
+	{
+		ModelAndView mav = new ModelAndView("testBootStarp_table_tree");
+		return mav;
+	}
+
 	/**
 	 * 数据查询
 	 * @param request
@@ -72,6 +81,42 @@ public class TestBootStarp_TableController
 		String sql = ModelUtils.getQueryString(request, db, queryParams);
 		String sqlCount = ModelUtils.getQueryCountString(request, db, queryCountParams);
 		List<Map<String,Object>> queryResult = db.getListMapFromSqlByListParam(sql, queryParams);
+		String treeField = request.getTreeField();
+		String parentField = request.getParentField();
+		if (StrUtil.isNoStrTrimNull(treeField) && StrUtil.isNoStrTrimNull(parentField) && !StrUtil.equals(parentField, treeField))
+		{
+			//说明是树状结构
+			String splitStr = StrUtil.obj2str(request.getSplitStr(), ".");
+			Set<String> keySet = new HashSet<>();
+			for (Map<String,Object> queryMap : queryResult)
+			{
+				String node = StrUtil.obj2str(queryMap.get(treeField));
+				if (node != null)
+				{
+					keySet.add(node);
+				}
+			}
+			for (Map<String,Object> queryMap : queryResult)
+			{
+				String node = StrUtil.obj2str(queryMap.get(treeField));
+				String parentNode = getParentNode(node, keySet, splitStr);
+				if (node != null)
+				{
+					node = node.replace(splitStr, "");
+					int nodeNum = StrUtil.obj2int(node);
+					queryMap.put(treeField + "num", nodeNum);
+				}
+				if (parentNode != null)
+				{
+					parentNode = parentNode.replace(splitStr, "");
+					int parentNodeNum = StrUtil.obj2int(parentNode);
+					queryMap.put(parentField, parentNodeNum);
+				} else
+				{
+					queryMap.put(parentField, null);
+				}
+			}
+		}
 		Map<String,Object> countResult = db.getMapFromSqlByListParam(sqlCount, queryCountParams);
 		int totalCount = StrUtil.obj2int(countResult.get("count"));
 		BootStrapQueryResponseModel responseModel = new BootStrapQueryResponseModel();
@@ -192,5 +237,33 @@ public class TestBootStarp_TableController
 		BootStrapUpdateResponseModel responseModel = new BootStrapUpdateResponseModel();
 		responseModel.setResultValues(jsonarray);
 		return responseModel;
+	}
+
+	private String getParentNode(String node, Set<String> nodes, String split)
+	{
+		if (StrUtil.isStrTrimNull(node) || nodes == null || nodes.isEmpty())
+		{
+			return null;
+		}
+		if (StrUtil.isStrTrimNull(split))
+		{
+			split = ",";
+		}
+		int p = node.lastIndexOf(split);
+		if (p > 0)
+		{
+			String parentnode = node.substring(0, p);
+			if (nodes.contains(parentnode))
+			{
+				return parentnode;
+			} else
+			{
+				String node2 = getParentNode(parentnode, nodes, split);
+				return node2;
+			}
+		} else
+		{
+			return null;
+		}
 	}
 }

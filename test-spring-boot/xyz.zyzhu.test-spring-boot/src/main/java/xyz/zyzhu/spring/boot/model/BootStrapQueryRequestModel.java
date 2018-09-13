@@ -33,6 +33,9 @@ public class BootStrapQueryRequestModel implements Serializable
 	private String						sortColumns;								//排序字段
 	private String						havingFilter;								//having条件
 	private String						groupFilter;								//group by 字段
+	private String						treeField;									//树状结构根据字段
+	private String						parentField;								//父子关系列
+	private String						splitStr			= ".";					//树状结构父子关系分割节点
 
 	public String getTablename()
 	{
@@ -131,5 +134,38 @@ public class BootStrapQueryRequestModel implements Serializable
 	{
 		//setValue("moreQueryFilter", moreQueryFilter);
 		this.moreQueryFilter = moreQueryFilter;
+	}
+
+	public String getTreeField()
+	{
+		return treeField;
+	}
+
+	public void setTreeField(String treeField)
+	{
+		//setValue("treeField", treeField);
+		this.treeField = treeField;
+	}
+
+	public String getSplitStr()
+	{
+		return splitStr;
+	}
+
+	public void setSplitStr(String splitStr)
+	{
+		//setValue("splitStr", splitStr);
+		this.splitStr = splitStr;
+	}
+
+	public String getParentField()
+	{
+		return parentField;
+	}
+
+	public void setParentField(String parentField)
+	{
+		//setValue("parentField", parentField);
+		this.parentField = parentField;
 	}
 }

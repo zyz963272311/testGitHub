@@ -8,7 +8,7 @@
 <!--    <script src="/js/jquery.js"></script> -->
 <!--    <script src="/js/bootstrap.min.js"></script> -->
 <!--  </head> -->
- <head th:include="common_head :: commandHeader(title='测试bootStrap_table')">
+ <head th:include="common_head :: commandHeader(title='测试bootStrap_table_tree')">
  </head>
  
 <body class="hold-transition skin-blue sidebar-mini">
@@ -50,7 +50,7 @@
            <div class="box">
             <!-- /.box-header -->
             <div class="box-body">
-        <table id="tb_customer" data-response-handler="responseHandler">
+        <table id="tb_customer">
         </table>
          </div>
         </div>
@@ -147,39 +147,37 @@
 
  var TableInit = function () {
      var oTableInit = new Object();
+     var $table = $('#tb_customer');
      //初始化Table
      oTableInit.Init = function () {
-         $('#tb_customer').bootstrapTable({
-             url: '/customer-data',         //请求后台的URL（*）
+    	 $table.bootstrapTable({
+    		 url: '/customer-data',         //请求后台的URL（*）
              method: 'get',                      //请求方式（*）
              toolbar: '#toolbar',                //工具按钮用哪个容器
              striped: true,                      //是否显示行间隔色
-             cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
              pagination: true,                   //是否显示分页（*）
-             sortable: false,                     //是否启用排序
-             sortOrder: "asc",                   //排序方式
              queryParams: oTableInit.queryParams,//传递参数（*）
              sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
              pageNumber:1,                       //初始化加载第一页，默认第一页
              pageSize: 10,                       //每页的记录行数（*）
              pageList: [10,20],        //可供选择的每页的行数（*）
              search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
-             strictSearch: true,
-             showColumns: true,                  //是否显示所有的列
              showRefresh: true,                  //是否显示刷新按钮
              minimumCountColumns: 2,             //最少允许的列数
-             clickToSelect: true,                //是否启用点击选中行
              height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
              uniqueId: "mid",                     //每一行的唯一标识，一般为主键列
-             showToggle:false,                    //是否显示详细视图和列表视图的切换按钮
-             cardView: false,                    //是否显示详细视图
-             detailView: false,                   //是否显示父子表onEditableSave
+             idField: "nodenum",                     //每一行的唯一标识，一般为主键列
              columns: [{
+                 field: 'ck',
                  checkbox: true
-             }, {
+               }, {
                  field: 'mid',
                  title: '菜单id'
                  
+             },  {
+                 field: 'node',
+                 title: '节点'
+              
              }, {
                  field: 'limits',
                  title: '权限'
@@ -204,26 +202,20 @@
                  events: operateEvents,
                  formatter: operateFormatter
              }
-             
-             
              ],
-             onEditableSave:function (field, row, oldValue, $el) {
-              $.ajax({
-                  type: "post",
-                  url: "/edit",
-                  data: { strJson: JSON.stringify(row) },
-                  success: function (data, status) {
-                      if (status == "success") {
-                          alert("编辑成功");
-                      }
-                  },
-                  error: function () {
-                      alert("Error");
-                  },
-                  complete: function () {
-
+             treeShowField: 'node',
+             parentIdField: 'parentId',
+             treeId: 'nodenum',
+             treeView: true,
+             onLoadSuccess: function(data) {
+        	  $table.treegrid({
+                  initialState: 'collapsed',//收缩
+                  treeColumn: 2,//指明第几列数据改为树形
+                  expanderExpandedClass: 'glyphicon glyphicon-triangle-bottom',
+                  expanderCollapsedClass: 'glyphicon glyphicon-triangle-right',
+                  onChange: function() {
+                      $table.bootstrapTable('resetWidth');
                   }
-
               });
           }
          });
@@ -240,9 +232,12 @@
 			pagefrom: params.offset,   //查询页码
 			pagesize: params.limit,   //每页行数
 			//offset: params.offset,  //页码
-			sortColumns: "mname",  //排序
+			sortColumns: "node",  //排序
 			havingFilter: null,  //having条件
 			groupFilter: null,  //分组条件
+			treeField: 'node',
+			parentField: 'parentId',
+			splitStr: '.',
 			//search:params.search
 			moreQueryFilter:getPageParams(pageParams)
          };
@@ -357,7 +352,7 @@
      }
      //点击查询按钮
      $('#query').click(function () {
-    	 $('#tb_customer').bootstrapTable("refreshOptions",{})
+    	 $('#tb_customer').bootstrapTable("refresh",{})
      });
      $('#save').click(function () {
     	 try
