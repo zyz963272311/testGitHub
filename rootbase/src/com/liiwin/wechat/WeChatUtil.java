@@ -1,5 +1,10 @@
 package com.liiwin.wechat;
 
+import com.liiwin.config.BasConfig;
+import com.liiwin.utils.StrUtil;
+import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
+import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.api.impl.WxMpServiceImpl;
 /**
  * <p>标题： 微信工具类</p>
  * <p>功能： </p>
@@ -16,16 +21,47 @@ package com.liiwin.wechat;
  */
 public class WeChatUtil
 {
+	private static WxMpService					wxService;
+	private static WxMpInMemoryConfigStorage	storage	= new WxMpInMemoryConfigStorage();
+	static
+	{
+		String appid = BasConfig.getPropertie("wx_appid");
+		String secret = BasConfig.getPropertie("wx_secret");
+		String token = BasConfig.getPropertie("wx_token");
+		String encodingAESKey = BasConfig.getPropertie("wx_EncodingAESKey");
+		if (StrUtil.isStrTrimNull(appid))
+		{
+			throw new RuntimeException("请设置wx_appid");
+		}
+		if (StrUtil.isStrTrimNull(secret))
+		{
+			throw new RuntimeException("请设置wx_secret");
+		}
+		if (StrUtil.isStrTrimNull(token))
+		{
+			throw new RuntimeException("请设置wx_token");
+		}
+		storage.setAppId(appid);
+		storage.setSecret(secret);
+		storage.setToken(token);
+		storage.setAesKey(encodingAESKey);
+	}
+
 	/**
-	 * 微信支付
-	 * 
+	 * 获取微信service
+	 * @return
 	 * 赵玉柱
 	 */
-	public static String weChatPay(WeChatPayParams payParams)
+	public static WxMpService wxService()
 	{
-		//get_brand_wcpay_request:ok	支付成功
-		//get_brand_wcpay_request:cancel	用户取消
-		//get_brand_wcpay_request:fail	支付失败
-		return null;
+		synchronized (wxService)
+		{
+			if (wxService == null)
+			{
+				wxService = new WxMpServiceImpl();
+				wxService.setWxMpConfigStorage(storage);
+			}
+		}
+		return wxService;
 	}
 }
