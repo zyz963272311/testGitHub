@@ -126,6 +126,7 @@
  <script >
  
  selections = [];
+ dictA = {"1":{"code":"1","name":"已停用"},"0":{"code":"2","name":"未停用"}};
  //{id:id选择器,name:名称,sqlname:sql名称,compareMethod:比较方式,prefix:表名前缀}
  pageParams = [{id:"#mid_query_text",name:"mid",compareMethod:0,prefix:"menu"},{id:"#mname_query_text",name:"mname",compareMethod:6,prefix:"menu"}];
  $(function () {
@@ -190,7 +191,8 @@
                
              }, {
                  field: 'offlags',
-                 title: '停用标识'
+                 title: '停用标识',
+                 formatter: operateDictAFormatter
                
              }, {
                  field: 'url',
@@ -276,6 +278,18 @@
       
  }
 
+ function operateDictAFormatter(value, row, index) {
+	 dictinfo = dictA[value];
+	 if(dictinfo)
+	 {
+		 name = dictinfo["name"];
+		 if(name)
+		 {
+		 	return name;
+		 }
+	 }
+	 return value;
+ }
  function operateFormatter(value, row, index) {
      return [
          '<a class="like" href="javascript:void(0)" title="Like">',
@@ -294,13 +308,15 @@
 	         $("#mid")[0].value=row.mid;
 	         $("#index")[0].value=index;
 	         $("#limits")[0].value=row.limits;
+	         $("#offlags_off").val(""); 
+	         $("#offlags_off").removeAttr("checked");
 	         if(parseInt(row.offlags))
 	         {
-	         	$("#offlags_off")[0].check=true; 
+	         	$("#offlags_off").prop("checked",true);
 	         }
 	         else
 	         {
-	        	 $("#offlags_off")[0].check=false; 
+	         	$("#offlags_off").prop("checked",false);
 	         }
 	         $("#mname")[0].value=row.mname;
 	         $("#url")[0].value=row.url;

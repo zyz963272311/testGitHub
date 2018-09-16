@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.liiwin.utils.StrUtil;
 import xyz.zyzhu.spring.boot.annotation.FieldDef;
 import xyz.zyzhu.spring.boot.utils.ModelUtils;
@@ -29,7 +27,7 @@ import xyz.zyzhu.spring.boot.utils.ModelUtils;
  * @version 8.0
  */
 @SuppressWarnings("rawtypes")
-public class BasModel implements Serializable, Comparable
+public class BasModel extends BasObject implements Serializable, Comparable
 {
 	private static final long	serialVersionUID	= 1L;
 	@FieldDef(notColumn = true)
@@ -400,12 +398,6 @@ public class BasModel implements Serializable, Comparable
 	public Map<String,Object> getOldValues()
 	{
 		return oldValues;
-	}
-
-	@Override
-	public String toString()
-	{
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
 	}
 
 	@Override

@@ -1,5 +1,8 @@
 package xyz.zyzhu.spring.boot.controller;
 
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,12 +29,20 @@ public class DefaultErrorHandler
 	@ExceptionHandler(value = Exception.class)
 	public ModelAndView defaultErrorHandler(HttpServletRequest request, Exception e) throws Exception
 	{
+		Enumeration<String> parameterNames = request.getParameterNames();
+		Map<String,Object> reqParams = new HashMap<>();
+		while (parameterNames.hasMoreElements())
+		{
+			String parameterName = parameterNames.nextElement();
+			reqParams.put(parameterName, request.getParameter(parameterName));
+		}
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("errortitle", "统一异常处理页面");
 		mav.addObject("errorname", "统一异常处理页面");
-		mav.addObject("errmessage", e.getMessage());
-		mav.addObject("exception", e);
-		mav.addObject("url", request.getRequestURL());
+		mav.addObject("params", "请求参数:" + reqParams);
+		mav.addObject("errmessage", "异常信息:" + e.getMessage());
+		mav.addObject("exception", "异常堆栈:" + e);
+		mav.addObject("url", "请求url:" + request.getRequestURL());
 		mav.setViewName(DEFAULT_ERROR_VIEW);
 		return mav;
 	}

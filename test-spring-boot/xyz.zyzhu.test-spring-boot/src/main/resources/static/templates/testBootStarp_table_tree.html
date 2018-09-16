@@ -13,6 +13,7 @@
  
 <body class="hold-transition skin-blue sidebar-mini">
 <div th:include="common_js :: onloadJS()"></div>
+<div th:include="common_leftmenu :: onloadLeftMenu(params=~{needImportJS:false})"></div>
 <div class="wrapper">
 
   <div class="content-wrapper">
@@ -289,13 +290,15 @@
 	         $("#mid")[0].value=row.mid;
 	         $("#index")[0].value=index;
 	         $("#limits")[0].value=row.limits;
+	         $("#offlags_off").val(""); 
+	         $("#offlags_off").removeAttr("checked");
 	         if(parseInt(row.offlags))
 	         {
-	         	$("#offlags_off")[0].check=true; 
+	         	$("#offlags_off").prop("checked",true);
 	         }
 	         else
 	         {
-	        	 $("#offlags_off")[0].check=false; 
+	         	$("#offlags_off").prop("checked",false);
 	         }
 	         $("#mname")[0].value=row.mname;
 	         $("#url")[0].value=row.url;
