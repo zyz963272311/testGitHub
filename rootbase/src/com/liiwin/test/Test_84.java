@@ -55,6 +55,30 @@ public class Test_84 extends T
 	 */
 	public static void main(String[] args)
 	{
+		Date result1 = string2Date("2016-12-15", "yyyy-MM-dd");
+		System.out.println(result1);
+		Date result2 = string2Date("2016-12-15", "YYYY-MM-dd");
+		System.out.println(result2);
+	}
+
+	private static Date string2Date(String str, String fmt)
+	{
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		try
+		{
+			return format.parse(str);
+		} catch (Exception e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
+
+	/**
+	 * 
+	 * 赵玉柱
+	 */
+	private static void test11()
+	{
 		Element table = DocumentHelper.createElement("table");
 		Element body = DocumentHelper.createElement("body");
 		table.add(body);

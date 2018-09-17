@@ -21,30 +21,50 @@ import me.chanjar.weixin.mp.api.impl.WxMpServiceImpl;
  */
 public class WeChatUtil
 {
-	private static WxMpService					wxService;
-	private static WxMpInMemoryConfigStorage	storage	= new WxMpInMemoryConfigStorage();
-	static
+	private static WxMpService					wxMPService;
+	private static WxMpInMemoryConfigStorage	memoryStorage	= null;
+	private static String						appid			= BasConfig.getPropertie("wx_appid");
+	private static String						secret			= BasConfig.getPropertie("wx_secret");
+	private static String						token			= BasConfig.getPropertie("wx_token");
+	private static String						encodingAESKey	= BasConfig.getPropertie("wx_EncodingAESKey");
+
+	/**
+	 * 获取基于内存的配置
+	 * @return
+	 * 赵玉柱
+	 */
+	public static WxMpInMemoryConfigStorage getMpMemoryStorage(boolean forceUpdate)
 	{
-		String appid = BasConfig.getPropertie("wx_appid");
-		String secret = BasConfig.getPropertie("wx_secret");
-		String token = BasConfig.getPropertie("wx_token");
-		String encodingAESKey = BasConfig.getPropertie("wx_EncodingAESKey");
-		if (StrUtil.isStrTrimNull(appid))
+		synchronized (memoryStorage)
 		{
-			throw new RuntimeException("请设置wx_appid");
+			if (memoryStorage == null || forceUpdate)
+			{
+				memoryStorage = WxMpInMemoryConfigStorageFactory.newFactory().getMemoryStore(forceUpdate);
+				if (StrUtil.isStrTrimNull(appid))
+				{
+					throw new RuntimeException("请设置wx_appid");
+				}
+				if (StrUtil.isStrTrimNull(token))
+				{
+					throw new RuntimeException("请设置wx_token");
+				}
+				memoryStorage.setAppId(appid);
+				memoryStorage.setSecret(secret);
+				memoryStorage.setToken(token);
+				memoryStorage.setAesKey(encodingAESKey);
+			}
+			return memoryStorage;
 		}
-		if (StrUtil.isStrTrimNull(secret))
-		{
-			throw new RuntimeException("请设置wx_secret");
-		}
-		if (StrUtil.isStrTrimNull(token))
-		{
-			throw new RuntimeException("请设置wx_token");
-		}
-		storage.setAppId(appid);
-		storage.setSecret(secret);
-		storage.setToken(token);
-		storage.setAesKey(encodingAESKey);
+	}
+
+	/**
+	 * 
+	 * @return
+	 * 赵玉柱
+	 */
+	public static WxMpInMemoryConfigStorage getMpMemoryStorage()
+	{
+		return getMpMemoryStorage(false);
 	}
 
 	/**
@@ -52,16 +72,30 @@ public class WeChatUtil
 	 * @return
 	 * 赵玉柱
 	 */
-	public static WxMpService wxService()
+	public static WxMpService wxMPService()
 	{
-		synchronized (wxService)
+		synchronized (wxMPService)
 		{
-			if (wxService == null)
+			if (wxMPService == null)
 			{
-				wxService = new WxMpServiceImpl();
-				wxService.setWxMpConfigStorage(storage);
+				wxMPService = new WxMpServiceImpl();
+				wxMPService.setWxMpConfigStorage(memoryStorage);
 			}
 		}
-		return wxService;
+		return wxMPService;
+	}
+
+	/**
+	 * 验证消息是否合法
+	 * @param timestamp
+	 * @param nonce
+	 * @param signature
+	 * @return
+	 * 赵玉柱
+	 */
+	public static boolean checkSignature(String timestamp, String nonce, String signature)
+	{
+		boolean checkResult = wxMPService().checkSignature(timestamp, nonce, signature);
+		return checkResult;
 	}
 }

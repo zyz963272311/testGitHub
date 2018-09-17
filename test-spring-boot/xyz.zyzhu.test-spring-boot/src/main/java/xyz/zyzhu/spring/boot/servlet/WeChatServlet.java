@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.liiwin.utils.BeanUtils;
 import com.liiwin.utils.StrUtil;
+import com.liiwin.wechat.WeChatUtil;
 import com.soecode.wxtools.api.IService;
 import com.soecode.wxtools.api.WxMessageHandler;
 import com.soecode.wxtools.api.WxMessageInterceptor;
@@ -19,13 +20,16 @@ import com.soecode.wxtools.api.WxService;
 import com.soecode.wxtools.bean.WxXmlMessage;
 import com.soecode.wxtools.bean.WxXmlOutMessage;
 import com.soecode.wxtools.util.xml.XStreamTransformer;
+import me.chanjar.weixin.mp.api.WxMpMessageRouter;
+import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
+import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import xyz.zyzhu.spring.boot.model.WXRouter;
 import xyz.zyzhu.spring.boot.service.WXRouterService;
 import xyz.zyzhu.spring.boot.utils.SpringBeanUtils;
 /** 
- * <p>标题： TODO</p>
+ * <p>标题： 微信请求servlet</p>
  * <p>功能： </p>
- * <p>所属模块： TODO</p>
+ * <p>所属模块： boot</p>
  * <p>版权： Copyright © 2018 SNSOFT</p>
  * <p>公司: 赵玉柱练习</p>
  * <p>创建日期：2018年1月4日 下午10:36:46</p>
@@ -55,6 +59,57 @@ public class WeChatServlet extends HttpServlet
 			out.print(echostr);
 		}
 		out.print("error");
+	}
+
+	@Override
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	{
+		String signature = request.getParameter("signature");
+		String nonce = request.getParameter("nonce");
+		String timestamp = request.getParameter("timestamp");
+		response.setContentType("text/html;charset=utf-8");
+		response.setStatus(HttpServletResponse.SC_OK);
+		boolean checkSignature = WeChatUtil.checkSignature(timestamp, nonce, signature);
+		if (!checkSignature)
+		{
+			response.getWriter().println("非法请求");
+			return;
+		}
+		String echostr = request.getParameter("echostr");
+		if (StrUtil.isNoStrTrimNull(echostr))
+		{
+			// 说明是一个仅仅用来验证的请求，回显echostr
+			response.getWriter().println(echostr);
+			return;
+		}
+		String encryptType = request.getParameter("encrypt_type");
+		encryptType = StrUtil.isNoStrTrimNull(encryptType) ? encryptType : "raw";
+		WxMpXmlMessage inMessage = null;
+		if ("raw".equals(encryptType))
+		{
+			inMessage = WxMpXmlMessage.fromXml(request.getInputStream());
+		} else if ("aes".equals(encryptType.toLowerCase()))
+		{
+			String msgSignature = request.getParameter("msg_signature");
+			inMessage = WxMpXmlMessage.fromEncryptedXml(request.getInputStream(), WeChatUtil.getMpMemoryStorage(), timestamp, nonce, msgSignature);
+		} else
+		{
+			response.getWriter().println("不可识别的加密类型");
+			return;
+		}
+		WxMpMessageRouter wxMpMessageRouter = new WxMpMessageRouter(WeChatUtil.wxMPService());
+		WxMpXmlOutMessage outMessage = wxMpMessageRouter.route(inMessage);
+		if (outMessage != null)
+		{
+			if ("raw".equals(encryptType))
+			{
+				response.getWriter().write(outMessage.toXml());
+			} else if ("aes".equals(encryptType))
+			{
+				response.getWriter().write(outMessage.toEncryptedXml(WeChatUtil.getMpMemoryStorage()));
+			}
+			return;
+		}
 	}
 
 	@Override

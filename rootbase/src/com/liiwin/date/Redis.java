@@ -3,6 +3,7 @@ package com.liiwin.date;
 import com.liiwin.config.BasConfig;
 import com.liiwin.utils.StrUtil;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 /**
  * <p>标题： Redis数据库</p>
  * <p>功能： </p>
@@ -19,7 +20,7 @@ import redis.clients.jedis.Jedis;
  */
 public class Redis
 {
-	private static Jedis jedis;
+	private static JedisPool pool;
 
 	public Redis()
 	{
@@ -33,11 +34,17 @@ public class Redis
 		{
 			throw new RuntimeException("请在config.properties中配置【redis-port】");
 		}
-		jedis = new Jedis(redis_ip, redis_port);
+		pool = new JedisPool(redis_ip, redis_port);
+	}
+
+	public JedisPool getJedisPool()
+	{
+		return Redis.pool;
 	}
 
 	public Jedis getJedis()
 	{
-		return Redis.jedis;
+		Jedis resource = Redis.pool.getResource();
+		return resource;
 	}
 }
