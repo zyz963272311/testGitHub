@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import com.liiwin.db.Database;
 import com.liiwin.db.Databasetype;
 import com.liiwin.utils.BeanUtils;
 import com.liiwin.utils.StrUtil;
+import jodd.util.collection.SortedArrayList;
 import xyz.zyzhu.spring.boot.model.BasModel;
 import xyz.zyzhu.spring.boot.utils.DefaultValueUtils;
 import xyz.zyzhu.spring.boot.utils.ModelUtils;
@@ -280,16 +282,7 @@ public class BootDatabase extends Database
 		return null;
 	}
 
-	/**
-	 * 根据class与查询参数进行数据查询
-	 * @param clazz
-	 * @param params
-	 * @param filter
-	 * @param columns
-	 * @return
-	 * 赵玉柱
-	 */
-	public <T extends BasModel> List<T> query(Class<T> clazz, Map<String,Object> params, String filter, String[] columns)
+	public <T extends BasModel> List<T> query(Class<T> clazz, Map<String,Object> params, String filter, String[] columns, Comparator<T> comparator)
 	{
 		if (clazz == null)
 		{
@@ -335,7 +328,27 @@ public class BootDatabase extends Database
 			t.setValues(map);
 			tList.add(t);
 		}
+		if (tList != null && !tList.isEmpty() && comparator != null)
+		{
+			List<T> sortList = new SortedArrayList<>(comparator);
+			sortList.addAll(tList);
+			return sortList;
+		}
 		return tList;
+	}
+
+	/**
+	 * 根据class与查询参数进行数据查询
+	 * @param clazz
+	 * @param params
+	 * @param filter
+	 * @param columns
+	 * @return
+	 * 赵玉柱
+	 */
+	public <T extends BasModel> List<T> query(Class<T> clazz, Map<String,Object> params, String filter, String[] columns)
+	{
+		return query(clazz, params, filter, columns, null);
 	}
 
 	/**************************************************查询分割线****************************************/

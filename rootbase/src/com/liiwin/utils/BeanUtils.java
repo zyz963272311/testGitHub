@@ -28,7 +28,7 @@ public class BeanUtils
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T extends Object> Class<T> getClassByPath(String classpath)
+	public static <T extends Object> Class<T> getClassByPath(String classpath, boolean isThrow)
 	{
 		Class<T> class1 = (Class<T>) cacheClazz.get(classpath);
 		if (class1 == null)
@@ -39,10 +39,18 @@ public class BeanUtils
 				cacheClazz.put(classpath, class1);
 			} catch (Exception e)
 			{
-				throw new RuntimeException("报错内容", e);
+				if (isThrow)
+				{
+					throw new RuntimeException("报错内容", e);
+				}
 			}
 		}
 		return class1;
+	}
+
+	public static <T extends Object> Class<T> getClassByPath(String classpath)
+	{
+		return getClassByPath(classpath, true);
 	}
 
 	public static <T extends Object> T newInstance(String classPath, List<Class<?>> paramType, List<Object> paramObject)
@@ -52,26 +60,49 @@ public class BeanUtils
 		return newInstance;
 	}
 
-	public static <T> T instantiate(Class<T> clazz)
+	public static <T> T instantiate(Class<T> clazz, boolean isThrow)
 	{
 		if (clazz.isInterface())
 		{
-			throw new RuntimeException(clazz.getName() + "Specified class is an interface");
+			if (isThrow)
+			{
+				throw new RuntimeException(clazz.getName() + "Specified class is an interface");
+			} else
+			{
+				return null;
+			}
 		}
 		try
 		{
 			return clazz.newInstance();
 		} catch (InstantiationException ex)
 		{
-			throw new RuntimeException(clazz.getName() + "Is it an abstract class?", ex);
+			if (isThrow)
+			{
+				throw new RuntimeException(clazz.getName() + "Is it an abstract class?", ex);
+			}
 		} catch (IllegalAccessException ex)
 		{
-			throw new RuntimeException(clazz.getName() + "Is the constructor accessible?", ex);
+			if (isThrow)
+			{
+				throw new RuntimeException(clazz.getName() + "Is the constructor accessible?", ex);
+			}
 		}
+		return null;
+	}
+
+	public static <T> T instantiate(Class<T> clazz)
+	{
+		return instantiate(clazz, true);
+	}
+
+	public static <T extends Object> T newInstanceByClass(Class<T> forName, List<Class<?>> paramType, List<Object> params)
+	{
+		return newInstanceByClass(forName, paramType, params, true);
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T extends Object> T newInstanceByClass(Class<T> forName, List<Class<?>> paramType, List<Object> params)
+	public static <T extends Object> T newInstanceByClass(Class<T> forName, List<Class<?>> paramType, List<Object> params, boolean isThrow)
 	{
 		if (forName == null)
 		{
@@ -96,7 +127,11 @@ public class BeanUtils
 			return instance;
 		} catch (Exception e)
 		{
-			throw new RuntimeException("获取实例失败", e);
+			if (isThrow)
+			{
+				throw new RuntimeException("获取实例失败", e);
+			}
 		}
+		return null;
 	}
 }

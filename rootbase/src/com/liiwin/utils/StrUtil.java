@@ -1579,6 +1579,38 @@ public class StrUtil
 	}
 
 	/**
+	 * 所有的字符串均为空字符串
+	 * @param str
+	 * @return
+	 * 赵玉柱
+	 */
+	public static boolean isAllNullIn(boolean isTrim, String... strs)
+	{
+		boolean result = false;
+		if (strs == null || strs.length == 0)
+		{
+			result = true;
+		} else
+		{
+			for (String str : strs)
+			{
+				if (isTrim)
+				{
+					result = isStrTrimNull(str);
+				} else
+				{
+					result = isNull(str);
+				}
+				if (!result)
+				{
+					return result;
+				}
+			}
+		}
+		return result;
+	}
+
+	/**
 	 * 判断对象是否是x进制的数字
 	 * @param obj
 	 * @param hex

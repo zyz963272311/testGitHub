@@ -78,11 +78,21 @@ public class WxMpInMemoryConfigStorageFactory
 				}
 				if (configStorage == null)
 				{
-					configStorage = new WxMpInMemoryConfigStorage();
+					configStorage = getDefaultMemoryStore();
 				}
 			}
 		}
 		return configStorage;
+	}
+
+	/**
+	 * 此方法为后续支持拓展使用
+	 * @return
+	 * 赵玉柱
+	 */
+	protected WxMpInMemoryConfigStorage getDefaultMemoryStore()
+	{
+		return new WxMpInMemoryConfigStorage();
 	}
 
 	/**
