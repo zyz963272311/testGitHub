@@ -3,6 +3,8 @@ package com.liiwin.timertask;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 /**
  * <p>标题： 定时任务的启动类</p>
  * <p>功能： </p>
@@ -19,6 +21,8 @@ import java.util.Timer;
  */
 public abstract class AppTimer<t extends AppTimerTask> extends Timer
 {
+	private static Logger logger = LoggerFactory.getLogger(AppTimer.class);
+
 	/**
 	 *初始化参数 
 	 */
@@ -90,13 +94,13 @@ public abstract class AppTimer<t extends AppTimerTask> extends Timer
 		{
 			if (isFinish(tasks))
 			{
-				System.out.println("任务执行完成了");
+				logger.error("任务执行完成了");
 				cancel();
 				break;
 			}
 			try
 			{
-				System.out.println("任务没有执行完成，需要等待3秒");
+				logger.error("任务没有执行完成，需要等待3秒");
 				Thread.sleep(3000);
 			} catch (InterruptedException e)
 			{

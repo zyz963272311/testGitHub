@@ -1,4 +1,4 @@
-package xyz.zyzhu.spring.boot.wx.matcher;
+package xyz.zyzhu.spring.boot.wx_old.matcher;
 
 import com.liiwin.utils.StrUtil;
 import com.soecode.wxtools.api.WxMessageMatcher;

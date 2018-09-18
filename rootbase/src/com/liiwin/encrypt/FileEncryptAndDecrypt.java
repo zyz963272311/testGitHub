@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 /**
  * <p>标题：文件加密解密  </p>
  * <p>功能：文件加密解密  </p>
@@ -22,6 +24,8 @@ import java.io.RandomAccessFile;
  */
 public class FileEncryptAndDecrypt
 {
+	private static Logger logger = LoggerFactory.getLogger(FileEncryptAndDecrypt.class);
+
 	/**
 	 * 文件加密
 	 * @param fileUrl 文件路径
@@ -60,7 +64,7 @@ public class FileEncryptAndDecrypt
 		file.delete();
 		dest.renameTo(new File(fileUrl));
 		appendMathodA(fileUrl, key);
-		System.out.println("加密成功");
+		logger.error("加密成功");
 	}
 
 	/**

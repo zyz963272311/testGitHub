@@ -7,6 +7,8 @@ import javax.jms.MessageConsumer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.liiwin.config.BasConfig;
 /**
  * <p>标题： MQ接收消息</p>
@@ -24,6 +26,8 @@ import com.liiwin.config.BasConfig;
  */
 public class MQReceiver
 {
+	private static Logger logger = LoggerFactory.getLogger(MQReceiver.class);
+
 	public static void main(String[] args)
 	{
 		// ConnectionFactory ：连接工厂，JMS 用它创建连接
@@ -54,7 +58,7 @@ public class MQReceiver
 				TextMessage message = (TextMessage) consumer.receive(500000);
 				if (null != message)
 				{
-					System.out.println("收到消息" + message.getText());
+					logger.error("收到消息" + message.getText());
 				} else
 				{
 					break;

@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.liiwin.db.Database;
 import com.liiwin.db.pool.DatabasePoolManager;
 import com.liiwin.utils.StrUtil;
@@ -23,7 +25,8 @@ import com.liiwin.utils.StrUtil;
  */
 public class BasConfig
 {
-	protected static Properties properties;
+	private static Logger		logger	= LoggerFactory.getLogger(BasConfig.class);
+	protected static Properties	properties;
 
 	/**
 	 * 加载配置文件 userdir + "/resources/config.properties"
@@ -52,12 +55,14 @@ public class BasConfig
 		String configFilePath1 = "/resources/config.properties";
 		try
 		{
+			logger.error("装载配置文件{}" + configFilePath1);
 			properties.load(BasConfig.class.getResourceAsStream(configFilePath1));
 		} catch (IOException e)
 		{
 			String configFilePath2 = "/config.properties";
 			try
 			{
+				logger.error("装载配置文件{}" + configFilePath1);
 				properties.load(BasConfig.class.getResourceAsStream(configFilePath2));
 			} catch (IOException e1)
 			{
@@ -68,6 +73,7 @@ public class BasConfig
 		Database db = null;
 		try
 		{
+			logger.error("查询数据库config配置{}" + configFilePath1);
 			db = DatabasePoolManager.getNewInstance().getConfigDatabase();
 			String sql = "select * from properties  ";
 			List<Map<String,Object>> propertiesFromDB = db.getListMapFromSql(sql);
@@ -85,7 +91,7 @@ public class BasConfig
 			}
 		} catch (Exception e)
 		{
-			System.out.println("查询数据库失败");
+			logger.error("查询数据库失败");
 		} finally
 		{
 			if (db != null)

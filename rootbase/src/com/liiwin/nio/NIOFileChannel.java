@@ -22,9 +22,12 @@ import java.nio.channels.FileChannel;
  * 监听使用界面:
  * @version 8.0
  */
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 public class NIOFileChannel
 {
-	final static int	BUFFER_SIZE	= 0x3000000;	//缓冲区3M
+	private static Logger	logger		= LoggerFactory.getLogger(NIOFileChannel.class);
+	final static int		BUFFER_SIZE	= 0x3000000;									//缓冲区3M
 
 	/**
 	 * 用nio的方式读取大文件，这种方式的限制是当文件过大会造成内存溢出
@@ -45,7 +48,7 @@ public class NIOFileChannel
 			ByteBuffer buffer = ByteBuffer.allocate(1024 * 1024 * 216);
 			//第三步 将通道中的数据读取到缓冲区中
 			channel.read(buffer);
-			System.out.println("fileChannel time=" + (System.currentTimeMillis() - start) + "ms");
+			logger.error("fileChannel time=" + (System.currentTimeMillis() - start) + "ms");
 			buffer.clear();
 			buffer = null;
 		} catch (FileNotFoundException e)
@@ -87,7 +90,7 @@ public class NIOFileChannel
 		{
 			long start = System.currentTimeMillis();
 			fis = new FileInputStream(file);
-			System.out.println("reafFileByStream time:" + (System.currentTimeMillis() - start));
+			logger.error("reafFileByStream time:" + (System.currentTimeMillis() - start));
 		} catch (FileNotFoundException e)
 		{
 			e.printStackTrace();
@@ -125,7 +128,7 @@ public class NIOFileChannel
 					buffer.get(dst, 0, buffer.capacity() - offset);
 				}
 			}
-			System.out.println("MappedByteBuffer time=" + (System.currentTimeMillis() - start));
+			logger.error("MappedByteBuffer time=" + (System.currentTimeMillis() - start));
 		} catch (FileNotFoundException e)
 		{
 			e.printStackTrace();

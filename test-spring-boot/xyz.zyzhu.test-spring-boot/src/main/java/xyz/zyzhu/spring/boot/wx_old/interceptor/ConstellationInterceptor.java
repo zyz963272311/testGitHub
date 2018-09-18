@@ -1,4 +1,4 @@
-package xyz.zyzhu.spring.boot.wx.interceptor;
+package xyz.zyzhu.spring.boot.wx_old.interceptor;
 
 import java.util.Map;
 import com.soecode.wxtools.api.IService;

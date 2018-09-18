@@ -33,6 +33,8 @@ import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.liiwin.utils.StrUtil;
 /**
  * <p>标题： 模拟发送HTTP请求</p>
@@ -51,6 +53,7 @@ import com.liiwin.utils.StrUtil;
 @SuppressWarnings("deprecation")
 public class HttpClientUtil
 {
+	private static Logger								logger					= LoggerFactory.getLogger(HttpClientUtil.class);
 	/**编码格式utf-8*/
 	public static final String							CHARSET_UTF_8			= "utf-8";
 	/**HTTP内容类型*/
@@ -67,14 +70,17 @@ public class HttpClientUtil
 	{
 		try
 		{
-			System.out.println("RequestConfig初始化配置");
+			logger.error("RequestConfig初始化配置");
 			SSLContextBuilder builder = new SSLContextBuilder();
 			builder.loadTrustMaterial(null, new TrustSelfSignedStrategy());
 			SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(builder.build());
 			//配置同时支持http与https
-			Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory> create().register(//
-					"http", PlainConnectionSocketFactory.getSocketFactory()).register(//
-					"https", sslsf).build();
+			Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory> create()
+					.register(//
+							"http", PlainConnectionSocketFactory.getSocketFactory())
+					.register(//
+							"https", sslsf)
+					.build();
 			//初始化连接管理器
 			pool = new PoolingHttpClientConnectionManager(socketFactoryRegistry);
 			//设置最大连接数
@@ -86,7 +92,7 @@ public class HttpClientUtil
 			int connectionRequestTimeout = 10000;
 			requestConfig = RequestConfig.custom().setConnectTimeout(connectTimeout).setConnectionRequestTimeout(connectionRequestTimeout).setSocketTimeout(socketTimeout)
 					.setConnectTimeout(connectTimeout).build();
-			System.out.println("RequestConfig初始化结束");
+			logger.error("RequestConfig初始化结束");
 		} catch (NoSuchAlgorithmException e)
 		{
 			throw new RuntimeException("报错内容", e);

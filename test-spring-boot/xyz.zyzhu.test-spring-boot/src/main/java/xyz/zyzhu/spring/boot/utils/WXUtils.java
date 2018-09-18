@@ -1,6 +1,8 @@
 package xyz.zyzhu.spring.boot.utils;
 
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import com.liiwin.utils.BeanUtils;
 import com.liiwin.utils.StrUtil;
 import com.liiwin.wechat.WeChatUtil;
@@ -30,7 +32,10 @@ import xyz.zyzhu.spring.boot.model.WXToolsRouter;
  */
 public class WXUtils
 {
-	private static WxMpMessageRouter router = null;
+	private static WxMpMessageRouter	router		= null;
+	//运行锁
+	//router运行锁
+	private static Lock					routerLock	= new ReentrantLock();
 
 	/**
 	 * 获取一个微信路由
@@ -50,8 +55,9 @@ public class WXUtils
 	 */
 	public static WxMpMessageRouter getRouter(boolean updateForce)
 	{
-		synchronized (router)
+		try
 		{
+			routerLock.lock();
 			if (router == null || updateForce)
 			{
 				router = new WxMpMessageRouter(WeChatUtil.wxMPService());
@@ -154,6 +160,9 @@ public class WXUtils
 					}
 				}
 			}
+		} finally
+		{
+			routerLock.unlock();
 		}
 		return router;
 	}

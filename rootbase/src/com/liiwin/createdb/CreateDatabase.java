@@ -11,6 +11,8 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.liiwin.db.Database;
 import com.liiwin.db.Databasetype;
 import com.liiwin.db.pool.DatabasePoolManager;
@@ -31,7 +33,8 @@ import com.liiwin.utils.StrUtil;
  */
 public class CreateDatabase
 {
-	public static final AtomicBoolean loadDb = new AtomicBoolean(false);
+	private static Logger				logger	= LoggerFactory.getLogger(CreateDatabase.class);
+	public static final AtomicBoolean	loadDb	= new AtomicBoolean(false);
 
 	/**
 	 * 生成数据库
@@ -58,7 +61,7 @@ public class CreateDatabase
 					dbFile.add(bufferedReader);
 				} catch (Exception e)
 				{
-					System.out.println("连接数据库" + dbName + "失败，不生成表结构");
+					logger.error("连接数据库" + dbName + "失败，不生成表结构");
 					continue;
 				}
 			}
@@ -67,7 +70,7 @@ public class CreateDatabase
 		{
 			createDatabase(dbList, dbFile);
 		}
-		System.out.println("执行完成");
+		logger.error("执行完成");
 		loadDb.set(true);
 	}
 
@@ -97,8 +100,8 @@ public class CreateDatabase
 		//config tbcol需要执行的sql
 		Map<String,List<String>> tbcolExecSql = new HashMap<>();
 		Map<Database,List<String>> sqlDbMap = compareDBAndDBFile(configDbMessage2Table, dbMessage2Table, selectDBFileMessage, dbList, tableExecSql, tbcolExecSql);
-		System.out.println(configDbMessage2Table);
-		System.out.println(selectDBFileMessage);
+		logger.error("configDbMessage2Table:" + configDbMessage2Table);
+		logger.error("selectDBFileMessage:" + selectDBFileMessage);
 		execUpdateSql(sqlDbMap, selectDBFileMessage, tableExecSql, tbcolExecSql);
 	}
 
@@ -114,7 +117,7 @@ public class CreateDatabase
 		for (Database db : dbList)
 		{
 			List<Map<String,Object>> dbMessage = getConfigDBMessage(db);
-			System.out.println(dbMessage);
+			logger.error("dbMessage:" + dbMessage);
 			selectDBMessage.put(db, dbMessage);
 		}
 		return selectDBMessage;
@@ -126,7 +129,7 @@ public class CreateDatabase
 		for (Database db : dbList)
 		{
 			List<Map<String,Object>> dbMessage = getDBMessage(db);
-			System.out.println(dbMessage);
+			logger.error("dbMessage:" + dbMessage);
 			selectDBMessage.put(db, dbMessage);
 		}
 		return selectDBMessage;
@@ -215,7 +218,7 @@ public class CreateDatabase
 			Map<String,Table> tableMap = new HashMap<>();
 			Database db = selectDBEntry.getKey();
 			List<Map<String,Object>> selectDBMap = selectDBEntry.getValue();
-			System.out.println(selectDBEntry);
+			logger.error("selectDBEntry:" + selectDBEntry);
 			for (Map<String,Object> selectTableMap : selectDBMap)
 			{
 				String tableName = StrUtil.obj2str(selectTableMap.get("tablename"));
@@ -267,7 +270,7 @@ public class CreateDatabase
 				{
 					columns = new HashMap<>();
 				}
-				System.out.println(column);
+				logger.error("column:" + column);
 				columns.put(columnName, column);
 				table.setColumns(columns);
 			}
@@ -287,7 +290,7 @@ public class CreateDatabase
 	{
 		if (dbFile == null || dbFile.isEmpty())
 		{
-			System.out.println("dbFile为空");
+			logger.error("dbFile为空");
 			return null;
 		}
 		Map<String,Map<String,Table>> selectDBFileMessage = new HashMap<>();
@@ -314,15 +317,15 @@ public class CreateDatabase
 							//空行不处理
 							if (StrUtil.isStrTrimNull(row))
 							{
-								System.out.println("空行不处理");
+								logger.error("空行不处理");
 								continue;
 							}
-							System.out.println(row);
+							logger.error(row);
 							row = row.replaceAll("\\s{1,}", "#");
 							String[] colMsg = StrUtil.split(row, '#');
 							if (colMsg == null || colMsg.length < 6)
 							{
-								System.out.println("表结构格式不正确");
+								logger.error("表结构格式不正确");
 								continue;
 							}
 							String tablename = colMsg[0];
@@ -370,7 +373,7 @@ public class CreateDatabase
 					}
 				} catch (Exception e)
 				{
-					System.out.println("db文件读取失败:" + e.getMessage());
+					logger.error("db文件读取失败:" + e.getMessage());
 				} finally
 				{
 					try
@@ -378,7 +381,7 @@ public class CreateDatabase
 						reader.close();
 					} catch (Exception e)
 					{
-						System.out.println("reader关闭异常" + reader);
+						logger.error("reader关闭异常" + reader);
 					}
 				}
 			}
@@ -1002,7 +1005,7 @@ public class CreateDatabase
 					rollback = false;
 				} catch (Exception e)
 				{
-					System.out.println("createDatabase异常" + e.getMessage());
+					logger.error("createDatabase异常" + e.getMessage());
 					throw new RuntimeException(e);
 				} finally
 				{
@@ -1107,7 +1110,7 @@ public class CreateDatabase
 
 	public static void main(String[] args)
 	{
-		System.out.println("默认编码格式" + Charset.defaultCharset());
+		logger.error("默认编码格式" + Charset.defaultCharset());
 		createDatabase(new String[] { "zyztest", "config"/*, "project01" */ });
 		System.exit(0);
 	}

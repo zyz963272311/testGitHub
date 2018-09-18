@@ -131,7 +131,6 @@ public class DocUtils
 				for (int i = 0; i < pics.size(); i++)
 				{
 					Picture pic = pics.get(i);
-					System.out.println();
 					try
 					{
 						pic.writeImageContent(new FileOutputStream(picPath + pic.suggestFullFileName()));

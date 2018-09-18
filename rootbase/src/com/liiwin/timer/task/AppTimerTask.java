@@ -1,6 +1,8 @@
 package com.liiwin.timer.task;
 
 import java.util.TimerTask;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -17,8 +19,9 @@ import java.util.TimerTask;
  */
 public class AppTimerTask extends TimerTask
 {
+	private static Logger	logger	= LoggerFactory.getLogger(AppTimerTask.class);
 	//当前执行的步骤
-	volatile protected int step;
+	volatile protected int	step;
 
 	@Override
 	public void run()
@@ -32,7 +35,7 @@ public class AppTimerTask extends TimerTask
 		{
 			throw new RuntimeException("报错内容", e);
 		}
-		System.out.println(this + "执行了定时任务" + System.currentTimeMillis());
+		logger.error(this + "执行了定时任务" + System.currentTimeMillis());
 	}
 
 	public int getStep()
@@ -48,7 +51,7 @@ public class AppTimerTask extends TimerTask
 	@Override
 	public boolean cancel()
 	{
-		System.out.println("task类执行取消执行方法");
+		logger.error("task类执行取消执行方法");
 		return super.cancel();
 	}
 }

@@ -2,6 +2,8 @@ package com.liiwin.date;
 
 import java.util.Calendar;
 import java.util.Date;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 /**
  * <p>标题：日历工具，显示日历 </p>
  * <p>功能：日历工具，显示日历 </p>
@@ -18,6 +20,8 @@ import java.util.Date;
  */
 public class CalendarTool
 {
+	private static Logger logger = LoggerFactory.getLogger(CalendarTool.class);
+
 	public static void getDate(Date date)
 	{
 		Calendar calendar = Calendar.getInstance();
@@ -34,7 +38,7 @@ public class CalendarTool
 		String[] weeks = { "日", "一", "二", "三", "四", "五", "六" };
 		for (String w : weeks)
 		{
-			System.err.print(w + "\t");
+			logger.error(w + "\t");
 		}
 		System.err.println();
 		for (int i = 0; i < array.length; i++)
@@ -43,7 +47,7 @@ public class CalendarTool
 			{
 				if (array[i][j] != 0)
 				{
-					System.err.print(array[i][j]);
+					logger.error("" + array[i][j]);
 				}
 				System.err.print("\t");
 				if ((j + 1) % 7 == 0)

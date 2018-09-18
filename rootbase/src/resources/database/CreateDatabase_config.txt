@@ -55,5 +55,20 @@
 	autocodeg	length				长度				int				4,0				0b00000000
 	autocodeg	type				类型				varchar			128,0			0b00000000
 	
+	//微信消息处理
+	wxtoolsrouter	id					内码				varchar			128,0			0b00000011
+	wxtoolsrouter	node				节点				varchar			128,0			0b00000000
+	wxtoolsrouter	name				名称				varchar			128,0			0b00000000
+	wxtoolsrouter	fromUser			用户来源			varchar			128,0			0b00000000
+	wxtoolsrouter	msgType				消息类型			varchar			128,0			0b00000000
+	wxtoolsrouter	event				事件				int				4,0				0b00000000
+	wxtoolsrouter	eventKey			事件key			varchar			128,0			0b00000000
+	wxtoolsrouter	eventKeyRegex		事件key通配		varchar			128,0			0b00000000
+	wxtoolsrouter	content				内容				varchar			256,0			0b00000000
+	wxtoolsrouter	rcontent			内容正则			varchar			256,0			0b00000000
+	wxtoolsrouter	matcherClassPath	匹配器路径			varchar			256,0			0b00000000
+	wxtoolsrouter	interClassPath		拦截器路径			varchar			256,0			0b00000000
+	wxtoolsrouter	handlerClassPath	处理器路径			varchar			256,0			0b00000000
+	
 	
 	

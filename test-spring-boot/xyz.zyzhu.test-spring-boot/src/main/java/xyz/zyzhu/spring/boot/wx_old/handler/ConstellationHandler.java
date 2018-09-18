@@ -1,4 +1,4 @@
-package xyz.zyzhu.spring.boot.wx.handler;
+package xyz.zyzhu.spring.boot.wx_old.handler;
 
 import java.util.Map;
 import com.liiwin.utils.StrUtil;

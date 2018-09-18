@@ -9,13 +9,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-
 import org.apache.commons.io.FileUtils;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -42,6 +41,8 @@ import com.liiwin.utils.StrUtil;
 @SuppressWarnings("deprecation")
 public class PrintHtmlTemple
 {
+	private static Logger logger = LoggerFactory.getLogger(PrintHtmlTemple.class);
+
 	/**
 	 * 根据html模版文件生成pdf文件
 	 * @param templtPath
@@ -63,9 +64,9 @@ public class PrintHtmlTemple
 			{
 				document.add(e);
 			}
-			System.out.println("templete完成");
-			System.out.println(String.valueOf(rd));
-			System.out.println(String.valueOf(str));
+			logger.error("templete完成");
+			logger.error(String.valueOf(rd));
+			logger.error(String.valueOf(str));
 			document.close();
 		} catch (IOException e)
 		{
@@ -139,7 +140,7 @@ public class PrintHtmlTemple
 			{
 				String parse = FormulaParse.parse(formulas[i], values);
 				result.put(formulas[i], StrUtil.obj2str(jse.eval(parse), formulas[i]));
-				System.out.println("formula=" + formulas[i] + "\t结果是\t" + jse.eval(parse));
+				logger.error("formula=" + formulas[i] + "\t结果是\t" + jse.eval(parse));
 			}
 		} catch (ScriptException e)
 		{

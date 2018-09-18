@@ -2,6 +2,8 @@ package com.liiwin.db.pool;
 
 import java.sql.SQLException;
 import java.util.Hashtable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.liiwin.db.Database;
 import com.liiwin.db.DatabaseCacheUtils;
 import com.liiwin.utils.StrUtil;
@@ -21,6 +23,7 @@ import com.liiwin.utils.StrUtil;
  */
 public class DatabasePoolManager
 {
+	private static Logger							logger	= LoggerFactory.getLogger(DatabasePoolManager.class);
 	public static Hashtable<String,IDatabasePool>	pools	= new Hashtable<>();
 	private static DatabasePoolManager				maneger;
 
@@ -32,7 +35,7 @@ public class DatabasePoolManager
 	{
 		if (maneger == null)
 		{
-			System.out.println("DatabasePoolManager被实例化了");
+			logger.error("DatabasePoolManager被实例化了");
 			maneger = new DatabasePoolManager();
 		}
 		return maneger;
@@ -224,13 +227,13 @@ public class DatabasePoolManager
 	void test1()
 	{
 		DatabasePoolManager poolManager = DatabasePoolManager.getNewInstance();
-		System.out.println("poolManager=" + poolManager);
+		logger.error("poolManager=" + poolManager);
 		long start = System.currentTimeMillis();
 		Database database = poolManager.getDatabase("ssm-test");
-		System.out.println("初始化连接时长" + (System.currentTimeMillis() - start) + "ms");
+		logger.error("初始化连接时长" + (System.currentTimeMillis() - start) + "ms");
 		try
 		{
-			System.out.println("休眠10秒");
+			logger.error("休眠10秒");
 			Thread.sleep(10000);
 		} catch (InterruptedException e)
 		{
@@ -243,11 +246,11 @@ public class DatabasePoolManager
 			start = System.currentTimeMillis();
 			Database db = poolManager.getDatabase("ssm-test");
 			dbs[i] = db;
-			System.out.println("第" + i + "次连接时长为" + (System.currentTimeMillis() - start) + "ms");
+			logger.error("第" + i + "次连接时长为" + (System.currentTimeMillis() - start) + "ms");
 		}
 		try
 		{
-			System.out.println("休眠10秒");
+			logger.error("休眠10秒");
 			Thread.sleep(10000);
 		} catch (InterruptedException e)
 		{
@@ -255,14 +258,14 @@ public class DatabasePoolManager
 		}
 		start = System.currentTimeMillis();
 		poolManager.close(database);
-		System.out.println("关闭DB时长" + (System.currentTimeMillis() - start) + "ms");
+		logger.error("关闭DB时长" + (System.currentTimeMillis() - start) + "ms");
 		if (dbs != null)
 		{
 			for (Database db : dbs)
 			{
 				start = System.currentTimeMillis();
 				poolManager.close(db);
-				System.out.println("关闭DB时长" + (System.currentTimeMillis() - start) + "ms");
+				logger.error("关闭DB时长" + (System.currentTimeMillis() - start) + "ms");
 			}
 		}
 	}

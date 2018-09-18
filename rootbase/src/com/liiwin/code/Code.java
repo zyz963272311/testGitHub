@@ -3,6 +3,8 @@ package com.liiwin.code;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.liiwin.date.DateUtil;
 import com.liiwin.utils.StrUtil;
 /**
@@ -21,7 +23,8 @@ import com.liiwin.utils.StrUtil;
  */
 public class Code
 {
-	private List<CodePart> code;
+	private static Logger	logger	= LoggerFactory.getLogger(Code.class);
+	private List<CodePart>	code;
 
 	public Code()
 	{
@@ -122,7 +125,7 @@ public class Code
 		{
 			int l = 1 + random.nextInt(3);
 			Thread.sleep(l);
-			System.out.println(l);
+			logger.error("睡眠" + l + "秒");
 		} catch (InterruptedException e)
 		{
 			throw new RuntimeException("报错内容", e);
@@ -166,13 +169,13 @@ public class Code
 		CodePart codePart1 = new CodePart("kkkk", 4, 4);
 		CodePart codePart2 = new CodePart("MM", 2, 2);
 		CodePart codePart3 = new CodePart("", 8, 1);
-		System.out.println(codePart1.toString());
-		System.out.println(codePart2.toString());
-		System.out.println(codePart3.toString());
+		logger.error(codePart1.toString());
+		logger.error(codePart2.toString());
+		logger.error(codePart3.toString());
 		Code code = new Code(codePart1, codePart2, codePart3);
 		for (int i = 0; i < 10; i++)
 		{
-			System.out.println(code.makeCode());
+			logger.error(code.makeCode());
 		}
 		codeParts.add(codePart3);
 		codeParts.add(codePart2);
@@ -180,7 +183,7 @@ public class Code
 		Code code2 = new Code(codeParts);
 		for (int i = 0; i < 10; i++)
 		{
-			System.out.println(code2.makeCode());
+			logger.error(code2.makeCode());
 		}
 	}
 }

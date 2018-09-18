@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.liiwin.db.Database;
 /**
  * <p>标题： 数据库连接池</p>
@@ -23,6 +25,7 @@ import com.liiwin.db.Database;
  */
 public class DatabasePool implements IDatabasePool<Database>
 {
+	private static Logger					logger			= LoggerFactory.getLogger(DatabasePool.class);
 	//DB
 	private Database						db;
 	//数据库连接活动状态
@@ -247,9 +250,9 @@ public class DatabasePool implements IDatabasePool<Database>
 				@Override
 				public void run()
 				{
-					System.out.println("空闲DB链接数量：" + freeDatabase.size());
-					System.out.println("活动DB线程数量：" + activeDatabase.size());
-					System.out.println("总DB线程数量：" + activeCount);
+					logger.error("空闲DB链接数量：" + freeDatabase.size());
+					logger.error("活动DB线程数量：" + activeDatabase.size());
+					logger.error("总DB线程数量：" + activeCount);
 				}
 			}, db.getLazyCheck(), db.getPeriodCheck());
 		}

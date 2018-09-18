@@ -1,16 +1,18 @@
 package xyz.zyzhu.spring.boot.controller;
 
 import javax.servlet.http.HttpSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import xyz.zyzhu.spring.boot.model.UserInfo;
-import xyz.zyzhu.spring.boot.service.UserService;
 import com.liiwin.config.BasConfig;
 import com.liiwin.date.DateUtil;
 import com.liiwin.utils.StrUtil;
+import xyz.zyzhu.spring.boot.model.UserInfo;
+import xyz.zyzhu.spring.boot.service.UserService;
 /**
  * <p>标题： UserController</p>
  * <p>功能： </p>
@@ -30,6 +32,7 @@ import com.liiwin.utils.StrUtil;
 @RequestMapping("/user")
 public class UserController
 {
+	private static Logger		logger				= LoggerFactory.getLogger(UserController.class);
 	private static final String	SESSION_USERNAME	= "user";
 	@Autowired
 	UserService					service;
@@ -42,7 +45,7 @@ public class UserController
 		{
 			session.setAttribute(SESSION_USERNAME, login);
 			//设置超时时间
-			System.out.println("超时时间" + StrUtil.obj2int(BasConfig.getPropertie("login-timeout"), 60));
+			logger.error("超时时间" + StrUtil.obj2int(BasConfig.getPropertie("login-timeout"), 60));
 			session.setMaxInactiveInterval(StrUtil.obj2int(BasConfig.getPropertie("login-timeout"), 60));
 		}
 		return login;

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.liiwin.timertask.AppTimer;
 import com.liiwin.timertask.AppTimerTask;
 /**
@@ -22,6 +24,8 @@ import com.liiwin.timertask.AppTimerTask;
  */
 public class TimerTaskTest
 {
+	private static Logger logger = LoggerFactory.getLogger(TimerTaskTest.class);
+
 	public static void main(String[] args)
 	{
 		Map<String,Object> params = new HashMap<>();
@@ -38,7 +42,7 @@ public class TimerTaskTest
 						@Override
 						protected void runTask()
 						{
-							System.out.println("执行了task");
+							logger.error("执行了定时任务");
 						}
 					};
 					tasks.add(task);

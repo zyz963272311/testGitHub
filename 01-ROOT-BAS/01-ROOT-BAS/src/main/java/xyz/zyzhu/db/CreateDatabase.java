@@ -1,4 +1,3 @@
-
 package xyz.zyzhu.db;
 
 import java.io.File;
@@ -9,7 +8,6 @@ import java.util.Properties;
 import xyz.zyzhu.comm.WorkSpace;
 import xyz.zyzhu.config.Config;
 import xyz.zyzhu.util.StrUtil;
-
 /**
  * <p>标题： createDatabase</p>
  * <p>内容： createDatabase</p>
@@ -20,13 +18,12 @@ import xyz.zyzhu.util.StrUtil;
  */
 abstract class CreateDatabase implements ICreateDatabase
 {
+	Map<String,String>						sysdef;
+	Map<String,List<Map<String,Object>>>	tabdef;
+	Map<String,List<Map<String,Object>>>	coldef;
 
-	Map<String, String> sysdef;
-	Map<String, List<Map<String, Object>>> tabdef;
-	Map<String, List<Map<String, Object>>> coldef;
-
-	public CreateDatabase(Map<String, String> sysdef, Map<String, List<Map<String, Object>>> tabdef,
-			Map<String, List<Map<String, Object>>> coldef) {
+	public CreateDatabase(Map<String,String> sysdef, Map<String,List<Map<String,Object>>> tabdef, Map<String,List<Map<String,Object>>> coldef)
+	{
 		this.sysdef = sysdef;
 		this.tabdef = tabdef;
 		this.coldef = coldef;
@@ -37,7 +34,7 @@ abstract class CreateDatabase implements ICreateDatabase
 	 */
 	public void getDatabase(String filePath)
 	{
-		Map<String, String> workspace = WorkSpace.getWorkSpace("conf");
+		Map<String,String> workspace = WorkSpace.getWorkSpace("conf");
 	}
 
 	/**
@@ -81,7 +78,6 @@ abstract class CreateDatabase implements ICreateDatabase
 				throw new RuntimeException("表结构文件路径-" + filePath + "】必须是txt文件");
 			}
 			String preFileName = fileName.substring(0, dotPos);
-
 			String preFix = properties.getProperty("CREATEDATABASE.PREFIX");
 			if (StrUtil.isStrNull(preFix))
 			{
@@ -129,17 +125,17 @@ abstract class CreateDatabase implements ICreateDatabase
 	{
 	}
 
-	public Map<String, String> getSysdef()
+	public Map<String,String> getSysdef()
 	{
 		return sysdef;
 	}
 
-	public Map<String, List<Map<String, Object>>> getTabdef()
+	public Map<String,List<Map<String,Object>>> getTabdef()
 	{
 		return tabdef;
 	}
 
-	public Map<String, List<Map<String, Object>>> getColdef()
+	public Map<String,List<Map<String,Object>>> getColdef()
 	{
 		return coldef;
 	}

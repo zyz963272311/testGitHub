@@ -3,6 +3,8 @@ package com.liiwin.db;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 /**
  * <p>标题： 只读的dataset</p>
  * <p>功能： </p>
@@ -19,6 +21,7 @@ import java.sql.SQLException;
  */
 public class ArrayReadDataset implements ReadDataset
 {
+	private static Logger	logger	= LoggerFactory.getLogger(ArrayReadDataset.class);
 	private String			tablename;
 	private DataColumn[]	dataColumns;
 	private ResultSet		rs;
@@ -161,7 +164,7 @@ public class ArrayReadDataset implements ReadDataset
 				{
 					for (Object value : rowValue)
 					{
-						System.out.println(value);
+						logger.error("{}", value);
 					}
 				}
 				ReadDataset dataset1 = new ArrayReadDataset(values, dataset.getDatacolumns());
@@ -170,7 +173,7 @@ public class ArrayReadDataset implements ReadDataset
 				{
 					for (Object value : rowValue)
 					{
-						System.out.println(value);
+						logger.error("{}", value);
 					}
 				}
 			} catch (Exception e)

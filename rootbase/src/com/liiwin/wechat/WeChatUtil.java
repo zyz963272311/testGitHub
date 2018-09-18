@@ -1,5 +1,7 @@
 package com.liiwin.wechat;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import com.liiwin.config.BasConfig;
 import com.liiwin.utils.StrUtil;
 import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
@@ -22,11 +24,16 @@ import me.chanjar.weixin.mp.api.impl.WxMpServiceImpl;
 public class WeChatUtil
 {
 	private static WxMpService					wxMPService;
-	private static WxMpInMemoryConfigStorage	memoryStorage	= null;
-	private static String						appid			= BasConfig.getPropertie("wx_appid");
-	private static String						secret			= BasConfig.getPropertie("wx_secret");
-	private static String						token			= BasConfig.getPropertie("wx_token");
-	private static String						encodingAESKey	= BasConfig.getPropertie("wx_EncodingAESKey");
+	private static WxMpInMemoryConfigStorage	memoryStorage		= null;
+	private static String						appid				= BasConfig.getPropertie("wx_appid");
+	private static String						secret				= BasConfig.getPropertie("wx_secret");
+	private static String						token				= BasConfig.getPropertie("wx_token");
+	private static String						encodingAESKey		= BasConfig.getPropertie("wx_EncodingAESKey");
+	//运行锁
+	//wxMPService运行锁
+	private static Lock							wxMPServiceLock		= new ReentrantLock();
+	//memoryStorage运行锁
+	private static Lock							memoryStorageLock	= new ReentrantLock();
 
 	/**
 	 * 获取基于内存的配置
@@ -35,8 +42,9 @@ public class WeChatUtil
 	 */
 	public static WxMpInMemoryConfigStorage getMpMemoryStorage(boolean forceUpdate)
 	{
-		synchronized (memoryStorage)
+		try
 		{
+			memoryStorageLock.lock();
 			if (memoryStorage == null || forceUpdate)
 			{
 				memoryStorage = WxMpInMemoryConfigStorageFactory.newFactory().getMemoryStore(forceUpdate);
@@ -54,6 +62,9 @@ public class WeChatUtil
 				memoryStorage.setAesKey(encodingAESKey);
 			}
 			return memoryStorage;
+		} finally
+		{
+			memoryStorageLock.unlock();
 		}
 	}
 
@@ -74,13 +85,17 @@ public class WeChatUtil
 	 */
 	public static WxMpService wxMPService()
 	{
-		synchronized (wxMPService)
+		try
 		{
+			wxMPServiceLock.lock();
 			if (wxMPService == null)
 			{
 				wxMPService = new WxMpServiceImpl();
-				wxMPService.setWxMpConfigStorage(memoryStorage);
+				wxMPService.setWxMpConfigStorage(getMpMemoryStorage());
 			}
+		} finally
+		{
+			wxMPServiceLock.unlock();
 		}
 		return wxMPService;
 	}

@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.concurrent.CopyOnWriteArrayList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.liiwin.timer.constant.TimerConstant;
 import com.liiwin.timer.task.AppTimerTask;
 /**
@@ -26,6 +28,7 @@ import com.liiwin.timer.task.AppTimerTask;
  */
 public abstract class AppTimer<T extends AppTimerTask> extends Timer implements Runnable
 {
+	private static Logger			logger	= LoggerFactory.getLogger(AppTimer.class);
 	//初始化参数
 	protected Map<String,Object>	params;
 	//最大执行数据量
@@ -57,7 +60,7 @@ public abstract class AppTimer<T extends AppTimerTask> extends Timer implements 
 		//策略
 		//hh:mm:ss-hh:mm:ss   从几点到几点执行
 		strategy = getStrategy();
-		System.out.println(strategy);
+		logger.error("{}", strategy);
 		//执行时间间隔
 		//单位为秒 5
 		interval = getInterval();
@@ -205,7 +208,7 @@ public abstract class AppTimer<T extends AppTimerTask> extends Timer implements 
 			boolean allotRun = isAllotRun();
 			if (!allotRun)
 			{
-				System.out.println("不满足执行条件");
+				logger.error("不满足执行条件");
 				return;
 			}
 			//step2 装载timerTask数据
@@ -340,7 +343,7 @@ public abstract class AppTimer<T extends AppTimerTask> extends Timer implements 
 		}
 		for (T task : tasks)
 		{
-			System.out.println("将任务" + task + "添加到任务中");
+			logger.error("将任务" + task + "添加到任务中");
 			//间隔一端时间后执行任务
 			schedule(task, interval);
 		}
@@ -353,7 +356,7 @@ public abstract class AppTimer<T extends AppTimerTask> extends Timer implements 
 	 */
 	private void doCancel()
 	{
-		System.out.println("执行取消消息");
+		logger.error("执行取消消息");
 		Thread thread = new Thread()
 		{
 			@Override
@@ -372,7 +375,7 @@ public abstract class AppTimer<T extends AppTimerTask> extends Timer implements 
 					for (T task : tasks)
 					{
 						boolean exec = task.getStep() > 0;
-						System.out.println("任务" + task + (exec ? "已经执行" : "未执行"));
+						logger.error("任务" + task + (exec ? "已经执行" : "未执行"));
 						if (exec)
 						{
 							execSize++;
@@ -380,7 +383,7 @@ public abstract class AppTimer<T extends AppTimerTask> extends Timer implements 
 						} else
 						{
 							execSize = 0;
-							System.out.println("有任务不符合条件，进行下一次判断");
+							logger.error("有任务不符合条件，进行下一次判断");
 							break;
 						}
 					}
@@ -398,7 +401,7 @@ public abstract class AppTimer<T extends AppTimerTask> extends Timer implements 
 						allExec = true;
 					}
 				}
-				System.out.println("所有的定时任务都已经执行，进行取消操作");
+				logger.error("所有的定时任务都已经执行，进行取消操作");
 				cancel();
 			}
 		};

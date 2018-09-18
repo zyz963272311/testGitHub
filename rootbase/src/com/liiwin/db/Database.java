@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.dom4j.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.liiwin.createdb.Table;
 import com.liiwin.utils.GetXmlFile;
 import com.liiwin.utils.StrUtil;
@@ -30,6 +32,7 @@ import com.liiwin.utils.StrUtil;
  */
 public class Database
 {
+	private static Logger	logger	= LoggerFactory.getLogger(Database.class);
 	private AtomicBoolean	isWrite	= new AtomicBoolean(true);
 	//基础属性
 	private String			databaseName;
@@ -40,16 +43,16 @@ public class Database
 	protected int			type;
 	//连接属性
 	protected Connection	conn;
-	private int				minConnects;						//最小连接数
-	private int				maxConnects;						//最大连接数
-	private int				initConnections;					//初始化线程个数
-	private long			connTimeOut;						//重复获得连接的频率
-	private int				maxActiveConnections;				//允许的最大连接数
-	private long			connectionTimeOut;					//最大超时时间默认20分钟
-	private boolean			isCurrentConnection;				//是否获取当前的链接
-	private boolean			isCheckPool;						//是否检查连接池
-	private long			lazyCheck;							//延迟多长时间开始检查
-	private long			periodCheck;						//检查频率
+	private int				minConnects;										//最小连接数
+	private int				maxConnects;										//最大连接数
+	private int				initConnections;									//初始化线程个数
+	private long			connTimeOut;										//重复获得连接的频率
+	private int				maxActiveConnections;								//允许的最大连接数
+	private long			connectionTimeOut;									//最大超时时间默认20分钟
+	private boolean			isCurrentConnection;								//是否获取当前的链接
+	private boolean			isCheckPool;										//是否检查连接池
+	private long			lazyCheck;											//延迟多长时间开始检查
+	private long			periodCheck;										//检查频率
 
 	protected Database()
 	{
@@ -150,7 +153,7 @@ public class Database
 				if (this.conn != null)
 				{
 					conn.setAutoCommit(false);
-					System.out.println("连接数据库成功");
+					logger.error("数据库连接成功");
 				}
 			} catch (Exception e)
 			{
@@ -199,7 +202,7 @@ public class Database
 	 */
 	public Map<String,Object> getMapFromSql(String sql)
 	{
-		System.out.println("执行sql[" + sql + "]");
+		logger.error("执行sql[" + sql + "]");
 		List<Map<String,Object>> resultList = getListMapFromSql(sql);
 		if (resultList != null && !resultList.isEmpty())
 		{
@@ -224,7 +227,7 @@ public class Database
 
 	public List<Map<String,Object>> getListMapFromSqlByListParam(String sql, List<Object> paramsList)
 	{
-		System.out.println("执行sql[" + sql + "],参数" + paramsList);
+		logger.error("执行sql[" + sql + "],参数" + paramsList);
 		List<Map<String,Object>> resultList = new ArrayList<>();
 		try
 		{
@@ -265,7 +268,7 @@ public class Database
 	 */
 	public List<Map<String,Object>> getListMapFromSql(String sql)
 	{
-		System.out.println("执行sql[" + sql + "]");
+		logger.error("执行sql[" + sql + "]");
 		List<Map<String,Object>> resultList = new ArrayList<>();
 		try
 		{
@@ -434,7 +437,7 @@ public class Database
 	 */
 	public int insert(String sql, Map<String,Object> params)
 	{
-		System.out.println(getDatabaseName() + ":insert[" + sql + "]参数" + params);
+		logger.error(getDatabaseName() + ":insert[" + sql + "]参数" + params);
 		List<Object> paramsList = new ArrayList<>();
 		String sqlTemp = SqlUtil.sqlBindParams(this, sql, params, paramsList);
 		return insertByParamList(sqlTemp, paramsList);
@@ -606,7 +609,7 @@ public class Database
 
 	public boolean execSqlForWriteWithParamsList(String sql, List<Object> paramsList)
 	{
-		System.out.println(getDatabaseName() + ":execSqlforWrite[" + sql + "]参数" + paramsList);
+		logger.error(getDatabaseName() + ":execSqlforWrite[" + sql + "]参数" + paramsList);
 		boolean result = false;
 		try
 		{
@@ -960,10 +963,7 @@ public class Database
 		//公司电脑
 		//		Database db = new Database("zyztest");
 		List<Map<String,Object>> listMapFromSql = db.getListMapFromSql("select * from information_schema.COLUMNS where table_schema='" + db.getDatabaseName() + "'");
-		for (Map<String,Object> map : listMapFromSql)
-		{
-			System.out.println(map);
-		}
+		logger.error("{}", listMapFromSql);
 	}
 
 	public void setIsWrite()

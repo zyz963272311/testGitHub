@@ -1,5 +1,7 @@
 package com.liiwin.wechat;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import com.liiwin.config.BasConfig;
 import com.liiwin.date.Redis;
 import com.liiwin.utils.BeanUtils;
@@ -22,8 +24,10 @@ import me.chanjar.weixin.mp.api.WxMpInRedisConfigStorage;
  */
 public class WxMpInMemoryConfigStorageFactory
 {
-	private static WxMpInMemoryConfigStorageFactory	factory			= null;;
-	private WxMpInMemoryConfigStorage				configStorage	= null;
+	private static WxMpInMemoryConfigStorageFactory	factory				= null;;
+	private WxMpInMemoryConfigStorage				configStorage		= null;
+	private static Lock								factoryLock			= new ReentrantLock();
+	private static Lock								configStorageLock	= new ReentrantLock();
 
 	/**
 	 * 构造方法私有化
@@ -39,12 +43,16 @@ public class WxMpInMemoryConfigStorageFactory
 	 */
 	public static WxMpInMemoryConfigStorageFactory newFactory()
 	{
-		synchronized (factory)
+		try
 		{
+			factoryLock.lock();
 			if (factory == null)
 			{
 				factory = new WxMpInMemoryConfigStorageFactory();
 			}
+		} finally
+		{
+			factoryLock.unlock();
 		}
 		return factory;
 	}
@@ -57,12 +65,13 @@ public class WxMpInMemoryConfigStorageFactory
 	 */
 	public WxMpInMemoryConfigStorage getMemoryStore(boolean forceUpdate)
 	{
-		synchronized (configStorage)
+		try
 		{
+			configStorageLock.lock();
 			if (configStorage == null || forceUpdate)
 			{
 				String configStorageClass = BasConfig.getPropertie("WxMpInMemoryConfigStorageFactory");
-				if (StrUtil.isStrTrimNull(configStorageClass))
+				if (StrUtil.isNoStrTrimNull(configStorageClass))
 				{
 					Class<Object> classByPath = BeanUtils.getClassByPath(configStorageClass);
 					if (classByPath != null && (classByPath.isAssignableFrom(WxMpInMemoryConfigStorage.class)))
@@ -81,12 +90,15 @@ public class WxMpInMemoryConfigStorageFactory
 					configStorage = getDefaultMemoryStore();
 				}
 			}
+		} finally
+		{
+			configStorageLock.unlock();
 		}
 		return configStorage;
 	}
 
 	/**
-	 * 此方法为后续支持拓展使用
+	 * 此方法为后续支持拓展使用，可以继承此类，在没有配置MemoryStore的情况下，根据自己的选择获取对应的 MemoryStore
 	 * @return
 	 * 赵玉柱
 	 */

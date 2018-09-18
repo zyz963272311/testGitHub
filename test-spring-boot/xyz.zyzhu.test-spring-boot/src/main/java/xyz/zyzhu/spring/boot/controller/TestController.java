@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.core.env.Environment;
@@ -50,8 +52,9 @@ import xyz.zyzhu.spring.config.DruidConfig;
 @RequestMapping("/test")
 public class TestController
 {
+	private static Logger	logger	= LoggerFactory.getLogger(TestController.class);
 	@Autowired
-	TestService testService;
+	TestService				testService;
 
 	@RequestMapping(path = "/test", method = { RequestMethod.GET, RequestMethod.POST })
 	public String test()
@@ -64,7 +67,7 @@ public class TestController
 			Menu1 menu = new Menu1();
 			menu.setMname("0001");
 			List<Menu1> query = db.query(menu);
-			System.out.println("查询完成");
+			logger.error("查询完成");
 			Menu1 menu1 = new Menu1();
 			menu1.setMname("测试名称");
 			menu1.setUrl("www.baidu.com");

@@ -1,4 +1,4 @@
-package xyz.zyzhu.spring.boot.wx.handler;
+package xyz.zyzhu.spring.boot.wx_old.handler;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -86,7 +86,6 @@ public class SubscribeEventHandler extends RedisConfig implements WxMessageHandl
 			//位置Y
 			user.setPosy(bigPosy);
 			//用户已经关注过，直接更新数据
-			System.out.println(user);
 			//设置启用标识
 			user.setFollowflags(1);
 			//用户类型，默认卖家

@@ -18,44 +18,47 @@ import org.apache.commons.io.monitor.FileAlterationObserver;
  * 监听使用界面:
  * @version 8.0
  */
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 public class ZJPFileListener implements FileAlterationListener
 {
-	ZJPFileMonitor	monitor	= null;
+	private static Logger	logger	= LoggerFactory.getLogger(ZJPFileListener.class);
+	ZJPFileMonitor			monitor	= null;
 
 	@Override
 	public void onDirectoryChange(File directory)
 	{
-		System.out.println("onDirectoryChange\t" + directory.getPath());
+		logger.error("onDirectoryChange\t" + directory.getPath());
 	}
 
 	@Override
 	public void onDirectoryCreate(File directory)
 	{
-		System.out.println("onDirectoryCreate\t" + directory.getPath());
+		logger.error("onDirectoryCreate\t" + directory.getPath());
 	}
 
 	@Override
 	public void onDirectoryDelete(File directory)
 	{
-		System.out.println("onDirectoryDelete\t" + directory.getPath());
+		logger.error("onDirectoryDelete\t" + directory.getPath());
 	}
 
 	@Override
 	public void onFileChange(File directory)
 	{
-		System.out.println("onFileChange\t" + directory.getPath());
+		logger.error("onFileChange\t" + directory.getPath());
 	}
 
 	@Override
 	public void onFileCreate(File directory)
 	{
-		System.out.println("onFileCreate\t" + directory.getPath());
+		logger.error("onFileCreate\t" + directory.getPath());
 	}
 
 	@Override
 	public void onFileDelete(File directory)
 	{
-		System.out.println("onFileDelete\t" + directory.getPath());
+		logger.error("onFileDelete\t" + directory.getPath());
 	}
 
 	@Override
@@ -63,7 +66,7 @@ public class ZJPFileListener implements FileAlterationListener
 	{
 		SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String TimeString = time.format(new java.util.Date());
-		System.out.println("开始扫描" + TimeString);
+		logger.error("开始扫描" + TimeString);
 	}
 
 	@Override
@@ -71,6 +74,6 @@ public class ZJPFileListener implements FileAlterationListener
 	{
 		SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String TimeString = time.format(new java.util.Date());
-		System.out.println("结束扫描" + TimeString);
+		logger.error("结束扫描" + TimeString);
 	}
 }

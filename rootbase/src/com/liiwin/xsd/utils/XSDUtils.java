@@ -14,6 +14,8 @@ import org.dom4j.QName;
 import org.dom4j.io.SAXReader;
 import org.dom4j.tree.DefaultElement;
 import org.dom4j.tree.DefaultText;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.liiwin.utils.StrUtil;
 import com.liiwin.xsd.constans.CodeDataConstans;
 import com.liiwin.xsd.domain.XSDAttribute;
@@ -35,6 +37,8 @@ import com.liiwin.xsd.domain.XSDNode;
  */
 public class XSDUtils
 {
+	private static Logger logger = LoggerFactory.getLogger(XSDUtils.class);
+
 	/**
 	 * 获取xsd文档对象
 	 * @param path
@@ -385,7 +389,7 @@ public class XSDUtils
 				childrenNode.add(childNode);
 			} else
 			{
-				System.out.println("未知的节点类型" + element);
+				logger.error("未知的节点类型" + element);
 			}
 		}
 		if (childrenNode.size() > 0)

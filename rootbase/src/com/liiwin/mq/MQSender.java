@@ -9,6 +9,8 @@ import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.liiwin.config.BasConfig;
 /**
  * <p>标题： 发送MQ消息</p>
@@ -26,6 +28,8 @@ import com.liiwin.config.BasConfig;
  */
 public class MQSender
 {
+	private static Logger logger = LoggerFactory.getLogger(MQSender.class);
+
 	public static void main(String[] args)
 	{
 		ConnectionFactory connectionFactory;//ConnectionFactory 连接工厂 JMS用此进行连接
@@ -55,7 +59,7 @@ public class MQSender
 		for (int i = 0; i < 10; i++)
 		{
 			TextMessage message = session.createTextMessage("发送方发送了消息" + i);
-			System.out.println("发送方发送了消息" + i);
+			logger.error("发送方发送了消息" + i);
 			producer.send(message);
 		}
 	}

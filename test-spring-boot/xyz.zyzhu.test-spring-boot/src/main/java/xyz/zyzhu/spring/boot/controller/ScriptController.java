@@ -1,6 +1,8 @@
 package xyz.zyzhu.spring.boot.controller;
 
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,6 +28,8 @@ import com.liiwin.utils.tac.Tac;
 @RequestMapping("/script")
 public class ScriptController
 {
+	private static Logger logger = LoggerFactory.getLogger(ScriptController.class);
+
 	@RequestMapping(path = "/executeJS", method = { RequestMethod.GET, RequestMethod.POST })
 	public String execte(String info)
 	{
@@ -35,7 +39,7 @@ public class ScriptController
 			{
 				return "无可执行TAC";
 			}
-			System.out.println("执行TAC代码" + info);
+			logger.error("执行TAC代码" + info);
 			Tac tac = new Tac("js");
 			List<Object> resultList = tac.execute(info);
 			String result = buildListToStr(resultList);
