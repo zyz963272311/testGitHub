@@ -5,7 +5,7 @@
 	<artifactId>xyz.zyzhu.test-spring-boot</artifactId>
 	<packaging>jar</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>xyz.zyzhu.test-spring-boot Maven Webapp</name>
+	<name>xyz.zyzhu.test-spring-boot</name>
 	<url>http://maven.apache.org</url>
 	<properties>
 		<java.version>1.8</java.version>
@@ -15,6 +15,7 @@
 		<thymeleaf.version>3.0.2.RELEASE</thymeleaf.version>
 		<thymeleaf-layout-dialect.version>2.1.1</thymeleaf-layout-dialect.version>
 		<dubbo-spring-boot>1.0.0</dubbo-spring-boot>
+		<argLine>-Dfile.encoding=UTF-8</argLine>
 	</properties>
 
 	<parent>
@@ -60,20 +61,20 @@
 		<!-- <groupId>org.springframework.boot</groupId> -->
 		<!-- <artifactId>spring-boot-starter-jdbc</artifactId> -->
 		<!-- </dependency> -->
-		
-		
+
+
 		<!-- ZK相关 -->
 		<dependency>
-            <groupId>org.apache.zookeeper</groupId>
-            <artifactId>zookeeper</artifactId>
-            <version>3.4.8</version>
-        </dependency>
+			<groupId>org.apache.zookeeper</groupId>
+			<artifactId>zookeeper</artifactId>
+			<version>3.4.8</version>
+		</dependency>
 
-        <dependency>
-            <groupId>org.apache.curator</groupId>
-            <artifactId>curator-client</artifactId>
-            <version>2.9.1</version>
-         </dependency>
+		<dependency>
+			<groupId>org.apache.curator</groupId>
+			<artifactId>curator-client</artifactId>
+			<version>2.9.1</version>
+		</dependency>
 
 
 		<!-- redis相关 -->
@@ -159,11 +160,11 @@
 		</dependency>
 
 		<!-- 热加载 -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.springframework.boot</groupId> -->
-<!-- 			<artifactId>spring-boot-devtools</artifactId> -->
-<!-- 			<optional>true</optional> -->
-<!-- 		</dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.springframework.boot</groupId> -->
+		<!-- <artifactId>spring-boot-devtools</artifactId> -->
+		<!-- <optional>true</optional> -->
+		<!-- </dependency> -->
 		<!-- 阿里json -->
 		<dependency>
 			<groupId>com.alibaba</groupId>
@@ -334,10 +335,14 @@
 
 	<!-- 下面的build配置用于本地使用 -->
 	<build>
+		<finalName>xyz.zyzhu.test-spring-boot</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<!-- <configuration> -->
+				<!-- <jvmArguments>-Dfile.encoding=UTF-8</jvmArguments> -->
+				<!-- </configuration> -->
 			</plugin>
 		</plugins>
 		<resources>

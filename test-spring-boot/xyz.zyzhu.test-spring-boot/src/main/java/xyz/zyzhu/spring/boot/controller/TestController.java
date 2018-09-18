@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import com.liiwin.config.BasConfig;
 import com.liiwin.date.DateUtil;
 import com.liiwin.random.RandomString;
@@ -55,6 +56,13 @@ public class TestController
 	private static Logger	logger	= LoggerFactory.getLogger(TestController.class);
 	@Autowired
 	TestService				testService;
+
+	@RequestMapping(path = "/testGoodsList", method = { RequestMethod.GET, RequestMethod.POST })
+	public ModelAndView testGoodsList()
+	{
+		ModelAndView view = new ModelAndView("testGoodsList");
+		return view;
+	}
 
 	@RequestMapping(path = "/test", method = { RequestMethod.GET, RequestMethod.POST })
 	public String test()
