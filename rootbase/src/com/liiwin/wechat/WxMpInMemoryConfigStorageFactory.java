@@ -71,6 +71,7 @@ public class WxMpInMemoryConfigStorageFactory
 			if (configStorage == null || forceUpdate)
 			{
 				String configStorageClass = BasConfig.getPropertie("WxMpInMemoryConfigStorageFactory");
+				WxMpInMemoryConfigStorage tempStorage = null;
 				if (StrUtil.isNoStrTrimNull(configStorageClass))
 				{
 					Class<Object> classByPath = BeanUtils.getClassByPath(configStorageClass);
@@ -78,16 +79,19 @@ public class WxMpInMemoryConfigStorageFactory
 					{
 						if (classByPath.equals(WxMpInMemoryConfigStorage.class))
 						{
-							configStorage = new WxMpInMemoryConfigStorage();
+							tempStorage = new WxMpInMemoryConfigStorage();
 						} else if (classByPath.equals(WxMpInRedisConfigStorage.class))
 						{
-							configStorage = new WxMpInRedisConfigStorage(new Redis().getJedisPool());
+							tempStorage = new WxMpInRedisConfigStorage(new Redis().getJedisPool());
 						}
 					}
 				}
-				if (configStorage == null)
+				if (tempStorage == null)
 				{
 					configStorage = getDefaultMemoryStore();
+				} else
+				{
+					configStorage = tempStorage;
 				}
 			}
 		} finally

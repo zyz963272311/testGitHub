@@ -3,6 +3,8 @@ package xyz.zyzhu.spring.boot.utils;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import org.springframework.cache.Cache;
+import org.springframework.cache.Cache.ValueWrapper;
 import com.liiwin.utils.BeanUtils;
 import com.liiwin.utils.StrUtil;
 import com.liiwin.wechat.WeChatUtil;
@@ -12,6 +14,7 @@ import me.chanjar.weixin.mp.api.WxMpMessageInterceptor;
 import me.chanjar.weixin.mp.api.WxMpMessageMatcher;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
 import me.chanjar.weixin.mp.api.WxMpMessageRouterRule;
+import xyz.zyzhu.spring.boot.cache.CacheFactory;
 import xyz.zyzhu.spring.boot.comparator.ModelComparator;
 import xyz.zyzhu.spring.boot.db.BootDatabase;
 import xyz.zyzhu.spring.boot.db.BootDatabasePoolManager;
@@ -32,10 +35,12 @@ import xyz.zyzhu.spring.boot.model.WXToolsRouter;
  */
 public class WXUtils
 {
-	private static WxMpMessageRouter	router		= null;
+	private static WxMpMessageRouter	router			= null;
 	//运行锁
 	//router运行锁
-	private static Lock					routerLock	= new ReentrantLock();
+	private static Lock					routerLock		= new ReentrantLock();
+	//查询锁
+	private static Lock					routerQueryLock	= new ReentrantLock();
 
 	/**
 	 * 获取一个微信路由
@@ -172,23 +177,52 @@ public class WXUtils
 		return getRouterModels(queryRouter, removeDisabled, true);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static List<WXToolsRouter> getRouterModels(WXToolsRouter queryRouter, boolean removeDisabled, boolean removeDisAvailable)
 	{
 		List<WXToolsRouter> routers = null;
-		if (queryRouter == null)
+		try
 		{
-			queryRouter = new WXToolsRouter();
-			BootDatabase db = BootDatabasePoolManager.getDatabaseByClass(WXToolsRouter.class, false);
+			routerQueryLock.lock();
+			if (queryRouter == null)
+			{
+				queryRouter = new WXToolsRouter();
+			}
+			BootDatabase db = null;
 			try
 			{
-				List<WXToolsRouter> query = db.query(queryRouter);
+				Cache cache = CacheFactory.factory().getModelCache(WXToolsRouter.class);
+				String modelTable = ModelUtils.getModelTable(WXToolsRouter.class);
+				ValueWrapper valueWrapper = cache.get(modelTable);
+				//				List<WXToolsRouter> query = db.query(queryRouter);
+				List<WXToolsRouter> query = null;
+				if (valueWrapper != null)
+				{
+					Object object = valueWrapper.get();
+					if (object != null)
+					{
+						query = (List<WXToolsRouter>) object;
+					}
+				}
+				if (query == null)
+				{
+					db = BootDatabasePoolManager.getDatabaseByClass(WXToolsRouter.class, false);
+					query = db.query(queryRouter);
+					cache.put(modelTable, query);
+				}
 				ModelComparator<WXToolsRouter> comparator = new ModelComparator<>("node");
 				routers = new SortedArrayList<>(comparator);
 				routers.addAll(query);
 			} finally
 			{
-				BootDatabasePoolManager.close(db);
+				if (db != null)
+				{
+					BootDatabasePoolManager.close(db);
+				}
 			}
+		} finally
+		{
+			routerQueryLock.unlock();
 		}
 		//从后往前进行数据移除
 		if ((removeDisabled || removeDisAvailable) && routers != null)

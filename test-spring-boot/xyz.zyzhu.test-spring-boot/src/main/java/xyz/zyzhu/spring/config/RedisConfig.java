@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import redis.clients.jedis.JedisPoolConfig;
@@ -34,6 +35,13 @@ public class RedisConfig
 	{
 		JedisPoolConfig config = new JedisPoolConfig();
 		return config;
+	}
+
+	@Bean("RedisCacheManager")
+	public RedisCacheManager getCacheManager()
+	{
+		RedisCacheManager manager = new RedisCacheManager(getRedisTemplate());
+		return manager;
 	}
 
 	@Bean

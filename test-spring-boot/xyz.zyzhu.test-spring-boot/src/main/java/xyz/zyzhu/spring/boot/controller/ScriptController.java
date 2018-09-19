@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.liiwin.utils.StrUtil;
 import com.liiwin.utils.tac.Tac;
+import xyz.zyzhu.spring.boot.tac.BootTac;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -40,7 +41,7 @@ public class ScriptController
 				return "无可执行TAC";
 			}
 			logger.error("执行TAC代码" + info);
-			Tac tac = new Tac("js");
+			Tac tac = new BootTac("js");
 			List<Object> resultList = tac.execute(info);
 			String result = buildListToStr(resultList);
 			return StrUtil.obj2str(result, "执行完成");

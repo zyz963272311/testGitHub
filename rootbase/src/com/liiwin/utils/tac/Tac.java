@@ -29,7 +29,7 @@ import com.liiwin.utils.StrUtil;
  */
 public class Tac
 {
-	ScriptEngine	engine;
+	protected ScriptEngine engine;
 
 	/**
 	 * 
@@ -47,7 +47,7 @@ public class Tac
 
 	public Tac()
 	{
-		engine = ScriptEngineUtil.getEngineByExtension("js");
+		this("js");
 	}
 
 	public List<Object> execute(String str)
@@ -61,7 +61,9 @@ public class Tac
 		//随机生成一个字符串，作为Tac得变量
 		RandomString random = new RandomStringImpl();
 		String prefix = random.getRandomString(20, 'a', 'z');
-		String additional = prefix + " = new " + Tac.class.getName() + "()";
+		String prefix1 = random.getRandomString(20, 'a', 'z');
+		String additional = prefix1 + " = Java.type(\"" + getClass().getName() + "\");";
+		additional = additional + "\n" + prefix + " = new " + prefix1 + "()";
 		str = additional + "\n" + str;
 		List<Object> result = new ArrayList<>();
 		String[] strArray = StrUtil.split(str, '\n');

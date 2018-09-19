@@ -69,6 +69,7 @@
 	wxtoolsrouter	matcherClassPath	匹配器路径			varchar			256,0			0b00000000
 	wxtoolsrouter	interClassPath		拦截器路径			varchar			256,0			0b00000000
 	wxtoolsrouter	handlerClassPath	处理器路径			varchar			256,0			0b00000000
+	wxtoolsrouter	flags				标志				int				4,0				0b00000000
 	
 	
 	
