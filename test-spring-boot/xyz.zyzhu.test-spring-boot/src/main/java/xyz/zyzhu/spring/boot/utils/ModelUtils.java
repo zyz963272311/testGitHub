@@ -337,6 +337,10 @@ public class ModelUtils
 				filter.append(" and ");
 			}
 		}
+		if (filter.length() == 0)
+		{
+			return null;
+		}
 		filter.append(" ");
 		return filter.toString();
 	}

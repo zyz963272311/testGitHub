@@ -64,6 +64,13 @@ public class TestController
 		return view;
 	}
 
+	@RequestMapping(path = "/testGoodsDetail", method = { RequestMethod.GET, RequestMethod.POST })
+	public ModelAndView testGoodsDetail()
+	{
+		ModelAndView view = new ModelAndView("testGoodsDetail");
+		return view;
+	}
+
 	@RequestMapping(path = "/test", method = { RequestMethod.GET, RequestMethod.POST })
 	public String test()
 	{

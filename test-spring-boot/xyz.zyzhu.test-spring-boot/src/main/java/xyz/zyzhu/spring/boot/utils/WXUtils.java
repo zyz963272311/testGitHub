@@ -212,7 +212,10 @@ public class WXUtils
 				}
 				ModelComparator<WXToolsRouter> comparator = new ModelComparator<>("node");
 				routers = new SortedArrayList<>(comparator);
-				routers.addAll(query);
+				if (query != null)
+				{
+					routers.addAll(query);
+				}
 			} finally
 			{
 				if (db != null)

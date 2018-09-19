@@ -29,24 +29,24 @@ import xyz.zyzhu.spring.boot.utils.ModelUtils;
 @SuppressWarnings("rawtypes")
 public class BasModel extends BasObject implements Serializable, Comparable
 {
-	private static final long	serialVersionUID	= 1L;
+	private static final long			serialVersionUID	= 1L;
 	@FieldDef(notColumn = true)
-	private Map<String,Field>	classFields;
+	transient private Map<String,Field>	classFields;
 	/**
 	 * 当前数据的原数据
 	 */
 	@FieldDef(notColumn = true)
-	private Map<String,Object>	oldValues			= new HashMap<>();
+	private Map<String,Object>			oldValues			= new HashMap<>();
 	/**
 	 * 当前数据的新数据，用于数据更新
 	 */
 	@FieldDef(notColumn = true)
-	private Map<String,Object>	newValues			= new HashMap<>();
+	private Map<String,Object>			newValues			= new HashMap<>();
 	/**
 	 * 存盘类型 1:调用insert方法;2:调用update方法;4:删除更新[删除空字段]; 默认位1
 	 */
 	@FieldDef(notColumn = true)
-	private Integer				saveMode;
+	transient private Integer			saveMode;
 
 	/**
 	 * 获取所有与数据库有关的字段

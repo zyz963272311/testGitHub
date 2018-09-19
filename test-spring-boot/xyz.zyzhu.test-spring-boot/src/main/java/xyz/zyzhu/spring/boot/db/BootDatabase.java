@@ -315,7 +315,7 @@ public class BootDatabase extends Database
 		{
 			filter = " where " + filter;
 		}
-		String sql = sb.toString() + " from " + modelTable + filter;
+		String sql = sb.toString() + " from " + modelTable + (filter == null ? "" : filter);
 		List<Map<String,Object>> listMapFromSql = getListMapFromSql(sql, params);
 		if (listMapFromSql == null || listMapFromSql.isEmpty())
 		{
