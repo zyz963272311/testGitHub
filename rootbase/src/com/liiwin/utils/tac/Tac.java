@@ -1,5 +1,6 @@
 package com.liiwin.utils.tac;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -29,20 +30,29 @@ import com.liiwin.utils.StrUtil;
  */
 public class Tac
 {
-	protected ScriptEngine engine;
+	protected ScriptEngine	engine;
+	protected WriterWaper	waper;
+
+	public Tac(String engineName, WriterWaper waper)
+	{
+		if (StrUtil.isStrTrimNull(engineName))
+		{
+			engineName = "js";
+		}
+		if (waper == null)
+		{
+			waper = new WriterWaper();
+		}
+		this.waper = waper;
+		engine = ScriptEngineUtil.getEngineByExtension(engineName);
+	}
 
 	/**
 	 * 
 	 */
 	public Tac(String engineName)
 	{
-		if (StrUtil.isStrTrimNull(engineName))
-		{
-			throw new RuntimeException("tac引擎名称不可为空");
-		} else
-		{
-			engine = ScriptEngineUtil.getEngineByExtension(engineName);
-		}
+		this(engineName, null);
 	}
 
 	public Tac()
@@ -63,11 +73,12 @@ public class Tac
 		String prefix = random.getRandomString(20, 'a', 'z');
 		String prefix1 = random.getRandomString(20, 'a', 'z');
 		String additional = prefix1 + " = Java.type(\"" + getClass().getName() + "\");";
-		additional = additional + "\n" + prefix + " = new " + prefix1 + "()";
+		additional = additional + "\n" + prefix + " = new " + prefix1 + "(\"js\"," + waper.toString().replace("@", "").replace(".", "") + ")";
 		str = additional + "\n" + str;
 		List<Object> result = new ArrayList<>();
 		String[] strArray = StrUtil.split(str, '\n');
 		Bindings bindings = engine.createBindings();
+		bindings.put(waper.toString().replace("@", "").replace(".", ""), waper);
 		int i = 0;
 		try
 		{
@@ -128,11 +139,14 @@ public class Tac
 	 * @param o
 	 * @return
 	 * 赵玉柱
+	 * @throws IOException 
 	 */
-	public String println(Object o)
+	public String println(Object o) throws IOException
 	{
 		String str = StrUtil.obj2str(o);
-		System.out.println(str);
+		waper.write(str);
+		waper.write("\n");
+		waper.flush();
 		return str + "\n";
 	}
 
@@ -141,8 +155,9 @@ public class Tac
 	 * @param o
 	 * @return
 	 * 赵玉柱
+	 * @throws IOException 
 	 */
-	public String print(Object o)
+	public String print(Object o) throws IOException
 	{
 		return print(o, null);
 	}
@@ -153,11 +168,13 @@ public class Tac
 	 * @param dim
 	 * @return
 	 * 赵玉柱
+	 * @throws IOException 
 	 */
-	public String print(Object o, String dim)
+	public String print(Object o, String dim) throws IOException
 	{
 		String str = StrUtil.obj2str(o) + (dim == null ? "" : dim);
-		System.out.print(str);
+		waper.write(str);
+		waper.flush();
 		return str;
 	}
 
@@ -268,8 +285,9 @@ public class Tac
 	 * @param o
 	 * @return
 	 * 赵玉柱
+	 * @throws IOException 
 	 */
-	public String printArray(Object o)
+	public String printArray(Object o) throws IOException
 	{
 		return printArray(o, ",");
 	}
@@ -279,13 +297,14 @@ public class Tac
 	 * @param o
 	 * @return
 	 * 赵玉柱
+	 * @throws IOException 
 	 */
-	public String printlnArray(Object o)
+	public String printlnArray(Object o) throws IOException
 	{
 		return printArray(o, "\n");
 	}
 
-	public String printArray(Object o, String dim)
+	public String printArray(Object o, String dim) throws IOException
 	{
 		StringBuffer strArray = new StringBuffer();
 		if (isArray(o))

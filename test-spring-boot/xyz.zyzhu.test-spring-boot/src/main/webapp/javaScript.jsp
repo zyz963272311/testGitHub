@@ -1,8 +1,11 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@ page language="java" contentType="text/html; charset=UTF-8" 
 	pageEncoding="UTF-8"%>
+<%@ page import="java.io.*,javax.servlet.*" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%
 	String path = request.getContextPath();
+ 	PrintWriter writer = response.getWriter();
+ 	ServletOutputStream stream =  response.getOutputStream();
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
@@ -28,6 +31,8 @@ textarea {
 <script type="text/javascript">
 	function execJS()
 	{
+	var rst = document.getElementById("result");
+	rst.innerHTML = "";
 	var xmlhttp;
 	var info=document.getElementById("info");
 	var infoVal = info.value;
@@ -68,12 +73,10 @@ textarea {
 				"application/x-www-form-urlencoded");
 		xmlhttp.onreadystatechange = result;
 		xmlhttp.send(data);
-
 		function result() {
-			if (xmlhttp.readyState == 4) {
-				var response = xmlhttp.responseText;
-				var rst = document.getElementById("result");
-				rst.innerHTML = response;
+			if(xmlhttp.readyState == 3)
+			{
+				rst.innerHTML = xmlhttp.responseText;
 			}
 		}
 	}

@@ -1,6 +1,7 @@
 package xyz.zyzhu.spring.boot.tac;
 
 import com.liiwin.utils.tac.Tac;
+import com.liiwin.utils.tac.WriterWaper;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -25,15 +26,10 @@ public class BootTac extends Tac
 	public BootTac(String enginename)
 	{
 		super(enginename);
-		try
-		{
-			if (engine != null)
-			{
-				//				engine.eval("importPackage java.util ");
-			}
-		} catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+	}
+
+	public BootTac(String enginename, WriterWaper waper)
+	{
+		super(enginename, waper);
 	}
 }
