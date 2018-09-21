@@ -1,25 +1,19 @@
-function loadLeftMenu(params)
+function loadLeftMenu(params,selectId)
 {
 	if(params)
 	{
+		if(!selectId)
+		{
+			selectId = "#selectId";
+		}
 		var tempParams = {};
 		tempParams = {
-
-				nodeColumn:"node",
-				nameColumn:"mname",
-				urlColumn:"url",
-				menuTable:"menu",
-				strSplit:"."
-
-			};
-//		for(key in params)
-//		{
-//			if(key ==="method"||key ==="ajaxurl")
-//			{
-//				continue;
-//			}
-//			tempParams[key]=params[key];
-//		}
+			nodeColumn:"node",
+			nameColumn:"mname",
+			urlColumn:"url",
+			menuTable:"menu",
+			strSplit:"."
+		};
 		ajaxurl = params.ajaxurl;
 		if(!ajaxurl)
 		{

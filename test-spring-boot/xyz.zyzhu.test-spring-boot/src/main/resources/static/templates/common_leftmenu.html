@@ -1,80 +1,88 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-	<body th:fragment="onloadLeftMenu(params)" >
+<body th:fragment="onloadLeftMenu(params)">
 	<script th:src="@{/js/assist/leftmenu.js}"></script>
 	<div th:if="${params}">
-		<div th:if="${params.needImportJS}" th:include="common_js :: onloadJS()">
+		<div th:if="${params.needImportJS}"
+			th:include="common_js :: onloadJS()"></div>
+	</div>
+	<!-- 	<div id="leftmenu" class="leftmenu"> -->
+	<!-- 	</div> -->
+	<!-- 	<!-- 菜单外层结构 -->
+	<!-- 	<div id="leftmenu" class="leftmenu"> -->
+	<!-- <!-- 	</div> -->
+	<!-- 	private String								url;										//菜单url -->
+	<!-- 	private String								node;										//菜单节点 -->
+	<!-- 	private String								name;										//菜单名称 -->
+	<!-- 	private Map<String,BreadcrumbNavigation>	children;									//子节点 -->
+	<div id="selectId">
+		<div v-if="rootmenu != null">
+			<!-- 此处如果不为空，则说明当前节点为一个菜单，否则说明此非菜单 -->
+			<div v-if="rootmenu.node != null">
+				<ul class="nav navbar-nav leftmenu_ul1">
+					<!-- 此节点下无下级菜单 -->
+					<li v-if="rootmenu.children == null || rootmenu.children.length == 0" class="leftmenu_li_nochild1">
+						<a href="{{rootmenu.url != null?rootmenu.url:'#'}}">
+							<span class="leftmenu_span_nochild1">{{rootmenu.name}}</span>
+						</a>
+					</li>
+					<!-- 此节点下含有下级菜单 -->
+					<li v-else class="dropdown leftmenu_li_child1">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown"> 
+							<span class="leftmenu_span_child1">{{rootmenu.name}}</span>
+						</a>
+						<ul v-for="menu1 in rootmenu.children" class="dropdown-menu leftmenu_ul2">
+							<!-- 此节点下无下级菜单 -->
+							<li v-if="menu1.children == null || menu1.children.length == 0" class="leftmenu_li_nochild2">
+								<a href="{{menu1.url != null?menu1.url:'#'}}">
+									<span class="leftmenu_span_nochild3">{{menu1.name}}</span>
+								</a>
+							</li>
+							<!-- 此节点下含有下级菜单 -->
+							<li v-else class="dropdown leftmenu_li_child2">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown"> 
+									<span class="leftmenu_span_child2">{{menu1.name}}</span>
+								</a>
+								<ul v-for="menu2 in menu1.children" class="dropdown-menu leftmenu_ul3">
+									<!-- 此节点下无下级菜单 -->
+									<li v-if="menu2.children == null || menu2.children.length == 0" class="leftmenu_li_nochild3">
+										<a href="{{menu2.url != null?menu2.url:'#'}}">
+											<span class="leftmenu_span_nochild4">{{menu2.name}}</span>
+										</a>
+									</li>
+									<!-- 此节点下含有下级菜单 -->
+									<li v-else class="dropdown leftmenu_li_child3">
+										<ul v-for="menu3 in menu2.children" class="dropdown-menu leftmenu_ul4">
+											<li v-else class="dropdown leftmenu_li_child4">
+												<a href="{{menu3.url != null?menu3.url:'#'}}" class="dropdown-toggle" data-toggle="dropdown"> 
+													<span class="leftmenu_span_child4">{{menu3.name}}</span>
+												</a>
+											</li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
 		</div>
 	</div>
-	<div id="leftmenu" class="leftmenu">
-	</div>
-	<!-- 菜单外层结构 -->
-	<div id="leftmenu" class="leftmenu">
-	</div>
-	<ul class="nav navbar-nav leftmenu_ul1">
-		<!-- 此节点下无下级菜单 -->
-		<li class="leftmenu_li_nochild1"><a href="#"><span class="leftmenu_span_nochild1">a1</span></a></li>
-		<!-- 此节点下含有下级菜单 -->
-		<li  class="dropdown leftmenu_li_child1">
-			<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-				<span class="leftmenu_span_child1">a2</span>
-			</a>
-			<ul class="dropdown-menu leftmenu_ul2">
-				<!-- 此节点下无下级菜单 -->
-				<li class="leftmenu_li_nochild3"><a href="#"><span class="leftmenu_span_nochild3">b1</span></a></li>
-				<!-- 此节点下含有下级菜单 -->
-				<li  class="dropdown leftmenu_li_child3">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						<span class="leftmenu_span_child3">b2</span>
-					</a>
-					<ul class="dropdown-menu leftmenu_ul3">
-						<!-- 此节点下无下级菜单 -->
-						<li class="leftmenu_li_nochild4"><a href="#"><span class="leftmenu_span_nochild4">c1</span></a></li>
-						<!-- 此节点下含有下级菜单 -->
-						<li  class="dropdown leftmenu_li_child4">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-								<span class="leftmenu_span_child4">c2</span>
-							</a>
-						</li>
-					</ul>
-				</li>
-			</ul>
-		</li>
-	</ul>
 	<script type="text/javascript">
 	$().ready(
 		function loadLeftNenuByParams()
 		{
 			params = {nodeColumn:'node',nameColumn:'mname',urlColumn:'url',strSplit:'.',ajaxurl:'/BreadNavigat/Navication'};
 			//1.加载leftmenu数据
-			result = loadLeftMenu(params);
-			if(result)
-			{
-				var node = result.node;
-				var url = result.url;
-				var name = result.name;
-				var children = result.children;
-				if(node)
-				{
-				//node有值说明当前节点位主节点,且仅有一个主节点
-					
-				}
-				else
-				{
-				//node有值说明当前节点位最外层节点,且含有多个主节点
-					
-				}
-			}
-		}
-		//menu:菜单,level:级次,parentnode:父节点id
-		function buildElement(menu,level,parentnode)
-		{
-			var node = result.node;
-			var url = result.url;
-			var name = result.name;
-			var children = result.children;
-		}
+			result = loadLeftMenu(params,"#selectId");
+			var vm = new Vue({
+			 	el:selectId,
+			 	data:{
+			 		rootmenu:result
+			 	}
+			 });
+		},
 	)
 	</script>
-	</body>
+</body>
 </html>

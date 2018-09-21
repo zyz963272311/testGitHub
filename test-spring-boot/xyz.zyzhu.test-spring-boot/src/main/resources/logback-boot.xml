@@ -26,7 +26,7 @@
             <maxHistory>30</maxHistory>   
             <timeBasedFileNamingAndTriggeringPolicy  class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">    
                 <!-- maxFileSize:这是活动文件的大小，默认值是10MB，测试时可改成1KB看效果 -->  
-                <maxFileSize>1KB</maxFileSize>    
+                <maxFileSize>10MB</maxFileSize>    
             </timeBasedFileNamingAndTriggeringPolicy>    
         </rollingPolicy>    
         <encoder>    
