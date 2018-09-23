@@ -13,8 +13,8 @@ import com.liiwin.utils.MapUtil;
 import com.liiwin.utils.StrUtil;
 import xyz.zyzhu.spring.boot.db.BootDatabase;
 import xyz.zyzhu.spring.boot.db.BootDatabasePoolManager;
-import xyz.zyzhu.spring.boot.model.BreadcrumbNavigation;
 import xyz.zyzhu.spring.boot.model.BreadcrumbNavigationRequest;
+import xyz.zyzhu.spring.boot.model.BreadcrumbNavigationWaper;
 import xyz.zyzhu.spring.boot.utils.BreadcrumbUtils;
 /**
  * <p>标题： 面包屑Controller</p>
@@ -37,7 +37,7 @@ public class BreadcrumbNavigationController
 {
 	@RequestMapping(path = "/Navication", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
-	public BreadcrumbNavigation getNavication(BreadcrumbNavigationRequest request)
+	public BreadcrumbNavigationWaper<Object> getNavication(BreadcrumbNavigationRequest request)
 	{
 		if (request == null)
 		{
@@ -68,7 +68,7 @@ public class BreadcrumbNavigationController
 		}
 		Map<String,List<Map<String,Object>>> hashMap = MapUtil.buildMapByList(menuList, nodeComumn, null);
 		Map<String,List<Map<String,Object>>> treeMap = new TreeMap<>(hashMap);
-		BreadcrumbNavigation breadcrumb = BreadcrumbUtils.getBreadcrumb(treeMap, nodeComumn, nameComumn, urlComumn, strSplit);
+		BreadcrumbNavigationWaper<Object> breadcrumb = BreadcrumbUtils.getBreadcrumb(treeMap, nodeComumn, nameComumn, urlComumn, strSplit);
 		BootDatabasePoolManager.close(db);
 		return breadcrumb;
 	}

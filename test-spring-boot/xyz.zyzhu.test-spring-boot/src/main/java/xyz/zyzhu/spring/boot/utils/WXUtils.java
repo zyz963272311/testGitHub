@@ -1,14 +1,19 @@
 package xyz.zyzhu.spring.boot.utils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import org.springframework.cache.Cache;
 import org.springframework.cache.Cache.ValueWrapper;
 import com.liiwin.utils.BeanUtils;
+import com.liiwin.utils.MapUtil;
 import com.liiwin.utils.StrUtil;
 import com.liiwin.wechat.WeChatUtil;
 import jodd.util.collection.SortedArrayList;
+import me.chanjar.weixin.common.bean.menu.WxMenu;
+import me.chanjar.weixin.common.bean.menu.WxMenuButton;
 import me.chanjar.weixin.mp.api.WxMpMessageHandler;
 import me.chanjar.weixin.mp.api.WxMpMessageInterceptor;
 import me.chanjar.weixin.mp.api.WxMpMessageMatcher;
@@ -18,7 +23,9 @@ import xyz.zyzhu.spring.boot.cache.CacheFactory;
 import xyz.zyzhu.spring.boot.comparator.ModelComparator;
 import xyz.zyzhu.spring.boot.db.BootDatabase;
 import xyz.zyzhu.spring.boot.db.BootDatabasePoolManager;
+import xyz.zyzhu.spring.boot.model.BreadcrumbNavigationWaper;
 import xyz.zyzhu.spring.boot.model.WXToolsRouter;
+import xyz.zyzhu.spring.boot.model.WxMenuButtonModel;
 /**
  * <p>标题： 微信开发工具类</p>
  * <p>功能： </p>
@@ -257,5 +264,106 @@ public class WXUtils
 	public static List<WXToolsRouter> getRouterModels(WXToolsRouter queryRouter)
 	{
 		return getRouterModels(queryRouter, true);
+	}
+
+	/**
+	 * 获取db中的wx菜单
+	 * @return
+	 * 赵玉柱
+	 */
+	public static WxMenu getDBWxMenu()
+	{
+		BreadcrumbNavigationWaper<WxMenuButtonModel> breadcrumb = getWxMenuButtonModel();
+		if (breadcrumb == null)
+		{
+			return null;
+		}
+		List<BreadcrumbNavigationWaper<WxMenuButtonModel>> children = breadcrumb.getChildren();
+		if (children == null || children.isEmpty())
+		{
+			return null;
+		}
+		WxMenu menu = new WxMenu();
+		List<WxMenuButton> buttons = new ArrayList<>();
+		for (BreadcrumbNavigationWaper<WxMenuButtonModel> child : children)
+		{
+			WxMenuButton button = buildWxMenu(child);
+			buttons.add(button);
+		}
+		menu.setButtons(buttons);
+		return null;
+	}
+
+	/**
+	 * 获取数据库中的微信buttonModel
+	 * @return
+	 * 赵玉柱
+	 */
+	public static BreadcrumbNavigationWaper<WxMenuButtonModel> getWxMenuButtonModel()
+	{
+		BootDatabase db = null;
+		try
+		{
+			String table = ModelUtils.getModelTable(WxMenuButtonModel.class);
+			String sql = "select * from " + table;
+			db = BootDatabasePoolManager.getReadDatabaseByTable(table);
+			List<Map<String,Object>> menus = db.getListMapFromSql(sql);
+			if (menus == null || menus.isEmpty())
+			{
+				return null;
+			}
+			Map<String,List<Map<String,Object>>> menuByKey = MapUtil.buildMapByList(menus, "node", null);
+			if (menuByKey == null || menuByKey.isEmpty())
+			{
+				return null;
+			}
+			BreadcrumbNavigationWaper<WxMenuButtonModel> breadcrumb = BreadcrumbUtils.getBreadcrumb(menuByKey, "node", "name", "url", ".", WxMenuButtonModel.class);
+			return breadcrumb;
+		} finally
+		{
+			if (db != null)
+			{
+				BootDatabasePoolManager.close(db);
+			}
+		}
+	}
+
+	/**
+	 * 组装微信button
+	 * @param c
+	 * @return
+	 * 赵玉柱
+	 */
+	private static WxMenuButton buildWxMenu(BreadcrumbNavigationWaper<WxMenuButtonModel> c)
+	{
+		if (c == null)
+		{
+			return null;
+		}
+		WxMenuButtonModel m = c.get();
+		if (m == null)
+		{
+			return null;
+		}
+		WxMenuButton b = new WxMenuButton();
+		b.setAppId(m.getAppId());
+		b.setKey(m.getKey());
+		b.setMediaId(m.getMediaId());
+		b.setName(m.getName());
+		b.setPagePath(m.getPagePath());
+		b.setType(m.getType());
+		b.setUrl(m.getUrl());
+		List<BreadcrumbNavigationWaper<WxMenuButtonModel>> children = c.getChildren();
+		if (children != null)
+		{
+			List<WxMenuButton> bchildren = new ArrayList<>();
+			for (BreadcrumbNavigationWaper<WxMenuButtonModel> child : children)
+			{
+				WxMenuButton bchild = buildWxMenu(child);
+				bchildren.add(bchild);
+				b.setSubButtons(bchildren);
+			}
+		}
+		return b;
 	}
 }

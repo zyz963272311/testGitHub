@@ -107,9 +107,8 @@ public class BasModel extends BasObject implements Serializable, Comparable
 	 * @return
 	 * 赵玉柱
 	 */
-	protected void setValue(String key, Object value)
+	public void setValue(String key, Object value)
 	{
-		newValues.put(key, value);
 		if (classFields == null)
 		{
 			classFields = new HashMap<>();
@@ -131,6 +130,7 @@ public class BasModel extends BasObject implements Serializable, Comparable
 				field.setAccessible(true);
 				field.set(this, value);
 				field.setAccessible(accessible);
+				newValues.put(key, value);
 			} catch (Exception e)
 			{
 				throw new RuntimeException("设置属性值失败key=" + key + "value=" + value, e);

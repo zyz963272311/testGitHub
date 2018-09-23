@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
+import com.alibaba.fastjson.JSONObject;
 import com.liiwin.utils.StrUtil;
-import xyz.zyzhu.spring.boot.model.BreadcrumbNavigation;
+import xyz.zyzhu.spring.boot.model.BreadcrumbNavigationWaper;
 /**
  * <p>标题： 面包屑工具类</p>
  * <p>功能： </p>
@@ -24,9 +25,16 @@ import xyz.zyzhu.spring.boot.model.BreadcrumbNavigation;
  */
 public class BreadcrumbUtils
 {
-	public static BreadcrumbNavigation getBreadcrumb(Map<String,List<Map<String,Object>>> menuListMap, String menuColumn, String nameColumn, String urlColumn, String strSplit)
+	public static <T extends Object> BreadcrumbNavigationWaper<T> getBreadcrumb(Map<String,List<Map<String,Object>>> menuListMap, String nodeColumn, String nameColumn, String urlColumn,
+			String strSplit)
 	{
-		BreadcrumbNavigation navigation = new BreadcrumbNavigation();
+		return getBreadcrumb(menuListMap, nodeColumn, nameColumn, urlColumn, strSplit, null);
+	}
+
+	public static <T extends Object> BreadcrumbNavigationWaper<T> getBreadcrumb(Map<String,List<Map<String,Object>>> menuListMap, String nodeColumn, String nameColumn, String urlColumn,
+			String strSplit, Class<T> clazz)
+	{
+		BreadcrumbNavigationWaper<T> navigation = new BreadcrumbNavigationWaper<T>();
 		//node之间的关系
 		Map<String,List<Map<String,Object>>> nodeRela = new TreeMap<>();
 		Map<String,Map<String,Object>> rootNodes = new HashMap<>();
@@ -34,7 +42,7 @@ public class BreadcrumbUtils
 		for (Entry<String,List<Map<String,Object>>> menuEntry : menuListMap.entrySet())
 		{
 			Map<String,Object> menuMap = menuEntry.getValue().get(0);
-			String node = StrUtil.obj2str(menuMap.get(menuColumn));
+			String node = StrUtil.obj2str(menuMap.get(nodeColumn));
 			if (StrUtil.isNoStrTrimNull(node))
 			{
 				rootNodes.put(node, menuMap);
@@ -45,7 +53,7 @@ public class BreadcrumbUtils
 		for (Entry<String,List<Map<String,Object>>> menuEntry : menuListMap.entrySet())
 		{
 			Map<String,Object> menuMap = menuEntry.getValue().get(0);
-			String node = StrUtil.obj2str(menuMap.get(menuColumn));
+			String node = StrUtil.obj2str(menuMap.get(nodeColumn));
 			int p = node.lastIndexOf(strSplit);
 			if (p > 0)
 			{
@@ -73,7 +81,7 @@ public class BreadcrumbUtils
 		}
 		//此时rootNodes仅剩下跟节点
 		//nodeRela已将所有的节点进行关联
-		if (rootNodes.size() > 1)
+		if (rootNodes.size() >= 1)
 		{
 			navigation.setNode("");
 			navigation.setName("");
@@ -81,15 +89,21 @@ public class BreadcrumbUtils
 			for (Entry<String,Map<String,Object>> rootEntry : rootNodes.entrySet())
 			{
 				Map<String,Object> value = rootEntry.getValue();
-				String node = StrUtil.obj2str(value.get(menuColumn));
+				String node = StrUtil.obj2str(value.get(nodeColumn));
 				String name = StrUtil.obj2str(value.get(nameColumn));
 				String url = StrUtil.obj2str(value.get(urlColumn));
-				BreadcrumbNavigation childNavigation = new BreadcrumbNavigation();
+				BreadcrumbNavigationWaper<T> childNavigation = new BreadcrumbNavigationWaper<T>();
+				if (clazz != null)
+				{
+					JSONObject json = (JSONObject) JSONObject.toJSON(value);
+					T t = JSONObject.toJavaObject(json, clazz);
+					childNavigation.set(t);
+				}
 				childNavigation.setName(name);
 				childNavigation.setNode(node);
 				childNavigation.setUrl(url);
 				navigation.addChild(childNavigation);
-				buildBreadcrumb(childNavigation, nodeRela, menuColumn, nameColumn, urlColumn, node);
+				buildBreadcrumb(childNavigation, nodeRela, nodeColumn, nameColumn, urlColumn, node, clazz);
 			}
 		}
 		return navigation;
@@ -99,28 +113,35 @@ public class BreadcrumbUtils
 	 * 组装树形节点
 	 * @param navigation
 	 * @param nodeRela
-	 * @param menuColumn
+	 * @param nodeColumn
 	 * @param nameColumn
 	 * @param urlColumn
 	 * @param node
 	 * 赵玉柱
 	 */
-	public static void buildBreadcrumb(BreadcrumbNavigation navigation, Map<String,List<Map<String,Object>>> nodeRela, String menuColumn, String nameColumn, String urlColumn, String node)
+	public static <T extends Object> void buildBreadcrumb(BreadcrumbNavigationWaper<T> navigation, Map<String,List<Map<String,Object>>> nodeRela, String nodeColumn, String nameColumn,
+			String urlColumn, String node, Class<T> clazz)
 	{
 		List<Map<String,Object>> list = nodeRela.get(node);
 		if (!list.isEmpty())
 		{
 			for (Map<String,Object> value : list)
 			{
-				String childNood = StrUtil.obj2str(value.get(menuColumn));
+				String childNood = StrUtil.obj2str(value.get(nodeColumn));
 				String name = StrUtil.obj2str(value.get(nameColumn));
 				String url = StrUtil.obj2str(value.get(urlColumn));
-				BreadcrumbNavigation childNavigation = new BreadcrumbNavigation();
+				BreadcrumbNavigationWaper<T> childNavigation = new BreadcrumbNavigationWaper<T>();
+				if (clazz != null)
+				{
+					JSONObject json = (JSONObject) JSONObject.toJSON(value);
+					T t = JSONObject.toJavaObject(json, clazz);
+					childNavigation.set(t);
+				}
 				childNavigation.setName(name);
 				childNavigation.setNode(childNood);
 				childNavigation.setUrl(url);
 				navigation.addChild(childNavigation);
-				buildBreadcrumb(childNavigation, nodeRela, menuColumn, nameColumn, urlColumn, childNood);
+				buildBreadcrumb(childNavigation, nodeRela, nodeColumn, nameColumn, urlColumn, childNood, clazz);
 			}
 		}
 	}

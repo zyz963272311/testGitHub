@@ -1,8 +1,7 @@
 package xyz.zyzhu.spring.boot.model;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 /**
  * <p>标题： 编码生成规则Controller</p>
  * <p>功能： </p>
@@ -17,13 +16,14 @@ import java.util.Map;
  * 监听使用界面:
  * @version 8.0
  */
-public class BreadcrumbNavigation extends BasObject
+public class BreadcrumbNavigationWaper<T extends Object> extends BasObject
 {
 	private static final long					serialVersionUID	= -3664739569059664526L;
 	private String								url;										//菜单url
 	private String								node;										//菜单节点
 	private String								name;										//菜单名称
-	private Map<String,BreadcrumbNavigation>	children;									//子节点
+	private T									obj;										//缓存对象使用
+	private List<BreadcrumbNavigationWaper<T>>	children;									//子节点
 
 	public String getUrl()
 	{
@@ -58,36 +58,49 @@ public class BreadcrumbNavigation extends BasObject
 		this.node = node;
 	}
 
-	public Map<String,BreadcrumbNavigation> getChildren()
+	public List<BreadcrumbNavigationWaper<T>> getChildren()
 	{
 		return children;
 	}
 
-	public void setChildren(Map<String,BreadcrumbNavigation> children)
+	public void setChildren(List<BreadcrumbNavigationWaper<T>> children)
 	{
-		//setValue("children", children);
 		this.children = children;
 	}
 
-	public BreadcrumbNavigation addChildRen(List<BreadcrumbNavigation> navigations)
+	public BreadcrumbNavigationWaper<T> addChildRen(List<BreadcrumbNavigationWaper<T>> navigations)
 	{
-		for (BreadcrumbNavigation navigation : navigations)
+		for (BreadcrumbNavigationWaper<T> navigation : navigations)
 		{
 			addChild(navigation);
 		}
 		return this;
 	}
 
-	public BreadcrumbNavigation addChild(BreadcrumbNavigation navigation)
+	public BreadcrumbNavigationWaper<T> addChild(BreadcrumbNavigationWaper<T> navigation)
 	{
-		Map<String,BreadcrumbNavigation> children2 = getChildren();
+		if (navigation == null)
+		{
+			return this;
+		}
+		List<BreadcrumbNavigationWaper<T>> children2 = getChildren();
 		if (children2 == null)
 		{
-			children2 = new HashMap<>();
+			children2 = new ArrayList<>();
 			setChildren(children2);
 		}
-		String node2 = navigation.getNode();
-		children2.put(node2, navigation);
+		children2.add(navigation);
+		return this;
+	}
+
+	public T get()
+	{
+		return obj;
+	}
+
+	public BreadcrumbNavigationWaper<T> set(T obj)
+	{
+		this.obj = obj;
 		return this;
 	}
 }

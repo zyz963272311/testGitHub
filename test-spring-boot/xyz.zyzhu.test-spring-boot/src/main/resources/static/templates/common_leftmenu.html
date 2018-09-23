@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body th:fragment="onloadLeftMenu(params)">
 	<script th:src="@{/js/assist/leftmenu.js}"></script>
+	<script th:src="@{/js/assist/vue-assist.js}"></script>
 	<div th:if="${params}">
 		<div th:if="${params.needImportJS}"
 			th:include="common_js :: onloadJS()"></div>
@@ -16,56 +17,32 @@
 	<!-- 	private String								name;										//菜单名称 -->
 	<!-- 	private Map<String,BreadcrumbNavigation>	children;									//子节点 -->
 	<div id="selectId">
-		<div v-if="rootmenu != null">
+		<div >
 			<!-- 此处如果不为空，则说明当前节点为一个菜单，否则说明此非菜单 -->
-			<div v-if="rootmenu.node != null">
-				<ul class="nav navbar-nav leftmenu_ul1">
-					<!-- 此节点下无下级菜单 -->
-					<li v-if="rootmenu.children == null || rootmenu.children.length == 0" class="leftmenu_li_nochild1">
-						<a href="{{rootmenu.url != null?rootmenu.url:'#'}}">
-							<span class="leftmenu_span_nochild1">{{rootmenu.name}}</span>
-						</a>
-					</li>
-					<!-- 此节点下含有下级菜单 -->
-					<li v-else class="dropdown leftmenu_li_child1">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown"> 
-							<span class="leftmenu_span_child1">{{rootmenu.name}}</span>
-						</a>
-						<ul v-for="menu1 in rootmenu.children" class="dropdown-menu leftmenu_ul2">
-							<!-- 此节点下无下级菜单 -->
-							<li v-if="menu1.children == null || menu1.children.length == 0" class="leftmenu_li_nochild2">
-								<a href="{{menu1.url != null?menu1.url:'#'}}">
-									<span class="leftmenu_span_nochild3">{{menu1.name}}</span>
-								</a>
-							</li>
-							<!-- 此节点下含有下级菜单 -->
-							<li v-else class="dropdown leftmenu_li_child2">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown"> 
-									<span class="leftmenu_span_child2">{{menu1.name}}</span>
-								</a>
-								<ul v-for="menu2 in menu1.children" class="dropdown-menu leftmenu_ul3">
-									<!-- 此节点下无下级菜单 -->
-									<li v-if="menu2.children == null || menu2.children.length == 0" class="leftmenu_li_nochild3">
-										<a href="{{menu2.url != null?menu2.url:'#'}}">
-											<span class="leftmenu_span_nochild4">{{menu2.name}}</span>
-										</a>
-									</li>
-									<!-- 此节点下含有下级菜单 -->
-									<li v-else class="dropdown leftmenu_li_child3">
-										<ul v-for="menu3 in menu2.children" class="dropdown-menu leftmenu_ul4">
-											<li v-else class="dropdown leftmenu_li_child4">
-												<a href="{{menu3.url != null?menu3.url:'#'}}" class="dropdown-toggle" data-toggle="dropdown"> 
-													<span class="leftmenu_span_child4">{{menu3.name}}</span>
-												</a>
-											</li>
-										</ul>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</li>
-				</ul>
-			</div>
+			<ul v-if="judgeMethod('arrayNotNull',rootmenu.children)" class="nav navbar-nav leftmenu_ul1">
+				<!-- 此节点下含有下级菜单 -->
+				<li v-for="menu1 in rootmenu.children" :class="judgeMethod('arrayNotNull',menu1.children)?'dropdown leftmenu_li_child1':' '">
+					<a :href="menu1.url" target="_blank" v-bind:data-toggle="judgeMethod('arrayNotNull',menu1.children)?'dropdown':' '" :class="judgeMethod('arrayNotNull',menu1.children)?'dropdown-toggle':' '" > 
+						<span class="leftmenu_span_child1">{{menu1.name}}</span>
+					</a>
+					<ul v-if="judgeMethod('arrayNotNull',menu1.children)" class="dropdown-menu leftmenu_ul2">
+						<!-- 此节点下含有下级菜单 -->
+						<li v-for="menu2 in menu1.children" :class="judgeMethod('arrayNotNull',menu2.children)?'dropdown leftmenu_li_child2':' '">
+							<a :href="menu2.url" target="_blank" :class="judgeMethod('arrayNotNull',menu2.children)?'dropdown-toggle':' '" v-bind:data-toggle="judgeMethod('arrayNotNull',menu2.children)?'dropdown':' '"> 
+								<span class="leftmenu_span_child2">{{menu2.name}}</span>
+							</a>
+							<ul v-if="judgeMethod('arrayNotNull',menu2.children)">
+								<!-- 此节点下含有下级菜单 -->
+								<li class=" leftmenu_li_child4">
+									<a :href="menu3.url" target="_blank"> 
+										<span class="leftmenu_span_child4">{{menu3.name}}</span>
+									</a>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
 		</div>
 	</div>
 	<script type="text/javascript">
@@ -78,7 +55,13 @@
 			var vm = new Vue({
 			 	el:selectId,
 			 	data:{
-			 		rootmenu:result
+			 		rootmenu: result
+			 	},
+			 	methods:{
+			 		judgeMethod:function()
+			 		{
+			 			return judgeMethod(arguments);
+			 		}
 			 	}
 			 });
 		},
