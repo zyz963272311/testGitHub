@@ -23,10 +23,6 @@ public class CkeditorSubmitResponse extends BasObject
 	private String				msg;
 	//回执的内码
 	private String				id;
-	//名称
-	private String				name;
-	//标题
-	private String				title;
 
 	public Integer getStatus()
 	{
@@ -59,27 +55,5 @@ public class CkeditorSubmitResponse extends BasObject
 	{
 		//setValue("id", id);
 		this.id = id;
-	}
-
-	public String getName()
-	{
-		return name;
-	}
-
-	public void setName(String name)
-	{
-		//setValue("name", name);
-		this.name = name;
-	}
-
-	public String getTitle()
-	{
-		return title;
-	}
-
-	public void setTitle(String title)
-	{
-		//setValue("title", title);
-		this.title = title;
 	}
 }

@@ -33,7 +33,6 @@ public class DefaultCkeditorSubmitServiceImpl implements CkeditorSubmitService
 		CkeditorSubmitResponse response = new CkeditorSubmitResponse();
 		response.setId(StrUtil.obj2str(request.getId(), request.getId() + "1"));
 		response.setStatus(0);
-		response.setName("测试name");
 		return response;
 	}
 }

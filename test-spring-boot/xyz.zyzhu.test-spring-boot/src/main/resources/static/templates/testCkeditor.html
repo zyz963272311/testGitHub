@@ -21,6 +21,7 @@
  <div th:include="../templates/common/common_ckeditor :: onloadCkeditor()"></div>
  <body>
  		<input type = "hidden" id="hidden_id">
+ 		<input type = "hidden" id="hidden_title">
         <form>
             <textarea name="editor1" id="editor1" rows="10" cols="80">
             </textarea>
@@ -30,33 +31,51 @@
                     customConfig: '/js/ckeditor/samples/config1.js'
                 };
                 // 使用默认配置
-                CKEDITOR.replace( 'editor1',editorConfig );
+               var editor= CKEDITOR.replace( 'editor1',editorConfig );
             </script>
         </form>
-        <button id="submit_ckeditor" onclick="submit()">提交</button>
+        <div class="container">
+        	<button class = "btn btn-block col-lg-12 col-md-12 col-sm-12 col-xs-12" id="submit_ckeditor" onclick="submit()">提交</button>
+        </div>
     </body>
     <script type="text/javascript">
     function submit(){
+    	//设置按钮不可用，防止重复点击
+    	$('submit_ckeditor').prop('disabled', true);
+    	var notification = editor.showNotification( '开始提交' );
     	$.ajax({
     		type:"post",
     		url:"/ckeditor/submit",
     		data:{
     			id:$("#hidden_id")[0].value,
+    			title:$("#hidden_title")[0].value,
     			service:"DefaultCkeditorSubmitServiceImpl",
-    			context:CKEDITOR.instances.editor1.getData()
+    			context:CKEDITOR.instances.editor1.getData(),
+    			otherParams:{
+    				test:"test",
+    				kkk:"kkk1"
+    			}
     		},
     		async:false,
     		success:function(result){
     			if(!result.status||result.status==0){
-    				$("#hidden_id")[0].value = result.id
-    				alert("提交成功");
+    				$("#hidden_id")[0].value = result.id;
+    				//alert("提交成功");
+    				notification.update({type:"success",message:"提交完成"});
     			}
     			else{
-    				alert("服务端存盘失败，请稍后重试");
+    				//alert("服务端存盘失败，请稍后重试");
+    				notification.update({type:"warning",message:"服务端存盘失败，请稍后重试"});
     			}
     		},
     		error:function(XMLHttpRequest,status,err){
-    			alert("请求失败，请联系系统管理员");
+    			//alert("请求失败，请联系系统管理员");
+    			notification.update({type:"warning",message:"请求失败，请联系系统管理员"});
+    		},
+    		complete:function(XHR, TS)
+    		{
+    			//ajax完成之后设置按钮可用
+    			$('submit_ckeditor').prop('disabled', false);
     		}
     	});
     }

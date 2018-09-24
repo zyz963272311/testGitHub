@@ -1,5 +1,6 @@
 package xyz.zyzhu.spring.boot.model;
 
+import java.util.Map;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -17,10 +18,11 @@ package xyz.zyzhu.spring.boot.model;
 public class CkeditorSubmitRequest extends BasObject
 {
 	private static final long	serialVersionUID	= -6357476832354259210L;
-	private String				id;
-	private String				title;
-	private String				context;
-	private String				service;
+	private String				id;											//id
+	private String				title;										//标题
+	private String				context;									//内容
+	private String				service;									//调用的service类
+	private Map<String,Object>	otherParams;								//其他参数
 
 	public String getContext()
 	{
@@ -64,5 +66,16 @@ public class CkeditorSubmitRequest extends BasObject
 	{
 		//setValue("title", title);
 		this.title = title;
+	}
+
+	public Map<String,Object> getOtherParams()
+	{
+		return otherParams;
+	}
+
+	public void setOtherParams(Map<String,Object> otherParams)
+	{
+		//setValue("otherParams", otherParams);
+		this.otherParams = otherParams;
 	}
 }
