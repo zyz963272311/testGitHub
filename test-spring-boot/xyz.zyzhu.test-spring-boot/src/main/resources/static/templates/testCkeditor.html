@@ -1,0 +1,64 @@
+ <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!--  <head> -->
+<!--    <title>aplex Bootstrap</title> -->
+<!--    <meta charset="utf-8"> -->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+<!--    <link rel="stylesheet" href="/css/bootstrap.min.css"> -->
+<!--    <script src="/js/jquery.js"></script> -->
+<!--    <script src="/js/bootstrap.min.js"></script> -->
+<!--  </head> -->
+ <head th:include="../templates/common/common_head :: commandHeader('测试标题')">
+ <style type="text/css">
+        div{
+            width:100%;
+        }
+    </style>
+ </head>
+ 
+ <body>
+ <div th:include="../templates/common/common_js :: onloadJS()"></div>
+ <div th:include="../templates/common/common_ckeditor :: onloadCkeditor()"></div>
+ <body>
+ 		<input type = "hidden" id="hidden_id">
+        <form>
+            <textarea name="editor1" id="editor1" rows="10" cols="80">
+            </textarea>
+            <script>
+                // 替换 <textarea id="editor1">为CKEditor实例
+                 var editorConfig = {
+                    customConfig: '/js/ckeditor/samples/config1.js'
+                };
+                // 使用默认配置
+                CKEDITOR.replace( 'editor1',editorConfig );
+            </script>
+        </form>
+        <button id="submit_ckeditor" onclick="submit()">提交</button>
+    </body>
+    <script type="text/javascript">
+    function submit(){
+    	$.ajax({
+    		type:"post",
+    		url:"/ckeditor/submit",
+    		data:{
+    			id:$("#hidden_id")[0].value,
+    			service:"DefaultCkeditorSubmitServiceImpl",
+    			context:CKEDITOR.instances.editor1.getData()
+    		},
+    		async:false,
+    		success:function(result){
+    			if(!result.status||result.status==0){
+    				$("#hidden_id")[0].value = result.id
+    				alert("提交成功");
+    			}
+    			else{
+    				alert("服务端存盘失败，请稍后重试");
+    			}
+    		},
+    		error:function(XMLHttpRequest,status,err){
+    			alert("请求失败，请联系系统管理员");
+    		}
+    	});
+    }
+    </script>
+ </html>

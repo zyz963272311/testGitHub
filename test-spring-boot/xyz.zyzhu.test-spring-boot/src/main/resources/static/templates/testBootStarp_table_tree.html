@@ -8,12 +8,12 @@
 <!--    <script src="/js/jquery.js"></script> -->
 <!--    <script src="/js/bootstrap.min.js"></script> -->
 <!--  </head> -->
- <head th:include="../templates/common_head :: commandHeader(title='测试bootStrap_table_tree')">
+ <head th:include="../templates/common/common_head :: commandHeader(title='测试bootStrap_table_tree')">
  </head>
  
 <body class="hold-transition skin-blue sidebar-mini">
-<div th:include="common_js :: onloadJS()"></div>
-<div th:include="common_leftmenu :: onloadLeftMenu(params=~{needImportJS:false})"></div>
+<div th:include="../templates/common/common_js :: onloadJS()"></div>
+<div th:include="../templates/common/common_leftmenu :: onloadLeftMenu(params=~{needImportJS:false})"></div>
 <div class="wrapper">
 
   <div class="content-wrapper">

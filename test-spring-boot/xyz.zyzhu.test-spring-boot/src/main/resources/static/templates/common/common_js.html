@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- 此页面仅仅引入公共部分的js -->
+<body>
+	<div th:fragment="onloadJS()">
+		<script th:src="@{/js/jquery/jquery-1.11.3.min.js}"></script>
+		<script  th:src="@{/js/bootstrap/bootstrap.min.js}" ></script>
+		<!-- <script th:if="${background}" th:src="@{/js/bootstrap.min.js}" ></script>-->
+		<script  th:src="@{/js/bootstrap-table/bootstrap-table.min.js}" ></script>
+		<script  th:src="@{/js/bootstrap-table/locale/bootstrap-table-zh-CN.js}" ></script>
+		<script  th:src="@{/js/bootstrap-table/bootstrap-table-treegrid.js}" ></script>
+		<script  th:src="@{/js/jquery/jquery.treegrid.js}" ></script>
+		<script  th:src="@{/js/assist/bootstrap-table-assist.js}" ></script>
+		<script  th:src="@{/js/vue/vue.js}" ></script>
+		
+	</div>
+</body>
+</html>

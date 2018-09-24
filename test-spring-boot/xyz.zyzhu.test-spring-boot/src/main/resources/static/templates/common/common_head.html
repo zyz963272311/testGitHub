@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- 此文件中仅仅引入页面需要的公共部分和公共部分的css -->
+<head th:fragment="commandHeader(title)">
+	<head th:include="../templates/common/common_head :: commandHeader1(${title},false)"></head>
+</head>
+<head th:fragment="commandHeader1(title,background)">
+	<title th:text=${title}></title>
+	<link rel="icon" type="image/x-icon" href="/templates/icons/logo.ico">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link th:href="@{/css/bootstrap/bootstrap.min.css}" rel="stylesheet">
+	<link th:href="@{/css/jquery/jquery.treegrid.min.css}" rel="stylesheet">
+	<link th:href="@{/css/bootstrap/bootstrap-theme.min.css}" rel="stylesheet">
+	<link th:href="@{/css/bootstrap-table/bootstrap-table.min.css}" rel="stylesheet">
+	
+</head>
+</html>

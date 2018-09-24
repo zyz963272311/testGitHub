@@ -41,6 +41,7 @@ public class RandomStringImpl implements RandomString
 		return getRandomString(length, assemChars);
 	}
 
+	@Override
 	public String getRandomString(int length, char[] assemChars)
 	{
 		int size = assemChars.length;

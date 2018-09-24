@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- 此页面仅仅引入公共部分的js -->
+<body>
+	<div th:fragment="onloadUeditor()">
+		<script th:src="@{/js/ueditor/ueditor.config.js}"></script>
+		<script th:src="@{/js/ueditor/ueditor.all.js}"></script>
+		<script th:src="@{/js/ueditor/lang/zh-cn/zh-cn.js}"></script>
+	</div>
+</body>
+</html>

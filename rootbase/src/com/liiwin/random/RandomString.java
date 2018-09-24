@@ -36,6 +36,15 @@ public interface RandomString
 	String getRandomString(int length, char min, char max);
 
 	/**
+	 * 根据数组进行获取数据
+	 * @param length
+	 * @param assemChars
+	 * @return
+	 * 赵玉柱
+	 */
+	String getRandomString(int length, char[] assemChars);
+
+	/**
 	 * 获取一个随机字符串数据
 	 * @param length 每个字符串的
 	 * @param size 字符串数组长度
