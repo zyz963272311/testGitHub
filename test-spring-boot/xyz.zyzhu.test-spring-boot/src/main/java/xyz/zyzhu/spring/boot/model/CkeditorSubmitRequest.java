@@ -21,6 +21,7 @@ public class CkeditorSubmitRequest extends BasObject
 	private String				id;											//id
 	private String				title;										//标题
 	private String				context;									//内容
+	private String				user;										//操作人
 	private String				service;									//调用的service类
 	private Map<String,Object>	otherParams;								//其他参数
 
@@ -77,5 +78,16 @@ public class CkeditorSubmitRequest extends BasObject
 	{
 		//setValue("otherParams", otherParams);
 		this.otherParams = otherParams;
+	}
+
+	public String getUser()
+	{
+		return user;
+	}
+
+	public void setUser(String user)
+	{
+		//setValue("user", user);
+		this.user = user;
 	}
 }

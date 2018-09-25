@@ -1,6 +1,5 @@
 package xyz.zyzhu.spring.boot.model;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Table;
 import xyz.zyzhu.spring.boot.annotation.FieldDef;
@@ -23,73 +22,40 @@ import xyz.zyzhu.spring.boot.annotation.FieldDef;
 public class User extends BasModel
 {
 	private static final long	serialVersionUID	= 1L;
-	//	@Id
-	//	@GeneratedValue(strategy = GenerationType.AUTO)
 	@FieldDef(defaultValue = "AutoCode:useridYYMMDD_______")
-	private String				id;
-	private String				openid;
+	private String				userid;
+	@FieldDef()
 	private String				username;
-	private String				headimage;
-	private BigDecimal			posx;
-	private BigDecimal			posy;
+	@FieldDef()
+	private String				password;
+	@FieldDef()
 	private Integer				usertype;
-	private Date				followtime;
-	private Integer				followflags;
+	@FieldDef()
+	private Integer				origintypes;
+	@FieldDef()
+	private Date				birth;
+	@FieldDef()
+	private Date				createdate;
+	@FieldDef()
+	private String				creater;
+	@FieldDef()
 	private Date				modifydate;
+	@FieldDef()
+	private String				modifyer;
+	@FieldDef()
+	//下面的两个字段用于记录失败登录
+	private Integer				errcount;
+	@FieldDef()
+	private Date				errtime;
 
-	/**
-	 * 
-	 */
-	public User()
+	public String getUserid()
 	{
-		super();
+		return userid;
 	}
 
-	/**
-	 * @param id
-	 * @param openid
-	 * @param username
-	 * @param headimage
-	 * @param posx
-	 * @param posy
-	 * @param usertype
-	 * @param followtime
-	 * @param followflags
-	 * @param modifydate
-	 */
-	public User(String id, String openid, String username, String headimage, BigDecimal posx, BigDecimal posy, Integer usertype, Date followtime, Integer followflags, Date modifydate)
+	public void setUserid(String userid)
 	{
-		super();
-		this.id = id;
-		this.openid = openid;
-		this.username = username;
-		this.headimage = headimage;
-		this.posx = posx;
-		this.posy = posy;
-		this.usertype = usertype;
-		this.followtime = followtime;
-		this.followflags = followflags;
-		this.modifydate = modifydate;
-	}
-
-	public String getId()
-	{
-		return id;
-	}
-
-	public void setId(String id)
-	{
-		setValue("id", id);
-	}
-
-	public String getOpenid()
-	{
-		return openid;
-	}
-
-	public void setOpenid(String openid)
-	{
-		setValue("openid", openid);
+		setValue("userid", userid);
 	}
 
 	public String getUsername()
@@ -102,34 +68,14 @@ public class User extends BasModel
 		setValue("username", username);
 	}
 
-	public String getHeadimage()
+	public String getPassword()
 	{
-		return headimage;
+		return password;
 	}
 
-	public void setHeadimage(String headimage)
+	public void setPassword(String password)
 	{
-		setValue("headimage", headimage);
-	}
-
-	public BigDecimal getPosx()
-	{
-		return posx;
-	}
-
-	public void setPosx(BigDecimal posx)
-	{
-		setValue("posx", posx);
-	}
-
-	public BigDecimal getPosy()
-	{
-		return posy;
-	}
-
-	public void setPosy(BigDecimal posy)
-	{
-		setValue("posy", posy);
+		setValue("password", password);
 	}
 
 	public Integer getUsertype()
@@ -142,24 +88,44 @@ public class User extends BasModel
 		setValue("usertype", usertype);
 	}
 
-	public Date getFollowtime()
+	public Integer getOrigintypes()
 	{
-		return followtime;
+		return origintypes;
 	}
 
-	public void setFollowtime(Date followtime)
+	public void setOrigintypes(Integer origintypes)
 	{
-		setValue("followtime", followtime);
+		setValue("origintypes", origintypes);
 	}
 
-	public Integer getFollowflags()
+	public Date getBirth()
 	{
-		return followflags;
+		return birth;
 	}
 
-	public void setFollowflags(Integer followflags)
+	public void setBirth(Date birth)
 	{
-		setValue("followflags", followflags);
+		setValue("birth", birth);
+	}
+
+	public Date getCreatedate()
+	{
+		return createdate;
+	}
+
+	public void setCreatedate(Date createdate)
+	{
+		setValue("createdate", createdate);
+	}
+
+	public String getCreater()
+	{
+		return creater;
+	}
+
+	public void setCreater(String creater)
+	{
+		setValue("creater", creater);
 	}
 
 	public Date getModifydate()
@@ -169,6 +135,36 @@ public class User extends BasModel
 
 	public void setModifydate(Date modifydate)
 	{
-		setValue("followflags", followflags);
+		setValue("modifydate", modifydate);
+	}
+
+	public String getModifyer()
+	{
+		return modifyer;
+	}
+
+	public void setModifyer(String modifyer)
+	{
+		setValue("modifyer", modifyer);
+	}
+
+	public Integer getErrcount()
+	{
+		return errcount;
+	}
+
+	public void setErrcount(Integer errcount)
+	{
+		setValue("errcount", errcount);
+	}
+
+	public Date getErrtime()
+	{
+		return errtime;
+	}
+
+	public void setErrtime(Date errtime)
+	{
+		setValue("errtime", errtime);
 	}
 }

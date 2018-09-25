@@ -72,4 +72,28 @@
 	wxtoolsrouter	flags				标志				int				4,0				0b00000000
 	
 	
+	//checkdeitor存入的数据
+	ckeditor		id					内码				varchar			128,0			0b00000011
+	ckeditor		title				标题				varchar			256,0			0b00000000
+	ckeditor		context				内容				text			30000,0			0b00000000
+	ckeditor		createdate			创建时间			datetime		8,0				0b00000000
+	ckeditor		creater				创建人			varchar			128,0			0b00000000
+	ckeditor		modifydate			修改时间			datetime		8,0				0b00000000
+	ckeditor		modifyer			修改人			varchar			128,0			0b00000000
+	
+	//users	用户信息表
+	users			userid				用户内码			varchar			128,0			0x00000011
+	users			username			用户名称			varchar			128,0			0x00000000
+	users			password			用户密码			varchar			128,0			0x00000000	
+	users			usertype			用户类型			int				4,0				0x00000000
+	users			origintypes			来源方式			int				4,0				0x00000000
+	users			birth				出生日期			date			8,0				0x00000000
+	users			createdate			创建时间			datetime		8,0				0x00000000
+	users			creater				创建人			varchar			128,0			0x00000000
+	users			modifydate			修改时间			datetime		8,0				0x00000000
+	users			modifyer			修改人			varchar			128,0			0x00000000
+	//下面的两个字段用于记录失败登录
+	users			errcount			失败次数			int				4,0				0x00000000
+	users			errtime				失败时间			datetime		8,0				0x00000000
+	
 	

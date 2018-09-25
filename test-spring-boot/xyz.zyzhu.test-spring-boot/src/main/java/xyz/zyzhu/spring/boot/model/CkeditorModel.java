@@ -1,5 +1,6 @@
 package xyz.zyzhu.spring.boot.model;
 
+import java.util.Date;
 import javax.persistence.Table;
 import xyz.zyzhu.spring.boot.annotation.FieldDef;
 /**
@@ -23,11 +24,17 @@ public class CkeditorModel extends BasModel
 	@FieldDef(defaultValue = "AutoCode:ckYYMMDD_______")
 	private String				id;
 	@FieldDef()
-	private String				name;
-	@FieldDef()
 	private String				title;
 	@FieldDef()
 	private String				context;
+	@FieldDef()
+	private Date				createdate;									//创建时间
+	@FieldDef()
+	private String				creater;									//创建人
+	@FieldDef()
+	private Date				modifydate;									//修改时间
+	@FieldDef()
+	private String				modifyer;									//修改人
 
 	public String getId()
 	{
@@ -37,16 +44,6 @@ public class CkeditorModel extends BasModel
 	public void setId(String id)
 	{
 		setValue("id", id);
-	}
-
-	public String getName()
-	{
-		return name;
-	}
-
-	public void setName(String name)
-	{
-		setValue("name", name);
 	}
 
 	public String getTitle()
@@ -67,5 +64,45 @@ public class CkeditorModel extends BasModel
 	public void setContext(String context)
 	{
 		setValue("context", context);
+	}
+
+	public Date getCreatedate()
+	{
+		return createdate;
+	}
+
+	public void setCreatedate(Date createdate)
+	{
+		setValue("createdate", createdate);
+	}
+
+	public String getCreater()
+	{
+		return creater;
+	}
+
+	public void setCreater(String creater)
+	{
+		setValue("creater", creater);
+	}
+
+	public Date getModifydate()
+	{
+		return modifydate;
+	}
+
+	public void setModifydate(Date modifydate)
+	{
+		setValue("modifydate", modifydate);
+	}
+
+	public String getModifyer()
+	{
+		return modifyer;
+	}
+
+	public void setModifyer(String modifyer)
+	{
+		setValue("modifyer", modifyer);
 	}
 }

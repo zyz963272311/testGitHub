@@ -1,8 +1,11 @@
 package xyz.zyzhu.spring.config;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import xyz.zyzhu.spring.boot.constance.LoginConstance;
+import xyz.zyzhu.spring.boot.interceptor.LoginHandlerInterceptor;
 import xyz.zyzhu.spring.boot.utils.PropertiesUtils;
 /**
  * <p>标题： TODO</p>
@@ -19,12 +22,21 @@ import xyz.zyzhu.spring.boot.utils.PropertiesUtils;
  * @version 8.0
  */
 @Component
-public class WebConfig extends WebMvcConfigurerAdapter
+public class WebConfig extends WebMvcConfigurerAdapter implements LoginConstance
 {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry)
 	{
 		registry.addResourceHandler("/upload/**").addResourceLocations("file:///" + PropertiesUtils.getPropValue("web.upload-path"));
 		super.addResourceHandlers(registry);
+	}
+
+	@Override
+	public void addInterceptors(InterceptorRegistry registry)
+	{
+		//登录拦截器
+		registry.addInterceptor(new LoginHandlerInterceptor()).addPathPatterns("/**").excludePathPatterns("/login.jsp").excludePathPatterns("/js/**").excludePathPatterns("/templates/**")
+				.excludePathPatterns("/css/**").excludePathPatterns("/assets/**").excludePathPatterns("/wx").excludePathPatterns("/user/login").excludePathPatterns("/user/logout");
+		super.addInterceptors(registry);
 	}
 }

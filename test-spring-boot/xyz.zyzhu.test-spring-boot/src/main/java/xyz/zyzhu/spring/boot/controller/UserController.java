@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.liiwin.config.BasConfig;
 import com.liiwin.date.DateUtil;
 import com.liiwin.utils.StrUtil;
+import xyz.zyzhu.spring.boot.constance.LoginConstance;
 import xyz.zyzhu.spring.boot.model.UserInfo;
 import xyz.zyzhu.spring.boot.service.UserService;
 /**
@@ -30,12 +31,11 @@ import xyz.zyzhu.spring.boot.service.UserService;
 @EnableAutoConfiguration
 @RestController()
 @RequestMapping("/user")
-public class UserController
+public class UserController implements LoginConstance
 {
-	private static Logger		logger				= LoggerFactory.getLogger(UserController.class);
-	private static final String	SESSION_USERNAME	= "user";
+	private static Logger	logger	= LoggerFactory.getLogger(UserController.class);
 	@Autowired
-	UserService					service;
+	UserService				service;
 
 	@RequestMapping(path = "/login", method = { RequestMethod.POST, RequestMethod.GET })
 	public UserInfo login(HttpSession session, String username, String password)

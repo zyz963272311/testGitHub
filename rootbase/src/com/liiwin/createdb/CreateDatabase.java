@@ -478,7 +478,15 @@ public class CreateDatabase
 					{
 						int flags = 0;
 						Column column = columnEntry.getValue();
-						sql.append(column.getColumnName() + " " + column.getDataType() + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "") + ")");
+						String dataType = column.getDataType();
+						if (StrUtil.isStrIn(dataType, new String[] { "date", "datetime", "time", "year", "timestamp", }))
+						{
+							sql.append(column.getColumnName()).append(" ").append(column.getDataType()).append(" ");
+						} else
+						{
+							sql.append(column.getColumnName() + " " + column.getDataType() + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "") + ")");
+						}
+						//						sql.append(column.getColumnName() + " " + column.getDataType() + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "") + ")");
 						String comment = column.getComment();
 						if (comment != null)
 						{
@@ -552,7 +560,14 @@ public class CreateDatabase
 							int flags = 0;
 							//添加字段
 							sql.append("alter table `" + column.getTableName() + "` add ");
-							sql.append("`" + column.getColumnName() + "` " + column.getDataType() + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "") + ")");
+							String dataType = column.getDataType();
+							if (StrUtil.isStrIn(dataType, new String[] { "date", "datetime", "time", "year", "timestamp", }))
+							{
+								sql.append("`" + column.getColumnName() + "` " + dataType + " ");
+							} else
+							{
+								sql.append("`" + column.getColumnName() + "` " + dataType + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "") + ")");
+							}
 							String comment = column.getComment();
 							if (comment != null)
 							{
@@ -586,8 +601,15 @@ public class CreateDatabase
 							{
 								int flags = 0;
 								sql.append("alter table `" + column.getTableName() + "` modify column ");
-								sql.append(
-										"`" + column.getColumnName() + "` " + column.getDataType() + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "") + ")");
+								String dataType = column.getDataType();
+								if (StrUtil.isStrIn(dataType, new String[] { "date", "datetime", "time", "year", "timestamp", }))
+								{
+									sql.append("`" + column.getColumnName() + "` " + column.getDataType() + " ");
+								} else
+								{
+									sql.append("`" + column.getColumnName() + "` " + column.getDataType() + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "")
+											+ ")");
+								}
 								String comment = column.getComment();
 								if (comment != null)
 								{
@@ -812,7 +834,14 @@ public class CreateDatabase
 						{
 							//						int flags = 0;
 							Column column = columnEntry.getValue();
-							sql.append(column.getColumnName() + " " + column.getDataType() + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "") + ")");
+							String dataType = column.getDataType();
+							if (StrUtil.isStrIn(dataType, new String[] { "date", "datetime", "time", "year", "timestamp", }))
+							{
+								sql.append(column.getColumnName() + " " + dataType + " ");
+							} else
+							{
+								sql.append(column.getColumnName() + " " + dataType + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "") + ")");
+							}
 							String comment = column.getComment();
 							if (comment != null)
 							{
@@ -883,8 +912,14 @@ public class CreateDatabase
 								int flags = 0;
 								//添加字段
 								sql.append("alter table `" + column.getTableName() + "` add ");
-								sql.append(
-										"`" + column.getColumnName() + "` " + column.getDataType() + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "") + ")");
+								String dataType = column.getDataType();
+								if (StrUtil.isStrIn(dataType, new String[] { "date", "datetime", "time", "year", "timestamp", }))
+								{
+									sql.append("`" + column.getColumnName() + "` " + dataType + " ");
+								} else
+								{
+									sql.append("`" + column.getColumnName() + "` " + dataType + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "") + ")");
+								}
 								String comment = column.getComment();
 								if (comment != null)
 								{
@@ -918,8 +953,14 @@ public class CreateDatabase
 								{
 									int flags = 0;
 									sql.append("alter table `" + column.getTableName() + "` modify column ");
-									sql.append("`" + column.getColumnName() + "` " + column.getDataType() + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "")
-											+ ")");
+									String dataType = column.getDataType();
+									if (StrUtil.isStrIn(dataType, new String[] { "date", "datetime", "time", "year", "timestamp", }))
+									{
+										sql.append("`" + column.getColumnName() + "` " + dataType + " ");
+									} else
+									{
+										sql.append("`" + column.getColumnName() + "` " + dataType + "(" + column.getDataLength() + (column.getDecimal() > 0 ? ("," + column.getDecimal()) : "") + ")");
+									}
 									String comment = column.getComment();
 									if (comment != null)
 									{

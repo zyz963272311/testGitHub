@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import xyz.zyzhu.spring.boot.constance.LoginConstance;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -20,7 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
  * 监听使用界面:
  * @version 8.0
  */
-public class LoginHandlerInterceptor implements HandlerInterceptor
+public class LoginHandlerInterceptor implements HandlerInterceptor, LoginConstance
 {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception
@@ -35,6 +36,9 @@ public class LoginHandlerInterceptor implements HandlerInterceptor
 		if (session.getAttribute("users") != null)
 		{
 			return true;
+		} else
+		{
+			response.sendRedirect(request.getContextPath() + "/login.jsp");
 		}
 		return true;
 	}
