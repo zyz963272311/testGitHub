@@ -20,8 +20,12 @@
  <div th:include="../templates/common/common_js :: onloadJS()"></div>
  <div th:include="../templates/common/common_ckeditor :: onloadCkeditor()"></div>
  <body>
- 		<input type = "hidden" id="hidden_id">
- 		<input type = "hidden" id="hidden_title">
+        <div class="container">
+ 		<input type = "hidden" id="hidden_id" th:value="${id}">
+ 		<div class="input-group">
+            <span class="input-group-addon">标题</span>
+            <input type="text" class="form-control" id="hidden_title" placeholder="请输入标题"  maxlength="20" >
+        </div>
         <form>
             <textarea name="editor1" id="editor1" rows="10" cols="80">
             </textarea>
@@ -34,11 +38,31 @@
                var editor= CKEDITOR.replace( 'editor1',editorConfig );
             </script>
         </form>
-        <div class="container">
         	<button class = "btn btn-block col-lg-12 col-md-12 col-sm-12 col-xs-12" id="submit_ckeditor" onclick="submit()">提交</button>
         </div>
     </body>
     <script type="text/javascript">
+    $(function(){
+    	var id = $('#hidden_id')[0].value;
+    	if(id)
+    	{
+    		$.ajax({
+        		type:"post",
+        		url:"/ckeditor/get",
+        		data:{
+        			id:$("#hidden_id")[0].value
+        		},
+        		async:false,
+        		success:function(result){
+        			if(!result.status||result.status==0){
+        				$("#hidden_id")[0].value = result.id;
+        				$("#hidden_title")[0].value = result.title;
+        				CKEDITOR.instances.editor1.setData(result.context);
+        			}
+        		}
+    		}
+    	}
+    });
     function submit(){
     	//设置按钮不可用，防止重复点击
     	$('submit_ckeditor').prop('disabled', true);
@@ -49,7 +73,7 @@
     		data:{
     			id:$("#hidden_id")[0].value,
     			title:$("#hidden_title")[0].value,
-    			service:"DefaultCkeditorSubmitServiceImpl",
+    			service:"WXCkeditorSubmitServiceImpl",
     			context:CKEDITOR.instances.editor1.getData(),
     			otherParams:{
     				test:"test",

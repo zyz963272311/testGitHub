@@ -2,20 +2,24 @@ package xyz.zyzhu.spring.boot.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import com.liiwin.utils.StrUtil;
+import xyz.zyzhu.spring.boot.db.BootDatabase;
+import xyz.zyzhu.spring.boot.db.BootDatabasePoolManager;
 import xyz.zyzhu.spring.boot.model.CkeditorFileUploadResponse;
 import xyz.zyzhu.spring.boot.model.CkeditorModel;
 import xyz.zyzhu.spring.boot.model.CkeditorSubmitRequest;
@@ -45,9 +49,18 @@ public class TestCkeditorController
 	Logger logger = LoggerFactory.getLogger(TestCkeditorController.class);
 
 	@RequestMapping("/testCkeditor")
-	public ModelAndView ueditor()
+	public ModelAndView ueditor(HttpServletRequest request, HttpServletResponse response)
 	{
+		String id = request.getParameter("id");
 		ModelAndView mav = new ModelAndView("testCkeditor");
+		mav.addObject("id", id);
+		return mav;
+	}
+
+	@RequestMapping("/testCKEditorList")
+	public ModelAndView index()
+	{
+		ModelAndView mav = new ModelAndView("testCKEditorList");
 		return mav;
 	}
 
@@ -122,23 +135,33 @@ public class TestCkeditorController
 	 * @return
 	 * 赵玉柱
 	 */
-	@RequestMapping("/get")
+	@RequestMapping(path = { "/get" }, method = { RequestMethod.POST })
 	@ResponseBody
-	public CkeditorModel get(@RequestParam(name = "id") String id)
+	public CkeditorModel get(Map<String,Object> params)
 	{
-		return null;
-	}
-
-	/**
-	 * 列表查询
-	 * @param params
-	 * @return
-	 * 赵玉柱
-	 */
-	@RequestMapping("/getList")
-	@ResponseBody
-	public List<CkeditorModel> getList(Map<String,Object> params)
-	{
+		String id = (String) params.get("id");
+		if (StrUtil.isStrTrimNull(id))
+		{
+			return null;
+		}
+		BootDatabase db = null;
+		try
+		{
+			db = BootDatabasePoolManager.getDatabaseByClass(CkeditorModel.class, false);
+			CkeditorModel query = new CkeditorModel();
+			query.setId(id);
+			CkeditorModel result = db.query1(query);
+			return result;
+		} catch (Exception e)
+		{
+			logger.error(e.getMessage());
+		} finally
+		{
+			if (db != null)
+			{
+				BootDatabasePoolManager.close(db);
+			}
+		}
 		return null;
 	}
 }

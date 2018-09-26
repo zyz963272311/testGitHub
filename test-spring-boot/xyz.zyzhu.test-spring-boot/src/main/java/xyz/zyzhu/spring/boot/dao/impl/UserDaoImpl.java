@@ -37,6 +37,7 @@ public class UserDaoImpl implements UserDao
 		boolean rollback = true;
 		UserInfo inf = null;
 		int errCount = 0;
+		List<UserInfo> infos = new ArrayList<>();
 		try
 		{
 			db = BootDatabasePoolManager.getDatabaseByClass(User.class, true);
@@ -45,16 +46,14 @@ public class UserDaoImpl implements UserDao
 			{
 				throw new RuntimeException("登陆失败：无此用户");
 			}
-			List<UserInfo> infos = new ArrayList<>();
-			boolean addCount = false;
+			boolean addCount = true;
 			for (User user : querys)
 			{
 				errCount = StrUtil.obj2int(user.getErrcount());
 				Date errtime = user.getErrtime();
 				if (errtime != null && ((DateUtil.getCurDate().getTime() - errtime.getTime()) < (24 * 60 * 60 * 1000)))
 				{
-					addCount = true;
-					if (errCount >= PropertiesUtils.getPropIntValue("LOGIN_ERR_MAX_COUNT", 3))
+					if (errCount >= PropertiesUtils.getPropIntValue("LOGIN_ERR_MAX_COUNT", 2))
 					{
 						continue;
 					}
@@ -63,6 +62,7 @@ public class UserDaoImpl implements UserDao
 				{
 					UserInfo users = new UserInfo(username, password);
 					infos.add(users);
+					addCount = false;
 				}
 			}
 			if (querys.size() == 1)
@@ -72,7 +72,6 @@ public class UserDaoImpl implements UserDao
 				db.beginTrans();
 				if (addCount)
 				{
-					user.setErrtime(DateUtil.getCurDate());
 					Date errtime = user.getErrtime();
 					//仅此一条的情况下，设置失败次数
 					if (errtime == null || ((DateUtil.getCurDate().getTime() - errtime.getTime()) >= (24 * 60 * 60 * 1000)))
@@ -82,6 +81,7 @@ public class UserDaoImpl implements UserDao
 					{
 						user.setErrcount(StrUtil.obj2int(user.getErrcount()) + 1);
 					}
+					user.setErrtime(DateUtil.getCurDate());
 				} else
 				{
 					//登录成功清空登录失败信息，前提是没有超过当日最大次数限制的情况下
@@ -90,16 +90,12 @@ public class UserDaoImpl implements UserDao
 				}
 				//更新数据并且不保留旧值，为了更新失败时间，防止置空
 				db.update(user, false);
+				db.commit();
 			}
-			if (infos.isEmpty())
+			if (infos.size() > 0)
 			{
-				throw new RuntimeException("用户名或密码错误");
+				inf = infos.get(0);
 			}
-			if (infos.size() > 1)
-			{
-				throw new RuntimeException("查询到多名相同用户,请更改用户信息");
-			}
-			inf = infos.get(0);
 			//			for (String pwd : passwords)
 			//			{
 			//				if (StrUtil.equals(password, pwd))
@@ -122,9 +118,21 @@ public class UserDaoImpl implements UserDao
 				}
 			}
 		}
+		if (inf != null)
+		{
+			return inf;
+		}
 		if (errCount >= PropertiesUtils.getPropIntValue("LOGIN_ERR_MAX_COUNT", 3))
 		{
 			throw new RuntimeException("用户名已达到当日最大登录失败次数限制");
+		}
+		if (infos.isEmpty())
+		{
+			throw new RuntimeException("用户名或密码错误");
+		}
+		if (infos.size() > 1)
+		{
+			throw new RuntimeException("查询到多名相同用户,请更改用户信息");
 		}
 		return inf;
 	}

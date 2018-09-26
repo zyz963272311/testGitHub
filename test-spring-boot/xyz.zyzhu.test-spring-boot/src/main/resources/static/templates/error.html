@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="common_head :: commandHeader(${errortitle})">
+<head th:include="../templates/common/common_head :: commandHeader(${errortitle})">
  </head>
 <body>
-<div th:include="common_js :: onloadJS"></div>
+<div th:include="../templates/common/common_js :: onloadJS"></div>
 <p th:text="${errorname}"></p>
 <p th:text="${errmessage}"></p>
 <p th:text="${params}"></p>

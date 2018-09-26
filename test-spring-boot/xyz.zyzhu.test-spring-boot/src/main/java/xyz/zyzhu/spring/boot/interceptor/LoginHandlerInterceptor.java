@@ -33,6 +33,7 @@ public class LoginHandlerInterceptor implements HandlerInterceptor, LoginConstan
 		request.getHeader("Proxy-Client-IP");
 		request.getRemoteAddr();
 		request.getHeader("host");
+		String uri = request.getRequestURI();
 		if (session.getAttribute("users") != null)
 		{
 			return true;
@@ -46,6 +47,8 @@ public class LoginHandlerInterceptor implements HandlerInterceptor, LoginConstan
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView arg3) throws Exception
 	{
+		int status = response.getStatus();
+		System.out.println(status);
 	}
 
 	@Override

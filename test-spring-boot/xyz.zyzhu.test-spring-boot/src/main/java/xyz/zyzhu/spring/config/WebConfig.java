@@ -1,11 +1,9 @@
 package xyz.zyzhu.spring.config;
 
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import xyz.zyzhu.spring.boot.constance.LoginConstance;
-import xyz.zyzhu.spring.boot.interceptor.LoginHandlerInterceptor;
 import xyz.zyzhu.spring.boot.utils.PropertiesUtils;
 /**
  * <p>标题： TODO</p>
@@ -28,15 +26,18 @@ public class WebConfig extends WebMvcConfigurerAdapter implements LoginConstance
 	public void addResourceHandlers(ResourceHandlerRegistry registry)
 	{
 		registry.addResourceHandler("/upload/**").addResourceLocations("file:///" + PropertiesUtils.getPropValue("web.upload-path"));
+		registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
+		registry.addResourceHandler("/templates/**").addResourceLocations("classpath:/static/templates/");
 		super.addResourceHandlers(registry);
 	}
-
-	@Override
-	public void addInterceptors(InterceptorRegistry registry)
-	{
-		//登录拦截器
-		registry.addInterceptor(new LoginHandlerInterceptor()).addPathPatterns("/**").excludePathPatterns("/login.jsp").excludePathPatterns("/js/**").excludePathPatterns("/templates/**")
-				.excludePathPatterns("/css/**").excludePathPatterns("/assets/**").excludePathPatterns("/wx").excludePathPatterns("/user/login").excludePathPatterns("/user/logout");
-		super.addInterceptors(registry);
-	}
+	//	@Override
+	//	public void addInterceptors(InterceptorRegistry registry)
+	//	{
+	//		//登录拦截器
+	//		registry.addInterceptor(new LoginHandlerInterceptor()).addPathPatterns("/**").excludePathPatterns("/login.jsp").excludePathPatterns("/js/**").excludePathPatterns("/templates/**")
+	//				.excludePathPatterns("/css/**").excludePathPatterns("/assets/**").excludePathPatterns("/wx").excludePathPatterns("/user/login").excludePathPatterns("/user/logout")
+	//				.excludePathPatterns("/index.html").excludePathPatterns("**.js").excludePathPatterns("**.php").excludePathPatterns("**.css").excludePathPatterns("**.png").excludePathPatterns("**.jpg")
+	//				.excludePathPatterns("**.bmp").excludePathPatterns("**.gif").excludePathPatterns("/").excludePathPatterns("/error").excludePathPatterns("/40*");
+	//		super.addInterceptors(registry);
+	//	}
 }
