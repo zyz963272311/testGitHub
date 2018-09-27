@@ -79,6 +79,20 @@ public class Main
 		return registration;
 	}
 	/**
+	 * 字符过滤器
+	 * @return
+	 * 赵玉柱
+	 */
+	//	@Bean("charsetFilterRegister")
+	//	public FilterRegistrationBean charsetFilterRegister()
+	//	{
+	//		FilterRegistrationBean registration = new FilterRegistrationBean();
+	//		Filter filter = new CharacterFilter();
+	//		registration.setFilter(filter);
+	//		registration.addInitParameter("urlPatterns", "/*");
+	//		return registration;
+	//	}
+	/**
 	 * 添加过滤器 遇到坑了，暂时不实现了
 	 * @return
 	 * 赵玉柱

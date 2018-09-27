@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!--  <head> -->
+<!--    <title>aplex Bootstrap</title> -->
+<!--    <meta charset="utf-8"> -->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+<!--    <link rel="stylesheet" href="/css/bootstrap.min.css"> -->
+<!--    <script src="/js/jquery.js"></script> -->
+<!--    <script src="/js/bootstrap.min.js"></script> -->
+<!--  </head> -->
+<head th:include="../templates/common/common_head :: commandHeader('生成数据库')">
+</head>
+ 
+<body>
+<div th:include="../templates/common/common_js :: onloadJS()"></div>
+<script th:src="@{/js/assist/vue-assist.js}"></script>
+<script type="text/javascript">
+</script>
+	 <div id ="createdatabase" class="container" v-if="judgeMethod('arrayNotNull',data)">
+	 	<div class="panel panel-default">
+	 		<div class="panel-heading">
+        		<h3 class="panel-title">选择数据库</h3>
+    		</div>
+    		 <div class="panel-body">
+				<label class="checkbox-inline" v-for="db in data"><input type="checkbox" :id="db.dbKey" value="db.dbKey">{{db.dbName}}</label>
+				
+			</div>
+		</div>
+		<button id="btn_add" type="button" class="btn  btn-success" onclick="createDatabase()">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>生成数据库
+        </button>
+	</div>
+	<script type="text/javascript">
+	var result;
+	$().ready(
+		function loadLeftNenuByParams()
+		{
+			params = {};
+			//1.加载leftmenu数据
+			$.ajax({
+				type:"GET",
+				url:"/createDatabase/getDatabases",
+				async:false,
+				data:params,
+				datatype:"json",
+				success:function(data){
+					result = data;
+		    	} 
+			});
+			var vm = new Vue({
+			 	el:createdatabase,
+			 	data:{
+			 		data: result
+			 	},
+			 	methods:{
+			 		judgeMethod:function()
+			 		{
+			 			return judgeMethod(arguments);
+			 		}
+			 	}
+			 });
+		},
+	);
+	function createDatabase()
+	{
+		var paramsStr = "";
+		var d = document.getElementById("createdatabase");
+		if(d){
+			var ips = d.getElementsByTagName("input");
+			if(ips&&ips.length>0){}
+				for(var i = 0;i<ips.length;i++){
+					var ip = ips[i];
+					dbKey = ip.id;
+					if(ip.checked){
+						if(paramsStr.length>0){
+							paramsStr=paramsStr+",";
+						}
+						paramsStr = paramsStr+dbKey;
+					}
+				}
+			}
+			if(paramsStr){
+				$.ajax({
+					type:"POST",
+					url:"/createDatabase/create",
+					async:false,
+					data:{databases:paramsStr},
+					datatype:"json",
+					success:function(data){
+						result = data;
+			    	} 
+			});
+		}
+	}
+	</script>
+</body>
+</html>

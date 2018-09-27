@@ -9,39 +9,19 @@
 <!--    <script src="/js/bootstrap.min.js"></script> -->
 <!--  </head> -->
  <head th:include="../templates/common/common_head :: commandHeader('测试标题')">
- <style type="text/css">
+ 	<style type="text/css">
         div{
             width:100%;
         }
     </style>
+    
  </head>
  
  <body>
+ 
  <div th:include="../templates/common/common_js :: onloadJS()"></div>
  <div th:include="../templates/common/common_ckeditor :: onloadCkeditor()"></div>
- <body>
-        <div class="container">
- 		<input type = "hidden" id="hidden_id" th:value="${id}">
- 		<div class="input-group">
-            <span class="input-group-addon">标题</span>
-            <input type="text" class="form-control" id="hidden_title" placeholder="请输入标题"  maxlength="20" >
-        </div>
-        <form>
-            <textarea name="editor1" id="editor1" rows="10" cols="80">
-            </textarea>
-            <script>
-                // 替换 <textarea id="editor1">为CKEditor实例
-                 var editorConfig = {
-                    customConfig: '/js/ckeditor/samples/config1.js'
-                };
-                // 使用默认配置
-               var editor= CKEDITOR.replace( 'editor1',editorConfig );
-            </script>
-        </form>
-        	<button class = "btn btn-block col-lg-12 col-md-12 col-sm-12 col-xs-12" id="submit_ckeditor" onclick="submit()">提交</button>
-        </div>
-    </body>
-    <script type="text/javascript">
+ <script type="text/javascript">
     $(function(){
     	var id = $('#hidden_id')[0].value;
     	if(id)
@@ -60,9 +40,33 @@
         				CKEDITOR.instances.editor1.setData(result.context);
         			}
         		}
-    		}
+    		});
     	}
-    });
+    })
+    </script>
+ <body>
+        <div class="container">
+	 		<input type = "hidden" id="hidden_id" th:value="${id}">
+	 		<div class="input-group">
+	            <span class="input-group-addon">标题</span>
+	            <input type="text" class="form-control" id="hidden_title" placeholder="请输入标题"  maxlength="20" >
+	        </div>
+	        <form>
+	            <textarea name="editor1" id="editor1" rows="10" cols="80">
+	            </textarea>
+	            <script>
+	                // 替换 <textarea id="editor1">为CKEditor实例
+	                 var editorConfig = {
+	                    customConfig: '/js/ckeditor/samples/config1.js'
+	                };
+	                // 使用默认配置
+	               var editor= CKEDITOR.replace( 'editor1',editorConfig );
+	            </script>
+	        </form>
+        	<button class = "btn btn-block col-lg-12 col-md-12 col-sm-12 col-xs-12" id="submit_ckeditor" onclick="submit()">提交</button>
+        </div>
+    </body>
+    <script type="text/javascript">
     function submit(){
     	//设置按钮不可用，防止重复点击
     	$('submit_ckeditor').prop('disabled', true);

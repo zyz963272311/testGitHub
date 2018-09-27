@@ -2,7 +2,6 @@ package xyz.zyzhu.spring.boot.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -135,11 +134,10 @@ public class TestCkeditorController
 	 * @return
 	 * 赵玉柱
 	 */
-	@RequestMapping(path = { "/get" }, method = { RequestMethod.POST })
+	@RequestMapping(path = { "/get" }, method = { RequestMethod.POST, RequestMethod.GET })
 	@ResponseBody
-	public CkeditorModel get(Map<String,Object> params)
+	public CkeditorModel get(String id)
 	{
-		String id = (String) params.get("id");
 		if (StrUtil.isStrTrimNull(id))
 		{
 			return null;

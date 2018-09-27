@@ -38,7 +38,7 @@
          <div class="panel-body" style="padding-bottom:0px;">
         <div id="toolbar" class="btn-group">
 <!--             <button id="btn_add" type="button" class="btn  btn-success" target="_blank" th:onclick="@{'/ckeditor/testCkeditor'}"> -->
-            <button id="btn_add" type="button" class="btn  btn-success" target="_blank" th:onclick="@{'location.href='${#httpServletRequest.getContextPath()}'}">
+            <button id="btn_add" type="button" class="btn  btn-success" onclick="addNew()">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
             </button>
            <button id="remove" class="btn btn-danger" >
@@ -190,7 +190,7 @@
 
  function operateFormatter(value, row, index) {
      return [
-         '<a class="like" href="javascript:void(0)" title="Like" target="_blank" th:onclick="@{\'/ckeditor/testCkeditor?id='+row.id+'\'}">',
+         '<a class="like" href="javascript:void(0)" title="Like" >',
             '<i class="glyphicon glyphicon-pencil"></i>',
          '</a>  ',
          '<a class="remove" href="javascript:void(0)" title="Remove">',
@@ -200,6 +200,9 @@
  }
  window.operateEvents = {
 		 //点击当前行的添加修改事件
+         'click .like': function (e, value, row, index) {
+        	 window.open("/ckeditor/testCkeditor?id="+row.id,"_blank");
+         },
          //点击当前行的删除事件
          'click .remove': function (e, value, row, index) {
                $.ajax({
@@ -303,5 +306,9 @@
     		 alert(e);
     	 }
      });
+     
+function addNew(){
+	window.open("/ckeditor/testCkeditor","_blank");
+}
  </script>
  </html>

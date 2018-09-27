@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -147,13 +148,13 @@ public class PropertiesUtils
 	{
 		String localPropertiePath = "./resources/application.properties";
 		Properties localProperties = new Properties();
-		FileInputStream fis = null;
+		InputStreamReader is = null;
 		try
 		{
-			fis = new FileInputStream(new File(localPropertiePath));
-			if (fis != null)
+			is = new InputStreamReader(new FileInputStream(new File(localPropertiePath)), "UTF-8");
+			if (is != null)
 			{
-				localProperties.load(fis);
+				localProperties.load(is);
 			}
 		} catch (Exception e)
 		{
@@ -161,10 +162,10 @@ public class PropertiesUtils
 			localPropertiePath = "./resources/config.properties";
 			try
 			{
-				fis = new FileInputStream(new File(localPropertiePath));
-				if (fis != null)
+				is = new InputStreamReader(new FileInputStream(new File(localPropertiePath)), "UTF-8");
+				if (is != null)
 				{
-					localProperties.load(fis);
+					localProperties.load(is);
 				}
 			} catch (Exception e1)
 			{
@@ -172,7 +173,11 @@ public class PropertiesUtils
 				localPropertiePath = "./config.properties";
 				try
 				{
-					fis = new FileInputStream(new File(localPropertiePath));
+					is = new InputStreamReader(new FileInputStream(new File(localPropertiePath)), "UTF-8");
+					if (is != null)
+					{
+						localProperties.load(is);
+					}
 				} catch (Exception e2)
 				{
 					logger.info("加载本地配置{}失败,失败原因{}", localPropertiePath, e);
@@ -180,11 +185,11 @@ public class PropertiesUtils
 			}
 		} finally
 		{
-			if (fis != null)
+			if (is != null)
 			{
 				try
 				{
-					fis.close();
+					is.close();
 				} catch (IOException e)
 				{
 					logger.info("关闭流失败{}", e);
@@ -204,13 +209,11 @@ public class PropertiesUtils
 	{
 		String systemPropertiesPath = StrUtil.obj2str(localProperties.getProperty("SystemPropertyesPath", "D://MyProject/OnGithub/system.properties"));
 		Properties ststemPropertyes = new Properties();
-		FileInputStream fis = null;
-		try
+		try (InputStreamReader is = new InputStreamReader(new FileInputStream(new File(systemPropertiesPath)), "UTF-8"))
 		{
-			fis = new FileInputStream(new File(systemPropertiesPath));
-			if (fis != null)
+			if (is != null)
 			{
-				ststemPropertyes.load(fis);
+				ststemPropertyes.load(is);
 			}
 		} catch (Exception e)
 		{

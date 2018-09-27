@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.liiwin.db.Database;
@@ -33,8 +32,7 @@ import com.liiwin.utils.StrUtil;
  */
 public class CreateDatabase
 {
-	private static Logger				logger	= LoggerFactory.getLogger(CreateDatabase.class);
-	public static final AtomicBoolean	loadDb	= new AtomicBoolean(false);
+	private static Logger logger = LoggerFactory.getLogger(CreateDatabase.class);
 
 	/**
 	 * 生成数据库
@@ -71,7 +69,6 @@ public class CreateDatabase
 			createDatabase(dbList, dbFile);
 		}
 		logger.error("执行完成");
-		loadDb.set(true);
 	}
 
 	/**
@@ -85,14 +82,8 @@ public class CreateDatabase
 		Map<Database,List<Map<String,Object>>> selectConfigDBMessage = getSelectConfigDBMessage(dbList);
 		Map<String,Map<String,Table>> configDbMessage2Table = dbMessage2Table(selectConfigDBMessage);
 		Map<String,Map<String,Table>> dbMessage2Table = null;
-		if (loadDb.get())
-		{
-			dbMessage2Table = configDbMessage2Table;
-		} else
-		{
-			Map<Database,List<Map<String,Object>>> selectDBMessage = getSelectDBMessage(dbList);
-			dbMessage2Table = dbMessage2Table(selectDBMessage);
-		}
+		Map<Database,List<Map<String,Object>>> selectDBMessage = getSelectDBMessage(dbList);
+		dbMessage2Table = dbMessage2Table(selectDBMessage);
 		//一般来说 configDbMessage2Table 与 dbMessage2Table 应该是一样的 但是这里增加了容错
 		Map<String,Map<String,Table>> selectDBFileMessage = getSelectDBFileMessage(dbList, dbFile);
 		//config tb表需要执行的sql
