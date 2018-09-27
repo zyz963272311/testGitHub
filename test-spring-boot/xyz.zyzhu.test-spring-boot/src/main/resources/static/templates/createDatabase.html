@@ -26,7 +26,7 @@
 				
 			</div>
 		</div>
-		<button id="btn_add" type="button" class="btn  btn-success" onclick="createDatabase()">
+		<button id="btn_createDatabase" type="button" class="btn  btn-success" onclick="createDatabase()">
                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>生成数据库
         </button>
 	</div>
@@ -63,6 +63,7 @@
 	);
 	function createDatabase()
 	{
+		$("#btn_createDatabase").attr("disabled",true);
 		var paramsStr = "";
 		var d = document.getElementById("createdatabase");
 		if(d){
@@ -88,7 +89,11 @@
 					datatype:"json",
 					success:function(data){
 						result = data;
-			    	} 
+			    	},
+			    	complete:function(XHR, TS){
+			    		$("#btn_createDatabase").attr("disabled",false);
+			    	}
+			    	
 			});
 		}
 	}

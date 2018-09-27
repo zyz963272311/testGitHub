@@ -228,6 +228,17 @@ public class PropertiesUtils
 	}
 
 	/**
+	 * 或有所有的配置信息
+	 * @return
+	 * 赵玉柱
+	 */
+	public static Properties getProperties()
+	{
+		loadZKProperties(false);
+		return properties;
+	}
+
+	/**
 	 * 加载数据库中的配置
 	 * @param properties
 	 * 赵玉柱

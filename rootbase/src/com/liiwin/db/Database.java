@@ -152,7 +152,6 @@ public class Database
 				//				this.conn = DriverManager.getConnection(url + "/" + databaseName + "?user=" + user + "&pasword=" + password + "&useUnicode=true&characterEncoding=utf-8");
 				if (this.conn != null)
 				{
-					conn.setAutoCommit(false);
 					logger.error("数据库连接成功");
 				}
 			} catch (Exception e)
