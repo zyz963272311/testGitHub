@@ -1,14 +1,6 @@
  <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<!--  <head> -->
-<!--    <title>aplex Bootstrap</title> -->
-<!--    <meta charset="utf-8"> -->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1"> -->
-<!--    <link rel="stylesheet" href="/css/bootstrap.min.css"> -->
-<!--    <script src="/js/jquery.js"></script> -->
-<!--    <script src="/js/bootstrap.min.js"></script> -->
-<!--  </head> -->
- <head th:include="../templates/common/common_head :: commandHeader(title='测试bootStrap_table')">
+ <head th:include="../templates/common/common_head :: commandHeader(title='数据导入导出')">
  </head>
  
 <body class="hold-transition skin-blue sidebar-mini">
@@ -16,16 +8,15 @@
 <div class="wrapper">
 
   <div class="content-wrapper">
-     <div class="content col-lg-12 col-md-12 col-sm-12 col-xs-12" th:include="../templates/common/common_leftmenu :: onloadLeftMenu(params=~{needImportJS:false})">
-    </div>
+  
     <section class="content-header">
     </section>
     <section class="content">
       <div class="input-group">
-        <span class="input-group-addon" id="mid_query">菜单ID</span>
-        <input type="text" id="mid_query_text" class="form-control" placeholder="菜单ID" aria-describedby="mid_query">
-        <span class="input-group-addon" id="mname_query">菜单名称</span>
-        <input type="text" id="mname_query_text" class="form-control" placeholder="菜单名称" aria-describedby="mname_query">
+        <span class="input-group-addon" id="exportcode_query">导出编号</span>
+        <input type="text" id="exportcode_query_text" class="form-control" placeholder="导出编号" aria-describedby="exportcode_query">
+        <span class="input-group-addon" id="name_query">导出名称</span>
+        <input type="text" id="name_query_text" class="form-control" placeholder="导出名称" aria-describedby="name_query">
       </div>
       <div class="input-group">
         <input type="button" id="query" class="form-control" value="query">
@@ -54,7 +45,7 @@
     </section>
     <!-- /.content -->
   </div>
-  </div>
+</div>
 
 
  <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
@@ -73,22 +64,19 @@
               <div class="modal-body">
               <!-- 此处添加数据 -->
               	<input type="hidden" id="index">
-              	<input type="hidden" id="mid">
+              	<input type="hidden" id="id">
               <table>
               	<tr>
 	              	<td>
-	              		<small>权限</small><input type="text" id="limits">
+	              		<small>权限</small><input type="text" id="exportcode">
 	              	</td>
 	              	<td>
-	              		<small>菜单名称</small><input type="text" id="mname">
+	              		<small>菜单名称</small><input type="text" id="name">
 	              	</td>
               	</tr>
               	<tr>
 	              	<td>
-              			<small>停用标识</small><input type="checkbox" id="offlags_off">
-              		</td>
-	              	<td>
-              			<small>对应链接</small><input type="text" id="url">
+              			<small>对应链接</small><input type="text" id="remark">
               		</td>
               	</tr>
               </table>
@@ -119,9 +107,8 @@
  <script >
  
  selections = [];
- dictA = {"1":{"code":"1","name":"已停用"},"0":{"code":"2","name":"未停用"}};
  //{id:id选择器,name:名称,sqlname:sql名称,compareMethod:比较方式,prefix:表名前缀}
- pageParams = [{id:"#mid_query_text",name:"mid",compareMethod:0,prefix:"menu"},{id:"#mname_query_text",name:"mname",compareMethod:6,prefix:"menu"}];
+ pageParams = [{id:"#exportcode_query_text",name:"exportcode",compareMethod:0,prefix:"dataexp"},{id:"#name_query_text",name:"name",compareMethod:6,prefix:"dataexp"}];
  $(function () {
 	 //初始化界面查询条件相关
 	 reloadData();
@@ -164,32 +151,27 @@
              minimumCountColumns: 2,             //最少允许的列数
              clickToSelect: true,                //是否启用点击选中行
              height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
-             uniqueId: "mid",                     //每一行的唯一标识，一般为主键列
+             uniqueId: "id",                     //每一行的唯一标识，一般为主键列
              showToggle:false,                    //是否显示详细视图和列表视图的切换按钮
              cardView: false,                    //是否显示详细视图
              detailView: false,                   //是否显示父子表onEditableSave
              columns: [{
                  checkbox: true
              }, {
-                 field: 'mid',
-                 title: '菜单id'
+                 field: 'id',
+                 title: '内码id'
                  
              }, {
-                 field: 'limits',
-                 title: '权限'
+                 field: 'exportcode',
+                 title: '导出编号'
               
              }, {
-                 field: 'mname',
-                 title: '菜单名称'
+                 field: 'name',
+                 title: '名称'
                
              }, {
-                 field: 'offlags',
-                 title: '停用标识',
-                 formatter: operateDictAFormatter
-               
-             }, {
-                 field: 'url',
-                 title: '对应连接'
+                 field: 'remark',
+                 title: '备注说明'
                
              }
              , {
@@ -229,13 +211,13 @@
      //得到查询的参数
    oTableInit.queryParams = function (params) {
          var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
-			tablename: "menu",   //查询表名
+			tablename: "dataexp",   //查询表名
 			columns: "*",   //查询列名
 			queryFilter: "1=1",   //查询条件
 			pagefrom: params.offset,   //查询页码
 			pagesize: params.limit,   //每页行数
 			//offset: params.offset,  //页码
-			sortColumns: "mname",  //排序
+			sortColumns: "exportcode",  //排序
 			havingFilter: null,  //having条件
 			groupFilter: null,  //分组条件
 			//search:params.search
@@ -259,30 +241,16 @@
  };
 
  function btn_add(){
-       $("#myModalLabel").text("添加菜单");
-       $("#mid").val("");
+       $("#myModalLabel").text("添加导出定义");
+       $("#id").val("");
        $("#index").val("");
-       $("#limits").val("");
-       $("#offlags_off").val(""); 
-       $("#offlags_off").removeAttr("checked");
-       $("#mname").val("");
-       $("#url").val("");
+       $("#exportcode").val("");
+       $("#name").val("");
+       $("#remark").val("");
        $('#myModal').modal();
       
  }
 
- function operateDictAFormatter(value, row, index) {
-	 dictinfo = dictA[value];
-	 if(dictinfo)
-	 {
-		 name = dictinfo["name"];
-		 if(name)
-		 {
-		 	return name;
-		 }
-	 }
-	 return value;
- }
  function operateFormatter(value, row, index) {
      return [
          '<a class="like" href="javascript:void(0)" title="Like">',
@@ -297,10 +265,10 @@
  window.operateEvents = {
 		 //点击当前行的添加修改事件
 		 'click .like': function (e, value, row, index) {
-	         $("#myModalLabel").text("编辑客户");
-	         $("#mid")[0].value=row.mid;
+	         $("#myModalLabel").text("编辑导出定义");
+	         $("#id")[0].value=row.id;
 	         $("#index")[0].value=index;
-	         $("#limits")[0].value=row.limits;
+	         $("#exportcode")[0].value=row.exportcode;
 	         $("#offlags_off").val(""); 
 	         $("#offlags_off").removeAttr("checked");
 	         if(parseInt(row.offlags))
@@ -311,8 +279,8 @@
 	         {
 	         	$("#offlags_off").prop("checked",false);
 	         }
-	         $("#mname")[0].value=row.mname;
-	         $("#url")[0].value=row.url;
+	         $("#name")[0].value=row.name;
+	         $("#remark")[0].value=row.remark;
 	         $('#myModal').modal();
          },
          //点击当前行的删除事件
@@ -320,7 +288,7 @@
                $.ajax({
                  type: "post",
                  url: "/delete-customer",
-                 data: { table:"menu",delRequest:[row]},
+                 data: { table:"dataexp",delRequest:[row]},
                  success: function (data, status) {
                      if (status == "success") {
                          alert("删除成功");
@@ -335,8 +303,8 @@
 
              });
              $('#tb_customer').bootstrapTable('remove', {
-                 field: 'mid',
-                 values: [row.mid]
+                 field: 'id',
+                 values: [row.id]
              });
        
          }
@@ -371,27 +339,22 @@
      $('#save').click(function () {
     	 try
     	 {
-    		 var mid = $("#mid")[0].value;
+    		 var id = $("#id")[0].value;
     		 var index = $("#index")[0].value;
-    		 var limitsValue = $("#limits")[0].value;
-    		 var mnameValue = $("#mname")[0].value;
-    		 var offlagsValue = 0;
-    		 if($("#offlags_off")[0].checked)
-    		 {
-    			 offlagsValue = 1;
-    		 }
-    		 var urlValue = $("#url")[0].value;
-    		 var delRequestObj = {mname:mnameValue,limits:limitsValue,offlags:offlagsValue,url:urlValue};
+    		 var exportcodeValue = $("#exportcode")[0].value;
+    		 var nameValue = $("#name")[0].value;
+    		 var remarkValue = $("#remark")[0].value;
+    		 var delRequestObj = {name:nameValue,exportcode:exportcodeValue,remark:remarkValue};
     		 var optionsValue = 1;
-    		 if(mid)
+    		 if(id)
     		 {
-    			 delRequestObj.mid = mid;
+    			 delRequestObj.id = id;
     			 optionsValue = 4;
     		 }
 	         $.ajax({
 	             type: "get",
 	             url: "/update-customer",
-	             data: { table:"menu",tableValues: [delRequestObj],options:optionsValue,modelClass:"xyz.zyzhu.spring.boot.model.Menu"},
+	             data: { table:"dataexp",tableValues: [delRequestObj],options:optionsValue,modelClass:"xyz.zyzhu.spring.boot.model.DataexpDef"},
 	             success: function (data, status) {
 	                 if (status == "success") {
 	                	if(data)
@@ -433,7 +396,7 @@
      
 //      function getIdSelections() {
 //          return $.map($('#tb_customer').bootstrapTable('getSelections'), function (row) {
-//              return row.mid
+//              return row.id
 //          });
 //      }
 
@@ -448,7 +411,7 @@
      $('#remove').click(function () {
     	 try
     	 {
-	         var delRequestObj = getIdSelections('#tb_customer','mid,mname',true);
+	         var delRequestObj = getIdSelections('#tb_customer','id,name',true);
 	         if(delRequestObj === null || delRequestObj === undefined)
 	         {
 	        	throw "获取删除列失败"; 
@@ -456,7 +419,7 @@
 	         $.ajax({
 	             type: "post",
 	             url: "/delete-customer",
-	             data: { table:"menu",delRequest: delRequestObj },
+	             data: { table:"dataexp",delRequest: delRequestObj },
 	             success: function (data, status) {
 	                 if (status == "success") {
 	                     alert("删除成功");

@@ -6,11 +6,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
-import org.plutext.jaxb.svg11.Mpath;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+import com.liiwin.config.BasConfig;
+import com.liiwin.http.HttpClientUtil;
+import com.liiwin.utils.ServerUtils;
+import com.liiwin.utils.StrUtil;
+import xyz.zyzhu.spring.boot.utils.PropertiesUtils;
 /**
  * <p>标题： 配置管理</p>
  * <p>功能： </p>
@@ -25,14 +38,14 @@ import org.springframework.web.bind.annotation.RestController;
  * 监听使用界面:
  * @version 8.0
  */
-import org.springframework.web.servlet.ModelAndView;
-import com.liiwin.config.BasConfig;
-import xyz.zyzhu.spring.boot.utils.PropertiesUtils;
 @EnableAutoConfiguration
 @RestController
 @RequestMapping("/configManager")
 public class ConfigManagerController
 {
+	private static Logger	logger		= LoggerFactory.getLogger(ConfigManagerController.class);
+	private static Lock		loadLock	= new ReentrantLock();
+
 	/**
 	 * 获取页面
 	 * @return
@@ -41,7 +54,7 @@ public class ConfigManagerController
 	@RequestMapping("/get")
 	public ModelAndView get()
 	{
-		ModelAndView view = new ModelAndView("createDatabase");
+		ModelAndView view = new ModelAndView("configManager");
 		return view;
 	}
 
@@ -64,13 +77,17 @@ public class ConfigManagerController
 		{
 			properties = BasConfig.getProperties();
 		}
-		for (Entry<Object,Object> entry : properties.entrySet())
+		if (properties != null)
 		{
-			Object key = entry.getKey();
-			Object value = entry.getValue();
-			Map<String,Object> map = new HashMap<>();
-			map.put("key", key);
-			map.put("value", value);
+			for (Entry<Object,Object> entry : properties.entrySet())
+			{
+				Object key = entry.getKey();
+				Object value = entry.getValue();
+				Map<String,Object> map = new HashMap<>();
+				map.put("key", key);
+				map.put("value", value);
+				list.add(map);
+			}
 		}
 		return list;
 	}
@@ -80,11 +97,78 @@ public class ConfigManagerController
 	 * @return
 	 * 赵玉柱
 	 */
-	@RequestMapping("/reloadProperties")
+	@RequestMapping(path = "/reloadProperties", method = { RequestMethod.POST })
 	@ResponseBody
-	public Map<String,Object> reloadProperties()
+	public Map<String,Object> reloadProperties(HttpServletRequest req, HttpServletResponse resp, @RequestParam(name = "remote", defaultValue = "false") Boolean remote)
 	{
 		Map<String,Object> map = new HashMap<>();
+		if (loadLock.tryLock())
+		{
+			try
+			{
+				//先重新加载rootbas的config
+				BasConfig.loadConfig(true);
+				//然后再重新加载Boot的config
+				PropertiesUtils.loadZKProperties(true);
+				if (remote)
+				{
+					String requestURI = req.getRequestURI();
+					String scheme = req.getScheme();//http
+					String serverName = req.getServerName();//localhost
+					int serverPort = req.getServerPort();//8081
+					String contextPath = req.getContextPath();//项目名称
+					String remoteServers = PropertiesUtils.getPropValue("remote-server");
+					String localServPath = scheme + "://" + serverName + ":" + serverPort + "/";
+					String hostIP = ServerUtils.getHostIP();
+					String lodalAddr = (hostIP != null) ? (scheme + "://" + hostIP + ":" + serverPort + "/") : null;
+					String localHost1 = scheme + "://127.0.0.1:" + serverPort + "/";
+					String localHost2 = scheme + "://localhost:" + serverPort + "/";
+					if (StrUtil.isNoStrTrimNull(contextPath))
+					{
+						localServPath += contextPath + "/";
+						localHost1 += contextPath + "/";
+						localHost2 += contextPath + "/";
+						if (lodalAddr != null)
+						{
+							lodalAddr += contextPath + "/";
+						}
+					}
+					String params = "remote=false";
+					if (StrUtil.isNoStrTrimNull(remoteServers))
+					{
+						String[] remoteServerArray = StrUtil.split(remoteServers, ';');
+						for (String remoteServer : remoteServerArray)
+						{
+							if (!remoteServer.endsWith("/"))
+							{
+								remoteServer += "/";
+							}
+							//当前地址及本机地址
+							if (remoteServer.indexOf(localServPath) >= 0 || remoteServer.indexOf(lodalAddr) >= 0 || remoteServer.indexOf(localHost1) >= 0 || remoteServer.indexOf(localHost2) >= 0)
+							{
+								continue;
+							}
+							remoteServer += requestURI;
+							try
+							{
+								String sendHttpPost = HttpClientUtil.sendHttpPost(remoteServer, params);
+								logger.error("进行远程调用{}执行config重新装载完成：{}", remoteServer + params, sendHttpPost);
+							} catch (Exception e)
+							{
+								logger.error("进行远程调用{}执行config重新装载失败：{}", remoteServer + params, e.getMessage());
+							}
+						}
+					}
+				}
+			} finally
+			{
+				loadLock.unlock();
+			}
+		} else
+		{
+			map.put("status", "error");
+			map.put("message", "已存在相同操作，请取消此操作或稍后重试");
+		}
 		return map;
 	}
 }

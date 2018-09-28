@@ -1,109 +1,60 @@
  <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<!--  <head> -->
-<!--    <title>aplex Bootstrap</title> -->
-<!--    <meta charset="utf-8"> -->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1"> -->
-<!--    <link rel="stylesheet" href="/css/bootstrap.min.css"> -->
-<!--    <script src="/js/jquery.js"></script> -->
-<!--    <script src="/js/bootstrap.min.js"></script> -->
-<!--  </head> -->
  <head th:include="../templates/common/common_head :: commandHeader(title='config配置管理')">
  </head>
  
 <body class="hold-transition skin-blue sidebar-mini">
 <div th:include="../templates/common/common_js :: onloadJS()"></div>
-<div class="wrapper">
-
-  <div class="content-wrapper">
-  
-    <section class="content">
-      <div class="input-group">
-        <span class="input-group-addon" id="mname_query">菜单名称</span>
-        <input type="text" id="mname_query_text" class="form-control" placeholder="菜单名称" aria-describedby="mname_query">
-      </div>
-      <div class="input-group">
-        <input type="button" id="query" class="form-control" value="query">
-      </div>
-      <div class="row">
-         <div class="panel-body" style="padding-bottom:0px;">
-        <div id="toolbar" class="btn-group">
-            <button id="btn_add" type="button" class="btn  btn-success" onclick="btn_add()">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
-            </button>
-           <button id="remove" class="btn btn-danger" >
-            <i class="glyphicon glyphicon-remove"></i> 删除
+	<div class="container">
+		<div id="toolbar" class="btn-group">
+           <button id="btn_reload" type="button" class="btn  btn-success" onclick="btn_reload()">
+               <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>config重新装载
            </button>
-        </div>
-           <div class="box">
-            <!-- /.box-header -->
-            <div class="box-body">
-        <table id="tb_customer" data-response-handler="responseHandler">
-        </table>
-         </div>
-        </div>
-    </div>
+		</div>
+		<ul id="myTab" class="nav nav-tabs">
+			<li class="active">
+				<a href="#boot" data-toggle="tab">
+				业务配置
+				</a>
+			</li>
+			<li><a href="#config" data-toggle="tab">底层配置</a></li>
+		</ul>
+	</div>  
+	<div id="myTabContent" class="tab-content">
+		<div class=" tab-pane fade in active" id="boot">
+		      <div class="row">
+		         <div class="panel-body" style="padding-bottom:0px;">
+		           <div class="box">
+		            <!-- /.box-header -->
+		            <div class="box-body">
+		        <table id="boot_customer" data-response-handler="responseHandler">
+		        </table>
+		         </div>
+		        </div>
+		    </div>
         <!-- /.col -->
       </div>
       <!-- /.row -->
-    </section>
+      </div>
+      
+      <div class=" tab-pane fade" id="config">
+		      <div class="row">
+		         <div class="panel-body" style="padding-bottom:0px;">
+		           <div class="box">
+		            <!-- /.box-header -->
+		            <div class="box-body">
+		        <table id="config_customer" data-response-handler="responseHandler">
+		        </table>
+		         </div>
+		        </div>
+		    </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+      </div>
     <!-- /.content -->
-  </div>
 </div>
 
-
- <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-       aria-labelledby="myModalLabel" aria-hidden="true" style="position:absolute;top:20%;left:10%;">
-      <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <button type="button" class="close"
-                          data-dismiss="modal" aria-hidden="true">
-                      &times;
-                  </button>
-                  <h4 id="myModalLabel">
-                      	标题
-                  </h4>
-              </div>
-              <div class="modal-body">
-              <!-- 此处添加数据 -->
-              	<input type="hidden" id="index">
-              	<input type="hidden" id="mid">
-              <table>
-              	<tr>
-	              	<td>
-	              		<small>权限</small><input type="text" id="limits">
-	              	</td>
-	              	<td>
-	              		<small>菜单名称</small><input type="text" id="mname">
-	              	</td>
-              	</tr>
-              	<tr>
-	              	<td>
-              			<small>停用标识</small><input type="checkbox" id="offlags_off">
-              		</td>
-	              	<td>
-              			<small>对应链接</small><input type="text" id="url">
-              		</td>
-              	</tr>
-              </table>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-success"
-                          data-dismiss="modal" id="qx">
-                      	关闭
-                  </button>
-                  <a class="btn btn-success" id="save">
-                     	 确定
-                  </a>
-              </div>
-          </div><!-- /.modal-content -->
-      </div>
-
-
-
-
-  </div>
 
 
 
@@ -114,18 +65,26 @@
  <script >
  
  selections = [];
- dictA = {"1":{"code":"1","name":"已停用"},"0":{"code":"2","name":"未停用"}};
  //{id:id选择器,name:名称,sqlname:sql名称,compareMethod:比较方式,prefix:表名前缀}
- pageParams = [{id:"#mid_query_text",name:"mid",compareMethod:0,prefix:"menu"},{id:"#mname_query_text",name:"mname",compareMethod:6,prefix:"menu"}];
  $(function () {
 	 //初始化界面查询条件相关
-	 reloadData();
+	 reloadData_boot();
+	 reloadData_config();
 
  });
- function reloadData(){
-	 initPageParams(pageParams);
+ function reloadData_boot(){
 	 //1.初始化Table
 	 var oTable = new TableInit();
+	 oTable.Init();
+	
+	 //2.初始化Button的点击事件
+	 var oButtonInit = new ButtonInit();
+	 oButtonInit.Init();
+ }
+ 
+ function reloadData_config(){
+	 //1.初始化Table
+	 var oTable = new TableInitConfig();
 	 oTable.Init();
 	
 	 //2.初始化Button的点击事件
@@ -138,17 +97,17 @@
      var oTableInit = new Object();
      //初始化Table
      oTableInit.Init = function () {
-         $('#tb_customer').bootstrapTable({
-             url: '/customer-data',         //请求后台的URL（*）
+         $('#boot_customer').bootstrapTable({
+             url: '/configManager/getProperties',         //请求后台的URL（*）
              method: 'get',                      //请求方式（*）
-             toolbar: '#toolbar',                //工具按钮用哪个容器
+             //toolbar: '#toolbar',                //工具按钮用哪个容器
              striped: true,                      //是否显示行间隔色
              cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
              pagination: true,                   //是否显示分页（*）
              sortable: false,                     //是否启用排序
              sortOrder: "asc",                   //排序方式
              queryParams: oTableInit.queryParams,//传递参数（*）
-             sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+             sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
              pageNumber:1,                       //初始化加载第一页，默认第一页
              pageSize: 10,                       //每页的记录行数（*）
              pageList: [10,20],        //可供选择的每页的行数（*）
@@ -159,63 +118,21 @@
              minimumCountColumns: 2,             //最少允许的列数
              clickToSelect: true,                //是否启用点击选中行
              height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
-             uniqueId: "mid",                     //每一行的唯一标识，一般为主键列
+             uniqueId: "key",                     //每一行的唯一标识，一般为主键列
              showToggle:false,                    //是否显示详细视图和列表视图的切换按钮
              cardView: false,                    //是否显示详细视图
              detailView: false,                   //是否显示父子表onEditableSave
-             columns: [{
-                 checkbox: true
-             }, {
-                 field: 'mid',
-                 title: '菜单id'
+             columns: [ {
+                 field: 'key',
+                 title: '键'
                  
              }, {
-                 field: 'limits',
-                 title: '权限'
+                 field: 'value',
+                 title: '值'
               
-             }, {
-                 field: 'mname',
-                 title: '菜单名称'
-               
-             }, {
-                 field: 'offlags',
-                 title: '停用标识',
-                 formatter: operateDictAFormatter
-               
-             }, {
-                 field: 'url',
-                 title: '对应连接'
-               
-             }
-             , {
-                 field: 'operate',
-                 title: '操作',
-                 align: 'center',
-                 events: operateEvents,
-                 formatter: operateFormatter
              }
              
-             
-             ],
-             onEditableSave:function (field, row, oldValue, $el) {
-              $.ajax({
-                  type: "post",
-                  url: "/edit",
-                  data: { strJson: JSON.stringify(row) },
-                  success: function (data, status) {
-                      if (status == "success") {
-                          alert("编辑成功");
-                      }
-                  },
-                  error: function () {
-                      alert("Error");
-                  },
-                  complete: function () {
-
-                  }
-
-              });
-          }
+             ]
          });
      };
      
@@ -224,22 +141,63 @@
      //得到查询的参数
    oTableInit.queryParams = function (params) {
          var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
-			tablename: "menu",   //查询表名
-			columns: "*",   //查询列名
-			queryFilter: "1=1",   //查询条件
-			pagefrom: params.offset,   //查询页码
-			pagesize: params.limit,   //每页行数
-			//offset: params.offset,  //页码
-			sortColumns: "mname",  //排序
-			havingFilter: null,  //having条件
-			groupFilter: null,  //分组条件
-			//search:params.search
-			moreQueryFilter:getPageParams(pageParams)
+        		 types:"boot"
          };
          return temp;
      };
      return oTableInit;
  };
+ 
+ var TableInitConfig = function () {
+     var oTableInit = new Object();
+     //初始化Table
+     oTableInit.Init = function () {
+         $('#config_customer').bootstrapTable({
+             url: '/configManager/getProperties',         //请求后台的URL（*）
+             method: 'get',                      //请求方式（*）
+             //toolbar: '#toolbar',                //工具按钮用哪个容器
+             striped: true,                      //是否显示行间隔色
+             cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+             pagination: true,                   //是否显示分页（*）
+             sortable: false,                     //是否启用排序
+             sortOrder: "asc",                   //排序方式
+             queryParams: oTableInit.queryParams,//传递参数（*）
+             sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+             pageNumber:1,                       //初始化加载第一页，默认第一页
+             pageSize: 10,                       //每页的记录行数（*）
+             pageList: [10,20],        //可供选择的每页的行数（*）
+             search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+             strictSearch: true,
+             showColumns: true,                  //是否显示所有的列
+             showRefresh: true,                  //是否显示刷新按钮
+             minimumCountColumns: 2,             //最少允许的列数
+             clickToSelect: true,                //是否启用点击选中行
+             height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+             uniqueId: "key",                     //每一行的唯一标识，一般为主键列
+             showToggle:false,                    //是否显示详细视图和列表视图的切换按钮
+             cardView: false,                    //是否显示详细视图
+             detailView: false,                   //是否显示父子表onEditableSave
+             columns: [ {
+                 field: 'key',
+                 title: '键'
+                 
+             }, {
+                 field: 'value',
+                 title: '值'
+              
+             }
+             
+             ]
+         });
+     };
+     oTableInit.queryParams = function (params) {
+         var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+         };
+         return temp;
+     };
+     return oTableInit;
+ };
+ 
 
 
  var ButtonInit = function () {
@@ -253,179 +211,25 @@
      return oInit;
  };
 
- function btn_add(){
-       $("#myModalLabel").text("添加菜单");
-       $("#mid").val("");
-       $("#index").val("");
-       $("#limits").val("");
-       $("#offlags_off").val(""); 
-       $("#offlags_off").removeAttr("checked");
-       $("#mname").val("");
-       $("#url").val("");
-       $('#myModal').modal();
-      
- }
-
- function operateDictAFormatter(value, row, index) {
-	 dictinfo = dictA[value];
-	 if(dictinfo)
-	 {
-		 name = dictinfo["name"];
-		 if(name)
-		 {
-		 	return name;
-		 }
-	 }
-	 return value;
- }
- function operateFormatter(value, row, index) {
-     return [
-         '<a class="like" href="javascript:void(0)" title="Like">',
-            '<i class="glyphicon glyphicon-pencil"></i>',
-            '<input type="hidden" class="hiden_input" value="'+index+'"/>',
-         '</a>  ',
-         '<a class="remove" href="javascript:void(0)" title="Remove">',
-         	'<i class="glyphicon glyphicon-remove"></i>',
-         '</a>'
-     ].join('');
- }
- window.operateEvents = {
-		 //点击当前行的添加修改事件
-		 'click .like': function (e, value, row, index) {
-	         $("#myModalLabel").text("编辑客户");
-	         $("#mid")[0].value=row.mid;
-	         $("#index")[0].value=index;
-	         $("#limits")[0].value=row.limits;
-	         $("#offlags_off").val(""); 
-	         $("#offlags_off").removeAttr("checked");
-	         if(parseInt(row.offlags))
-	         {
-	         	$("#offlags_off").prop("checked",true);
-	         }
-	         else
-	         {
-	         	$("#offlags_off").prop("checked",false);
-	         }
-	         $("#mname")[0].value=row.mname;
-	         $("#url")[0].value=row.url;
-	         $('#myModal').modal();
+ function btn_reload(){
+	 $("#btn_reload").attr("disabled",true);
+	 $.ajax({
+         type: "POST",
+         url: "/configManager/reloadProperties",
+         data: { remote:true },
+         success: function (data, status) {
+        	 //完成
          },
-         //点击当前行的删除事件
-         'click .remove': function (e, value, row, index) {
-               $.ajax({
-                 type: "post",
-                 url: "/delete-customer",
-                 data: { table:"menu",delRequest:[row]},
-                 success: function (data, status) {
-                     if (status == "success") {
-                         alert("删除成功");
-                     }
-                 },
-                 error: function () {
-                     alert("Error");
-                 },
-                 complete: function () {
-
-                 }
-
-             });
-             $('#tb_customer').bootstrapTable('remove', {
-                 field: 'mid',
-                 values: [row.mid]
-             });
-       
+         error: function () {
+         },
+         complete: function () {
+        	 $("#btn_reload").attr("disabled",false);
+        	 $('#boot_customer').bootstrapTable('refresh');
+        	 $('#config_customer').bootstrapTable('refresh');
          }
-     };
-     function save(){
-          $.ajax({
-             type: "post",
-             url: "/edit-cus",
-             data:$('#dataFrom').serialize(),
-             success: function (data, status) {
-                 if (status == "success") {
-                     $('#myModal').modal('hide');
-                     $('#tb_customer').bootstrapTable('refresh');
-             
-                 }
-             },
-             error: function () {
-                 alert("Error");
-             },
-             complete: function () {
 
-             }
-
-         });
-         
-         
-     }
-     //点击查询按钮
-     $('#query').click(function () {
-    	 $('#tb_customer').bootstrapTable("refreshOptions",{})
      });
-     $('#save').click(function () {
-    	 try
-    	 {
-    		 var mid = $("#mid")[0].value;
-    		 var index = $("#index")[0].value;
-    		 var limitsValue = $("#limits")[0].value;
-    		 var mnameValue = $("#mname")[0].value;
-    		 var offlagsValue = 0;
-    		 if($("#offlags_off")[0].checked)
-    		 {
-    			 offlagsValue = 1;
-    		 }
-    		 var urlValue = $("#url")[0].value;
-    		 var delRequestObj = {mname:mnameValue,limits:limitsValue,offlags:offlagsValue,url:urlValue};
-    		 var optionsValue = 1;
-    		 if(mid)
-    		 {
-    			 delRequestObj.mid = mid;
-    			 optionsValue = 4;
-    		 }
-	         $.ajax({
-	             type: "get",
-	             url: "/update-customer",
-	             data: { table:"menu",tableValues: [delRequestObj],options:optionsValue,modelClass:"xyz.zyzhu.spring.boot.model.Menu"},
-	             success: function (data, status) {
-	                 if (status == "success") {
-	                	if(data)
-	                	{
-	                		var resultValues = data.resultValues;
-	                		if(resultValues && resultValues.length>0)
-	                		{
-	                			if(index)
-	                			{
-	                				//表示更新
-	                				$('#tb_customer').bootstrapTable('updateRow',{index:index,row:resultValues[0]});
-	                			}
-	                			else
-	                			{
-	                				//表示插入
-	                				$('#tb_customer').bootstrapTable('insertRow',{index:0,row:resultValues[0]});
-	                			}
-	                		}
-	                	}
-	                	 $('#myModal').modal('hide');
-	                 }
-	             },
-	             error: function () {
-	                 alert("Error");
-	             },
-	             complete: function () {
-	             }
-	
-	         });
-    	 }
-    	 catch(e)
-    	 {
-    		 alert(e);
-    	 }
-     });
-     
-     
-     
-     
+ }
 //      function getIdSelections() {
 //          return $.map($('#tb_customer').bootstrapTable('getSelections'), function (row) {
 //              return row.mid
@@ -434,43 +238,10 @@
 
      
      function responseHandler(res) {
-         $.each(res.rows, function (i, row) {
+         $.each(res, function (i, row) {
              row.state = $.inArray(row.id, selections) !== -1;
          });
          return res;
      }
-     //点击左上角的删除按钮
-     $('#remove').click(function () {
-    	 try
-    	 {
-	         var delRequestObj = getIdSelections('#tb_customer','mid,mname',true);
-	         if(delRequestObj === null || delRequestObj === undefined)
-	         {
-	        	throw "获取删除列失败"; 
-	         }
-	         $.ajax({
-	             type: "post",
-	             url: "/delete-customer",
-	             data: { table:"menu",delRequest: delRequestObj },
-	             success: function (data, status) {
-	                 if (status == "success") {
-	                     alert("删除成功");
-	                 }
-	             },
-	             error: function () {
-	                 alert("Error");
-	             },
-	             complete: function () {
-	
-	             }
-	
-	         });
-	         $('#tb_customer').bootstrapTable('refresh');
-    	 }
-    	 catch(e)
-    	 {
-    		 alert(e);
-    	 }
-     });
  </script>
  </html>

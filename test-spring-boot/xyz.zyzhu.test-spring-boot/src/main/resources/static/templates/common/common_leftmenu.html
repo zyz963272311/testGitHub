@@ -33,7 +33,7 @@
 							</a>
 							<ul v-if="judgeMethod('arrayNotNull',menu2.children)">
 								<!-- 此节点下含有下级菜单 -->
-								<li class=" leftmenu_li_child4">
+								<li v-for="menu3 in menu2.children" class=" leftmenu_li_child4">
 									<a :href="menu3.url" target="_blank"> 
 										<span class="leftmenu_span_child4">{{menu3.name}}</span>
 									</a>

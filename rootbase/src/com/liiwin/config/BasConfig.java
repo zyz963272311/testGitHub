@@ -35,9 +35,19 @@ public class BasConfig
 	 */
 	public static void loadConfig()
 	{
+		loadConfig(false);
+	}
+
+	/**
+	 * 加载配置文件，可选择是否强制加载配置文件
+	 * @param forceLoad
+	 * 赵玉柱
+	 */
+	public static void loadConfig(boolean forceLoad)
+	{
 		synchronized (BasConfig.class)
 		{
-			if (properties == null)
+			if (properties == null || forceLoad)
 			{
 				forceLoadConfig();
 			}
