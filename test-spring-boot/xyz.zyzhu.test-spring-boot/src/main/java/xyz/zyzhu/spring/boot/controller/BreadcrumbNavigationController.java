@@ -54,21 +54,27 @@ public class BreadcrumbNavigationController
 			throw new RuntimeException("菜单表名不可位空");
 		}
 		BootDatabase db = BootDatabasePoolManager.getReadDatabaseByTable(menuTable);
-		String sql = "select * from " + menuTable;
+		String sql = "select " + nodeComumn + "," + nameComumn + "," + urlComumn + " from " + menuTable;
+		String[] split = nodeComumn.trim().split(" ");
+		String nc = split[split.length - 1];
+		split = nameComumn.trim().split(" ");
+		String namec = split[split.length - 1];
+		split = urlComumn.trim().split(" ");
+		String uc = split[split.length - 1];
 		Map<String,Object> queryParams = new HashMap<>();
 		if (StrUtil.isNoStrTrimNull(node))
 		{
-			sql = sql + " where " + nodeComumn + "=:" + nodeComumn;
-			queryParams.put(nodeComumn, node);
+			sql = sql + " where " + nc + "=:" + nc;
+			queryParams.put(nc, node);
 		}
 		List<Map<String,Object>> menuList = db.getListMapFromSql(sql, queryParams);
 		if (menuList == null || menuList.isEmpty())
 		{
 			return null;
 		}
-		Map<String,List<Map<String,Object>>> hashMap = MapUtil.buildMapByList(menuList, nodeComumn, null);
+		Map<String,List<Map<String,Object>>> hashMap = MapUtil.buildMapByList(menuList, nc, null);
 		Map<String,List<Map<String,Object>>> treeMap = new TreeMap<>(hashMap);
-		BreadcrumbNavigationWaper<Object> breadcrumb = BreadcrumbUtils.getBreadcrumb(treeMap, nodeComumn, nameComumn, urlComumn, strSplit);
+		BreadcrumbNavigationWaper<Object> breadcrumb = BreadcrumbUtils.getBreadcrumb(treeMap, nc, namec, uc, strSplit);
 		BootDatabasePoolManager.close(db);
 		return breadcrumb;
 	}

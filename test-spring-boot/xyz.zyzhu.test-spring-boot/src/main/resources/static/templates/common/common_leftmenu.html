@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body th:fragment="onloadLeftMenu(params)">
 	<script th:src="@{/js/assist/leftmenu.js}"></script>
+	<script th:src="@{/js/bootstrap-treeview/bootstrap-treeview.min.js}"></script>
 	<script th:src="@{/js/assist/vue-assist.js}"></script>
 	<div th:if="${params}">
 		<div th:if="${params.needImportJS}"
@@ -16,56 +17,48 @@
 	<!-- 	private String								node;										//菜单节点 -->
 	<!-- 	private String								name;										//菜单名称 -->
 	<!-- 	private Map<String,BreadcrumbNavigation>	children;									//子节点 -->
-	<div id="selectId">
-		<div >
-			<!-- 此处如果不为空，则说明当前节点为一个菜单，否则说明此非菜单 -->
-			<ul v-if="judgeMethod('arrayNotNull',rootmenu.children)" class="nav navbar-nav leftmenu_ul1">
-				<!-- 此节点下含有下级菜单 -->
-				<li v-for="menu1 in rootmenu.children" :class="judgeMethod('arrayNotNull',menu1.children)?'dropdown leftmenu_li_child1':' '">
-					<a :href="menu1.url" target="_blank" v-bind:data-toggle="judgeMethod('arrayNotNull',menu1.children)?'dropdown':' '" :class="judgeMethod('arrayNotNull',menu1.children)?'dropdown-toggle':' '" > 
-						<span class="leftmenu_span_child1">{{menu1.name}}</span>
-					</a>
-					<ul v-if="judgeMethod('arrayNotNull',menu1.children)" class="dropdown-menu leftmenu_ul2">
-						<!-- 此节点下含有下级菜单 -->
-						<li v-for="menu2 in menu1.children" :class="judgeMethod('arrayNotNull',menu2.children)?'dropdown leftmenu_li_child2':' '">
-							<a :href="menu2.url" target="_blank" :class="judgeMethod('arrayNotNull',menu2.children)?'dropdown-toggle':' '" v-bind:data-toggle="judgeMethod('arrayNotNull',menu2.children)?'dropdown':' '"> 
-								<span class="leftmenu_span_child2">{{menu2.name}}</span>
-							</a>
-							<ul v-if="judgeMethod('arrayNotNull',menu2.children)">
-								<!-- 此节点下含有下级菜单 -->
-								<li v-for="menu3 in menu2.children" class=" leftmenu_li_child4">
-									<a :href="menu3.url" target="_blank"> 
-										<span class="leftmenu_span_child4">{{menu3.name}}</span>
-									</a>
-								</li>
-							</ul>
-						</li>
-					</ul>
-				</li>
-			</ul>
+		<div id="tree">
 		</div>
-	</div>
 	<script type="text/javascript">
 	$().ready(
 		function loadLeftNenuByParams()
 		{
-			params = {nodeColumn:'node',nameColumn:'mname',urlColumn:'url',strSplit:'.',ajaxurl:'/BreadNavigat/Navication'};
+			params = {nodeColumn:'node',nameColumn:'mname text',urlColumn:'url',strSplit:'.',ajaxurl:'/BreadNavigat/Navication'};
 			//1.加载leftmenu数据
+			var res1 ;
 			result = loadLeftMenu(params,"#selectId");
-			var vm = new Vue({
-			 	el:selectId,
-			 	data:{
-			 		rootmenu: result
-			 	},
-			 	methods:{
-			 		judgeMethod:function()
-			 		{
-			 			return judgeMethod(arguments);
-			 		}
-			 	}
-			 });
+			if(result)
+			{
+				if(result.children)
+				{
+					result.nodes = reBuildData(result.children)
+				}
+				 $('#tree').treeview({
+	                    data: result.nodes,         // 数据源
+	                    showCheckbox: false,   //是否显示复选框
+	                    enableLinks : true,
+	                    highlightSelected: true,    //是否高亮选中
+	                    //nodeIcon: 'glyphicon glyphicon-user',    //节点上的图标
+	                    nodeIcon: 'glyphicon glyphicon-globe',
+	                    emptyIcon: '',    //没有子节点的节点图标
+	                    multiSelect: false    //多选
+	                });
+			}
 		},
-	)
+	);
+	function reBuildData(a)
+	{
+		if(a)
+		{
+			for(var i = 0;i<a.length;i++)
+			{
+				a[i].text = a[i].name;
+				a[i].href = a[i].url;
+				a[i].nodes = reBuildData(a[i].children);
+			}
+		}
+		return a;
+	}
 	</script>
 </body>
 </html>
