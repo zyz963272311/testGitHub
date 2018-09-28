@@ -1,0 +1,21 @@
+ <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+ <head th:include="../templates/common/common_head :: commandHeader(title='测试bootStrap_table_tree')">
+ </head>
+ 
+<body class="hold-transition skin-blue sidebar-mini">
+<div th:include="../templates/common/common_js :: onloadJS()"></div>
+<div th:include="../templates/common/common_leftmenu :: onloadLeftMenu(params=~{needImportJS:false})"></div>
+	<div class="file-loading">
+        <input id="file-es" name="file-es[]" type="file" multiple>
+    </div>
+    <script>
+    	$('#file-es').fileinput({
+	        theme: 'fa',
+	        language: 'es',
+	        uploadUrl: '#',
+	        allowedFileExtensions: ['jpg', 'png', 'gif','txt']
+    	});
+    </script>
+</body>
+</html>
