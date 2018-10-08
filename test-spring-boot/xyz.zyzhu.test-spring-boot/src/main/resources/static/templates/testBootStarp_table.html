@@ -13,12 +13,19 @@
  
 <body class="hold-transition skin-blue sidebar-mini">
 <div th:include="../templates/common/common_js :: onloadJS()"></div>
-<div class="wrapper">
 
-  <div class="content-wrapper col-lg-12 col-md-12 col-sm-12 col-xs-12">
-     <div class="content col-lg-4 col-md-4 col-sm-4 col-xs-4" th:include="../templates/common/common_leftmenu :: onloadLeftMenu(params=~{needImportJS:false})">
+  <div class="content-wrapper ">
+	 <div class="row row-offcanvas row-offcanvas-left  col-sm-12 col-xs-12">
+
+      <div class="col-xs-12 col-sm-12">
+        <p class="pull-left visible-xs">
+          <button type="button" class="btn btn-link btn-xs" data-toggle="offcanvas">≡</button>
+        </p>
+    <div class="col-xs-4 col-sm-4 sidebar-offcanvas" th:include="../templates/common/common_leftmenu :: onloadLeftMenu(params=~{needImportJS:false})">
     </div>
-    <section class="content col-lg-8 col-md-8 col-sm-8 col-xs-8">
+    <div class="col-xs-12 col-sm-8">
+    <section class="breadcrumb" th:include="../templates/common/common_bread_navigat :: onBreadNavigat(params=~{needImportJS:false})"> 
+    </section>
       <div class="input-group">
         <span class="input-group-addon" id="mid_query">菜单ID</span>
         <input type="text" id="mid_query_text" class="form-control" placeholder="菜单ID" aria-describedby="mid_query">
@@ -49,8 +56,9 @@
         <!-- /.col -->
       </div>
       <!-- /.row -->
-    </section>
     <!-- /.content -->
+  </div>
+  </div>
   </div>
   </div>
 
@@ -113,6 +121,7 @@
 
 
 
+<footer th:include="../templates/common/common_footer :: commandFooter()"></footer>
 
  <script >
  

@@ -16,7 +16,18 @@
 <script th:src="@{/js/assist/vue-assist.js}"></script>
 <script type="text/javascript">
 </script>
-	 <div id ="createdatabase" class="container" v-if="judgeMethod('arrayNotNull',data)">
+<div class="content-wrapper ">
+	 <div class="row row-offcanvas row-offcanvas-left  col-sm-12 col-xs-12">
+
+      <div class="col-xs-12 col-sm-12">
+        <p class="pull-left visible-xs">
+         <button type="button" class="btn btn-link btn-xs" data-toggle="offcanvas">≡</button>
+        </p>
+    <div class="col-xs-4 col-sm-4 sidebar-offcanvas" th:include="../templates/common/common_leftmenu :: onloadLeftMenu(params=~{needImportJS:false})">
+    </div>
+    <div id ="createdatabase" class="content col-xs-12 col-sm-8">
+	 <section class="breadcrumb" th:include="../templates/common/common_bread_navigat :: onBreadNavigat(params=~{needImportJS:false})"> 
+    </section>
 	 	<div class="panel panel-default">
 	 		<div class="panel-heading">
         		<h3 class="panel-title">选择数据库</h3>
@@ -30,6 +41,10 @@
                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>生成数据库
         </button>
 	</div>
+	</div>
+	</div>
+	</div>
+	<footer th:include="../templates/common/common_footer :: commandFooter()"></footer>
 	<script type="text/javascript">
 	var result;
 	$().ready(

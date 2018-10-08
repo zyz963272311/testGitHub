@@ -4,22 +4,29 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-import com.liiwin.createdb.CreateDatabase;
+import com.liiwin.http.HttpClientUtil;
 import com.liiwin.utils.StrUtil;
 import xyz.zyzhu.spring.boot.constance.CreateDatabaseConstance;
+import xyz.zyzhu.spring.boot.createdb.BootCreateDatabase;
 import xyz.zyzhu.spring.boot.utils.PropertiesUtils;
+import xyz.zyzhu.spring.boot.utils.RemoteUtils;
+import xyz.zyzhu.spring.boot.utils.SpringBeanUtils;
 /**
- * <p>标题： TODO</p>
+ * <p>标题： 生成数据库</p>
  * <p>功能： </p>
- * <p>所属模块： TODO</p>
+ * <p>所属模块： boot</p>
  * <p>版权： Copyright © 2018 SNSOFT</p>
  * <p>公司: 赵玉柱练习</p>
  * <p>创建日期：2018年9月27日 下午2:39:12</p>
@@ -35,6 +42,8 @@ import xyz.zyzhu.spring.boot.utils.PropertiesUtils;
 @RequestMapping("/createDatabase")
 public class CreateDatabaseController implements CreateDatabaseConstance
 {
+	private static Logger logger = LoggerFactory.getLogger(CreateDatabaseController.class);
+
 	/**
 	 * 获取页面
 	 * @param reqt
@@ -101,11 +110,50 @@ public class CreateDatabaseController implements CreateDatabaseConstance
 		String[] databaseArray = StrUtil.split(databases, ',');
 		try
 		{
-			CreateDatabase.createDatabase(databaseArray);
+			BootCreateDatabase.createDatabase(databaseArray);
+			update(true);
 		} catch (Exception e)
 		{
 			result.put(STATUS_KEY, STATUS_ERROR);
 			result.put(MESSAGE_KEY, e.getMessage());
+		}
+		return result;
+	}
+
+	@RequestMapping(path = "/update", method = { RequestMethod.POST })
+	@ResponseBody
+	public Map<String,Object> update(@RequestParam(name = "remote", defaultValue = "false") Boolean remote)
+	{
+		Map<String,Object> result = new HashMap<>();
+		//1、更新自己的缓存
+		BootCreateDatabase.updateCahce();
+		//2、查看是否需要更新远程，如果更新远程，则更新远程地址的缓存
+		if (remote)
+		{
+			HttpServletRequest req = SpringBeanUtils.getBean(HttpServletRequest.class);
+			HttpServletResponse resp = SpringBeanUtils.getBean(HttpServletResponse.class);
+			final List<String> localServer = RemoteUtils.getLocalServer(req, resp);
+			List<String> remoteServer2 = RemoteUtils.getRemoteServer(req, resp);
+			String params = "remote=false";
+			if (remoteServer2 != null && remoteServer2.size() > 0)
+			{
+				List<String> remoteServers = remoteServer2.stream().filter(s -> !localServer.contains(s)).collect(Collectors.toList());
+				remoteServers.stream().forEach(s -> {
+					try
+					{
+						if (!s.endsWith("/"))
+						{
+							s += "/";
+						}
+						s += "createDatabase/update";
+						String sendHttpPost = HttpClientUtil.sendHttpPost(s, params);
+						logger.error("进行远程调用{}执行更新表结构缓存完成：{}", s + params, sendHttpPost);
+					} catch (Exception e)
+					{
+						logger.error("进行远程调用{}执行更新表结构缓存载失败：{}", s + params, e.getMessage());
+					}
+				});
+			}
 		}
 		return result;
 	}

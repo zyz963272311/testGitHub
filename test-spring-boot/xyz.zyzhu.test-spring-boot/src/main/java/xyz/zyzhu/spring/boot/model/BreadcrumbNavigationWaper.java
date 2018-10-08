@@ -93,7 +93,7 @@ public class BreadcrumbNavigationWaper<T extends Object> extends BasObject
 		return this;
 	}
 
-	public T get()
+	public T getObj()
 	{
 		return obj;
 	}

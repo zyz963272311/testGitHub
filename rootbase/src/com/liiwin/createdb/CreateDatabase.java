@@ -1015,6 +1015,7 @@ public class CreateDatabase
 				{
 					cfgDB.beginTrans();
 					db = sqlEntry.getKey();
+					db.beginTrans();
 					List<String> value = sqlEntry.getValue();
 					if (value != null)
 					{

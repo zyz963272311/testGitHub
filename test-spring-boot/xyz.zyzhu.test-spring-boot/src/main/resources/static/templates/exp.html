@@ -5,10 +5,19 @@
  
 <body class="hold-transition skin-blue sidebar-mini">
 <div th:include="../templates/common/common_js :: onloadJS()"></div>
-<div class="wrapper">
 
-  <div class="content-wrapper">
-  
+<div class="content-wrapper ">
+	 <div class="row row-offcanvas row-offcanvas-left  col-sm-12 col-xs-12">
+
+      <div class="col-xs-12 col-sm-12">
+        <p class="pull-left visible-xs">
+          <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">≡</button>
+        </p>
+    <div class="col-xs-4 col-sm-4 sidebar-offcanvas" th:include="../templates/common/common_leftmenu :: onloadLeftMenu(params=~{needImportJS:false})">
+    </div>
+    <div class="col-xs-12 col-sm-8">
+  <section class="breadcrumb" th:include="../templates/common/common_bread_navigat :: onBreadNavigat(params=~{needImportJS:false})"> 
+    </section>
     <section class="content-header">
     </section>
     <section class="content">
@@ -45,6 +54,8 @@
     </section>
     <!-- /.content -->
   </div>
+</div>
+</div>
 </div>
 
 
@@ -103,7 +114,7 @@
 
 
 
-
+<footer th:include="../templates/common/common_footer :: commandFooter()"></footer>
  <script >
  
  selections = [];

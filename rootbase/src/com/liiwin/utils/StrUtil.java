@@ -1640,4 +1640,35 @@ public class StrUtil
 			}
 		}
 	}
+
+	/**
+	 * 字符串是否是like格式
+	 * @param strSrc
+	 * @param subStr
+	 * @return
+	 * 赵玉柱
+	 */
+	public static boolean isStrLike(String strSrc, String subStr)
+	{
+		if (strSrc == subStr)
+		{
+			return true;
+		}
+		if (strSrc == null || subStr == null)
+		{
+			return false;
+		}
+		if (strSrc.equals(subStr))
+		{
+			return true;
+		}
+		//百分号替换为任何非空白字符
+		subStr = subStr.replace("%", "[\\S|\\s]{0,}");
+		//下划线 替换任意一个字符
+		subStr = subStr.replace("_", "[\\S|\\s]{1}");
+		//添加字符串开始与结束字符
+		subStr = "^" + subStr + "$";
+		boolean matches = strSrc.matches(subStr);
+		return matches;
+	}
 }

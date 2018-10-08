@@ -340,7 +340,7 @@ public class WXUtils
 		{
 			return null;
 		}
-		WxMenuButtonModel m = c.get();
+		WxMenuButtonModel m = c.getObj();
 		if (m == null)
 		{
 			return null;

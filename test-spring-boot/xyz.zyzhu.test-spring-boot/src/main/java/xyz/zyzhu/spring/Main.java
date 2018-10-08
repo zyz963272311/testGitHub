@@ -1,5 +1,7 @@
 package xyz.zyzhu.spring;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.boot.Banner.Mode;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -12,9 +14,13 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import xyz.zyzhu.spring.boot.servlet.WeChatServlet;
+import xyz.zyzhu.spring.boot.utils.SpringBeanUtils;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -126,5 +132,70 @@ public class Main
 				container.addErrorPages(error401Page, error404Page, error500Page);
 			}
 		};
+	}
+
+	/**
+	 * 支持在本地获取servletRequest与Responst
+	 * @return
+	 * 赵玉柱
+	 */
+	@Bean
+	@Lazy
+	public ServletRequestAttributes getServletRequestAttributes()
+	{
+		ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+		return attributes;
+	}
+
+	/**
+	 * 获取httpServletRequest
+	 * @param attributes
+	 * @return
+	 * 赵玉柱
+	 */
+	@Bean
+	@Lazy
+	public HttpServletRequest getHttpServletRequest(ServletRequestAttributes attributes)
+	{
+		if (attributes == null)
+		{
+			attributes = SpringBeanUtils.getBean(ServletRequestAttributes.class);
+		}
+		if (attributes == null)
+		{
+			attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+		}
+		if (attributes == null)
+		{
+			return null;
+		}
+		HttpServletRequest request = attributes.getRequest();
+		return request;
+	}
+
+	/**
+	 * 获取httpResponse
+	 * @param attributes
+	 * @return
+	 * 赵玉柱
+	 */
+	@Bean
+	@Lazy
+	public HttpServletResponse getHttpServletResponst(ServletRequestAttributes attributes)
+	{
+		if (attributes == null)
+		{
+			attributes = SpringBeanUtils.getBean(ServletRequestAttributes.class);
+		}
+		if (attributes == null)
+		{
+			attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+		}
+		if (attributes == null)
+		{
+			return null;
+		}
+		HttpServletResponse response = attributes.getResponse();
+		return response;
 	}
 }

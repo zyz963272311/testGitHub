@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -77,5 +78,62 @@ public class BreadcrumbNavigationController
 		BreadcrumbNavigationWaper<Object> breadcrumb = BreadcrumbUtils.getBreadcrumb(treeMap, nc, namec, uc, strSplit);
 		BootDatabasePoolManager.close(db);
 		return breadcrumb;
+	}
+
+	/**
+	 * 获取面包屑
+	 * @param request
+	 * @return
+	 * 赵玉柱
+	 */
+	@RequestMapping(path = "/NavicationOne", method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
+	public BreadcrumbNavigationWaper<Object> getNavicationOne(BreadcrumbNavigationRequest request)
+	{
+		if (request == null)
+		{
+			return null;
+		}
+		String node = request.getNode();
+		request.setNode(null);
+		BreadcrumbNavigationWaper<Object> navication = getNavication(request);
+		if (navication != null)
+		{
+			List<BreadcrumbNavigationWaper<Object>> children = navication.getChildren();
+			BreadcrumbNavigationWaper<Object> result = navication(children, node);
+			return result;
+		}
+		return null;
+	}
+
+	/**
+	 * 递归进行数据的重新组装
+	 * @param list
+	 * @param node
+	 * @return
+	 * 赵玉柱
+	 */
+	public BreadcrumbNavigationWaper<Object> navication(List<BreadcrumbNavigationWaper<Object>> list, String node)
+	{
+		if (list == null || list.isEmpty() || StrUtil.isStrTrimNull(node))
+		{
+			return null;
+		}
+		List<BreadcrumbNavigationWaper<Object>> collect = list.stream().filter(s -> StrUtil.isStrLike(node, s.getNode() + "%")).collect(Collectors.toList());
+		if (collect == null || collect.isEmpty())
+		{
+			return null;
+		}
+		BreadcrumbNavigationWaper<Object> result = collect.get(0);
+		List<BreadcrumbNavigationWaper<Object>> children = result.getChildren();
+		if (children != null && !children.isEmpty())
+		{
+			BreadcrumbNavigationWaper<Object> navication = navication(children, node);
+			if (navication != null)
+			{
+				result.set(navication);
+			}
+		}
+		return result;
 	}
 }

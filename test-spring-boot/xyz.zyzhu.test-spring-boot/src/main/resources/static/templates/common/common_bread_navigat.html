@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body th:fragment="onBreadNavigat(params)">
+	<script th:src="@{/js/assist/leftmenu.js}"></script>
+	<script th:src="@{/js/assist/vue-assist.js}"></script>
+	<div th:if="${params}">
+		<div th:if="${params.needImportJS}"
+			th:include="../templates/common/common_js :: onloadJS()"></div>
+	</div>
+	<!-- 	<div id="leftmenu" class="leftmenu"> -->
+	<!-- 	</div> -->
+	<!-- 	<!-- 菜单外层结构 -->
+	<!-- 	<div id="leftmenu" class="leftmenu"> -->
+	<!-- <!-- 	</div> -->
+	<!-- 	private String								url;										//菜单url -->
+	<!-- 	private String								node;										//菜单节点 -->
+	<!-- 	private String								name;										//菜单名称 -->
+	<!-- 	private Map<String,BreadcrumbNavigation>	children;									//子节点 -->
+	<div id="common_bread_navigat" class="content-header">
+      <ol class="breadcrumb" v-if="judgeMethod('arrayNotNull',bread_navigat)">
+        <li v-for="bread in bread_navigat" v-class="bread.hasNext?'':'active'"><i class="fa fa-angle-right">{{bread.name}}</i></li>
+      </ol>
+    </div>
+	<script type="text/javascript">
+	$().ready(
+		function loadBreadNavigatByParams()
+		{
+			d = [];
+			var result;
+			var cid = getUrlParamByName("cid");
+			if(cid)
+			{
+				params = {node:cid,nodeColumn:'node',nameColumn:'mname text',urlColumn:'url',strSplit:'.',ajaxurl:'/BreadNavigat/NavicationOne'};
+				//1.加载leftmenu数据
+				var res1 ;
+				result = loadLeftMenu(params,"#selectId");
+				if(result)
+				{
+					reBuildDataBread(result,d);
+				}
+			}
+			var vm = new Vue({
+			 	el : common_bread_navigat,
+			 	data:{
+			 		bread_navigat: d
+			 	},
+			 	methods:{
+			 		judgeMethod:function()
+			 		{
+			 			return judgeMethod(arguments);
+			 		}
+			 	}
+			 });
+		},
+	);
+	function reBuildDataBread(a,data)
+	{
+		if(a)
+		{
+			data[data.length] = a;
+			if(a.obj)
+			{
+				data[data.length-1].hasNext = true;
+				reBuildDataBread(a.obj,data);
+			}
+			else
+			{
+				data[data.length-1].hasNext=false;
+			}
+		}
+		return a;
+	}
+	</script>
+</body>
+</html>

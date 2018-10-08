@@ -16,8 +16,16 @@
 	<!-- 	private String								node;										//菜单节点 -->
 	<!-- 	private String								name;										//菜单名称 -->
 	<!-- 	private Map<String,BreadcrumbNavigation>	children;									//子节点 -->
-	<div id="selectId">
-		<div >
+	<nav class="navbar navbar-fixed-top navbar-inverse">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+	<div id="selectId" class="collapse navbar-collapse">
 			<!-- 此处如果不为空，则说明当前节点为一个菜单，否则说明此非菜单 -->
 			<ul v-if="judgeMethod('arrayNotNull',rootmenu.children)" class="nav navbar-nav leftmenu_ul1">
 				<!-- 此节点下含有下级菜单 -->
@@ -44,7 +52,8 @@
 				</li>
 			</ul>
 		</div>
-	</div>
+		</div>
+    </nav>
 	<script type="text/javascript">
 	$().ready(
 		function loadLeftNenuByParams()

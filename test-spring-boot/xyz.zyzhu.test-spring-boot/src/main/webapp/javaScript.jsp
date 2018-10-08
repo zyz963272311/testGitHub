@@ -4,8 +4,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%
 	String path = request.getContextPath();
- 	PrintWriter writer = response.getWriter();
- 	ServletOutputStream stream =  response.getOutputStream();
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
@@ -28,9 +26,12 @@ textarea {
 
 </style>
 
+<script type="text/javascript" src="/js/jquery/jquery-3.2.1.min.js">
+</script>
 <script type="text/javascript">
 	function execJS()
 	{
+	$("#button_execJS").attr("disabled",true);
 	var rst = document.getElementById("result");
 	rst.innerHTML = "";
 	var xmlhttp;
@@ -52,33 +53,22 @@ textarea {
 	infoVal = infoVal.replace(/\#/g,"%23");
 	var data="info="+infoVal;
 
-	//Mozilla ,chmore浏览器（将XMLHttpRequest对象作为本地浏览器对象来创建）  
-	if (window.XMLHttpRequest) { //Mozilla 浏览器  
-		xmlhttp = new XMLHttpRequest();
+	
+	 $("#button_execJS").attr("disabled",true);
+	 $.ajax({
+         type: "POST",
+         url: "/script/executeJS",
+         data: data,
+         success: function (data, status) {
+        	 rst.innerHTML = data;
+         },
+         error: function () {
+         },
+         complete: function () {
+        	 $("#button_execJS").attr("disabled",false);
+         }
 
-	} else if (window.ActiveXObject) { //IE浏览器  
-		//IE浏览器（将XMLHttpRequest对象作为ActiveX对象来创建）  
-		try {
-			xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
-		} catch (e) {
-			try {
-				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-			} catch (e) {
-			}
-		}
-	}
-	var Url = "<%=basePath%>script/executeJS";
-		xmlhttp.open("POST", Url, true);
-		xmlhttp.setRequestHeader("Content-type",
-				"application/x-www-form-urlencoded");
-		xmlhttp.onreadystatechange = result;
-		xmlhttp.send(data);
-		function result() {
-			if(xmlhttp.readyState == 3)
-			{
-				rst.innerHTML = xmlhttp.responseText;
-			}
-		}
+     });
 	}
 </script>
 <title>执行JS代码</title>
@@ -86,7 +76,7 @@ textarea {
 <body>
 	<textarea id="info"  rows="20" cols="10" placeholder="请输入"></textarea>
 	<br/>
-	<center ><button style="padding: 10px,0px" type="button" onclick="execJS()">运行</button></center>
+	<center ><button id="button_execJS" style="padding: 10px,0px" type="button" onclick="execJS()">运行</button></center>
 	<br/>
 	<textarea id="result" rows="20" readonly="readonly" style="border: 1;border-color: black;">没有结果 </textarea>
 </body>

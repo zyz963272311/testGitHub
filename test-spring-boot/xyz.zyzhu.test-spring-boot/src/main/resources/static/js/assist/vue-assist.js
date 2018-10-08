@@ -44,5 +44,20 @@ function arrayNotNull()
 //判断数组是否为空
 function arrayIsNull(a)
 {
-	return !arrayNotNull();
+	return !arrayNotNull(a);
+}
+//判断字符串是否为空
+function strIsNull()
+{
+	var a = arguments[0];
+	if(!a)
+	{
+		return true;
+	}
+	return a.length>0;
+}
+//判断字符串是否非空
+function strIsNotNull(a)
+{
+	return !strIsNull(a);
 }

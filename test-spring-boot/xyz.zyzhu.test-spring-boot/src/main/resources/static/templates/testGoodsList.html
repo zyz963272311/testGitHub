@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head
-	th:include="../templates/common_head :: commandHeader(title='测试商品列表')">
+	th:include="../templates/common/common_head :: commandHeader(title='测试商品列表')">
 </head>
 <body>
-	<div th:include="common_js :: onloadJS()"></div>
+	<div th:include="../templates/common/common_js :: onloadJS()"></div>
 		<div class="container">
 			<ul id="myTab" class="nav nav-tabs">
 				<li class="active">
@@ -281,6 +281,7 @@
 
 		<!-- 结束 -->
 		</div>
+<footer th:include="../templates/common/common_footer :: commandFooter()"></footer>
 
 </body>
 </html>

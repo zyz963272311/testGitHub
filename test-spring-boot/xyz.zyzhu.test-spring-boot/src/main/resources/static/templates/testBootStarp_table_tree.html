@@ -13,22 +13,19 @@
  
 <body class="hold-transition skin-blue sidebar-mini">
 <div th:include="../templates/common/common_js :: onloadJS()"></div>
-<div th:include="../templates/common/common_leftmenu :: onloadLeftMenu(params=~{needImportJS:false})"></div>
-<div class="wrapper">
+<div class="content-wrapper ">
+	 <div class="row row-offcanvas row-offcanvas-left  col-sm-12 col-xs-12">
 
-  <div class="content-wrapper">
-  
-    <section class="content-header">
-      <h1>
-                     客户管理
-        <small>客户列表</small>
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> 主页</a></li>
-        <li class="active">首页</li>
-      </ol>
+      <div class="col-xs-12 col-sm-12">
+        <p class="pull-left visible-xs">
+          <button type="button" class="btn btn-link btn-xs" data-toggle="offcanvas">≡</button>
+        </p>
+    <div class="col-xs-4 col-sm-4 sidebar-offcanvas" th:include="../templates/common/common_leftmenu :: onloadLeftMenu(params=~{needImportJS:false})">
+    </div>
+    <div class="col-xs-12 col-sm-8">
+    <section class="breadcrumb" th:include="../templates/common/common_bread_navigat :: onBreadNavigat(params=~{needImportJS:false})"> 
     </section>
-    <section class="content">
+    <section class="content ">
       <div class="input-group">
         <span class="input-group-addon" id="mid_query">菜单ID</span>
         <input type="text" id="mid_query_text" class="form-control" placeholder="菜单ID" aria-describedby="mid_query">
@@ -62,6 +59,8 @@
     </section>
     <!-- /.content -->
   </div>
+</div>
+</div>
 </div>
 
 
@@ -120,6 +119,7 @@
 
 
 
+<footer th:include="../templates/common/common_footer :: commandFooter()"></footer>
 
 
 

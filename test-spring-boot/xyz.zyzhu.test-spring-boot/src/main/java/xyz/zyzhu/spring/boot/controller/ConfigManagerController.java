@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -21,9 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import com.liiwin.config.BasConfig;
 import com.liiwin.http.HttpClientUtil;
-import com.liiwin.utils.ServerUtils;
-import com.liiwin.utils.StrUtil;
 import xyz.zyzhu.spring.boot.utils.PropertiesUtils;
+import xyz.zyzhu.spring.boot.utils.RemoteUtils;
 /**
  * <p>标题： 配置管理</p>
  * <p>功能： </p>
@@ -112,52 +112,28 @@ public class ConfigManagerController
 				PropertiesUtils.loadZKProperties(true);
 				if (remote)
 				{
-					String requestURI = req.getRequestURI();
-					String scheme = req.getScheme();//http
-					String serverName = req.getServerName();//localhost
-					int serverPort = req.getServerPort();//8081
-					String contextPath = req.getContextPath();//项目名称
-					String remoteServers = PropertiesUtils.getPropValue("remote-server");
-					String localServPath = scheme + "://" + serverName + ":" + serverPort + "/";
-					String hostIP = ServerUtils.getHostIP();
-					String lodalAddr = (hostIP != null) ? (scheme + "://" + hostIP + ":" + serverPort + "/") : null;
-					String localHost1 = scheme + "://127.0.0.1:" + serverPort + "/";
-					String localHost2 = scheme + "://localhost:" + serverPort + "/";
-					if (StrUtil.isNoStrTrimNull(contextPath))
-					{
-						localServPath += contextPath + "/";
-						localHost1 += contextPath + "/";
-						localHost2 += contextPath + "/";
-						if (lodalAddr != null)
-						{
-							lodalAddr += contextPath + "/";
-						}
-					}
+					final List<String> localServer = RemoteUtils.getLocalServer(req, resp);
+					final String requestURI = req.getRequestURI();
+					List<String> remoteServer2 = RemoteUtils.getRemoteServer(req, resp);
 					String params = "remote=false";
-					if (StrUtil.isNoStrTrimNull(remoteServers))
+					if (remoteServer2 != null && remoteServer2.size() > 0)
 					{
-						String[] remoteServerArray = StrUtil.split(remoteServers, ';');
-						for (String remoteServer : remoteServerArray)
-						{
-							if (!remoteServer.endsWith("/"))
-							{
-								remoteServer += "/";
-							}
-							//当前地址及本机地址
-							if (remoteServer.indexOf(localServPath) >= 0 || remoteServer.indexOf(lodalAddr) >= 0 || remoteServer.indexOf(localHost1) >= 0 || remoteServer.indexOf(localHost2) >= 0)
-							{
-								continue;
-							}
-							remoteServer += requestURI;
+						List<String> remoteServers = remoteServer2.stream().filter(s -> !localServer.contains(s)).collect(Collectors.toList());
+						remoteServers.stream().forEach(s -> {
 							try
 							{
-								String sendHttpPost = HttpClientUtil.sendHttpPost(remoteServer, params);
-								logger.error("进行远程调用{}执行config重新装载完成：{}", remoteServer + params, sendHttpPost);
+								if (!s.endsWith("/"))
+								{
+									s += "/";
+								}
+								s += requestURI + "/";
+								String sendHttpPost = HttpClientUtil.sendHttpPost(s, params);
+								logger.error("进行远程调用{}执行config重新装载完成：{}", s + params, sendHttpPost);
 							} catch (Exception e)
 							{
-								logger.error("进行远程调用{}执行config重新装载失败：{}", remoteServer + params, e.getMessage());
+								logger.error("进行远程调用{}执行config重新装载失败：{}", s + params, e.getMessage());
 							}
-						}
+						});
 					}
 				}
 			} finally

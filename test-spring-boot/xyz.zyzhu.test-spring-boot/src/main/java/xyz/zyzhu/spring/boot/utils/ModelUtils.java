@@ -9,6 +9,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import javax.persistence.Table;
 import com.liiwin.db.SqlUtil;
 import com.liiwin.utils.StrUtil;
@@ -70,6 +73,10 @@ public class ModelUtils
 	 * 类上的主键 field缓存
 	 */
 	private static Map<Class<?>,List<Field>>		classPrimaryFieldsCache	= new ConcurrentHashMap<>();
+	/**
+	 * 清除缓存的锁
+	 */
+	private static Lock								clearLock				= new ReentrantLock();
 
 	/**
 	 * 获取model的field缓存
@@ -687,5 +694,39 @@ public class ModelUtils
 			return "select count(*) count from (" + queryString + ") as v_count ";
 		}
 		return null;
+	}
+
+	/**
+	 * 清除缓存
+	 * 
+	 * 赵玉柱
+	 */
+	public static void clearAll()
+	{
+		try
+		{
+			if (clearLock.tryLock(10, TimeUnit.MINUTES))
+			{
+				try
+				{
+					classFieldsCache.clear();
+					classTableCache.clear();
+					classColumnFieldsCache.clear();
+					classColumnCache.clear();
+					classPrimaryColsCache.clear();
+					tablePrimaryColsCache.clear();
+					tableColsCache.clear();
+					tableColsDefCache.clear();
+					classPrimaryFieldsCache.clear();
+				} finally
+				{
+					clearLock.unlock();
+				}
+			}
+		} catch (InterruptedException e)
+		{
+			// TODO Auto-generated catch block
+			throw new RuntimeException("报错内容", e);
+		}
 	}
 }

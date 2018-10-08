@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head
-	th:include="../templates/common_head :: commandHeader(title='测试商品列表')">
+	th:include="../templates/common/common_head :: commandHeader(title='测试商品列表')">
 </head>
 <body>
-	<div th:include="common_js :: onloadJS()"></div>
+	<div th:include="../templates/common/common_js :: onloadJS()"></div>
 	<!-- 	<a href="#" onclick="javascript:history.back(-1);"> 返回</a> -->
 	<div class="container" style="padding-top:10px">
 		<nav class="navbar navbar-default navbar-fixed-top"
@@ -51,5 +51,6 @@
 		</div>
 
 	</div>
+	<footer th:include="../templates/common/common_footer :: commandFooter()"></footer>
 </body>
 </html>

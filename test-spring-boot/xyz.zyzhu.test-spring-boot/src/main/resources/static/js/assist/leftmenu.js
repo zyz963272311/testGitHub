@@ -8,6 +8,7 @@ function loadLeftMenu(params,selectId)
 		}
 		var tempParams = {};
 		tempParams = {
+			node:params.node,
 			nodeColumn:"node",
 			nameColumn:"mname",
 			urlColumn:"url",
@@ -47,3 +48,14 @@ function loadLeftMenu(params,selectId)
 		return null;
 	}
 }
+$('document').ready(function () {
+    $('.navbar-toggle').on('click', function () {
+        $('.collapse, #mainContainer').toggleClass('in');
+    });
+});
+
+$(window).resize(function () {
+    if ($(window).width() > 768) {
+        $('.collapse, #mainContainer').removeClass('in');
+    };
+});
