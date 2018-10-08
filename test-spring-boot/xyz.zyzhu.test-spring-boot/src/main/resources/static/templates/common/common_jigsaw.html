@@ -1,65 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body th:fragment="onloadLeftMenu(params)">
-	<script th:src="@{/js/assist/leftmenu.js}"></script>
-	<script th:src="@{/js/bootstrap-treeview/bootstrap-treeview.min.js}"></script>
-	<script th:src="@{/js/assist/vue-assist.js}"></script>
+	<script th:src="@{/js/jigsaw/jigsaw.js}"></script>
 	<div th:if="${params}">
-		<div th:if="${params.needImportJS}"
-			th:include="../templates/common/common_js :: onloadJS()"></div>
+		<!-- 是否需要引入依赖的js，此处主要为jquery -->
+		<div th:if="${params.needImportJS}"	th:include="../templates/common/common_js :: onloadJS()">
+		</div>
 	</div>
-	<!-- 	<div id="leftmenu" class="leftmenu"> -->
-	<!-- 	</div> -->
-	<!-- 	<!-- 菜单外层结构 -->
-	<!-- 	<div id="leftmenu" class="leftmenu"> -->
-	<!-- <!-- 	</div> -->
-	<!-- 	private String								url;										//菜单url -->
-	<!-- 	private String								node;										//菜单节点 -->
-	<!-- 	private String								name;										//菜单名称 -->
-	<!-- 	private Map<String,BreadcrumbNavigation>	children;									//子节点 -->
-		<div id="tree" class="nav navbar-nav">
+		<!-- 验证码区域 -->
+		<div id="jigsaw_div">
 		</div>
 	<script type="text/javascript">
-	$().ready(
-		function loadLeftNenuByParams()
-		{
-			params = {nodeColumn:'node',nameColumn:'mname text',urlColumn:'url',strSplit:'.',ajaxurl:'/BreadNavigat/Navication'};
-			//1.加载leftmenu数据
-			var res1 ;
-			result = loadLeftMenu(params,"#selectId");
-			if(result)
-			{
-				if(result.children)
-				{
-					result.nodes = reBuildData(result.children)
-				}
-				 $('#tree').treeview({
-	                    data: result.nodes,         // 数据源
-	                    showCheckbox: false,   //是否显示复选框
-	                    enableLinks : true,
-	                    levels : 5,
-	                    highlightSelected: true,    //是否高亮选中
-	                    //nodeIcon: 'glyphicon glyphicon-user',    //节点上的图标
-	                    nodeIcon: 'glyphicon glyphicon-globe',
-	                    emptyIcon: '',    //没有子节点的节点图标
-	                    multiSelect: false    //多选
-	                });
-			}
-		},
-	);
-	function reBuildData(a)
-	{
-		if(a)
-		{
-			for(var i = 0;i<a.length;i++)
-			{
-				a[i].text = a[i].name;
-				a[i].href = addParam(a[i].url,'cid='+a[i].node);
-				a[i].nodes = reBuildData(a[i].children);
-			}
-		}
-		return a;
-	}
 	</script>
 </body>
 </html>
