@@ -1,7 +1,7 @@
 package xyz.zyzhu.spring.boot.test;
 
-import java.lang.reflect.Field;
-import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
 /**
  * <p>标题： TODO</p>
  * <p>功能： </p>
@@ -18,22 +18,45 @@ import java.util.List;
  */
 public class Test
 {
-	private String					f1;
-	private String					f2;
-	protected static List<Field>	fields;
-
-	public static final <T extends Test> List<Field> getFields(Class<T> t)
-	{
-		if (fields == null)
-		{
-		}
-		return null;
-	}
-
 	public static void main(String[] args)
 	{
-		String a = null;
-		throw new RuntimeException(a.toString());
+		TestBiFunction<Object,Object> f = new TestBiFunction<>();
+		Object a = "a";
+		Object b = "b";
+	}
+
+	/**
+	 * @param a
+	 * @param b
+	 * @param f
+	 * 赵玉柱
+	 */
+	/**
+	 * 
+	 * 赵玉柱
+	 */
+	protected static void testConsurm()
+	{
+		TestConsumer consumer = new TestConsumer();
+		set(consumer, c -> {
+			consumer.test();
+		});
+	}
+
+	private static Object t1(Object a, Object b, BiFunction<Object,Object,Object> f)
+	{
+		Object apply = f.apply(a, b);
+		return apply;
+	}
+
+	/**
+	 * 
+	 * 赵玉柱
+	 */
+	private static <T extends Object> void set(T t, Consumer<T> c)
+	{
+		System.out.println(111);
+		c.accept(t);
 	}
 }
 class TestC extends Test
